@@ -1,6 +1,6 @@
 module.exports = function(){
 
-  this.username = 'keenlabs-js';
+  this.username = 'treasuredata';
   this.urls = ['http://127.0.0.1:9999/index.html'];
   this.concurrency = 3;
 

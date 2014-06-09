@@ -8,7 +8,7 @@ module.exports = function(){
     this.secret = process.env.AWS_SECRET;
   }
 
-  this.bucket = 'keen-js';
+  this.bucket = 'treasure-js';
 
   return this;
 };

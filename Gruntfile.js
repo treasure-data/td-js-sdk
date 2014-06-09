@@ -18,10 +18,10 @@ module.exports = function(grunt) {
     copy: {
       build: {
         src: "bower_components/dataform/dist/dataform.js",
-        dest: "src/lib/keen-dataform.js",
+        dest: "src/lib/treasure-dataform.js",
         options: {
           process: function (content, path) {
-            return content.replace("\'Dataform\', this", "\'Dataform\', Keen");
+            return content.replace("\'Dataform\', this", "\'Dataform\', Treasure");
           }
         }
       }
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         stripBanners: true,
         process: function(src, filepath) {
           var namespace = (grunt.option("namespace") || false);
-          src = ((namespace) ? src.replace("'Keen'", "'" + namespace + "'") : src);
+          src = ((namespace) ? src.replace("'Treasure'", "'" + namespace + "'") : src);
           return "  // Source: " + filepath + "\n" + src;
         }
       },
@@ -41,17 +41,12 @@ module.exports = function(grunt) {
           "src/_intro.js",
           "src/core.js",
           "src/track.js",
-          "src/query.js",
           "src/lib/base64.js",
           "src/lib/json2.js",
-          "src/lib/keen-dataform.js",
-          "src/lib/keen-domready.js",
-          "src/lib/keen-spinner.js",
-          "src/visualize.js",
+          "src/lib/treasure-dataform.js",
+          "src/lib/treasure-domready.js",
           "src/async.js",
           "src/_outro.js",
-          "src/plugins/keen-googlecharts.js",
-          "src/plugins/keen-widgets.js"
         ],
         dest: "dist/<%= pkg.name %>.js"
       },
@@ -62,7 +57,7 @@ module.exports = function(grunt) {
           "src/track.js",
           "src/lib/base64.js",
           "src/lib/json2.js",
-          "src/lib/keen-domready.js",
+          "src/lib/treasure-domready.js",
           "src/async.js",
           "src/_outro.js"
         ],
@@ -111,7 +106,7 @@ module.exports = function(grunt) {
           testname: new Date().toISOString(),
           username: saucelabs.username,
           key: saucelabs.key,
-          build: process.env.TRAVIS_JOB_ID,
+          build: process.env.CIRCLE_BUILD_NUM,
           urls: saucelabs.urls,
           browsers: saucelabs.browsers,
           concurrency: saucelabs.concurrency,

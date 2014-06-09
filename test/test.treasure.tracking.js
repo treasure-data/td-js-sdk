@@ -1,6 +1,6 @@
 var expect = chai.expect;
 
-describe("Keen Tracking", function() {
+describe("Treasure Tracking", function() {
   
   describe("#addEvent", function() {
     
@@ -8,13 +8,13 @@ describe("Keen Tracking", function() {
       
       beforeEach(function() {
         var self = this;
-        self.keen = new Keen({
-          projectId: keenHelper.projectId,
-          writeKey: keenHelper.writeKey,
-          host: keenHelper.host,
+        self.treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host,
           requestType: 'xhr'
         });
-        self.postUrl = self.keen.client.endpoint + "/projects/" + self.keen.client.projectId + "/events/" + keenHelper.collection;
+        self.postUrl = self.treasure.client.endpoint + "/js/v3/event/" + self.treasure.client.database + "/" + treasureHelper.table;
         self.server = sinon.fakeServer.create();
         self.respondWith = function(code, body){
           self.server.respondWith("POST", self.postUrl, 
@@ -31,14 +31,14 @@ describe("Keen Tracking", function() {
         it("should post to the API using xhr where CORS is supported", function() {
           
           var callbacks = [sinon.spy(), sinon.spy()];
-          this.respondWith(200, keenHelper.responses.success);
-          this.keen.addEvent(keenHelper.collection, keenHelper.properties, callbacks[0], callbacks[1]);
+          this.respondWith(200, treasureHelper.responses.success);
+          this.treasure.addEvent(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
           this.server.respond();
           
           expect(this.server.requests[0].requestBody)
-            .to.equal(JSON.stringify(keenHelper.properties));  
+            .to.equal(JSON.stringify(treasureHelper.properties));  
           expect(callbacks[0].calledOnce).to.be.ok;
-          expect(callbacks[0].calledWith(JSON.parse(keenHelper.responses.success))).to.be.ok;
+          expect(callbacks[0].calledWith(JSON.parse(treasureHelper.responses.success))).to.be.ok;
           expect(callbacks[1].calledOnce).not.to.be.ok;
           
         });
@@ -46,12 +46,12 @@ describe("Keen Tracking", function() {
         it("should call the error callback on error", function() {
           
           var callbacks = [sinon.spy(), sinon.spy()];
-          this.respondWith(500, keenHelper.responses.error);
-          this.keen.addEvent(keenHelper.collection, keenHelper.properties, callbacks[0], callbacks[1]);
+          this.respondWith(500, treasureHelper.responses.error);
+          this.treasure.addEvent(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
           this.server.respond();
       
           expect(this.server.requests[0].requestBody)
-            .to.equal(JSON.stringify(keenHelper.properties));
+            .to.equal(JSON.stringify(treasureHelper.properties));
           expect(callbacks[0].calledOnce).not.to.be.ok;
           expect(callbacks[1].calledOnce).to.be.ok;
         
@@ -64,18 +64,18 @@ describe("Keen Tracking", function() {
     describe("via JSONP to a fake server", function(){
       
       beforeEach(function() {
-        this.keen = new Keen({
-          projectId: keenHelper.projectId,
-          writeKey: keenHelper.writeKey,
-          host: keenHelper.host,
+        this.treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host,
           requestType: 'jsonp'
         });
       });
       
       it("should add a script tag with a URL that has data and modified params", function(){
         
-        this.keen.addEvent(keenHelper.collection, keenHelper.properties);
-        var tag = document.getElementById("keen-jsonp");
+        this.treasure.addEvent(treasureHelper.table, treasureHelper.properties);
+        var tag = document.getElementById("treasure-jsonp");
         expect(tag).to.exist;
         expect(tag.src).to.contain("data=");
         expect(tag.src).to.contain("modified=");
@@ -88,10 +88,10 @@ describe("Keen Tracking", function() {
       
       /*
       beforeEach(function() {
-        this.keen = new Keen({
-          projectId: keenHelper.projectId,
-          writeKey: keenHelper.writeKey,
-          host: keenHelper.host,
+        this.treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host,
           requestType: 'beacon'
         });
       });
@@ -99,9 +99,9 @@ describe("Keen Tracking", function() {
       it("should add an image tag", function(){
         
         var callbacks = [function(){ console.log('here'); }, sinon.spy()];
-        this.keen.addEvent(keenHelper.collection, keenHelper.properties, callbacks[0], callbacks[1]);
+        this.treasure.addEvent(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
         
-        var tag = document.getElementById("keen-beacon");
+        var tag = document.getElementById("treasure-beacon");
         //expect(tag).to.exist;
         //expect(callbacks[0].calledOnce).to.be.ok;
         

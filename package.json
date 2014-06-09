@@ -1,9 +1,11 @@
 {
-  "name": "keen",
+  "name": "td-js-sdk",
   "version": "3.0.0",
-  "bugs": "https://github.com/keenlabs/keen-js/issues",
+  "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
   "author": "Dustin Larimer <dustin@keen.io> (http://keen.io/)",
-  "contributors": [],
+  "contributors": [
+    "Cesar Andreu <cesar@treasure-data.com> (http://treasuredata.com/)"
+  ],
   "engines": {
     "node": "0.10.x"
   },

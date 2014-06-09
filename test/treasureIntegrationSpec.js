@@ -1,12 +1,11 @@
 describe("addEvent integration spec", function() {
   beforeEach(function() {
-    jasmine.util.extend(this, new KeenSpecHelper());
+    jasmine.util.extend(this, new TreasureSpecHelper());
 
-    this.KEEN = new Keen({
-      projectId: "2b3e5512f3dd47b0ae7020d93a9a2fbb",
-      writeKey: "354B2FF5058361CECADBE5F2AD434418",
-      readKey: "354B2FF5058361CECADBE5F2AD434418",
-      keenUrl: "https://staging-api.keen.io"
+    this.TREASURE = new Treasure({
+      database: 'testDB',
+      writeKey: "91/96da3cfb876cc50724d0dddef670d95eea2a0018",
+      host: "in-staging.treasuredata.com"
     });
 
     it("should post to the API and run success callback for good data", function() {
@@ -19,7 +18,7 @@ describe("addEvent integration spec", function() {
         callback(response);
       };
 
-      this.KEEN.addEvent(this.eventCollection, this.eventProperties, proxy, errback);
+      this.TREASURE.addEvent(this.table, this.properties, proxy, errback);
 
       waitsFor(function() { return proxyCalled; }, "Proxy never called", 3000);
 
@@ -40,8 +39,8 @@ describe("addEvent integration spec", function() {
         errback(response);
       };
 
-      this.KEEN.client.writeKey = '';
-      Keen.addEvent(this.eventCollection, this.eventProperties, callback, proxy);
+      this.TREASURE.client.writeKey = '';
+      Treasure.addEvent(this.table, this.properties, callback, proxy);
 
       waitsFor(function() { return proxyCalled; }, "Proxy never called", 3000);
 

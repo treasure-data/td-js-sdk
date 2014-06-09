@@ -1,11 +1,12 @@
 {
-  "name": "keen-js",
+  "name": "td-js-sdk",
   "version": "3.0.0",
-  "homepage": "https://github.com/keenlabs/keen-js",
+  "homepage": "https://github.com/treasure-data/treasure-js",
   "authors": [
-    "Dustin Larimer <dustin@keen.io>"
+    "Dustin Larimer <dustin@keen.io>",
+    "Cesar Andreu <cesar@treasure-data.com>"
   ],
-  "description": "JS Library for the Keen IO API",
+  "description": "JS Library for the Treasure API",
   "keywords": [
     "analytics",
     "metrics",
@@ -13,9 +14,9 @@
     "logging",
     "stats",
     "pageviews",
-    "keen",
-    "keen.io",
-    "keen-io"
+    "treasure",
+    "treasuredata",
+    "treasure-data"
   ],
   "license": "MIT",
   "ignore": [

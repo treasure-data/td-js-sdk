@@ -301,7 +301,7 @@
 
   Treasure.log = function(message) {
     if (typeof console == "object") {
-      console.log('[Keen IO]', message);
+      console.log('[Treasure]', message);
     }
   };
 
