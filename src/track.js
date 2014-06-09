@@ -1,14 +1,14 @@
   /*!
   * -------------------
-  * Keen IO Tracker JS
+  * Treasure Tracker JS
   * -------------------
   */
 
-  Keen.prototype.addEvent = function(eventCollection, payload, success, error) {
+  Treasure.prototype.addEvent = function(table, payload, success, error) {
     _uploadEvent.apply(this, arguments);
   };
 
-  Keen.prototype.trackExternalLink = function(jsEvent, eventCollection, payload, timeout, timeoutCallback){
+  Treasure.prototype.trackExternalLink = function(jsEvent, table, payload, timeout, timeoutCallback){
 
     var evt = jsEvent,
         newTab = evt.metaKey,
@@ -44,7 +44,7 @@
         }
       }
     }
-    _uploadEvent.call(this, eventCollection, payload, callback, callback);
+    _uploadEvent.call(this, table, payload, callback, callback);
 
     setTimeout(function() {
       callback();
@@ -55,8 +55,8 @@
     }
   };
 
-  Keen.prototype.setGlobalProperties = function(newGlobalProperties) {
-    if (!this.client) return Keen.log('Check out our JavaScript SDK Usage Guide: https://keen.io/docs/clients/javascript/usage-guide/');
+  Treasure.prototype.setGlobalProperties = function(newGlobalProperties) {
+    if (!this.client) return Treasure.log('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');
     if (newGlobalProperties && typeof(newGlobalProperties) == "function") {
       this.client.globalProperties = newGlobalProperties;
     } else {
@@ -64,16 +64,16 @@
     }
   };
 
-  // Private for Keen IO Tracker JS
+  // Private for Treasure Tracker JS
   // -------------------------------
 
-  function _uploadEvent(eventCollection, payload, success, error) {
-    var url = _build_url.apply(this, ['/events/' + eventCollection]);
+  function _uploadEvent(table, payload, success, error) {
+    var url = _build_url.apply(this, ['/' + table]);
     var newEvent = {};
 
     // Add properties from client.globalProperties
     if (this.client.globalProperties) {
-      newEvent = this.client.globalProperties(eventCollection);
+      newEvent = this.client.globalProperties(table);
     }
 
     // Add properties from user-defined event
@@ -92,7 +92,7 @@
 
       case 'jsonp':
         var jsonBody = JSON.stringify(newEvent);
-        var base64Body = Keen.Base64.encode(jsonBody);
+        var base64Body = Treasure.Base64.encode(jsonBody);
         url = url + "?api_key=" + this.client.writeKey;
         url = url + "&data=" + base64Body;
         url = url + "&modified=" + new Date().getTime();
@@ -101,7 +101,7 @@
 
       case 'beacon':
         var jsonBody = JSON.stringify(newEvent);
-        var base64Body = Keen.Base64.encode(jsonBody);
+        var base64Body = Treasure.Base64.encode(jsonBody);
         url = url + "?api_key=" + encodeURIComponent(this.client.writeKey);
         url = url + "&data=" + encodeURIComponent(base64Body);
         url = url + "&modified=" + encodeURIComponent(new Date().getTime());

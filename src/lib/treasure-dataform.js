@@ -11,7 +11,7 @@
     context[name] = definition();
   }
 
-}('Dataform', Keen, function() {
+}('Dataform', Treasure, function() {
   'use strict';
 
 // Source: src/dataform.js

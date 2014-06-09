@@ -4,11 +4,11 @@
     c['_'+n] = {};
     c[n] = function(e) {
       c['_'+n]['clients'] = c['_'+n]['clients'] || {};
-      c['_'+n]['clients'][e.projectId] = this;
+      c['_'+n]['clients'][e.database] = this;
       this._config = e;
     };
     
-    // Keen.ready(function(){});
+    // Treasure.ready(function(){});
     c[n]['ready'] = function(callback){
       c['_'+n]['ready'] = c['_'+n]['ready'] || [];
       c['_'+n]['ready'].push(callback);
@@ -28,9 +28,9 @@
     }
     
     var s = document.createElement("script");
-    s.type = "text/javascript", s.async = !0, s.src = "keen-3.0.0.min.js";
+    s.type = "text/javascript", s.async = !0, s.src = "treasure-js.min.js";
     
     var t = document.getElementsByTagName("script")[0];
     t.parentNode.insertBefore(s,t);
   }
-})('Keen', this);
+})('Treasure', this);

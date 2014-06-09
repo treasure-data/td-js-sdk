@@ -1,10 +1,11 @@
-  /*!
+  /*! 
   * ----------------------------------------
-  * Keen IO Base64 Transcoding
+  * Treasure Base64 Transcoding
+  * https://gist.github.com/sgammon/5562296
   * ----------------------------------------
   */
 
-  Keen.Base64 = {
+  Treasure.Base64 = {
     map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
     encode: function (n) {
       "use strict";

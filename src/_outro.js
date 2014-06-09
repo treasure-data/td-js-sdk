@@ -3,13 +3,13 @@
   // Utility Methods
   // ----------------------
 
-  if (Keen.loaded) {
+  if (Treasure.loaded) {
     setTimeout(function(){
-      Keen.utils.domready(function(){
-        Keen.trigger('ready');
+      Treasure.utils.domready(function(){
+        Treasure.trigger('ready');
       });
     }, 0);
   }
 
-  return Keen;
+  return Treasure;
 });

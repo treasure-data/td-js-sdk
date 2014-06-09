@@ -1,12 +1,12 @@
 /*!
   * domready (c) Dustin Diaz 2012 - License MIT
   */
-// Modified header to work internally w/ Keen lib
+// Modified header to work internally w/ Treasure lib
 !function (name, context, definition) {
   if (typeof module != 'undefined' && module.exports) module.exports = definition()
   else if (typeof define == 'function' && define.amd) define(definition)
   else context[name] = definition()
-}('domready', Keen.utils, function(ready) {
+}('domready', Treasure.utils, function(ready) {
 
   var fns = [], fn, f = false
     , doc = document

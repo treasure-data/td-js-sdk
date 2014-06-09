@@ -1,13 +1,13 @@
   /*! 
   * ----------------------
-  * Keen IO Plugin
+  * Treasure Plugin
   * Auto Pageview Tracker
   * ----------------------
   */
   
-  var AutoTracking = Keen.Plugins.AutoPageviewTracking = {
+  var AutoTracking = Treasure.Plugins.AutoPageviewTracking = {
     configure: function(instance, configuration){
-      var client = (instance instanceof Keen) ? instance : false,
+      var client = (instance instanceof Treasure) ? instance : false,
           config = configuration['pageviews'] || false,
           defaults, options, override_addons;
           
@@ -55,10 +55,10 @@
         }
       }
       
-      // Set keen.timestamp if it doesn't exist
+      // Set treasure.timestamp if it doesn't exist
       // ---------------------------------------
-      options['data']['keen'] = options['data']['keen'] || {};
-      options['data']['keen']['timestamp'] = options['data']['keen']['timestamp'] || new Date().toISOString();
+      options['data']['treasure'] = options['data']['treasure'] || {};
+      options['data']['treasure']['timestamp'] = options['data']['treasure']['timestamp'] || new Date().toISOString();
       
       // Send pageview event
       // ----------------------------------
@@ -67,7 +67,7 @@
     }
   }
   
-  Keen.on('client', function(response){
-    Keen.Plugins.AutoPageviewTracking.configure.apply(this, arguments);
+  Treasure.on('client', function(response){
+    Treasure.Plugins.AutoPageviewTracking.configure.apply(this, arguments);
   });
   

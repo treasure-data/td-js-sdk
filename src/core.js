@@ -1,41 +1,40 @@
   /*!
   * ----------------
-  * Keen IO Core JS
+  * Treasure Core JS
   * ----------------
   */
 
-  function Keen(config) {
+  function Treasure(config) {
     return _init.apply(this, arguments);
   }
 
   function _init(config) {
     if (_isUndefined(config)) {
-      throw new Error("Check out our JavaScript SDK Usage Guide: https://keen.io/docs/clients/javascript/usage-guide/");
+      throw new Error("Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk/");
     }
-    if (_isUndefined(config.projectId) || _type(config.projectId) !== 'String' || config.projectId.length < 1) {
-      throw new Error("Please provide a projectId");
+    if (_isUndefined(config.database) || _type(config.database) !== 'String' || config.database.length < 1) {
+      throw new Error("Please provide a database");
     }
 
     this.configure(config);
   }
 
-  Keen.prototype.configure = function(config){
+  Treasure.prototype.configure = function(config){
 
-    config['host'] = (_isUndefined(config['host'])) ? 'api.keen.io/3.0' : config['host'].replace(/.*?:\/\//g, '');
+    config['host'] = (_isUndefined(config['host'])) ? 'in.treasuredata.com' : config['host'].replace(/.*?:\/\//g, '');
     config['protocol'] = _set_protocol(config['protocol']);
     config['requestType'] = _set_request_type(config['requestType']);
 
     this.client = {
-      projectId: config.projectId,
+      database: config.database,
       writeKey: config.writeKey,
-      readKey: config.readKey,
       globalProperties: null,
 
       endpoint: config['protocol'] + "://" + config['host'],
       requestType: config['requestType']
     };
 
-    Keen.trigger('client', this, config);
+    Treasure.trigger('client', this, config);
     this.trigger('ready');
 
     return this;
@@ -142,14 +141,14 @@
   }
 
   function _build_url(path) {
-    return this.client.endpoint + '/projects/' + this.client.projectId + path;
+    return this.client.endpoint + '/js/v3/event/' + this.client.database + path;
   }
 
 
   var _request = {
 
     xhr: function(method, url, headers, body, apiKey, success, error){
-      if (!apiKey) return Keen.log('Please provide a writeKey for https://keen.io/project/' + this.client.projectId);
+      if (!apiKey) return Treasure.log('Please provide an apikey from https://console.treasuredata.com/users/current');
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
@@ -158,12 +157,12 @@
             try {
               response = JSON.parse(xhr.responseText);
             } catch (e) {
-              Keen.log("Could not JSON parse HTTP response: " + xhr.responseText);
+              Treasure.log("Could not JSON parse HTTP response: " + xhr.responseText);
               if (error) error(xhr, e);
             }
             if (success && response) success(response);
           } else {
-            Keen.log("HTTP request failed.");
+            Treasure.log("HTTP request failed.");
             if (error) error(xhr, null);
           }
         }
@@ -181,13 +180,13 @@
     },
 
     jsonp: function(url, apiKey, success, error){
-      if (!apiKey) return Keen.log('Please provide a writeKey for https://keen.io/project/' + this.client.projectId);
+      if (!apiKey) return Treasure.log('Please provide an apikey from https://console.treasuredata.com/users/current');
       if (apiKey && url.indexOf("api_key") < 0) {
         var delimiterChar = url.indexOf("?") > 0 ? "&" : "?";
         url = url + delimiterChar + "api_key=" + apiKey;
       }
 
-      var callbackName = "keenJSONPCallback" + new Date().getTime();
+      var callbackName = "TreasureJSONPCallback" + new Date().getTime();
       while (callbackName in window) {
         callbackName += "a";
       }
@@ -202,7 +201,7 @@
       };
       url = url + "&jsonp=" + callbackName;
       var script = document.createElement("script");
-      script.id = "keen-jsonp";
+      script.id = "treasure-jsonp";
       script.src = url;
       document.getElementsByTagName("head")[0].appendChild(script);
       // for early IE w/ no onerror event
@@ -248,10 +247,10 @@
 
 
   // -------------------------------
-  // Keen.Events
+  // Treasure.Events
   // -------------------------------
 
-  var Events = Keen.Events = {
+  var Events = Treasure.Events = {
     on: function(name, callback) {
       this.listeners || (this.listeners = {});
       var events = this.listeners[name] || (this.listeners[name] = []);
@@ -284,30 +283,30 @@
       return this;
     }
   };
-  _extend(Keen.prototype, Events);
-  _extend(Keen, Events);
+  _extend(Treasure.prototype, Events);
+  _extend(Treasure, Events);
 
-  Keen.loaded = true;
+  Treasure.loaded = true;
 
   // Expose utils
-  Keen.utils = {
+  Treasure.utils = {
     each: _each,
     extend: _extend,
     parseParams: _parse_params
   };
 
-  Keen.ready = function(callback){
-    Keen.on('ready', callback);
+  Treasure.ready = function(callback){
+    Treasure.on('ready', callback);
   };
 
-  Keen.log = function(message) {
+  Treasure.log = function(message) {
     if (typeof console == "object") {
       console.log('[Keen IO]', message);
     }
   };
 
   // -------------------------------
-  // Keen.Plugins
+  // Treasure.Plugins
   // -------------------------------
 
-  var Plugins = Keen.Plugins = {};
+  var Plugins = Treasure.Plugins = {};

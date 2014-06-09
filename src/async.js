@@ -1,12 +1,12 @@
   /*!
   * ----------------------
-  * Keen IO Plugin
+  * Treasure Plugin
   * Async Loader
   * ----------------------
   */
 
-  var loaded = window['Keen'],
-      cached = window['_' + 'Keen'] || {},
+  var loaded = window['Treasure'],
+      cached = window['_' + 'Treasure'] || {},
       clients,
       ready;
 
@@ -19,15 +19,11 @@
         var client = clients[instance];
 
         // Map methods to existing instances
-        for (var method in Keen.prototype) {
-          if (Keen.prototype.hasOwnProperty(method)) {
-            loaded.prototype[method] = Keen.prototype[method];
+        for (var method in Treasure.prototype) {
+          if (Treasure.prototype.hasOwnProperty(method)) {
+            loaded.prototype[method] = Treasure.prototype[method];
           }
         }
-
-        // Map additional methods as necessary
-        loaded.Query = (Keen.Query) ? Keen.Query : function(){};
-        loaded.Visualization = (Keen.Visualization) ? Keen.Visualization : function(){};
 
         // Run Configuration
         if (client._config) {
@@ -68,7 +64,7 @@
 
     for (var i = 0; i < ready.length; i++) {
       var callback = ready[i];
-      Keen.on('ready', function(){
+      Treasure.on('ready', function(){
         callback();
       });
     };
