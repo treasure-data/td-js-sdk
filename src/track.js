@@ -33,7 +33,7 @@
           triggered = true;
           target.submit();
         }
-      }
+      };
     }
 
     if (timeoutCallback) {
@@ -42,7 +42,7 @@
           triggered = true;
           timeoutCallback();
         }
-      }
+      };
     }
     _uploadEvent.call(this, table, payload, callback, callback);
 
@@ -96,7 +96,7 @@
         url = url + "?api_key=" + this.client.writeKey;
         url = url + "&data=" + base64Body;
         url = url + "&modified=" + new Date().getTime();
-        _request.jsonp.apply(this, [url, this.client.writeKey, success, error])
+        _request.jsonp.apply(this, [url, this.client.writeKey, success, error]);
         break;
 
       case 'beacon':

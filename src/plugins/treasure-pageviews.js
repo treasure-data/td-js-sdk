@@ -16,7 +16,7 @@
       }
       
       defaults = {
-        collection: 'pageview',
+        table: 'pageview',
         params: ['utm_content', 'utm_source', 'utm_medium', 'utm_term', 'utm_campaign'],
         data: {
           referrer: document.referrer,
@@ -63,7 +63,7 @@
       // Send pageview event
       // ----------------------------------
       //console.log('data', options['data']);
-      client.addEvent(options['collection'], options['data']);
+      client.addEvent(options['table'], options['data']);
     }
   }
   

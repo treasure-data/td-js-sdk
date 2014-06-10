@@ -168,7 +168,7 @@
         }
       };
       xhr.open(method, url, true);
-      if (apiKey) xhr.setRequestHeader("Authorization", apiKey);
+      if (apiKey) xhr.setRequestHeader("X-TD-WRITE-KEY", apiKey);
       if (body) xhr.setRequestHeader("Content-Type", "application/json");
       if (headers) {
         for (var headerName in headers) {
@@ -195,7 +195,7 @@
         loaded = true;
         if (success && response) {
           success(response);
-        };
+        }
         // Remove this from the namespace
         window[callbackName] = undefined;
       };
@@ -210,14 +210,14 @@
           loaded = true;
           if (error) error();
         }
-      }
+      };
       // non-ie, etc
       script.onerror = function() {
         if (loaded === false) { // on IE9 both onerror and onreadystatechange are called
           loaded = true;
           if (error) error();
         }
-      }
+      };
     },
 
     beacon: function(url, apiKey, success, error){
