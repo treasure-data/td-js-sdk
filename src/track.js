@@ -68,6 +68,10 @@
   // -------------------------------
 
   function _uploadEvent(table, payload, success, error) {
+    if (!(/^[a-z0-9_]{3,255}$/.test(table))) {
+      throw new Error('Table must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _');
+    }
+
     var url = _build_url.apply(this, ['/' + table]);
     var newEvent = {};
 
