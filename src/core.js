@@ -8,30 +8,36 @@
     return _init.apply(this, arguments);
   }
 
-  function _init(config) {
+  function _validate(config) {
     if (_isUndefined(config)) {
       throw new Error("Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk/");
     }
-    if (_isUndefined(config.database) || _type(config.database) !== 'String' || config.database.length < 1) {
+    if (_isUndefined(config.database) || _type(config.database) !== 'String' || !config.database.length) {
       throw new Error("Please provide a database");
     }
+    if (!(/^[a-z0-9_]{3,255}$/.test(config.database))) {
+      throw new Error("Database must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _");
+    }
+  }
 
+  function _init(config) {
+    _validate(config);
     this.configure(config);
   }
 
   Treasure.prototype.configure = function(config){
-
-    config['host'] = (_isUndefined(config['host'])) ? 'in.treasuredata.com' : config['host'].replace(/.*?:\/\//g, '');
-    config['protocol'] = _set_protocol(config['protocol']);
-    config['requestType'] = _set_request_type(config['requestType']);
+    _validate(config);
+    config.host = (_isUndefined(config.host)) ? 'in.treasuredata.com' : config.host.replace(/.*?:\/\//g, '');
+    config.protocol = _set_protocol(config.protocol || 'auto');
+    config.requestType = _set_request_type(config.requestType);
 
     this.client = {
       database: config.database,
       writeKey: config.writeKey,
       globalProperties: null,
 
-      endpoint: config['protocol'] + "://" + config['host'],
-      requestType: config['requestType']
+      endpoint: config.protocol + '://' + config.host,
+      requestType: config.requestType
     };
 
     Treasure.trigger('client', this, config);
