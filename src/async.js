@@ -11,8 +11,8 @@
       ready;
 
   if (loaded && cached) {
-    clients = cached['clients'] || {},
-    ready = cached['ready'] || [];
+    clients = cached.clients || {};
+    ready = cached.ready || [];
 
     for (var instance in clients) {
       if (clients.hasOwnProperty(instance)) {
