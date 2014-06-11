@@ -15,17 +15,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
 
-    copy: {
-      build: {
-        src: "bower_components/dataform/dist/dataform.js",
-        dest: "src/lib/treasure-dataform.js",
-        options: {
-          process: function (content, path) {
-            return content.replace("\'Dataform\', this", "\'Dataform\', Treasure");
-          }
-        }
-      }
-    },
+    // copy: {
+    //   build: {
+    //     src: "bower_components/dataform/dist/dataform.js",
+    //     dest: "src/lib/treasure-dataform.js",
+    //     options: {
+    //       process: function (content, path) {
+    //         return content.replace("\'Dataform\', this", "\'Dataform\', Treasure");
+    //       }
+    //     }
+    //   }
+    // },
 
     concat: {
       options: {
@@ -43,25 +43,11 @@ module.exports = function(grunt) {
           "src/track.js",
           "src/lib/base64.js",
           "src/lib/json2.js",
-          "src/lib/treasure-dataform.js",
-          "src/lib/treasure-domready.js",
-          "src/async.js",
-          "src/_outro.js",
-        ],
-        dest: "dist/<%= pkg.name %>.js"
-      },
-      tracker: {
-        src: [
-          "src/_intro.js",
-          "src/core.js",
-          "src/track.js",
-          "src/lib/base64.js",
-          "src/lib/json2.js",
           "src/lib/treasure-domready.js",
           "src/async.js",
           "src/_outro.js"
         ],
-        dest: "dist/<%= pkg.name %>-tracker.js"
+        dest: "dist/<%= pkg.name %>.js"
       },
       loader: {
         src: "src/loader.js",
@@ -78,7 +64,6 @@ module.exports = function(grunt) {
       dist: {
         files: {
           "dist/<%= pkg.name %>.min.js": "dist/<%= pkg.name %>.js",
-          "dist/<%= pkg.name %>-tracker.min.js": "dist/<%= pkg.name %>-tracker.js",
           "dist/<%= pkg.name %>-loader.min.js": "dist/<%= pkg.name %>-loader.js"
         }
       }
@@ -148,7 +133,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('build', ['copy', 'concat', 'uglify']);
+  grunt.registerTask('build', ['concat', 'uglify']);
   grunt.registerTask('dev', ['build', 'connect', 'watch']);
   grunt.registerTask('test', ['build', 'connect', 'saucelabs-mocha']);
   grunt.registerTask('default', ['build']);
