@@ -8,7 +8,7 @@
   var AutoTracking = Treasure.Plugins.AutoPageviewTracking = {
     configure: function(instance, configuration){
       var client = (instance instanceof Treasure) ? instance : false,
-          config = configuration['pageviews'] || false,
+          config = configuration.pageviews || false,
           defaults, options, override_addons;
           
       if (!client || (_type(config) !== 'Object' && _type(config) !== 'Boolean')) {
