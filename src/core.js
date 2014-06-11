@@ -28,7 +28,7 @@
   Treasure.prototype.configure = function(config){
     _validate(config);
     config.host = (_isUndefined(config.host)) ? 'in.treasuredata.com' : config.host.replace(/.*?:\/\//g, '');
-    config.protocol = _set_protocol(config.protocol || 'auto');
+    config.protocol = _set_protocol(config.protocol);
     config.requestType = _set_request_type(config.requestType);
 
     this.client = {
@@ -111,18 +111,14 @@
   }
 
   function _set_protocol(value) {
+    value = value || 'auto';
     switch(value) {
       case 'http':
         return 'http';
-        break;
-      case 'auto':
-        return location.protocol.replace(/:/g, '');
-        break;
       case 'https':
-      case undefined:
-      default:
         return 'https';
-        break;
+      default:
+        return location.protocol.replace(/:/g, '');
     }
   }
 
