@@ -4,7 +4,7 @@
   * -------------------
   */
 
-  Treasure.prototype.addEvent = function(table, payload, success, error) {
+  Treasure.prototype.addEvent = function() {
     _uploadEvent.apply(this, arguments);
   };
 
@@ -56,8 +56,10 @@
   };
 
   Treasure.prototype.setGlobalProperties = function(newGlobalProperties) {
-    if (!this.client) return Treasure.log('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');
-    if (newGlobalProperties && typeof(newGlobalProperties) == "function") {
+    if (!this.client) {
+      return Treasure.log('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');      
+    }
+    if (newGlobalProperties && typeof(newGlobalProperties) === 'function') {
       this.client.globalProperties = newGlobalProperties;
     } else {
       throw new Error('Invalid value for global properties: ' + newGlobalProperties);
@@ -74,6 +76,7 @@
 
     var url = _build_url.apply(this, ['/' + table]);
     var newEvent = {};
+    var jsonBody, base64Body;
 
     // Add properties from client.globalProperties
     if (this.client.globalProperties) {
@@ -91,27 +94,27 @@
     switch(this.client.requestType){
 
       case 'xhr':
-        _request.xhr.apply(this, ["POST", url, null, newEvent, this.client.writeKey, success, error]);
+        _request.xhr.apply(this, ['POST', url, null, newEvent, this.client.writeKey, success, error]);
         break;
 
       case 'jsonp':
-        var jsonBody = JSON.stringify(newEvent);
-        var base64Body = Treasure.Base64.encode(jsonBody);
-        url = url + "?api_key=" + this.client.writeKey;
-        url = url + "&data=" + base64Body;
-        url = url + "&modified=" + new Date().getTime();
+        jsonBody = JSON.stringify(newEvent);
+        base64Body = Treasure.Base64.encode(jsonBody);
+        url = url + '?api_key=' + this.client.writeKey;
+        url = url + '&data=' + base64Body;
+        url = url + '&modified=' + new Date().getTime();
         _request.jsonp.apply(this, [url, this.client.writeKey, success, error]);
         break;
 
-      case 'beacon':
-        var jsonBody = JSON.stringify(newEvent);
-        var base64Body = Treasure.Base64.encode(jsonBody);
-        url = url + "?api_key=" + encodeURIComponent(this.client.writeKey);
-        url = url + "&data=" + encodeURIComponent(base64Body);
-        url = url + "&modified=" + encodeURIComponent(new Date().getTime());
-        url = url + "&c=clv1";
-        _request.beacon.apply(this, [url, null, success, error]);
-        break;
+      // case 'beacon':
+      //   jsonBody = JSON.stringify(newEvent);
+      //   base64Body = Treasure.Base64.encode(jsonBody);
+      //   url = url + '?api_key=' + encodeURIComponent(this.client.writeKey);
+      //   url = url + '&data=' + encodeURIComponent(base64Body);
+      //   url = url + '&modified=' + encodeURIComponent(new Date().getTime());
+      //   url = url + '&c=clv1';
+      //   _request.beacon.apply(this, [url, null, success, error]);
+      //   break;
 
     }
-  };
+  }
