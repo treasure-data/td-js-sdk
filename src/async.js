@@ -5,8 +5,8 @@
   * ----------------------
   */
 
-  var loaded = window['Treasure'],
-      cached = window['_' + 'Treasure'] || {},
+  var loaded = window.Treasure,
+      cached = window._Treasure || {},
       clients,
       ready;
 
