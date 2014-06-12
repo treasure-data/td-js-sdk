@@ -81,6 +81,30 @@ describe("Treasure Client", function() {
 
       });
 
+      it('should error if database is invalid', function() {
+
+        // Under 3 characters
+        expect(function() {
+          (treasure = new Treasure({database:'12'}));
+        }).to.throw(Error);
+
+        // Over 255 characters
+        expect(function() {
+          (treasure = new Treasure({database:'1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'}));
+        }).to.throw(Error);
+
+        // Uppercase chracters
+        expect(function() {
+          (treasure = new Treasure({database:'FOO_BAR'}));
+        }).to.throw(Error);
+
+        // Special characters
+        expect(function() {
+          (treasure = new Treasure({database:'!@#$%ˆ&*()-+='}));
+        }).to.throw(Error);
+
+      });
+
       it("should set the database (string)", function() {
 
         expect(this.treasure.client)
