@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Treasure Client', function() {
   var treasure;
 
@@ -8,25 +10,25 @@ describe('Treasure Client', function() {
     });
   });
 
-  describe("constructor", function() {
+  describe('constructor', function() {
 
-    it("should create a new Treasure instance", function(){
+    it('should create a new Treasure instance', function(){
       expect(this.treasure).to.be.an.instanceof(Treasure);
     });
 
-    it("should error if no configuration object", function() {
+    it('should error if no configuration object', function() {
       expect(function() {
         (treasure = new Treasure());
       }).to.throw(Error);
     });
 
-    it("should create a new client object", function(){
+    it('should create a new client object', function(){
       expect(this.treasure.client).to.be.ok;
     });
 
-    describe("validates database", function(){
+    describe('validates database', function(){
 
-      it("should error if database is absent", function() {
+      it('should error if database is absent', function() {
 
         expect(function() {
           (treasure = new Treasure());
