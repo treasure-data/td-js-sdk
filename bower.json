@@ -1,12 +1,15 @@
 {
   "name": "td-js-sdk",
-  "version": "3.0.0",
-  "homepage": "https://github.com/treasure-data/treasure-js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/treasure-data/td-js-sdk",
   "authors": [
-    "Dustin Larimer <dustin@keen.io>",
     "Cesar Andreu <cesar@treasure-data.com>"
   ],
-  "description": "JS Library for the Treasure API",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/treasure-data/td-js-sdk.git"
+  },
+  "description": "JS library for sending events to your Treasure Data account",
   "keywords": [
     "analytics",
     "metrics",
