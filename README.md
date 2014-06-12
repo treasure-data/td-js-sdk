@@ -1,6 +1,6 @@
 # td-js-sdk v0.1.0
 
-__ INCOMPLETE. DO NOT USE. __
+** INCOMPLETE. DO NOT USE. **
 
 ## Getting started
 
@@ -57,7 +57,7 @@ Send as many events as you like. Each event will fire off asynchronously.
 Creates a new Treasure logger instance.
 If the database does not exist and you have permissions, it will be created for you.
 
-__ Parameters: __
+** Parameters: **
 
 * config : Object (required) - instance configuration
 * config.database : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
@@ -66,11 +66,11 @@ __ Parameters: __
 * config.protocol : String (optional) - protocol to use for sending events. Allowed values: `auto`, `http`, `https`. Default: `auto`
 * config.host : String (optional) - host to which send events. Default: `in.treasuredata.com`
 
-__ Returns: __
+** Returns: **
 
 * Treasure logger instance object
 
-__ Example: __
+** Example: **
 
 ```javascript
 var foo = new Treasure({
@@ -83,7 +83,7 @@ var foo = new Treasure({
 
 Sends an event to Treasure Data. If the table does not exist it will be created for you.
 
-__ Parameters: __
+** Parameters: **
 
 * table : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
 * eventData : Object (required) - JavaScript object that will be serialized to JSON and sent to the server
@@ -91,7 +91,7 @@ __ Parameters: __
 * success : Function (optional) - Callback for when sending the event is successful
 * error : Function (optional) - Callback for when sending the event is unsuccessful
 
-__ Example: __
+** Example: **
 
 ```javascript
 var company = new Treasure({...});
