@@ -4,7 +4,8 @@
   * Auto Pageview Tracker
   * ----------------------
   */
-  
+
+  /*
   var AutoTracking = Treasure.Plugins.AutoPageviewTracking = {
     configure: function(instance, configuration){
       var client = (instance instanceof Treasure) ? instance : false,
@@ -70,4 +71,4 @@
   Treasure.on('client', function(response){
     Treasure.Plugins.AutoPageviewTracking.configure.apply(this, arguments);
   });
-  
+  */
