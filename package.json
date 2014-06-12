@@ -23,5 +23,14 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-saucelabs": "^5.1.0",
     "grunt-s3": "^0.2.0-alpha.3"
+  },
+  "dependencies": {
+    "express": "^4.4.2",
+    "gulp": "^3.8.0",
+    "gulp-concat": "^2.2.0",
+    "gulp-ignore": "^1.1.0",
+    "gulp-rimraf": "^0.1.0",
+    "gulp-uglify": "^0.3.0",
+    "morgan": "^1.1.1"
   }
 }
