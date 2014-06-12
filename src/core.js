@@ -341,4 +341,5 @@
   // Treasure.Plugins
   // -------------------------------
 
-  var Plugins = Treasure.Plugins = {};
+  // var Plugins = Treasure.Plugins = {};
+
