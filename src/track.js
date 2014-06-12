@@ -8,6 +8,7 @@
     _uploadEvent.apply(this, arguments);
   };
 
+  /*
   Treasure.prototype.trackExternalLink = function(jsEvent, table, payload, timeout, timeoutCallback){
 
     var evt = jsEvent,
@@ -54,6 +55,7 @@
       return false;
     }
   };
+  */
 
   Treasure.prototype.setGlobalProperties = function(newGlobalProperties) {
     if (!this.client) {
