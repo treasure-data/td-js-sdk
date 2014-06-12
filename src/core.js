@@ -4,7 +4,17 @@
   * ----------------
   */
 
-  function Treasure(config) {
+  /**
+   * Creates a new Treasure logger
+   * @constructor Treasure
+   * @param {Object} config - Configuration object
+   * @param {String} config.database - Database to which the events should get saved
+   * @param {String} config.writeKey - Write-only API key for your account
+   * @param {String} [config.protocol="auto"] - Protocol to use for url, allowed values: auto, http, https
+   * @param {String} [config.requestType="auto"] - Request type for sending events, allowed values: auto, xhr, jsonp
+   * @param {String} [config.host="in.treasuredata.com"] - Host to which events get sent
+   */
+  function Treasure() {
     return _init.apply(this, arguments);
   }
 
