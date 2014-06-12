@@ -62,10 +62,13 @@
       }
     }
 
+    var callbackGenerator = function(cb) {
+      return function() {
+        cb();
+      };
+    };
     for (var i = 0; i < ready.length; i++) {
       var callback = ready[i];
-      Treasure.on('ready', function(){
-        callback();
-      });
-    };
+      Treasure.on('ready', callbackGenerator(callback));
+    }
   }
