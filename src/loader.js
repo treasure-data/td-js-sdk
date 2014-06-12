@@ -3,18 +3,19 @@
     
     c['_'+n] = {};
     c[n] = function(e) {
-      c['_'+n]['clients'] = c['_'+n]['clients'] || {};
-      c['_'+n]['clients'][e.database] = this;
+      c['_'+n].clients = c['_'+n].clients || {};
+      c['_'+n].clients[e.database] = this;
       this._config = e;
     };
     
     // Treasure.ready(function(){});
-    c[n]['ready'] = function(callback){
-      c['_'+n]['ready'] = c['_'+n]['ready'] || [];
-      c['_'+n]['ready'].push(callback);
+    c[n].ready = function(callback){
+      c['_'+n].ready = c['_'+n].ready || [];
+      c['_'+n].ready.push(callback);
     };
     
-    var methods = ['addEvent', 'setGlobalProperties', 'trackExternalLink', 'on'];
+    // var methods = ['addEvent', 'setGlobalProperties', 'trackExternalLink', 'on'];
+    var methods = ['addEvent', 'setGlobalProperties', 'on'];
     for (var i = 0; i < methods.length; i++){
       var method = methods[i];
       var action = function(method){
@@ -22,15 +23,17 @@
           this['_'+method] = this['_'+method] || [];
           this['_'+method].push(arguments);
           return this;
-        }
+        };
       };
       c[n].prototype[method] = action(method);
     }
     
-    var s = document.createElement("script");
-    s.type = "text/javascript", s.async = !0, s.src = "treasure-js.min.js";
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = !0;
+    s.src = 'td-js-sdk.js';
     
-    var t = document.getElementsByTagName("script")[0];
+    var t = document.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s,t);
   }
 })('Treasure', this);
