@@ -170,7 +170,7 @@
             try {
               response = JSON.parse(xhr.responseText);
             } catch (e) {
-              Treasure.log("Could not JSON parse HTTP response: " + xhr.responseText);
+              Treasure.log('Could not JSON parse HTTP response: ' + xhr.responseText);
               if (error) {
                 error(xhr, e);
               }
@@ -179,7 +179,7 @@
               success(response);
             }
           } else {
-            Treasure.log("HTTP request failed.");
+            Treasure.log('HTTP request failed.');
             if (error) {
               error(xhr, null); 
             }
