@@ -328,7 +328,11 @@
   };
 
   Treasure.ready = function(callback){
-    Treasure.on('ready', callback);
+    if (Treasure.loaded) {
+      callback();
+    } else {
+      Treasure.on('ready', callback);
+    }
   };
 
   Treasure.log = function(message) {
