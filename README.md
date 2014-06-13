@@ -4,7 +4,7 @@
 
 ## Getting started
 
-### Get your read-only API key
+### Get your write-only API key
 
 Log in to [Treasure Data](console.treasure.com) and go to your [profile](console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
 
@@ -14,7 +14,7 @@ Install the td-js-sdk on your page by copying the JavaScript snippet below and p
 
 ```html
 <script type="text/javascript">
-  // SNIPPET GOES HERE
+  /* SNIPPET GOES HERE */
 </script>
 ```
 
