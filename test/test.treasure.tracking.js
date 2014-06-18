@@ -90,7 +90,7 @@ describe('Treasure Tracking', function() {
           expect(callbacks[1].calledOnce).not.to.be.ok;
           expect(callbacks[0].calledWith(JSON.parse(treasureHelper.responses.success))).to.be.ok;
           done();
-        }, 500);
+        }, 300);
       });
 
       it('should call error callback if unsuccessful', function (done) {
@@ -100,7 +100,7 @@ describe('Treasure Tracking', function() {
           expect(callbacks[0].calledOnce).not.to.be.ok;
           expect(callbacks[1].calledOnce).to.be.ok;
           done();
-        }, 500);        
+        }, 300);        
       });
 
     });
