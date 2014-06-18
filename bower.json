@@ -24,15 +24,15 @@
   ],
   "ignore": [
     "**/.*",
-    "config",
+    "*.yml",
     "node_modules",
-    "src",
+    "bower_components",
     "test"
   ],
   "devDependencies": {
-    "mocha": "~1.18.2",
+    "mocha": "~1.20.1",
     "chai": "~1.9.1",
-    "sinon": "http://sinonjs.org/releases/sinon-1.9.0.js",
-    "sinon-ie": "http://sinonjs.org/releases/sinon-ie-1.9.0.js"
+    "sinon": "http://sinonjs.org/releases/sinon-1.10.2.js",
+    "sinon-ie": "http://sinonjs.org/releases/sinon-ie-1.10.2.js"
   }
 }
