@@ -36,7 +36,7 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should error if database is empty", function() {
+      it('should error if database is empty', function() {
 
         expect(function() {
           (treasure = new Treasure({database:''}));
@@ -44,7 +44,7 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should error if database is of incorrect type", function() {
+      it('should error if database is of incorrect type', function() {
 
         // Number
         expect(function() {
@@ -92,7 +92,7 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should set the database (string)", function() {
+      it('should set the database (string)', function() {
 
         expect(this.treasure.client)
           .to.have.property('database')
@@ -103,9 +103,9 @@ describe('Treasure Client', function() {
 
     });
 
-    describe("validates writeKey", function(){
+    describe('validates writeKey', function(){
 
-      it("should set the writeKey (string)", function() {
+      it('should set the writeKey (string)', function() {
         expect(this.treasure.client)
           .to.have.property('writeKey')
           .that.is.a('string')
@@ -115,9 +115,9 @@ describe('Treasure Client', function() {
 
     });
 
-    describe("validates endpoint", function(){
+    describe('validates endpoint', function(){
 
-      it("should default to autodetection if protocol is absent or of incorrect type", function(){
+      it('should default to autodetection if protocol is absent or of incorrect type', function(){
         var currentProtocol = location.protocol.replace(/:/g, '');
 
         // Empty
@@ -142,14 +142,14 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should set protocol to \"https\" if designated", function(){
+      it('should set protocol to "https" if designated', function(){
 
         var treasure = new Treasure({ database: '123', protocol: 'https' });
         expect(treasure.client.endpoint.indexOf('https://')).to.equal(0);
 
       });
 
-      it("should set protocol to \"http\" if designated", function(){
+      it('should set protocol to "http" if designated', function(){
 
         var treasure = new Treasure({ database: '123', protocol: 'http' });
         expect(treasure.client.endpoint.indexOf('http://')).to.equal(0);
@@ -158,9 +158,9 @@ describe('Treasure Client', function() {
 
     });
 
-    describe("validates request type", function(){
+    describe('validates request type', function(){
 
-      it("should set request type to \"xhr\" by default", function(){
+      it('should set request type to "xhr" by default', function(){
 
         var treasure = new Treasure({ database: '123' });
         expect(treasure.client)
@@ -182,7 +182,7 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should set request type to \"xhr\" if designated and CORS supported, otherwise fall back \"JSONP\"", function(){
+      it('should set request type to "xhr" if designated and CORS supported, otherwise fall back "jsonp"', function(){
 
         var treasure = new Treasure({ database: '123', requestType: 'xhr' });
         if ('withCredentials' in new XMLHttpRequest()) {
@@ -199,23 +199,13 @@ describe('Treasure Client', function() {
 
       });
 
-      it("should set request type to \"jsonp\" if designated", function(){
+      it('should set request type to "jsonp" if designated', function(){
 
         var treasure = new Treasure({ database: '123', requestType: 'jsonp' });
         expect(treasure.client)
           .to.have.property('requestType')
           .that.is.a('string')
           .that.equals('jsonp');
-
-      });
-
-      it("should set request type to \"beacon\" if designated", function(){
-
-        var treasure = new Treasure({ database: '123', requestType: 'beacon' });
-        expect(treasure.client)
-          .to.have.property('requestType')
-          .that.is.a('string')
-          .that.equals('beacon');
 
       });
 
