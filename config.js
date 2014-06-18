@@ -4,7 +4,7 @@ module.exports = {
   folders: {
     dist: 'dist',
     src: 'src',
-    test: 'test'  
+    test: 'test'
   },
   concat: {
     library: {

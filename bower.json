@@ -9,19 +9,19 @@
     "type": "git",
     "url": "git://github.com/treasure-data/td-js-sdk.git"
   },
-  "description": "JS library for sending events to your Treasure Data account",
+  "description": "Browser JS library for sending events to your Treasure Data account",
   "keywords": [
     "analytics",
+    "browser",
     "metrics",
-    "tracking",
     "logging",
     "stats",
     "pageviews",
+    "tracking",
     "treasure",
     "treasuredata",
     "treasure-data"
   ],
-  "license": "MIT",
   "ignore": [
     "**/.*",
     "config",

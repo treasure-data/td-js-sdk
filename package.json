@@ -2,7 +2,17 @@
   "name": "td-js-sdk",
   "version": "0.1.0",
   "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
-  "author": "Cesar Andreu <cesar@treasure-data.com> (http://treasuredata.com/)",
+  "description": "Browser JS library for sending events to your Treasure Data account",
+  "main": "dist/td-js-sdk.js",
+  "author": {
+    "name": "Cesar Andreu",
+    "email": "cesar@treasure-data.com",
+    "url": "http://treasuredata.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/treasure-data/td-js-sdk"
+  },
   "engines": {
     "node": "0.10.x"
   },
