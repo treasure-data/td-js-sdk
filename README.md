@@ -115,8 +115,9 @@ company.addEvent('sales', sale, successCallback, errorCallback);
 
 ### Treasure#setGlobalProperties(fn)
 
-Takes a callback which gets called with the table name every time an event is sent.
-Sample use-case: set a user object on all events that are going to certain tables.
+Takes a callback which gets called with the table name every time an event is added.
+
+Sample use-case: you want to set user attributes on all events that are going to certain tables.
 
 **Parameters:**
 
@@ -165,7 +166,6 @@ company.addEvent('other', sale);
   "userId": 1
 }
 */
-
 ```
 
 ## Support
