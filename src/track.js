@@ -87,7 +87,11 @@
 
     // Add properties from client.globalProperties
     if (this.client.globalProperties) {
-      newEvent = this.client.globalProperties(table) || {};
+      newEvent = this.client.globalProperties(table);
+      if (_type(newEvent) !== 'Object' || !newEvent) {
+        Treasure.log('Your globalProperties function did not return an object, defaulting to empty object');
+        newEvent = {};
+      }
     }
 
     // Add properties from user-defined event
