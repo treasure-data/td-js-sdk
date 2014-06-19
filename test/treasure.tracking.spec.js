@@ -223,7 +223,6 @@ describe('Treasure Tracking', function () {
       });
 
       it('should call success callback if successful', function (done) {
-        var successCallback = JSON.parse(treasureHelper.responses.success);
 
         function spyCallback () {
           if (timeoutId) {
@@ -233,6 +232,7 @@ describe('Treasure Tracking', function () {
         }
 
         function timeoutCallback () {
+          var successCallback = JSON.parse(treasureHelper.responses.success);
           expect(callbacks[0].calledOnce).to.equal(true);
           expect(callbacks[1].calledOnce).not.to.equal(true);
           expect(callbacks[0].calledWith(successCallback)).to.equal(true);
@@ -243,33 +243,6 @@ describe('Treasure Tracking', function () {
 
         treasure.addEvent(
           treasureHelper.table,
-          treasureHelper.properties,
-          callbacks[0],
-          callbacks[1]
-        );
-
-        timeoutId = setTimeout(timeoutCallback, treasureHelper.TIMEOUT);
-      });
-
-      it('should call error callback if unsuccessful', function (done) {
-
-        function spyCallback () {
-          if (timeoutId) {
-            clearTimeout(timeoutId);
-          }
-          timeoutCallback();
-        }
-
-        function timeoutCallback () {
-          expect(callbacks[0].calledOnce).not.to.equal(true);
-          expect(callbacks[1].calledOnce).to.equal(true);
-          done();
-        }
-
-        var timeoutId, callbacks = [sinon.spy(spyCallback), sinon.spy(spyCallback)];
-
-        treasure.addEvent(
-          'error',
           treasureHelper.properties,
           callbacks[0],
           callbacks[1]
