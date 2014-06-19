@@ -1,13 +1,13 @@
 'use strict';
 
-describe('Treasure Tracking', function() {
+describe('Treasure Tracking', function () {
   var treasure, server, postUrl, respondWith;
 
-  describe('#addEvent', function() {
+  describe('#addEvent', function () {
 
     describe('via XHR/CORS (if supported)', function () {
 
-      beforeEach(function() {
+      beforeEach(function () {
         treasure = new Treasure({
           database: treasureHelper.database,
           writeKey: treasureHelper.writeKey,
@@ -16,18 +16,18 @@ describe('Treasure Tracking', function() {
         });
         postUrl = treasure.client.endpoint + '/js/v3/event/' + treasure.client.database + '/' + treasureHelper.table;
         server = sinon.fakeServer.create();
-        respondWith = function(code, body){
+        respondWith = function (code, body) {
           server.respondWith('POST', postUrl, [code, { 'Content-Type': 'application/json'}, body]);
         };
       });
 
-      afterEach(function(){
+      afterEach(function () {
         server.restore();
       });
 
       if ('withCredentials' in new XMLHttpRequest()) {
 
-        it('should post to the API using xhr where CORS is supported', function() {
+        it('should post to the API using xhr where CORS is supported', function () {
 
           var successCallback = JSON.parse(treasureHelper.responses.success);
 
@@ -44,7 +44,7 @@ describe('Treasure Tracking', function() {
 
         });
 
-        it('should call the error callback on error', function() {
+        it('should call the error callback on error', function () {
 
           var callbacks = [sinon.spy(), sinon.spy()];
           respondWith(500, treasureHelper.responses.error);
@@ -64,7 +64,7 @@ describe('Treasure Tracking', function() {
 
     describe('via JSONP to a fake server', function () {
 
-      beforeEach(function() {
+      beforeEach(function () {
         treasure = new Treasure({
           database: treasureHelper.database,
           writeKey: treasureHelper.writeKey,
@@ -73,7 +73,7 @@ describe('Treasure Tracking', function() {
         });
       });
 
-      it('should add a script tag with a URL that has data and modified params', function(){
+      it('should add a script tag with a URL that has data and modified params', function () {
 
         treasure.addEvent(treasureHelper.table, treasureHelper.properties);
         var tag = document.getElementById('td-js-sdk-jsonp');
