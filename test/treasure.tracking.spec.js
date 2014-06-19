@@ -21,7 +21,8 @@ describe('Treasure Tracking', function () {
         treasure = new Treasure({
           database: treasureHelper.database,
           writeKey: treasureHelper.writeKey,
-          host: treasureHelper.host
+          host: treasureHelper.jsonphost,
+          requestType: 'jsonp'
         });
       });
 
