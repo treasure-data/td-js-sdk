@@ -1,12 +1,9 @@
 machine:
   node:
-    version: v0.10.28
-  environment:
-    SAUCE_USER: treasuredata
+    version: v0.10.29
 
 dependencies:
   pre:
-    - npm install -g grunt-cli
     - npm install -g bower
   post:
     - bower install
