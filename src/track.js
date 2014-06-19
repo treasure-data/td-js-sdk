@@ -78,7 +78,9 @@
     if (!(/^[a-z0-9_]{3,255}$/.test(table))) {
       throw new Error('Table must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _');
     }
-
+    if (_isUndefined(payload) || _type(payload) !== 'Object' || !payload) {
+      throw new Error('Please provide an event');
+    }
     var url = _build_url.apply(this, ['/' + table]);
     var newEvent = {};
     var jsonBody, base64Body;

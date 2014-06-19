@@ -15,6 +15,50 @@ describe('Treasure Tracking', function () {
         });
       });
 
+      describe('event', function () {
+
+        it('should error if event is absent', function () {
+
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, undefined);
+          }).to.throw(Error);
+
+        });
+
+        it('should error if event is null', function () {
+
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, null);
+          }).to.throw(Error);
+
+        });
+
+        it('should error if event is of incorrect type', function () {
+
+          // Number
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, 0);
+          }).to.throw(Error);
+
+          // Boolean
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, false);
+          }).to.throw(Error);
+
+          // Array
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, ['array']);
+          }).to.throw(Error);
+
+          // String
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, 'String');
+          }).to.throw(Error);
+
+        });
+
+      });
+
       describe('table', function() {
 
         it('should error if table is absent', function () {
