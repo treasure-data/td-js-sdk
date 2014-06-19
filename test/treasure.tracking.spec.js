@@ -201,7 +201,7 @@ describe('Treasure Tracking', function () {
 
     });
 
-    describe('via JSONP to a fake server', function () {
+    describe('via JSONP to a server', function () {
 
       beforeEach(function () {
         treasure = new Treasure({
@@ -257,15 +257,15 @@ describe('Treasure Tracking', function () {
 
   describe('#setGlobalProperties', function () {
 
-    beforeEach(function () {
-      treasure = new Treasure({
-        database: treasureHelper.database,
-        writeKey: treasureHelper.writeKey,
-        host: treasureHelper.host
-      });
-    });
-
     describe('function validation', function () {
+
+      beforeEach(function () {
+        treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host
+        });
+      });
 
       it('should accept a function', function () {
         expect(function () {
@@ -313,6 +313,72 @@ describe('Treasure Tracking', function () {
           treasure.setGlobalProperties({});
         }).to.throw(Error);
 
+      });
+
+    });
+
+    describe('behavior', function () {
+
+      beforeEach(function () {
+        treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host,
+          requestType: 'xhr'
+        });
+
+        postUrl = treasure.client.endpoint + '/js/v3/event/' + treasure.client.database + '/' + treasureHelper.table;
+        server = sinon.fakeServer.create();
+        respondWith = function (code, body) {
+          server.respondWith('POST', postUrl, [code, { 'Content-Type': 'application/json'}, body]);
+        };
+      });
+
+
+      afterEach(function () {
+        server.restore();
+      });
+
+      it('lets you define a globalProperties function', function () {
+        var noop = function () {};
+        expect(treasure.setGlobalProperties).to.be.a('function');
+        treasure.setGlobalProperties(noop);
+        expect(treasure.client.globalProperties).to.equal(noop);
+      });
+
+      it('calls the globalProperties function before sending an event', function () {
+        var stub = sinon.stub();
+        stub.returns({
+          name: 'foo'
+        });
+        treasure.setGlobalProperties(stub);
+        respondWith(200, treasureHelper.responses.success);
+        treasure.addEvent(treasureHelper.table, {age: 10});
+        server.respond();
+        expect(server.requests[0].requestBody).to.equal(JSON.stringify({name: 'foo', age: 10}));
+        expect(stub.calledWith(treasureHelper.table)).to.equal(true);
+      });
+
+      it('calls the globalProperties function and works even if nothing is returned', function () {
+        var stub = sinon.stub();
+        stub.returns(undefined);
+        treasure.setGlobalProperties(stub);
+        respondWith(200, treasureHelper.responses.success);
+        treasure.addEvent(treasureHelper.table, {age: 10});
+        server.respond();
+        expect(server.requests[0].requestBody).to.equal(JSON.stringify({age: 10}));
+        expect(stub.calledWith(treasureHelper.table)).to.equal(true);
+      });
+
+      it('calls the globalProperties function and works even if null is returned', function () {
+        var stub = sinon.stub();
+        stub.returns(null);
+        treasure.setGlobalProperties(stub);
+        respondWith(200, treasureHelper.responses.success);
+        treasure.addEvent(treasureHelper.table, {age: 10});
+        server.respond();
+        expect(server.requests[0].requestBody).to.equal(JSON.stringify({age: 10}));
+        expect(stub.calledWith(treasureHelper.table)).to.equal(true);
       });
 
     });
