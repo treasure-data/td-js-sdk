@@ -1,7 +1,17 @@
 'use strict';
 
 describe('Treasure Tracking', function () {
-  var treasure, server, postUrl, respondWith;
+  var treasure, server, postUrl, respondWith, _log;
+
+  // Disables logging temporarily
+  before(function () {
+    _log = Treasure.log;
+    Treasure.log = function () {};
+  });
+
+  after(function () {
+    Treasure.log = _log;
+  });
 
   describe('#addEvent', function () {
 
