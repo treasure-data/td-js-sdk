@@ -159,7 +159,7 @@
           } else {
             Treasure.log('HTTP request failed.');
             if (error) {
-              error(xhr, null); 
+              error(xhr, null);
             }
           }
         }
