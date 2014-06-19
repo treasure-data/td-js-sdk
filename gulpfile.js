@@ -3,13 +3,16 @@
 var gulp = require('gulp'),
   // runSequence = require('run-sequence'),
   // gutil = require('gulp-util'),
+  // morgan = require('morgan'),
+  server,
   express = require('express'),
-  morgan = require('morgan'),
   path = require('path'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   rimraf = require('gulp-rimraf'),
   ignore = require('gulp-ignore'),
+  karma = require('karma').server,
+  _ = require('lodash'),
   config = require('./config');
 
 gulp.task('clean', function () {
@@ -52,10 +55,10 @@ gulp.task('minify-loader', function () {
 gulp.task('concat', ['concat-loader', 'concat-library']);
 gulp.task('minify', ['minify-loader', 'minify-library']);
 gulp.task('build', ['concat', 'minify']);
-
+gulp.task('default', ['build']);
 gulp.task('server', function (done) {
   var app = express();
-  app.use(morgan());
+  // app.use(morgan());
   app.use(express.static(path.resolve(__dirname, config.folders.test)));
   app.use(function(req, res, next) {
     if (req.url.indexOf('callback')) {
@@ -68,7 +71,26 @@ gulp.task('server', function (done) {
       next();
     }
   });
-  app.listen(config.server.port, function () {
+  server = app.listen(config.server.port, function () {
     done();
+  });
+});
+
+gulp.task('tdd', ['build', 'server'], function (done) {
+  gulp.watch(config.tdd.watch, ['build']);
+  karma.start(require('./karma.conf.js')(), function (err) {
+    if (server) {
+      server.close();
+    }
+    return err ? done(err) : done();
+  });
+});
+
+gulp.task('test', ['build', 'server'], function (done) {
+  karma.start(_.assign({}, require('./karma.conf.js')(), {singleRun: true}), function (err) {
+    if (server) {
+      server.close();
+    }
+    return err ? done(err) : done();
   });
 });

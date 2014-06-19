@@ -6,6 +6,9 @@ module.exports = {
     src: 'src',
     test: 'test'
   },
+  tdd: {
+    watch: 'src/**/*.js'
+  },
   concat: {
     library: {
       src: [

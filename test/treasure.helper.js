@@ -1,6 +1,7 @@
 'use strict';
 
 window.treasureHelper = {
+  TIMEOUT: 300,
   database: 'test_db_1',
   writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
   protocol: 'http',
