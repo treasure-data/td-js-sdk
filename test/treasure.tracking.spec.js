@@ -59,7 +59,7 @@ describe('Treasure Tracking', function () {
 
       });
 
-      describe('table', function() {
+      describe('table', function () {
 
         it('should error if table is absent', function () {
 
