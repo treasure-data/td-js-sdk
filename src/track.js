@@ -59,7 +59,7 @@
 
   Treasure.prototype.setGlobalProperties = function(newGlobalProperties) {
     if (!this.client) {
-      return Treasure.log('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');      
+      return Treasure.log('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');
     }
     if (newGlobalProperties && typeof(newGlobalProperties) === 'function') {
       this.client.globalProperties = newGlobalProperties;
@@ -72,6 +72,9 @@
   // -------------------------------
 
   function _uploadEvent(table, payload, success, error) {
+    if (_isUndefined(table) || _type(table) !== 'String' || !table.length) {
+      throw new Error('Please provide a table');
+    }
     if (!(/^[a-z0-9_]{3,255}$/.test(table))) {
       throw new Error('Table must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _');
     }

@@ -35,6 +35,8 @@
     "mocha": false,
     "jasmine": false,
     "protractor": false,
+    "_isUndefined": false,
+    "_type": false,
     "params": false,
     "spyOn": false,
     "xit": false,

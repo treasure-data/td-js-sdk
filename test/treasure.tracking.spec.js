@@ -5,6 +5,82 @@ describe('Treasure Tracking', function () {
 
   describe('#addEvent', function () {
 
+    describe('table validation', function () {
+
+      beforeEach(function () {
+        treasure = new Treasure({
+          database: treasureHelper.database,
+          writeKey: treasureHelper.writeKey,
+          host: treasureHelper.host
+        });
+      });
+
+      it('should error if table is absent', function () {
+
+        expect(function () {
+          treasure.addEvent(undefined);
+        }).to.throw(Error);
+
+      });
+
+      it('should error if table is empty', function () {
+
+        expect(function () {
+          treasure.addEvent('');
+        }).to.throw(Error);
+
+      });
+
+      it('should error if table is of incorrect type', function () {
+
+        // Number
+        expect(function () {
+          treasure.addEvent(0);
+        }).to.throw(Error);
+
+        // Boolean
+        expect(function () {
+          treasure.addEvent(false);
+        }).to.throw(Error);
+
+        // Array
+        expect(function () {
+          treasure.addEvent(['array']);
+        }).to.throw(Error);
+
+        // Object
+        expect(function () {
+          treasure.addEvent({});
+        }).to.throw(Error);
+
+      });
+
+      it('should error if table is invalid', function () {
+
+        // Under 3 characters
+        expect(function () {
+          treasure.addEvent('12');
+        }).to.throw(Error);
+
+        // Over 255 characters
+        expect(function () {
+          treasure.addEvent('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+        }).to.throw(Error);
+
+        // Uppercase chracters
+        expect(function () {
+          treasure.addEvent('FOO_BAR');
+        }).to.throw(Error);
+
+        // Special characters
+        expect(function () {
+          treasure.addEvent('!@#$%ˆ&*()-+=');
+        }).to.throw(Error);
+
+      });
+
+    });
+
     describe('via XHR/CORS (if supported)', function () {
 
       beforeEach(function () {
