@@ -32,7 +32,7 @@ describe('Treasure Tracking', function () {
 
           expect(function () {
             treasure.addEvent(treasureHelper.table, undefined);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -40,7 +40,7 @@ describe('Treasure Tracking', function () {
 
           expect(function () {
             treasure.addEvent(treasureHelper.table, null);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -49,22 +49,22 @@ describe('Treasure Tracking', function () {
           // Number
           expect(function () {
             treasure.addEvent(treasureHelper.table, 0);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Boolean
           expect(function () {
             treasure.addEvent(treasureHelper.table, false);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Array
           expect(function () {
             treasure.addEvent(treasureHelper.table, ['array']);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // String
           expect(function () {
             treasure.addEvent(treasureHelper.table, 'String');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -76,7 +76,7 @@ describe('Treasure Tracking', function () {
 
           expect(function () {
             treasure.addEvent(undefined);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -84,7 +84,7 @@ describe('Treasure Tracking', function () {
 
           expect(function () {
             treasure.addEvent('');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -93,22 +93,22 @@ describe('Treasure Tracking', function () {
           // Number
           expect(function () {
             treasure.addEvent(0);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Boolean
           expect(function () {
             treasure.addEvent(false);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Array
           expect(function () {
             treasure.addEvent(['array']);
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Object
           expect(function () {
             treasure.addEvent({});
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
@@ -117,29 +117,29 @@ describe('Treasure Tracking', function () {
           // Under 3 characters
           expect(function () {
             treasure.addEvent('12');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Over 255 characters
           expect(function () {
             treasure.addEvent('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Uppercase chracters
           expect(function () {
             treasure.addEvent('FOO_BAR');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
           // Special characters
           expect(function () {
             treasure.addEvent('!@#$%ˆ&*()-+=');
-          }).to.throw(Error);
+          }).to.Throw(Error);
 
         });
 
         it('should accept a valid table', function () {
           expect(function () {
             treasure.addEvent(treasureHelper.table, {});
-          }).not.to.throw(Error);
+          }).not.to.Throw(Error);
         });
       });
 
@@ -271,14 +271,14 @@ describe('Treasure Tracking', function () {
       it('should accept a function', function () {
         expect(function () {
           treasure.setGlobalProperties(function () {});
-        }).not.to.throw(Error);
+        }).not.to.Throw(Error);
       });
 
       it('should error if function is absent', function () {
 
         expect(function () {
           treasure.setGlobalProperties();
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
@@ -287,32 +287,32 @@ describe('Treasure Tracking', function () {
         // Number
         expect(function () {
           treasure.setGlobalProperties(0);
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Boolean
         expect(function () {
           treasure.setGlobalProperties(false);
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Array
         expect(function () {
           treasure.setGlobalProperties(['array']);
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // String
         expect(function () {
           treasure.setGlobalProperties('String');
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Null
         expect(function () {
           treasure.setGlobalProperties(null);
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Object
         expect(function () {
           treasure.setGlobalProperties({});
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
