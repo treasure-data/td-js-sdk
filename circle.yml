@@ -7,3 +7,7 @@ dependencies:
     - npm install -g bower
   post:
     - bower install
+
+test:
+  override:
+    - npm run ci
