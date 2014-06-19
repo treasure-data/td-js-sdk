@@ -13,13 +13,13 @@ describe('Treasure Client', function () {
   describe('constructor', function () {
 
     it('should create a new Treasure instance', function () {
-      expect(treasure).to.be.an.instanceof(Treasure);
+      expect(treasure).to.be.an.instanceOf(Treasure);
     });
 
     it('should error if no configuration object', function () {
       expect(function () {
         (treasure = new Treasure());
-      }).to.throw(Error);
+      }).to.Throw(Error);
     });
 
     it('should create a new client object', function () {
@@ -32,7 +32,7 @@ describe('Treasure Client', function () {
 
         expect(function () {
           (treasure = new Treasure());
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
@@ -40,7 +40,7 @@ describe('Treasure Client', function () {
 
         expect(function () {
           (treasure = new Treasure({database:''}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
@@ -49,22 +49,22 @@ describe('Treasure Client', function () {
         // Number
         expect(function () {
           (treasure = new Treasure({database:0}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Boolean
         expect(function () {
           (treasure = new Treasure({database:false}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Array
         expect(function () {
           (treasure = new Treasure({database:['array']}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Object
         expect(function () {
           (treasure = new Treasure({database:{}}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
@@ -73,22 +73,22 @@ describe('Treasure Client', function () {
         // Under 3 characters
         expect(function () {
           (treasure = new Treasure({database:'12'}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Over 255 characters
         expect(function () {
           (treasure = new Treasure({database:'1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Uppercase chracters
         expect(function () {
           (treasure = new Treasure({database:'FOO_BAR'}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
         // Special characters
         expect(function () {
           (treasure = new Treasure({database:'!@#$%ˆ&*()-+='}));
-        }).to.throw(Error);
+        }).to.Throw(Error);
 
       });
 
