@@ -271,4 +271,69 @@ describe('Treasure Tracking', function () {
     });
 
   });
+
+  describe('#setGlobalProperties', function () {
+
+    beforeEach(function () {
+      treasure = new Treasure({
+        database: treasureHelper.database,
+        writeKey: treasureHelper.writeKey,
+        host: treasureHelper.host
+      });
+    });
+
+    describe('function validation', function () {
+
+      it('should accept a function', function () {
+        expect(function () {
+          treasure.setGlobalProperties(function () {});
+        }).not.to.throw(Error);
+      });
+
+      it('should error if function is absent', function () {
+
+        expect(function () {
+          treasure.setGlobalProperties();
+        }).to.throw(Error);
+
+      });
+
+      it('should error if event is of incorrect type', function () {
+
+        // Number
+        expect(function () {
+          treasure.setGlobalProperties(0);
+        }).to.throw(Error);
+
+        // Boolean
+        expect(function () {
+          treasure.setGlobalProperties(false);
+        }).to.throw(Error);
+
+        // Array
+        expect(function () {
+          treasure.setGlobalProperties(['array']);
+        }).to.throw(Error);
+
+        // String
+        expect(function () {
+          treasure.setGlobalProperties('String');
+        }).to.throw(Error);
+
+        // Null
+        expect(function () {
+          treasure.setGlobalProperties(null);
+        }).to.throw(Error);
+
+        // Object
+        expect(function () {
+          treasure.setGlobalProperties({});
+        }).to.throw(Error);
+
+      });
+
+    });
+
+  });
+
 });
