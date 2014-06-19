@@ -5,7 +5,7 @@ describe('Treasure Tracking', function () {
 
   describe('#addEvent', function () {
 
-    describe('table validation', function () {
+    describe('validation', function () {
 
       beforeEach(function () {
         treasure = new Treasure({
@@ -15,68 +15,77 @@ describe('Treasure Tracking', function () {
         });
       });
 
-      it('should error if table is absent', function () {
+      describe('table', function() {
 
-        expect(function () {
-          treasure.addEvent(undefined);
-        }).to.throw(Error);
+        it('should error if table is absent', function () {
 
-      });
+          expect(function () {
+            treasure.addEvent(undefined);
+          }).to.throw(Error);
 
-      it('should error if table is empty', function () {
+        });
 
-        expect(function () {
-          treasure.addEvent('');
-        }).to.throw(Error);
+        it('should error if table is empty', function () {
 
-      });
+          expect(function () {
+            treasure.addEvent('');
+          }).to.throw(Error);
 
-      it('should error if table is of incorrect type', function () {
+        });
 
-        // Number
-        expect(function () {
-          treasure.addEvent(0);
-        }).to.throw(Error);
+        it('should error if table is of incorrect type', function () {
 
-        // Boolean
-        expect(function () {
-          treasure.addEvent(false);
-        }).to.throw(Error);
+          // Number
+          expect(function () {
+            treasure.addEvent(0);
+          }).to.throw(Error);
 
-        // Array
-        expect(function () {
-          treasure.addEvent(['array']);
-        }).to.throw(Error);
+          // Boolean
+          expect(function () {
+            treasure.addEvent(false);
+          }).to.throw(Error);
 
-        // Object
-        expect(function () {
-          treasure.addEvent({});
-        }).to.throw(Error);
+          // Array
+          expect(function () {
+            treasure.addEvent(['array']);
+          }).to.throw(Error);
 
-      });
+          // Object
+          expect(function () {
+            treasure.addEvent({});
+          }).to.throw(Error);
 
-      it('should error if table is invalid', function () {
+        });
 
-        // Under 3 characters
-        expect(function () {
-          treasure.addEvent('12');
-        }).to.throw(Error);
+        it('should error if table is invalid', function () {
 
-        // Over 255 characters
-        expect(function () {
-          treasure.addEvent('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
-        }).to.throw(Error);
+          // Under 3 characters
+          expect(function () {
+            treasure.addEvent('12');
+          }).to.throw(Error);
 
-        // Uppercase chracters
-        expect(function () {
-          treasure.addEvent('FOO_BAR');
-        }).to.throw(Error);
+          // Over 255 characters
+          expect(function () {
+            treasure.addEvent('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+          }).to.throw(Error);
 
-        // Special characters
-        expect(function () {
-          treasure.addEvent('!@#$%ˆ&*()-+=');
-        }).to.throw(Error);
+          // Uppercase chracters
+          expect(function () {
+            treasure.addEvent('FOO_BAR');
+          }).to.throw(Error);
 
+          // Special characters
+          expect(function () {
+            treasure.addEvent('!@#$%ˆ&*()-+=');
+          }).to.throw(Error);
+
+        });
+
+        it('should accept a valid table', function () {
+          expect(function () {
+            treasure.addEvent(treasureHelper.table, {});
+          }).not.to.throw(Error);
+        });
       });
 
     });
