@@ -113,6 +113,61 @@ var errorCallback = function () {
 company.addEvent('sales', sale, successCallback, errorCallback);
 ```
 
+### Treasure#setGlobalProperties(fn)
+
+Takes a callback which gets called with the table name every time an event is sent.
+Sample use-case: set a user object on all events that are going to certain tables.
+
+**Parameters:**
+
+* fn : Function (required) - callback, takes a table name as a parameter and must always return an object
+
+**Example:**
+
+```javascript
+var company = new Treasure({...});
+
+var sale = {
+  itemId: 100
+  saleId: 10,
+  userId: 1
+};
+
+var userProperties = function (table) {
+  if (table === 'sales') {
+    return {
+      name: 'Foo',
+      age: 10
+    };
+  } else {
+    return {};
+  }
+};
+
+company.setGlobalProperties(userProperties);
+
+company.addEvent('sales', sale);
+/* Sends:
+{
+  "name": "Foo",
+  "age": 10,
+  "itemId": 100,
+  "salesId": 10,
+  "userId": 1
+}
+*/
+
+company.addEvent('other', sale);
+/* Sends:
+{
+  "itemId": 100,
+  "salesId": 10,
+  "userId": 1
+}
+*/
+
+```
+
 ## Support
 
 Need a hand with something? Join us in [IRC](http://webchat.freenode.net/?channels=treasuredata), or shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
