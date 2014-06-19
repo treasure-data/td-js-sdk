@@ -87,7 +87,7 @@
 
     // Add properties from client.globalProperties
     if (this.client.globalProperties) {
-      newEvent = this.client.globalProperties(table);
+      newEvent = this.client.globalProperties(table) || {};
     }
 
     // Add properties from user-defined event
