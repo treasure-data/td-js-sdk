@@ -216,7 +216,7 @@ describe('Treasure Tracking', function () {
       it('should add a script tag with a URL that has data and modified params', function () {
 
         treasure.addEvent(treasureHelper.table, treasureHelper.properties);
-        var tag = document.getElementById('td-js-sdk-jsonp');
+        var tag = document.getElementById('td-jsonp');
         expect(tag).to.exist.and.be.an('object');
         expect(tag.src).to.contain('data=');
         expect(tag.src).to.contain('modified=');

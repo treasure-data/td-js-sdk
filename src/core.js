@@ -206,7 +206,7 @@
       };
       url = url + '&callback=' + callbackName;
       var script = document.createElement('script');
-      script.id = 'td-js-sdk-jsonp';
+      script.id = 'td-jsonp';
       script.src = url;
       document.getElementsByTagName('head')[0].appendChild(script);
       // for early IE w/ no onerror event

@@ -22,6 +22,7 @@
     "treasuredata",
     "treasure-data"
   ],
+  "main": "dist/td.js",
   "ignore": [
     "**/.*",
     "*.yml",
