@@ -12,7 +12,7 @@ Install the td-js-sdk on your page by copying the JavaScript snippet below and p
 
 ```html
 <script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e["_"+t]={},e[t]=function(n){e["_"+t].clients=e["_"+t].clients||{},e["_"+t].clients[n.database]=this,this._config=n},e[t].ready=function(n){e["_"+t].ready=e["_"+t].ready||[],e["_"+t].ready.push(n)};for(var n=["addEvent","setGlobalProperties","on"],r=0;r<n.length;r++){var s=n[r],i=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(arguments),this}};e[t].prototype[s]=i(s)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//dyu0x0wekfgrg.cloudfront.net/sdk/td-0.1.0.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o)}}("Treasure",this);
+!function(t,e){if(void 0===e[t]){e["_"+t]={},e[t]=function(n){e["_"+t].clients=e["_"+t].clients||{},e["_"+t].clients[n.database]=this,this._config=n},e[t].ready=function(n){e["_"+t].ready=e["_"+t].ready||[],e["_"+t].ready.push(n)};for(var n=["addEvent","setGlobalProperties","on"],r=0;r<n.length;r++){var s=n[r],i=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(arguments),this}};e[t].prototype[s]=i(s)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//dyu0x0wekfgrg.cloudfront.net/sdk/td-0.1.1.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o)}}("Treasure",this);
 </script>
 ```
 

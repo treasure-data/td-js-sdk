@@ -1,6 +1,6 @@
 {
   "name": "td-js-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
   "description": "Browser JS library for sending events to your Treasure Data account",
   "main": "dist/td.js",

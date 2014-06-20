@@ -120,7 +120,7 @@
       case 'https':
         return 'https';
       default:
-        return location.protocol.replace(/:/g, '');
+        return 'http';
     }
   }
 
