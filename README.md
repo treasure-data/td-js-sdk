@@ -4,7 +4,7 @@
 
 ### Get your write-only API key
 
-Log in to [Treasure Data](console.treasure.com) and go to your [profile](console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
+Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
 
 ### Setup
 
