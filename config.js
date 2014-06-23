@@ -64,7 +64,8 @@ module.exports = {
       singleRun: true,
       browsers: [],
       customLaunchers: {},
-      plugins: ['karma-mocha', 'karma-sinon-chai', 'karma-sauce-launcher']
+      plugins: ['karma-mocha', 'karma-sinon-chai', 'karma-sauce-launcher'],
+      reporters: ['dots', 'saucelabs']
     },
     concurrency: 3,
     browsers: [{
