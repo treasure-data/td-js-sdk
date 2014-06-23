@@ -54,8 +54,8 @@ module.exports = function(config) {
     sauceLabs: {
       testName: 'td-js-sdk',
       startConnect: false,
-      build: process.env.CIRCLE_BUILD_NUM,
-      tunnelIdentifier: process.env.CI ? process.env.CIRCLE_BUILD_NUM : null,
+      build: process.env.TRAVIS_JOB_ID,
+      tunnelIdentifier: process.env.CI ? process.env.TRAVIS_JOB_ID : null,
       username: process.env.SAUCE_USERNAME || process.env.JS_SDK_SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY || process.env.JS_SDK_SAUCE_ACCESS_KEY
     }

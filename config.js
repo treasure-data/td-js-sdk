@@ -1,5 +1,4 @@
 'use strict';
-var path = require('path');
 
 module.exports = {
   folders: {
@@ -53,8 +52,8 @@ module.exports = {
       username: process.env.SAUCE_USERNAME || process.env.JS_SDK_SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY || process.env.JS_SDK_SAUCE_ACCESS_KEY,
       verbose: false,
-      logfile: process.env.CI ? path.join(process.env.CIRCLE_ARTIFACTS, 'sauce.log') : null,
-      tunnelIdentifier: process.env.CIRCLE_BUILD_NUM ? process.env.CIRCLE_BUILD_NUM : null,
+      logfile: null,
+      tunnelIdentifier: process.env.CI ? process.env.TRAVIS_JOB_ID : null,
       fastFailRexegps: null,
       directDomains: null,
       logger: console.log
