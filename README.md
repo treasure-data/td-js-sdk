@@ -1,4 +1,6 @@
 # td-js-sdk
+[![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) 
+[![Sauce Test Status](https://saucelabs.com/buildstatus/dev-treasuredata)](https://saucelabs.com/u/dev-treasuredata)
 
 ## Getting started
 
