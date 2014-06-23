@@ -25,10 +25,11 @@
   "main": "dist/td.js",
   "ignore": [
     "**/.*",
-    "*.yml",
-    "node_modules",
     "bower_components",
-    "test"
+    "node_modules",
+    "src",
+    "test",
+    "*.js"
   ],
   "devDependencies": {
     "mocha": "~1.20.1",
