@@ -75,6 +75,19 @@ module.exports = {
       browserName: 'opera',
       platform: 'Windows XP',
       version: '11'
+    },{
+      browserName: 'android',
+      platform: 'Linux',
+      version: '4.3',
+      deviceName: 'Google Nexus 7 HD Emulator'
+    },{
+      browserName: 'android',
+      platform: 'Linux',
+      version: '4.0',
+      deviceName: 'Samsung Galaxy Nexus Emulator'
+    },{
+      browserName: 'firefox',
+      platform: 'OS X 10.9'
     }, {
       browserName: 'firefox',
       platform: 'Linux'
