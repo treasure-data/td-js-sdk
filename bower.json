@@ -29,7 +29,9 @@
     "node_modules",
     "src",
     "test",
-    "*.js"
+    "config.js",
+    "gulpfile.js",
+    "karma.conf.js"
   ],
   "devDependencies": {
     "mocha": "~1.20.1",
