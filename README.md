@@ -40,8 +40,8 @@ var company = new Treasure({...});
 // Create a data object with the properties you want to send
 var sale = {
   itemId: 101,
-  saleId: 10
-  userId: 1,
+  saleId: 10,
+  userId: 1
 };
 
 // Send it to the 'sales' table
@@ -97,7 +97,7 @@ Sends an event to Treasure Data. If the table does not exist it will be created 
 var company = new Treasure({...});
 
 var sale = {
-  itemId: 100
+  itemId: 100,
   saleId: 10,
   userId: 1
 };
@@ -129,7 +129,7 @@ Sample use-case: you want to set user attributes on all events that are going to
 var company = new Treasure({...});
 
 var sale = {
-  itemId: 100
+  itemId: 100,
   saleId: 10,
   userId: 1
 };
