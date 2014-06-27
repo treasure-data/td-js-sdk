@@ -4,7 +4,7 @@
   * -------------------
   */
 
-  Treasure.prototype.addEvent = function() {
+  Treasure.prototype.addRecord = function() {
     _uploadEvent.apply(this, arguments);
   };
 

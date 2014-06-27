@@ -14,8 +14,7 @@
       c['_'+n].ready.push(callback);
     };
 
-    // var methods = ['addEvent', 'setGlobalProperties', 'trackExternalLink', 'on'];
-    var methods = ['addEvent', 'setGlobalProperties', 'on'];
+    var methods = ['addRecord', 'setGlobalProperties', 'on'];
     for (var i = 0; i < methods.length; i++){
       var method = methods[i];
       var action = function(method){

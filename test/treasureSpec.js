@@ -1,5 +1,5 @@
-describe("addEvent using CORS and fake Server", function() {
-  
+describe("addRecord using CORS and fake Server", function() {
+
   beforeEach(function() {
     jasmine.util.extend(this, new TreasureSpecHelper());
   });
@@ -30,7 +30,7 @@ describe("addEvent using CORS and fake Server", function() {
     it("should post to the API using xhr where CORS is supported", function() {
       var callback = sinon.spy(), errback = sinon.spy();
       this.respondWith(200, this.successfulResponse);
-      this.TREASURE.addEvent(this.table, this.properties, callback, errback);
+      this.TREASURE.addRecord(this.table, this.properties, callback, errback);
       this.server.respond();
       expect(this.server.requests[0].requestBody).toEqual(JSON.stringify(this.properties));
       expect(callback).toHaveBeenCalledOnce();
@@ -41,7 +41,7 @@ describe("addEvent using CORS and fake Server", function() {
     it("should call the error callback on error", function() {
       var callback = sinon.spy(), errback = sinon.spy();
       this.respondWith(500, this.errorResponse);
-      this.TREASURE.addEvent(this.table, this.properties, callback, errback);
+      this.TREASURE.addRecord(this.table, this.properties, callback, errback);
       this.server.respond();
       expect(this.server.requests[0].requestBody).toEqual(JSON.stringify(this.properties));
       expect(errback).toHaveBeenCalledOnce();
@@ -51,11 +51,11 @@ describe("addEvent using CORS and fake Server", function() {
 
 
   describe("when JSON is used", function() {
-    
+
     beforeEach(function() {
       this.TREASURE = new Treasure({
         database: this.database,
-        writeKey: this.writeKey, 
+        writeKey: this.writeKey,
         protocol: this.protocol,
         host: this.host,
         requestType: 'jsonp'
@@ -69,13 +69,13 @@ describe("addEvent using CORS and fake Server", function() {
     });
 
     it("should add a script tag with a url that has data and modified params", function() {
-      this.TREASURE.addEvent(this.table, this.properties);
+      this.TREASURE.addRecord(this.table, this.properties);
       var jsonpScriptTag = document.getElementById("treasure-jsonp");
       expect(jsonpScriptTag).not.toBeNull();
       expect(jsonpScriptTag.src).toContain("data=");
       expect(jsonpScriptTag.src).toContain("modified=");
     });
-    
+
   });
 
 });

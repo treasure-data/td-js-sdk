@@ -41,12 +41,12 @@
         }
 
         // Send Queued Events
-        if (client._addEvent) {
-          var queue = client._addEvent || [];
+        if (client._addRecord) {
+          var queue = client._addRecord || [];
           for (var i = 0; i < queue.length; i++) {
-            client.addEvent.apply(client, queue[i]);
+            client.addRecord.apply(client, queue[i]);
           }
-          delete client._addEvent;
+          delete client._addRecord;
         }
 
         // Create "on" Events

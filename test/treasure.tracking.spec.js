@@ -13,7 +13,7 @@ describe('Treasure Tracking', function () {
     Treasure.log = _log;
   });
 
-  describe('#addEvent', function () {
+  describe('#addRecord', function () {
 
     describe('validation', function () {
 
@@ -31,7 +31,7 @@ describe('Treasure Tracking', function () {
         it('should error if event is absent', function () {
 
           expect(function () {
-            treasure.addEvent(treasureHelper.table, undefined);
+            treasure.addRecord(treasureHelper.table, undefined);
           }).to.Throw(Error);
 
         });
@@ -39,7 +39,7 @@ describe('Treasure Tracking', function () {
         it('should error if event is null', function () {
 
           expect(function () {
-            treasure.addEvent(treasureHelper.table, null);
+            treasure.addRecord(treasureHelper.table, null);
           }).to.Throw(Error);
 
         });
@@ -48,22 +48,22 @@ describe('Treasure Tracking', function () {
 
           // Number
           expect(function () {
-            treasure.addEvent(treasureHelper.table, 0);
+            treasure.addRecord(treasureHelper.table, 0);
           }).to.Throw(Error);
 
           // Boolean
           expect(function () {
-            treasure.addEvent(treasureHelper.table, false);
+            treasure.addRecord(treasureHelper.table, false);
           }).to.Throw(Error);
 
           // Array
           expect(function () {
-            treasure.addEvent(treasureHelper.table, ['array']);
+            treasure.addRecord(treasureHelper.table, ['array']);
           }).to.Throw(Error);
 
           // String
           expect(function () {
-            treasure.addEvent(treasureHelper.table, 'String');
+            treasure.addRecord(treasureHelper.table, 'String');
           }).to.Throw(Error);
 
         });
@@ -75,7 +75,7 @@ describe('Treasure Tracking', function () {
         it('should error if table is absent', function () {
 
           expect(function () {
-            treasure.addEvent(undefined);
+            treasure.addRecord(undefined);
           }).to.Throw(Error);
 
         });
@@ -83,7 +83,7 @@ describe('Treasure Tracking', function () {
         it('should error if table is empty', function () {
 
           expect(function () {
-            treasure.addEvent('');
+            treasure.addRecord('');
           }).to.Throw(Error);
 
         });
@@ -92,22 +92,22 @@ describe('Treasure Tracking', function () {
 
           // Number
           expect(function () {
-            treasure.addEvent(0);
+            treasure.addRecord(0);
           }).to.Throw(Error);
 
           // Boolean
           expect(function () {
-            treasure.addEvent(false);
+            treasure.addRecord(false);
           }).to.Throw(Error);
 
           // Array
           expect(function () {
-            treasure.addEvent(['array']);
+            treasure.addRecord(['array']);
           }).to.Throw(Error);
 
           // Object
           expect(function () {
-            treasure.addEvent({});
+            treasure.addRecord({});
           }).to.Throw(Error);
 
         });
@@ -116,29 +116,29 @@ describe('Treasure Tracking', function () {
 
           // Under 3 characters
           expect(function () {
-            treasure.addEvent('12');
+            treasure.addRecord('12');
           }).to.Throw(Error);
 
           // Over 255 characters
           expect(function () {
-            treasure.addEvent('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+            treasure.addRecord('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
           }).to.Throw(Error);
 
           // Uppercase chracters
           expect(function () {
-            treasure.addEvent('FOO_BAR');
+            treasure.addRecord('FOO_BAR');
           }).to.Throw(Error);
 
           // Special characters
           expect(function () {
-            treasure.addEvent('!@#$%ˆ&*()-+=');
+            treasure.addRecord('!@#$%ˆ&*()-+=');
           }).to.Throw(Error);
 
         });
 
         it('should accept a valid table', function () {
           expect(function () {
-            treasure.addEvent(treasureHelper.table, {});
+            treasure.addRecord(treasureHelper.table, {});
           }).not.to.Throw(Error);
         });
       });
@@ -173,7 +173,7 @@ describe('Treasure Tracking', function () {
 
           var callbacks = [sinon.spy(), sinon.spy()];
           respondWith(200, treasureHelper.responses.success);
-          treasure.addEvent(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
+          treasure.addRecord(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
           server.respond();
 
           expect(server.requests[0].requestBody)
@@ -188,7 +188,7 @@ describe('Treasure Tracking', function () {
 
           var callbacks = [sinon.spy(), sinon.spy()];
           respondWith(500, treasureHelper.responses.error);
-          treasure.addEvent(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
+          treasure.addRecord(treasureHelper.table, treasureHelper.properties, callbacks[0], callbacks[1]);
           server.respond();
 
           expect(server.requests[0].requestBody)
@@ -215,7 +215,7 @@ describe('Treasure Tracking', function () {
 
       it('should add a script tag with a URL that has data and modified params', function () {
 
-        treasure.addEvent(treasureHelper.table, treasureHelper.properties);
+        treasure.addRecord(treasureHelper.table, treasureHelper.properties);
         var tag = document.getElementById('td-jsonp');
         expect(tag).to.exist.and.be.an('object');
         expect(tag.src).to.contain('data=');
@@ -242,7 +242,7 @@ describe('Treasure Tracking', function () {
 
         var timeoutId, callbacks = [sinon.spy(spyCallback), sinon.spy(spyCallback)];
 
-        treasure.addEvent(
+        treasure.addRecord(
           treasureHelper.table,
           treasureHelper.properties,
           callbacks[0],
@@ -354,7 +354,7 @@ describe('Treasure Tracking', function () {
         });
         treasure.setGlobalProperties(stub);
         respondWith(200, treasureHelper.responses.success);
-        treasure.addEvent(treasureHelper.table, {age: 10});
+        treasure.addRecord(treasureHelper.table, {age: 10});
         server.respond();
         expect(server.requests[0].requestBody).to.equal(JSON.stringify({name: 'foo', age: 10}));
         expect(stub.calledWith(treasureHelper.table)).to.equal(true);
@@ -365,7 +365,7 @@ describe('Treasure Tracking', function () {
         stub.returns(undefined);
         treasure.setGlobalProperties(stub);
         respondWith(200, treasureHelper.responses.success);
-        treasure.addEvent(treasureHelper.table, {age: 10});
+        treasure.addRecord(treasureHelper.table, {age: 10});
         server.respond();
         expect(server.requests[0].requestBody).to.equal(JSON.stringify({age: 10}));
         expect(stub.calledWith(treasureHelper.table)).to.equal(true);
@@ -376,7 +376,7 @@ describe('Treasure Tracking', function () {
         stub.returns(null);
         treasure.setGlobalProperties(stub);
         respondWith(200, treasureHelper.responses.success);
-        treasure.addEvent(treasureHelper.table, {age: 10});
+        treasure.addRecord(treasureHelper.table, {age: 10});
         server.respond();
         expect(server.requests[0].requestBody).to.equal(JSON.stringify({age: 10}));
         expect(stub.calledWith(treasureHelper.table)).to.equal(true);

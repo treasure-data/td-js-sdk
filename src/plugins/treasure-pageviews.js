@@ -64,7 +64,7 @@
       // Send pageview event
       // ----------------------------------
       //console.log('data', options['data']);
-      client.addEvent(options['table'], options['data']);
+      client.addRecord(options['table'], options['data']);
     }
   }
   

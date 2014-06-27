@@ -1,4 +1,4 @@
-describe("addEvent integration spec", function() {
+describe("addRecord integration spec", function() {
   beforeEach(function() {
     jasmine.util.extend(this, new TreasureSpecHelper());
 
@@ -18,7 +18,7 @@ describe("addEvent integration spec", function() {
         callback(response);
       };
 
-      this.TREASURE.addEvent(this.table, this.properties, proxy, errback);
+      this.TREASURE.addRecord(this.table, this.properties, proxy, errback);
 
       waitsFor(function() { return proxyCalled; }, "Proxy never called", 3000);
 
@@ -40,7 +40,7 @@ describe("addEvent integration spec", function() {
       };
 
       this.TREASURE.client.writeKey = '';
-      Treasure.addEvent(this.table, this.properties, callback, proxy);
+      Treasure.addRecord(this.table, this.properties, callback, proxy);
 
       waitsFor(function() { return proxyCalled; }, "Proxy never called", 3000);
 

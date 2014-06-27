@@ -45,7 +45,7 @@ var sale = {
 };
 
 // Send it to the 'sales' table
-company.addEvent('sales', sale);
+company.addRecord('sales', sale);
 ```
 
 Send as many events as you like. Each event will fire off asynchronously.
@@ -79,7 +79,7 @@ var foo = new Treasure({
 });
 ```
 
-### Treasure#addEvent(table, eventData, success, error)
+### Treasure#addRecord(table, eventData, success, error)
 
 Sends an event to Treasure Data. If the table does not exist it will be created for you.
 
@@ -110,7 +110,7 @@ var errorCallback = function () {
   // cry();
 }
 
-company.addEvent('sales', sale, successCallback, errorCallback);
+company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
 ### Treasure#setGlobalProperties(fn)
@@ -147,7 +147,7 @@ var userProperties = function (table) {
 
 company.setGlobalProperties(userProperties);
 
-company.addEvent('sales', sale);
+company.addRecord('sales', sale);
 /* Sends:
 {
   "name": "Foo",
@@ -158,7 +158,7 @@ company.addEvent('sales', sale);
 }
 */
 
-company.addEvent('other', sale);
+company.addRecord('other', sale);
 /* Sends:
 {
   "itemId": 100,
