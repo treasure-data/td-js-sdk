@@ -10,6 +10,19 @@
       clients,
       ready;
 
+
+  // Applies all client._method items to client.method
+  function applyToClient (client, method) {
+    var _method = '_' + method;
+    if (client[_method]) {
+      var arr = client[_method] || [];
+      while (arr.length) {
+        client[method].apply(client, arr.shift());
+      }
+      delete client[_method];
+    }
+  }
+
   if (loaded && cached) {
     clients = cached.clients || {};
     ready = cached.ready || [];
@@ -31,33 +44,15 @@
           delete client._config;
         }
 
-        // Add Global Properties
-        if (client._setGlobalProperties) {
-          var globals = client._setGlobalProperties;
-          for (var i = 0; i < globals.length; i++) {
-            client.setGlobalProperties.apply(client, globals[i]);
-          }
-          delete client._setGlobalProperties;
-        }
+        // Set global properties
+        applyToClient(client, 'set');
 
-        // Send Queued Events
-        if (client._addRecord) {
-          var queue = client._addRecord || [];
-          for (var i = 0; i < queue.length; i++) {
-            client.addRecord.apply(client, queue[i]);
-          }
-          delete client._addRecord;
-        }
+        // Send queued events
+        applyToClient(client, 'addRecord');
 
         // Create "on" Events
-        var callback = client._on || [];
-        if (client._on) {
-          for (var i = 0; i < callback.length; i++) {
-            client.on.apply(client, callback[i]);
-          }
-          client.trigger('ready');
-          delete client._on;
-        }
+        applyToClient(client, 'on');
+        client.trigger('ready');
 
       }
     }

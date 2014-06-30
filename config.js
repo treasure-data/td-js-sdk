@@ -14,7 +14,7 @@ module.exports = {
       src: [
         'src/_intro.js',
         'src/core.js',
-        'src/track.js',
+        'src/record.js',
         'src/lib/base64.js',
         'src/lib/json2.js',
         'src/lib/treasure-domready.js',

@@ -14,16 +14,17 @@
       c['_'+n].ready.push(callback);
     };
 
-    var methods = ['addRecord', 'setGlobalProperties', 'on'];
+    var action = function(method){
+      return function () {
+        this['_'+method] = this['_'+method] || [];
+        this['_'+method].push(arguments);
+        return this;
+      };
+    };
+
+    var methods = ['addRecord', 'on', 'set'];
     for (var i = 0; i < methods.length; i++){
       var method = methods[i];
-      var action = function(method){
-        return function() {
-          this['_'+method] = this['_'+method] || [];
-          this['_'+method].push(arguments);
-          return this;
-        };
-      };
       c[n].prototype[method] = action(method);
     }
 

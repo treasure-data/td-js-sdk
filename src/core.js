@@ -44,8 +44,7 @@
     this.client = {
       database: config.database,
       writeKey: config.writeKey,
-      globalProperties: null,
-
+      globals: {},
       endpoint: config.protocol + '://' + config.host,
       requestType: config.requestType
     };

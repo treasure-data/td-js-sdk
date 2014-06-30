@@ -26,6 +26,10 @@ describe('Treasure Client', function () {
       expect(treasure.client).to.be.an('object');
     });
 
+    it('should create a globals object on client', function() {
+      expect(treasure.client.globals).to.be.an('object');
+    });
+
     describe('validates database', function () {
 
       it('should error if database is absent', function () {
