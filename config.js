@@ -17,7 +17,10 @@ module.exports = {
         'src/record.js',
         'src/lib/base64.js',
         'src/lib/json2.js',
+        'src/lib/uuid.js',
+        'src/lib/cookies.js',
         'src/lib/treasure-domready.js',
+        'src/plugins/treasure-track.js',
         'src/async.js',
         'src/_outro.js'
       ],
