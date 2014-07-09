@@ -112,7 +112,7 @@
       case 'https':
         return 'https';
       default:
-        return 'http';
+        return 'https:' === document.location.protocol ? 'https' : 'http';
     }
   }
 
