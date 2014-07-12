@@ -18,7 +18,7 @@ Install the td-js-sdk on your page by copying the JavaScript snippet below and p
 </script>
 ```
 
-Our library works by creating an instances per database, and sending data into tables.
+Our library works by creating an instance per database, and sending data into tables.
 
 Initializing it is as simple as:
 
@@ -64,7 +64,7 @@ If the database does not exist and you have permissions, it will be created for 
 * config.writeKey : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
 * config.requestType : String (optional) - request type for sending events. Allowed values: `auto`, `xhr`, `jsonp`. Default: `auto` (NOTE: `auto` will set request type to `xhr` unless [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is not supported, in which case it will use `jsonp`)
 * config.protocol : String (optional) - protocol to use for sending events. Allowed values: `auto`, `http`, `https`. Default: `auto`
-* config.host : String (optional) - host to which send events. Default: `in.treasuredata.com`
+* config.host : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
 
 **Returns:**
 
