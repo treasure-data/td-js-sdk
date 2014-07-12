@@ -5,14 +5,50 @@
     <title>Treasure - JS SDK Test Page</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script>
-        !function(a,b){if(void 0===b[a]){b["_"+a]={},b[a]=function(c){b["_"+a].clients=b["_"+a].clients||{},b["_"+a].clients[c.database]=this,this._config=c},b[a].ready=function(c){b["_"+a].ready=b["_"+a].ready||[],b["_"+a].ready.push(c)};for(var c=["addEvent","setGlobalProperties","trackExternalLink","on"],d=0;d<c.length;d++){var e=c[d],f=function(a){return function(){return this["_"+a]=this["_"+a]||[],this["_"+a].push(arguments),this}};b[a].prototype[e]=f(e)}var g=document.createElement("script");g.type="text/javascript",g.async=!0,g.src="/dist/td.js";var h=document.getElementsByTagName("script")[0];h.parentNode.insertBefore(g,h)}}("Treasure",this);
+      (function(n,c){
+        if (c[n] === void 0) {
 
-        // Configure the Treasure object with your database and API Key
-        var treasure = new Treasure({
-            database: "test_db_1",
-            writeKey: "91/96da3cfb876cc50724d0dddef670d95eea2a0018", // required for sending events
-            host: "in-staging.treasuredata.com"
-        });
+          c[n] = function () {
+            c[n].clients.push(this);
+            this._init = [arguments];
+          };
+          c[n].clients = [];
+
+          var action = function(method){
+            return function () {
+              this['_'+method] = this['_'+method] || [];
+              this['_'+method].push(arguments);
+              return this;
+            };
+          };
+
+          var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview'];
+          for (var i = 0; i < methods.length; i++){
+            var method = methods[i];
+            c[n].prototype[method] = action(method);
+          }
+
+          setTimeout(function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = !0;
+            s.src = '/dist/td.js';
+
+            var t = document.getElementsByTagName('script')[0];
+            t.parentNode.insertBefore(s,t);
+          }, 5000);
+
+        }
+      })('Treasure', this);
+
+      // Configure the Treasure object with your database and API Key
+      var treasure = new Treasure({
+          database: "test_db_1",
+          writeKey: "91/96da3cfb876cc50724d0dddef670d95eea2a0018", // required for sending events
+          host: "in-staging.treasuredata.com"
+      });
+      treasure.trackPageview();
+
     </script>
 </head>
 <body>

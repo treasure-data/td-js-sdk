@@ -1,13 +1,20 @@
 'use strict';
 
 describe('Treasure Client', function () {
-  var treasure;
+  var treasure, configuration;
 
+  function resetConfiguration () {
+    configuration = {
+      database: 'database',
+      writeKey: 'writeKey',
+      development: true,
+      logging: false
+    };
+  }
+
+  beforeEach(resetConfiguration);
   beforeEach(function () {
-    treasure = new Treasure({
-      database: treasureHelper.database,
-      writeKey: treasureHelper.writeKey
-    });
+    treasure = new Treasure(configuration);
   });
 
   describe('constructor', function () {
@@ -30,69 +37,70 @@ describe('Treasure Client', function () {
       expect(treasure.client.globals).to.be.an('object');
     });
 
+    it('should set defaults on client object', function () {
+      var client = treasure.client;
+      expect(client.protocol).to.be.a('string');
+      expect(client.host).to.be.a('string');
+      expect(client.pathname).to.be.a('string');
+      expect(client.requestType).to.be.a('string');
+      expect(client.development).to.be.a('boolean');
+      expect(client.logging).to.be.a('boolean');
+      expect(client.endpoint).to.be.a('string');
+    });
+
+    it('should allow you to manually set values on client', function () {
+      configuration.host = configuration.pathname = configuration.endpoint = 'foo';
+      treasure = new Treasure(configuration);
+      expect(treasure.client.host).to.equal('foo');
+      expect(treasure.client.pathname).to.equal('foo');
+      expect(treasure.client.endpoint).to.equal('foo');
+    });
+
     describe('validates database', function () {
 
+      var tryWithDatabaseValue = function (value) {
+        configuration.database = value;
+        expect(function () {
+          (treasure = new Treasure(configuration));
+        }).to.Throw(Error);
+      };
+
       it('should error if database is absent', function () {
-
-        expect(function () {
-          (treasure = new Treasure());
-        }).to.Throw(Error);
-
-      });
-
-      it('should error if database is empty', function () {
-
-        expect(function () {
-          (treasure = new Treasure({database:''}));
-        }).to.Throw(Error);
-
+        tryWithDatabaseValue(undefined);
       });
 
       it('should error if database is of incorrect type', function () {
 
         // Number
-        expect(function () {
-          (treasure = new Treasure({database:0}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue(0);
 
         // Boolean
-        expect(function () {
-          (treasure = new Treasure({database:false}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue(false);
 
         // Array
-        expect(function () {
-          (treasure = new Treasure({database:['array']}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue(['array']);
 
         // Object
-        expect(function () {
-          (treasure = new Treasure({database:{}}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue({});
 
       });
 
       it('should error if database is invalid', function () {
 
+        // Empty string
+        tryWithDatabaseValue('');
+
         // Under 3 characters
-        expect(function () {
-          (treasure = new Treasure({database:'12'}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue('12');
 
         // Over 255 characters
-        expect(function () {
-          (treasure = new Treasure({database:'1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
 
         // Uppercase chracters
-        expect(function () {
-          (treasure = new Treasure({database:'FOO_BAR'}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue('FOO_BAR');
 
         // Special characters
-        expect(function () {
-          (treasure = new Treasure({database:'!@#$%ˆ&*()-+='}));
-        }).to.Throw(Error);
+        tryWithDatabaseValue('!@#$%ˆ&*()-+=');
 
       });
 
@@ -101,7 +109,7 @@ describe('Treasure Client', function () {
         expect(treasure.client)
           .to.have.property('database')
           .that.is.a('string')
-          .that.equals(treasureHelper.database);
+          .that.equals(configuration.database);
 
       });
 
@@ -109,11 +117,19 @@ describe('Treasure Client', function () {
 
     describe('validates writeKey', function () {
 
+      it('should error if writeKey is not set', function () {
+        delete configuration.writeKey;
+        expect(function () {
+          (treasure = new Treasure(configuration));
+        }).to.Throw(Error);
+
+      });
+
       it('should set the writeKey (string)', function () {
         expect(treasure.client)
           .to.have.property('writeKey')
           .that.is.a('string')
-          .that.equals(treasureHelper.writeKey);
+          .that.equals(configuration.writeKey);
 
       });
 
@@ -121,41 +137,16 @@ describe('Treasure Client', function () {
 
     describe('validates endpoint', function () {
 
-      it('should default to autodetection if protocol is absent or of incorrect type', function () {
-        var currentProtocol = location.protocol.replace(/:/g, '');
-
-        // Empty
-        var treasure_empty = new Treasure({ database: '123', protocol: '' });
-        expect(treasure_empty.client.endpoint.indexOf(currentProtocol)).to.equal(0);
-
-        // Number
-        var treasure_number = new Treasure({ database: '123', protocol: 0 });
-        expect(treasure_number.client.endpoint.indexOf(currentProtocol)).to.equal(0);
-
-        // Boolean
-        var treasure_boolean = new Treasure({ database: '123', protocol: true });
-        expect(treasure_boolean.client.endpoint.indexOf(currentProtocol)).to.equal(0);
-
-        // Array
-        var treasure_array = new Treasure({ database: '123', protocol: [] });
-        expect(treasure_array.client.endpoint.indexOf(currentProtocol)).to.equal(0);
-
-        // Object
-        var treasure_object = new Treasure({ database: '123', protocol: {} });
-        expect(treasure_object.client.endpoint.indexOf(currentProtocol)).to.equal(0);
-
-      });
-
       it('should set protocol to "https" if designated', function () {
-
-        var treasure = new Treasure({ database: '123', protocol: 'https' });
+        configuration.protocol = 'https';
+        treasure = new Treasure(configuration);
         expect(treasure.client.endpoint.indexOf('https://')).to.equal(0);
 
       });
 
       it('should set protocol to "http" if designated', function () {
-
-        var treasure = new Treasure({ database: '123', protocol: 'http' });
+        configuration.protocol = 'http';
+        treasure = new Treasure(configuration);
         expect(treasure.client.endpoint.indexOf('http://')).to.equal(0);
 
       });
@@ -166,23 +157,16 @@ describe('Treasure Client', function () {
 
       it('should set request type to "xhr" by default, if unsupported use "jsonp"', function () {
 
-        if ('withCredentials' in new XMLHttpRequest()) {
-          expect(treasure.client)
-            .to.have.property('requestType')
-            .that.is.a('string')
-            .that.equals('xhr');
-        } else {
-          expect(treasure.client)
-            .to.have.property('requestType')
-            .that.is.a('string')
-            .that.equals('jsonp');
-        }
+        expect(treasure.client)
+          .to.have.property('requestType')
+          .that.is.a('string')
+          .that.equals('withCredentials' in new XMLHttpRequest() ? 'xhr' : 'jsonp');
 
       });
 
       it('should set request type to "xhr" if designated', function () {
-
-        var treasure = new Treasure({ database: '123', requestType: 'xhr' });
+        configuration.requestType = 'xhr';
+        treasure = new Treasure(configuration);
         expect(treasure.client)
           .to.have.property('requestType')
           .that.is.a('string')
@@ -191,8 +175,8 @@ describe('Treasure Client', function () {
       });
 
       it('should set request type to "jsonp" if designated', function () {
-
-        var treasure = new Treasure({ database: '123', requestType: 'jsonp' });
+        configuration.requestType = 'jsonp';
+        treasure = new Treasure(configuration);
         expect(treasure.client)
           .to.have.property('requestType')
           .that.is.a('string')

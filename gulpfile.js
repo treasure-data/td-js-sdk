@@ -5,9 +5,12 @@ var gulp = require('gulp'),
   // gutil = require('gulp-util'),
   // morgan = require('morgan'),
   server,
+  browserify = require('browserify'),
+  source = require('vinyl-source-stream'),
+  streamify = require('gulp-streamify'),
+  rename = require('gulp-rename'),
   express = require('express'),
   path = require('path'),
-  concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   rimraf = require('gulp-rimraf'),
   ignore = require('gulp-ignore'),
@@ -23,40 +26,31 @@ gulp.task('clean', function () {
     .pipe(rimraf());
 });
 
-gulp.task('concat-library', function () {
-  return gulp
-    .src(config.concat.library.src)
-    .pipe(concat(config.concat.library.dest))
-    .pipe(gulp.dest(config.folders.dist));
+gulp.task('browserify', function () {
+  return browserify(config.browserify.index).bundle()
+    .pipe(source('td.js'))
+    .pipe(gulp.dest('dist'))
+    .pipe(streamify(uglify()))
+    .pipe(rename({
+      extname: '.min.js'
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('concat-loader', function () {
+gulp.task('loader', function () {
   return gulp
-    .src(config.concat.loader.src)
-    .pipe(concat(config.concat.loader.dest))
-    .pipe(gulp.dest(config.folders.dist));
-});
-
-gulp.task('minify-library', function () {
-  return gulp
-    .src(config.concat.library.src)
-    .pipe(concat(config.minify.library.dest))
+    .src(config.loader.src)
+    .pipe(gulp.dest(config.folders.dist))
     .pipe(uglify())
+    .pipe(rename({
+      extname: '.min.js'
+    }))
     .pipe(gulp.dest(config.folders.dist));
 });
 
-gulp.task('minify-loader', function () {
-  return gulp
-    .src(config.concat.loader.src)
-    .pipe(concat(config.minify.loader.dest))
-    .pipe(uglify())
-    .pipe(gulp.dest(config.folders.dist));
-});
-
-gulp.task('concat', ['concat-loader', 'concat-library']);
-gulp.task('minify', ['minify-loader', 'minify-library']);
-gulp.task('build', ['concat', 'minify']);
+gulp.task('build', ['loader', 'browserify']);
 gulp.task('default', ['build']);
+
 gulp.task('server', function (done) {
   var app = express();
   // app.use(morgan());
