@@ -156,11 +156,24 @@ describe('Treasure Client', function () {
     describe('validates request type', function () {
 
       it('should set request type to "xhr" by default, if unsupported use "jsonp"', function () {
+        var requestType;
+
+        try {
+          if('XMLHttpRequest' in global && 'withCredentials' in new global.XMLHttpRequest()) {
+            requestType = 'xhr';
+          } else {
+            requestType = 'jsonp';
+          }
+        } catch (err) {
+          // if XMLHttp support is disabled in IE then it will throw
+          // when trying to create
+          requestType = 'jsonp';
+        }
 
         expect(treasure.client)
           .to.have.property('requestType')
           .that.is.a('string')
-          .that.equals('withCredentials' in new XMLHttpRequest() ? 'xhr' : 'jsonp');
+          .that.equals(requestType);
 
       });
 
