@@ -188,7 +188,7 @@ describe('Treasure Tracker', function () {
       treasure.trackPageview();
       expect(spy.calledOnce).to.equal(true);
       expect(spy.firstCall.args[1]).to.be.an('object');
-      expect(spy.firstCall.args[1]).to.include.keys('location', 'title', 'page');
+      expect(spy.firstCall.args[1]).to.include.keys('title', 'url', 'path', 'referrer');
     });
 
     it('should work with no parameters', function () {
