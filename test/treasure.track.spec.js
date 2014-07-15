@@ -74,17 +74,21 @@ describe('Treasure Tracker', function () {
         expect(values.td_version).to.be.a('function');
         expect(values.td_client_id).to.be.a('function');
         expect(values.td_charset).to.be.a('function');
-        expect(values.td_title).to.be.a('function');
         expect(values.td_language).to.be.a('function');
         expect(values.td_color).to.be.a('function');
         expect(values.td_screen).to.be.a('function');
         expect(values.td_viewport).to.be.a('function');
-        expect(values.td_host).to.be.a('function');
         expect(values.td_ip).to.be.a('function');
         expect(values.td_browser).to.be.a('function');
         expect(values.td_browser_version).to.be.a('function');
         expect(values.td_os).to.be.a('function');
         expect(values.td_os_version).to.be.a('function');
+        expect(values.td_title).to.be.a('function');
+        expect(values.td_url).to.be.a('function');
+        expect(values.td_host).to.be.a('function');
+        expect(values.td_path).to.be.a('function');
+        expect(values.td_referrer).to.be.a('function');
+
       });
 
       it('should let you overwrite values', function () {
@@ -184,13 +188,6 @@ describe('Treasure Tracker', function () {
 
   describe('#trackPageview', function () {
 
-    it('should include pageview specific values', function () {
-      treasure.trackPageview();
-      expect(spy.calledOnce).to.equal(true);
-      expect(spy.firstCall.args[1]).to.be.an('object');
-      expect(spy.firstCall.args[1]).to.include.keys('title', 'url', 'path', 'referrer');
-    });
-
     it('should work with no parameters', function () {
       treasure.trackPageview();
       expect(spy.calledOnce).to.equal(true);
@@ -205,31 +202,24 @@ describe('Treasure Tracker', function () {
       expect(spy.firstCall.args[1]).to.be.an('object');
     });
 
-    it('should allow you to set an object', function () {
-      treasure.trackPageview({foo: 'bar'});
-      expect(spy.calledOnce).to.equal(true);
-      expect(spy.firstCall.args[0]).to.equal('pageviews');
-      expect(spy.firstCall.args[1]).to.be.an('object');
-      expect(spy.firstCall.args[1]).to.include({foo: 'bar'});
-    });
 
-    it('should allow you to pass normal parameters', function () {
-      treasure.trackPageview('foo', {foo: 'bar'});
+    it('should allow you to pass success callback', function () {
+      var success = function () {};
+      treasure.trackPageview('foo', success);
       expect(spy.calledOnce).to.equal(true);
       expect(spy.firstCall.args[0]).to.equal('foo');
       expect(spy.firstCall.args[1]).to.be.an('object');
-      expect(spy.firstCall.args[1]).to.include({foo: 'bar'});
+      expect(spy.firstCall.args[2]).to.equal(success);
     });
 
-    it('should take two callbacks when all parameters are passed', function () {
+    it('should take success and failure callback when all parameters are passed', function () {
       var success = function () {},
         failure = function () {};
 
-      treasure.trackPageview('foo', {foo: 'bar'}, success, failure);
+      treasure.trackPageview('foo', success, failure);
       expect(spy.calledOnce).to.equal(true);
       expect(spy.firstCall.args[0]).to.equal('foo');
       expect(spy.firstCall.args[1]).to.be.an('object');
-      expect(spy.firstCall.args[1]).to.include({foo: 'bar'});
       expect(spy.firstCall.args[2]).to.equal(success);
       expect(spy.firstCall.args[3]).to.equal(failure);
     });
