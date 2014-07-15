@@ -232,7 +232,6 @@ var td = new Treasure({...});
 td.trackPageview('pageviews');
 ```
 
-
 ### Treasure#trackEvent(table, record, success, failure)
 
 Creates an empty object, applies all tracked information values, and applies record values. Then it calls `addRecord` with the newly created object.
@@ -266,8 +265,7 @@ td.trackEvent('events', {td_ip: '0.0.0.0'});
 */
 ```
 
-
-### Treasure#set
+### Treasure#set()
 
 Default value setter for tables. Set default values for all tables by using `$global` as the setter's table name.
 
@@ -319,6 +317,7 @@ td.addRecord('table', {baz: 'baz'});
 */
 ```
 
+
 ### Treasure#get(table)
 
 Takes a table name and returns an object with its default values.
@@ -337,6 +336,7 @@ td.set('table', 'foo', 'bar');
 td.get('table');
 // {foo: 'bar'}
 ```
+
 
 ### Treasure#ready(fn)
 
