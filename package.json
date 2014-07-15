@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "cookies-js": "^0.4.0",
+    "domready": "^0.3.0",
     "has-cors": "^1.0.3",
     "json3": "^3.3.2",
     "jsonp": "0.0.4",

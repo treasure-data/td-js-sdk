@@ -15,7 +15,7 @@
       };
     };
 
-    var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview'];
+    var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview', 'ready'];
     for (var i = 0; i < methods.length; i++){
       var method = methods[i];
       c[n].prototype[method] = action(method);
