@@ -173,7 +173,7 @@ describe('Treasure Record', function () {
       beforeEach(function () {
         configuration.development = false;
         configuration.protocol = 'http';
-        configuration.type = 'xhr';
+        configuration.requestType = 'xhr';
         configuration.writeKey = 'apikey';
         treasure = new Treasure(configuration);
         sinon.stub(treasure, '_sendRecord');
@@ -194,12 +194,12 @@ describe('Treasure Record', function () {
       });
 
       it('should set type', function () {
-        var type = 'xhr';
+        var requestType = 'xhr';
         treasure.addRecord('table', {});
 
         expect(treasure._sendRecord.calledOnce).to.equal(true);
         expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object');
-        expect(treasure._sendRecord.firstCall.args[0].type).to.equal(type);
+        expect(treasure._sendRecord.firstCall.args[0].type).to.equal(requestType);
 
       });
 
