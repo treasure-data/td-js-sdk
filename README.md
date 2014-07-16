@@ -119,9 +119,9 @@ Every time a track functions is called, the following information is sent:
 * **td_os** - client operating system (server)
 * **td_os_version** - client operating system version (server)
 
-Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces their values. For examples: `{"td_ip": "td_ip"}`
+Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces the values upon receipt. For examples: `{"td_ip": "td_ip"}` is sent by the browser, and the server will update it to something like `{"td_ip": "1.2.3.4"}`
 
-All server values except td_ip are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
+All server values except `td_ip` are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
 
 
 ## Default values
