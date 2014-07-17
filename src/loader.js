@@ -3,14 +3,14 @@
 
     c[n] = function () {
       c[n].clients.push(this);
-      this._init = [arguments];
+      this._init = [Array.prototype.slice.call(arguments)];
     };
     c[n].clients = [];
 
     var action = function(method){
       return function () {
         this['_'+method] = this['_'+method] || [];
-        this['_'+method].push(arguments);
+        this['_'+method].push(Array.prototype.slice.call(arguments));
         return this;
       };
     };
