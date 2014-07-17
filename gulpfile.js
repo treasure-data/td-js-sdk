@@ -17,6 +17,8 @@ var gulp = require('gulp'),
   karma = require('karma').server,
   _ = require('lodash'),
   async = require('async'),
+  glob = require('glob'),
+  wd = require('wd'),
   config = require('./config');
 
 gulp.task('clean', function () {
@@ -89,6 +91,22 @@ gulp.task('test', ['build', 'server'], function (done) {
     }
     done(exitCode);
     process.exit(exitCode);
+  });
+});
+
+// Requires webdriver to be installed, up-to-date and running
+gulp.task('e2e', function (done) {
+  var files = glob.sync('./test/e2e/*.spec.js');
+  var count = files.length;
+  var finish = function () {
+    count--;
+    if (count === 0) {
+      done();
+    }
+  };
+
+  files.forEach(function (file) {
+    require(file)(wd.remote('http://localhost:4444/wd/hub'), {browserName: 'chrome'}, finish);
   });
 });
 
