@@ -23,11 +23,14 @@
   },
   "devDependencies": {
     "async": "^0.9.0",
+    "browserify": "^4.2.0",
     "express": "^4.4.2",
     "gulp": "^3.8.0",
     "gulp-concat": "^2.2.0",
     "gulp-ignore": "^1.1.0",
+    "gulp-rename": "^1.2.0",
     "gulp-rimraf": "^0.1.0",
+    "gulp-streamify": "0.0.5",
     "gulp-uglify": "^0.3.0",
     "karma": "^0.12.16",
     "karma-mocha": "^0.1.4",
@@ -35,6 +38,21 @@
     "karma-sauce-launcher": "^0.2.8",
     "karma-sinon-chai": "^0.1.6",
     "lodash": "^2.4.1",
-    "sauce-connect-launcher": "^0.5.0"
+    "sauce-connect-launcher": "^0.5.0",
+    "vinyl-source-stream": "^0.1.1"
+  },
+  "dependencies": {
+    "cookies-js": "^0.4.0",
+    "domready": "^0.3.0",
+    "es5-shim": "^4.0.0",
+    "glob": "^4.0.4",
+    "has-cors": "^1.0.3",
+    "json3": "^3.3.2",
+    "jsonp": "0.0.4",
+    "lodash": "^2.4.1",
+    "superagent": "^0.18.1",
+    "verge": "^1.9.1",
+    "tape": "^2.13.3",
+    "wd": "^0.3.3"
   }
 }

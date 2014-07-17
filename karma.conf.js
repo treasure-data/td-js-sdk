@@ -14,7 +14,6 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'dist/td.js',
-      'test/treasure.helper.js',
       'test/*.spec.js'
     ],
 

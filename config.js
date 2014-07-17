@@ -7,36 +7,14 @@ module.exports = {
     test: 'test'
   },
   tdd: {
-    watch: 'src/**/*.js'
+    watch: 'lib/**/*.js'
   },
-  concat: {
-    library: {
-      src: [
-        'src/_intro.js',
-        'src/core.js',
-        'src/track.js',
-        'src/lib/base64.js',
-        'src/lib/json2.js',
-        'src/lib/treasure-domready.js',
-        'src/async.js',
-        'src/_outro.js'
-      ],
-      dest: 'td.js'
-    },
-    loader: {
-      src: [
-        'src/loader.js'
-      ],
-      dest: 'td-loader.js'
-    }
+  browserify: {
+    index: './lib/index.js'
   },
-  minify: {
-    library: {
-      dest: 'td.min.js'
-    },
-    loader: {
-      dest: 'td-loader.min.js'
-    }
+  loader: {
+    src: 'src/loader.js',
+    dest: 'td-loader.js'
   },
   server: {
     port: '9999',

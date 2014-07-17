@@ -1,30 +1,23 @@
 (function(n,c){
   if (c[n] === void 0) {
 
-    c['_'+n] = {};
-    c[n] = function(e) {
-      c['_'+n].clients = c['_'+n].clients || {};
-      c['_'+n].clients[e.database] = this;
-      this._config = e;
+    c[n] = function () {
+      c[n].clients.push(this);
+      this._init = [Array.prototype.slice.call(arguments)];
+    };
+    c[n].clients = [];
+
+    var action = function(method){
+      return function () {
+        this['_'+method] = this['_'+method] || [];
+        this['_'+method].push(Array.prototype.slice.call(arguments));
+        return this;
+      };
     };
 
-    // Treasure.ready(function(){});
-    c[n].ready = function(callback){
-      c['_'+n].ready = c['_'+n].ready || [];
-      c['_'+n].ready.push(callback);
-    };
-
-    // var methods = ['addEvent', 'setGlobalProperties', 'trackExternalLink', 'on'];
-    var methods = ['addEvent', 'setGlobalProperties', 'on'];
+    var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview', 'ready'];
     for (var i = 0; i < methods.length; i++){
       var method = methods[i];
-      var action = function(method){
-        return function() {
-          this['_'+method] = this['_'+method] || [];
-          this['_'+method].push(arguments);
-          return this;
-        };
-      };
       c[n].prototype[method] = action(method);
     }
 
