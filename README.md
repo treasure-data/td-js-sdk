@@ -165,7 +165,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.storage** : Object | String (optional) - storage configuration object. When `none` it will disable cookie storage
 * **config.storage.name** : String (optional) - cookie name. Default: `_td`
 * **config.storage.expiration** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
-* **config.storage.domain** : String (optional) - cookie domain. Set to `none` to use the browser default. Default: result of `document.location.hostname`
+* **config.storage.domain** : String (optional) - cookie domain. Set to `none` to use the browser default. Default: result of `tldjs.getDomain(document.location.host)`, [tldjs](https://github.com/oncletom/tld.js) is a library to get the qualified domain from a host string
 
 **Returns:**
 
