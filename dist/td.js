@@ -393,14 +393,6 @@ exports.configure = function configure (config) {
   }
   this.client.track.uuid = config.clientId;
 
-  // Expire all domain cookies
-  var expireCookie = function (storage) {
-    var max = (storage.domain || '').split('.').length;
-    for (var i = 0; i <= max; i++) {
-      cookie.expire(storage.name);
-    }
-  };
-
   // Keep trying to set cookie on top level domain until it's allowed
   var setCookie = function (storage, uuid) {
     var clone = _.clone(storage);
@@ -408,7 +400,8 @@ exports.configure = function configure (config) {
     for (var i = 0; i <= max; i++) {
       clone.domain = storage.domain.split('.').slice(0 - i);
       cookie(storage.name, uuid, clone);
-      if (cookie.get(storage.name)) {
+      //
+      if (cookie.get(storage.name) && uuid) {
         break;
       }
     }
@@ -417,7 +410,8 @@ exports.configure = function configure (config) {
   // Only save cookies if storage is enabled and expires is non-zero
   if (config.storage) {
     if (config.storage.expires) {
-      expireCookie(config.storage);
+      // Must clear cookie first to ensure it gets set on the top valid domain
+      setCookie(config.storage, undefined);
       setCookie(config.storage, this.client.track.uuid);
     }
   }
