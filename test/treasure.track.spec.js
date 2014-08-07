@@ -47,7 +47,7 @@ describe('Treasure Tracker', function () {
       var storage = treasure.client.storage;
       expect(storage).to.be.an('object');
       expect(storage.name).to.equal('_td');
-      expect(storage.expiration).to.equal(63072000);
+      expect(storage.expires).to.equal(63072000);
       expect(storage.domain).to.equal(document.location.hostname);
     });
 
@@ -149,15 +149,6 @@ describe('Treasure Tracker', function () {
         treasure = new Treasure(configuration);
 
         expect(treasure.client.storage.expiration).to.equal(128);
-      });
-
-      it('should let you set domain to none', function () {
-        configuration.storage = {
-          domain: 'none'
-        };
-        treasure = new Treasure(configuration);
-
-        expect(treasure.client.storage.domain).to.equal(undefined);
       });
 
       it('should remember your previous clientId', function () {

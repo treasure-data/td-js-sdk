@@ -159,7 +159,7 @@ describe('Treasure Client', function () {
         var requestType;
 
         try {
-          if('XMLHttpRequest' in global && 'withCredentials' in new global.XMLHttpRequest()) {
+          if('XMLHttpRequest' in window && 'withCredentials' in new window.XMLHttpRequest()) {
             requestType = 'xhr';
           } else {
             requestType = 'jsonp';
