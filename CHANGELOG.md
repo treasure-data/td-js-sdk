@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+* Fix issue where domain and expiration were not passed to tracking cookie setter
+* Tracking cookie is now always set on the top level qualified domain
+* `expiration` key renamed to `expires`
+* Remove `none` option from cookie domain settings
+
 ## 1.0.0
 
 * Convert to CommonJS with Browserify
