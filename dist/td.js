@@ -284,7 +284,7 @@ function configureValues (track, version) {
       return document.location.pathname;
     },
     td_referrer: function () {
-      return document.location.referrer;
+      return document.referrer;
     },
     td_ip: function () {
       return 'td_ip';
@@ -757,7 +757,7 @@ module.exports = Treasure;
 },{"./configurator":1,"./lodash":4,"./plugins/track":5,"./record":6,"./version":8,"domready":18}],8:[function(require,module,exports){
 'use strict';
 
-module.exports = '1.1.0';
+module.exports = '1.1.1';
 
 },{}],9:[function(require,module,exports){
 /*!

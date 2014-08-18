@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+* td_referrer was not being set correctly, it should be using `document.referrer`
+
 ## 1.1.0
 
 * Fix issue where domain and expiration were not passed to tracking cookie setter
