@@ -160,11 +160,7 @@ var Treasure = require('./treasure.js');
 // Load all cached clients
 require('./loadClients')(Treasure);
 
-if (typeof global.window.define === 'function' && global.window.define.amd) {
-  global.window.define('Treasure', function () { return Treasure; });
-} else {
-  global.window.Treasure = Treasure;
-}
+global.window.Treasure = Treasure;
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./loadClients":3,"./treasure.js":7,"es5-shim":19,"json3":22}],3:[function(require,module,exports){
@@ -328,7 +324,9 @@ function configureStorage (storage) {
   _.defaults(storage, {
     name: '_td',
     expires: 63072000,
-    domain: document.location.hostname
+    domain: document.location.hostname,
+    customDomain: !!storage.domain,
+    path: '/'
   });
 
   return storage;
@@ -393,16 +391,37 @@ exports.configure = function configure (config) {
   }
   this.client.track.uuid = config.clientId;
 
-  // Keep trying to set cookie on top level domain until it's allowed
+  // Set cookie on highest allowed domain
   var setCookie = function (storage, uuid) {
-    var clone = _.clone(storage);
-    var max = storage.domain.split('.').length;
-    for (var i = 0; i <= max; i++) {
-      clone.domain = storage.domain.split('.').slice(0 - i);
+    var clone = _.clone(storage),
+      is = {
+        ip: storage.domain.match(/\d*\.\d*\.\d*\.\d*$/),
+        local: storage.domain === 'localhost',
+        custom: storage.customDomain
+      };
+
+    // When it's localhost, an IP, or custom domain, set the cookie directly
+    if (is.ip || is.local || is.custom) {
+      clone.domain = is.local ? null : clone.domain;
       cookie(storage.name, uuid, clone);
-      //
-      if (cookie.get(storage.name) && uuid) {
-        break;
+    } else {
+      // Otherwise iterate recursively on the domain until it gets set
+      // For example, if we have three sites:
+      // bar.foo.com, baz.foo.com, foo.com
+      // First it tries setting a cookie on .com, and it fails
+      // Then it sets the cookie on .foo.com, and it'll pass
+      var domain = storage.domain.split('.');
+      for (var i = domain.length - 1; i >= 0; i--) {
+        clone.domain = '.' + (domain.slice(i).join('.'));
+        cookie(storage.name, uuid, clone);
+
+        // Break when cookies aren't being cleared and it gets set properly
+        // Don't break when uuid is falsy so all the cookies get cleared
+        if (cookie.get(storage.name) && uuid) {
+          // When cookie is set succesfully, save used domain in storage object
+          storage.domain = clone.domain;
+          break;
+        }
       }
     }
   };
@@ -757,7 +776,7 @@ module.exports = Treasure;
 },{"./configurator":1,"./lodash":4,"./plugins/track":5,"./record":6,"./version":8,"domready":18}],8:[function(require,module,exports){
 'use strict';
 
-module.exports = '1.1.1';
+module.exports = '1.2.0';
 
 },{}],9:[function(require,module,exports){
 /*!

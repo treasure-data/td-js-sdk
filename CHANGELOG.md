@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+* Removed broken AMD snippet
+* Manually set domain now overwrites default behavior
+* IPv4 and localhost now gets cookie set as expected
+* Cookie expiration is now set as expected
+* When domain is not set it will attempt to recursively set the cookie on top domain until it succeeds. For example, with domains: `bar.foo.com`, `baz.foo.com`, `foo.com`. It will attempt setting the cookie on `.com` and it'll fail, then it'll try to set it on `.foo.com` and it'll succeed. All three domains will use the `.foo.com` cookie.
+
 ## 1.1.1
 
 * td_referrer was not being set correctly, it should be using `document.referrer`
