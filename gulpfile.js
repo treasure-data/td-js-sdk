@@ -60,9 +60,9 @@ gulp.task('server', function (done) {
   app.use(function(req, res, next) {
     if (req.url.indexOf('callback')) {
       if (req.url.indexOf('error') > -1) {
-        res.jsonp(400, config.server.error);
+        res.status(400).jsonp(config.server.error);
       } else {
-        res.jsonp(200, config.server.success);
+        res.status(200).jsonp(config.server.success);
       }
     } else {
       next();
