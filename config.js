@@ -56,16 +56,20 @@ module.exports = {
       version: '11'
     }, {
       browserName: 'firefox',
-      platform: 'Linux'
+      platform: 'Linux',
+      version: '31'
     }, {
       browserName: 'firefox',
-      platform: 'Windows 8.1'
+      platform: 'Windows 8.1',
+      version: '31'
     }, {
       browserName: 'chrome',
-      platform: 'OS X 10.8'
+      platform: 'OS X 10.9',
+      version: ''
     }, {
       browserName: 'chrome',
-      platform: 'Windows 7'
+      platform: 'Windows 7',
+      version: ''
     }, {
       browserName: 'safari',
       platform: 'OS X 10.9',
