@@ -19,7 +19,12 @@
   "scripts": {
     "start": "./node_modules/.bin/gulp",
     "test": "./node_modules/.bin/gulp test",
-    "ci": "./node_modules/.bin/gulp ci"
+    "ci": "./node_modules/.bin/gulp ci",
+    "e2e": "./node_modules/.bin/gulp e2e",
+    "server": "./node_modules/.bin/gulp server",
+    "webdriver:update": "./node_modules/.bin/webdriver-manager update",
+    "webdriver:start": "./node_modules/.bin/webdriver-manager start",
+    "webdriver": "npm run webdriver:update && npm run webdriver:start"
   },
   "devDependencies": {
     "async": "^0.9.0",
@@ -39,7 +44,8 @@
     "karma-sinon-chai": "^0.1.6",
     "lodash": "^2.4.1",
     "sauce-connect-launcher": "^0.5.0",
-    "vinyl-source-stream": "^0.1.1"
+    "vinyl-source-stream": "^0.1.1",
+    "webdriver-manager": "^1.0.1"
   },
   "dependencies": {
     "cookies-js": "^0.4.0",
