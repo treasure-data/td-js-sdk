@@ -21,7 +21,6 @@ var gulp = require('gulp'),
   config = require('./config');
 
 gulp.task('clean', function (cb) {
-  console.log(config.folders.dist, '/*');
   del([path.join(config.folders.dist, '/*'), '!.*'], cb);
 });
 
