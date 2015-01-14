@@ -50,7 +50,7 @@ gulp.task('loader', function () {
 gulp.task('build', ['loader', 'browserify']);
 gulp.task('default', ['build']);
 
-gulp.task('server', function (done) {
+gulp.task('dev', function (done) {
   var app = express();
   // app.use(morgan());
   app.use(express.static(path.resolve(__dirname, config.folders.test)));
@@ -70,7 +70,7 @@ gulp.task('server', function (done) {
   });
 });
 
-gulp.task('tdd', ['build', 'server'], function (done) {
+gulp.task('tdd', ['build', 'dev'], function (done) {
   gulp.watch(config.tdd.watch, ['build']);
   karma.start(require('./karma.conf.js')(), function (exitCode) {
     if (server) {
@@ -81,7 +81,7 @@ gulp.task('tdd', ['build', 'server'], function (done) {
   });
 });
 
-gulp.task('test', ['build', 'server'], function (done) {
+gulp.task('test', ['build', 'dev'], function (done) {
   karma.start(_.assign({}, require('./karma.conf.js')(), {singleRun: true}), function (exitCode) {
     if (server) {
       server.close();
@@ -107,7 +107,7 @@ gulp.task('e2e', function (done) {
   });
 });
 
-gulp.task('ci', ['build', 'server'], function (done) {
+gulp.task('ci', ['build', 'dev'], function (done) {
   var sauceConnectLauncher = require('sauce-connect-launcher'),
     karmaConfig = _.assign({}, require('./karma.conf.js')(), config.sauce.karma),
     count = Math.ceil(config.sauce.browsers.length / config.sauce.concurrency);

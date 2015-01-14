@@ -22,7 +22,7 @@
     "test": "./node_modules/.bin/gulp test",
     "ci": "./node_modules/.bin/gulp ci",
     "e2e": "./node_modules/.bin/gulp e2e",
-    "server": "./node_modules/.bin/gulp server",
+    "dev": "./node_modules/.bin/gulp dev",
     "webdriver:update": "./node_modules/.bin/webdriver-manager update",
     "webdriver:start": "./node_modules/.bin/webdriver-manager start",
     "webdriver": "npm run webdriver:update && npm run webdriver:start"
