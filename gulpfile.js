@@ -12,8 +12,7 @@ var gulp = require('gulp'),
   express = require('express'),
   path = require('path'),
   uglify = require('gulp-uglify'),
-  rimraf = require('gulp-rimraf'),
-  ignore = require('gulp-ignore'),
+  del = require('del'),
   karma = require('karma').server,
   _ = require('lodash'),
   async = require('async'),
@@ -21,11 +20,9 @@ var gulp = require('gulp'),
   wd = require('wd'),
   config = require('./config');
 
-gulp.task('clean', function () {
-  return gulp
-    .src(path.join(config.folders.dist, '/*'), {read: false})
-    .pipe(ignore('.*'))
-    .pipe(rimraf());
+gulp.task('clean', function (cb) {
+  console.log(config.folders.dist, '/*');
+  del([path.join(config.folders.dist, '/*'), '!.*'], cb);
 });
 
 gulp.task('browserify', function () {

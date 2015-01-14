@@ -17,6 +17,7 @@
     "node": "0.10.x"
   },
   "scripts": {
+    "clean": "./node_modules/.bin/gulp clean",
     "start": "./node_modules/.bin/gulp",
     "test": "./node_modules/.bin/gulp test",
     "ci": "./node_modules/.bin/gulp ci",
@@ -29,12 +30,11 @@
   "devDependencies": {
     "async": "^0.9.0",
     "browserify": "^4.2.0",
+    "del": "^1.1.1",
     "express": "^4.4.2",
     "gulp": "^3.8.0",
     "gulp-concat": "^2.2.0",
-    "gulp-ignore": "^1.1.0",
     "gulp-rename": "^1.2.0",
-    "gulp-rimraf": "^0.1.0",
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "^0.3.0",
     "karma": "^0.12.16",
