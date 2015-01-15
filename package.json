@@ -20,6 +20,7 @@
     "clean": "./node_modules/.bin/gulp clean",
     "start": "./node_modules/.bin/gulp",
     "test": "./node_modules/.bin/gulp test",
+    "tdd": "./node_modules/.bin/gulp tdd",
     "ci": "./node_modules/.bin/gulp ci",
     "e2e": "./node_modules/.bin/gulp e2e",
     "dev": "./node_modules/.bin/gulp dev",
