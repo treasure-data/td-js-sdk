@@ -14,6 +14,8 @@ describe('Treasure Client', function () {
 
   beforeEach(resetConfiguration);
   beforeEach(function () {
+    var DEFAULT_CONFIG = Treasure.prototype._configurator._generateDefaultConfig();
+    Treasure.prototype._configurator.DEFAULT_CONFIG = DEFAULT_CONFIG;
     treasure = new Treasure(configuration);
   });
 
