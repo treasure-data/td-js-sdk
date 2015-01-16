@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
   "description": "Browser JS library for sending events to your Treasure Data account",
-  "main": "dist/td.js",
+  "main": "lib/treasure.js",
   "author": {
     "name": "Cesar Andreu",
     "email": "cesar@treasure-data.com",
