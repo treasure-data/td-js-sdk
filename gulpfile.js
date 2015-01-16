@@ -63,7 +63,7 @@ gulp.task('loader', function () {
 });
 
 gulp.task('compress', function () {
-  return gulp.src('./dist/td.*')
+  return gulp.src('./dist/td*js')
     .pipe(gzip())
     .pipe(gulp.dest(config.folders.dist));
 });
