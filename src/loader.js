@@ -24,7 +24,7 @@
     var s = document.createElement('script');
     s.type = 'text/javascript';
     s.async = !0;
-    s.src = ('https:' === document.location.protocol ? 'https:' : 'http:') + '//td.js';
+    s.src = ('https:' === document.location.protocol ? 'https:' : 'http:') + '@@URL';
 
     var t = document.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s,t);
