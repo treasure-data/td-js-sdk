@@ -359,4 +359,12 @@ td.ready(function(){
 
 ## Support
 
-Need a hand with something? Join us in [IRC](http://webchat.freenode.net/?channels=treasuredata), or shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
+Need a hand with something? Shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
+
+
+## Other
+
+### Dependency version notes
+
+* `domready` is kept at `0.3.0` for IE6 and above support
+
