@@ -19,6 +19,48 @@ describe('Treasure Client', function () {
     treasure = new Treasure(configuration);
   });
 
+
+  describe('DEFAULT_CONFIG', function () {
+
+    beforeEach(resetConfiguration);
+
+    it('should allow you to set default values', function () {
+      Treasure.prototype._configurator.DEFAULT_CONFIG.host = 'foo.bar';
+      treasure = new Treasure(configuration);
+      expect(treasure.client.host).to.equal('foo.bar');
+    });
+
+    it('should allow you to overwrite default config', function () {
+      Treasure.prototype._configurator.DEFAULT_CONFIG.host = 'foo.bar';
+      configuration.host = 'bar.baz';
+      treasure = new Treasure(configuration);
+      expect(treasure.client.host).to.equal('bar.baz');
+    });
+
+    it('should allow objectless instantiation if all required values are defaults', function () {
+      Treasure.prototype._configurator.DEFAULT_CONFIG.database = 'database';
+      Treasure.prototype._configurator.DEFAULT_CONFIG.writeKey = 'writeKey';
+      treasure = new Treasure();
+      expect(treasure.client.database).to.equal('database');
+      expect(treasure.client.writeKey).to.equal('writeKey');
+    });
+
+    it('should throw if writeKey is missing', function () {
+      Treasure.prototype._configurator.DEFAULT_CONFIG.database = 'database';
+      expect(function () {
+        new Treasure();
+      }).to.Throw(Error);
+    });
+
+    it('should throw if database is missing', function () {
+      Treasure.prototype._configurator.DEFAULT_CONFIG.writeKey = 'writeKey';
+      expect(function () {
+        new Treasure();
+      }).to.Throw(Error);
+    });
+
+  });
+
   describe('constructor', function () {
 
     it('should create a new Treasure instance', function () {
