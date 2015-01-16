@@ -10,7 +10,8 @@ module.exports = {
     watch: 'lib/**/*.js'
   },
   browserify: {
-    index: './lib/index.js'
+    index: './lib/index.js',
+    legacy: './lib/index.legacy.js'
   },
   loader: {
     src: 'src/loader.js',

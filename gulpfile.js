@@ -24,9 +24,20 @@ gulp.task('clean', function (cb) {
   del([path.join(config.folders.dist, '/*'), '!.*'], cb);
 });
 
-gulp.task('browserify', function () {
+gulp.task('td', function () {
   return browserify(config.browserify.index).bundle()
     .pipe(source('td.js'))
+    .pipe(gulp.dest('dist'))
+    .pipe(streamify(uglify()))
+    .pipe(rename({
+      extname: '.min.js'
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('td.legacy', function () {
+  return browserify(config.browserify.legacy).bundle()
+    .pipe(source('td.legacy.js'))
     .pipe(gulp.dest('dist'))
     .pipe(streamify(uglify()))
     .pipe(rename({
@@ -46,7 +57,7 @@ gulp.task('loader', function () {
     .pipe(gulp.dest(config.folders.dist));
 });
 
-gulp.task('build', ['loader', 'browserify']);
+gulp.task('build', ['loader', 'td', 'td.legacy']);
 gulp.task('default', ['build']);
 
 gulp.task('dev', function (done) {
