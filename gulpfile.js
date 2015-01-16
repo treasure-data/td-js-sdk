@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
-  // runSequence = require('run-sequence'),
+  runSequence = require('run-sequence'),
   // gutil = require('gulp-util'),
   // morgan = require('morgan'),
   server,
@@ -13,6 +13,7 @@ var gulp = require('gulp'),
   express = require('express'),
   path = require('path'),
   uglify = require('gulp-uglify'),
+  gzip = require('gulp-gzip'),
   del = require('del'),
   karma = require('karma').server,
   _ = require('lodash'),
@@ -61,7 +62,15 @@ gulp.task('loader', function () {
     .pipe(gulp.dest(config.folders.dist));
 });
 
-gulp.task('build', ['loader', 'td', 'td.legacy']);
+gulp.task('compress', function () {
+  return gulp.src('./dist/td.*')
+    .pipe(gzip())
+    .pipe(gulp.dest(config.folders.dist));
+});
+
+gulp.task('build', function () {
+  return runSequence(['loader', 'td', 'td.legacy'], 'compress');
+});
 gulp.task('default', ['build']);
 
 gulp.task('dev', function (done) {
