@@ -2,8 +2,6 @@
 
 var gulp = require('gulp'),
   runSequence = require('run-sequence'),
-  // gutil = require('gulp-util'),
-  // morgan = require('morgan'),
   server,
   browserify = require('browserify'),
   source = require('vinyl-source-stream'),
@@ -72,7 +70,6 @@ gulp.task('default', ['build']);
 
 gulp.task('dev', function (done) {
   var app = express();
-  // app.use(morgan());
   app.use(express.static(path.resolve(__dirname, config.folders.test)));
   app.use(function(req, res, next) {
     if (req.url.indexOf('callback')) {
@@ -116,8 +113,7 @@ gulp.task('e2e', function (done) {
   var files = glob.sync('./test/e2e/*.spec.js');
   var count = files.length;
   var finish = function () {
-    count--;
-    if (count === 0) {
+    if (--count) {
       done();
     }
   };
