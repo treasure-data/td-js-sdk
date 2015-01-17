@@ -73,25 +73,24 @@ gulp.task('dev', function (done) {
   server = app.listen(9999, done);
 });
 
-gulp.task('tdd', ['build', 'dev'], function (done) {
-  gulp.watch('lib/**/*.js', ['build']);
-  karma.start(require('./karma.conf.js')(), function (exitCode) {
-    if (server) {
-      server.close();
-    }
+var karmaCallback = function karmaCallback (done) {
+  return function (exitCode) {
+    if (server) server.close();
     done(exitCode);
     process.exit(exitCode);
-  });
+  };
+};
+
+gulp.task('tdd', ['build', 'dev'], function (done) {
+  var karmaConfig = require('./karma.conf.js');
+  karma.start(karmaConfig(), karmaCallback(done));
+  gulp.watch('lib/**/*.js', ['build']);
 });
 
 gulp.task('test', ['build', 'dev'], function (done) {
-  karma.start(_.assign({}, require('./karma.conf.js')(), {singleRun: true}), function (exitCode) {
-    if (server) {
-      server.close();
-    }
-    done(exitCode);
-    process.exit(exitCode);
-  });
+  var karmaConfig = require('./karma.conf.js');
+  karmaConfig = _.defaults({singleRun: true}, karmaConfig());
+  karma.start(karmaConfig, karmaCallback(done));
 });
 
 // Requires webdriver to be installed, up-to-date and running
