@@ -31,9 +31,12 @@ var tdTask = function tdTask (entry, name) {
       .pipe(gulp.dest('dist'));
   };
 };
+
+// Build td and td.legacy
 gulp.task('td', tdTask('./lib/index.js', 'td.js'));
 gulp.task('td.legacy', tdTask('./lib/index.legacy.js', 'td.legacy.js'));
 
+// Copy and compile async loader for td.js
 gulp.task('loader', function () {
   return gulp
     .src('src/loader.js')
@@ -45,18 +48,21 @@ gulp.task('loader', function () {
     .pipe(gulp.dest('dist'));
 });
 
+// Gzip dist files
 gulp.task('compress', function () {
-  return gulp.src('./dist/td*js')
+  return gulp.src('./dist/*.js')
     .pipe($.gzip())
     .pipe(gulp.dest('dist'));
 });
 
+// Compile and compress files
 gulp.task('build', function () {
   return runSequence(['loader', 'td', 'td.legacy'], 'compress');
 });
 gulp.task('default', ['build']);
 
-
+// Respond 400 {error: true} when url contains callback and error
+// Respond 200 {created: true} when url contains callback without error
 var callbackMiddleware = function callbackMiddleware (req, res, next) {
   if (req.url.indexOf('callback') === -1)
     next();
@@ -66,6 +72,7 @@ var callbackMiddleware = function callbackMiddleware (req, res, next) {
     res.status(200).jsonp({created: true});
 };
 
+// Development server
 gulp.task('dev', function (done) {
   var app = express();
   app.use(express.static(path.resolve(__dirname, 'test')));
@@ -81,12 +88,14 @@ var karmaCallback = function karmaCallback (done) {
   };
 };
 
+// Continually run unit tests
 gulp.task('tdd', ['build', 'dev'], function (done) {
   var karmaConfig = require('./karma.conf.js');
   karma.start(karmaConfig(), karmaCallback(done));
   gulp.watch('lib/**/*.js', ['build']);
 });
 
+// Run unit tests once
 gulp.task('test', ['build', 'dev'], function (done) {
   var karmaConfig = require('./karma.conf.js');
   karmaConfig = _.defaults({singleRun: true}, karmaConfig());
