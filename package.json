@@ -34,7 +34,6 @@
     "del": "^1.1.1",
     "express": "^4.4.2",
     "gulp": "^3.8.0",
-    "gulp-concat": "^2.2.0",
     "gulp-gzip": "0.0.8",
     "gulp-rename": "^1.2.0",
     "gulp-replace": "^0.5.1",
