@@ -5,3 +5,4 @@ bower_components
 .DS_Store
 dist/loader.*
 dist/*.gz
+examples/wrapper/dist/*
