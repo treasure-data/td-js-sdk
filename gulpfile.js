@@ -9,7 +9,7 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   streamify = require('gulp-streamify'),
   rename = require('gulp-rename'),
-  replace = require('gulp-replace-task'),
+  replace = require('gulp-replace'),
   express = require('express'),
   path = require('path'),
   uglify = require('gulp-uglify'),
@@ -51,14 +51,11 @@ gulp.task('td.legacy', function () {
 gulp.task('loader', function () {
   return gulp
     .src(config.loader.src)
-    .pipe(replace({
-      parrents: [{match: 'URL', replacement: process.env.URL || '//td.js'}]
-    }))
+    .pipe(replace('@URL', process.env.URL || '//td.js'))
+    .pipe(replace('@SDK_GLOBAL', process.env.SDK_GLOBAL || 'Treasure'))
     .pipe(gulp.dest(config.folders.dist))
     .pipe(uglify())
-    .pipe(rename({
-      extname: '.min.js'
-    }))
+    .pipe(rename({extname: '.min.js'}))
     .pipe(gulp.dest(config.folders.dist));
 });
 
