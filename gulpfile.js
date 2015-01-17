@@ -95,13 +95,12 @@ gulp.task('test', ['build', 'dev'], function (done) {
 
 // Requires webdriver to be installed, up-to-date and running
 gulp.task('e2e', function (done) {
-  var files = glob.sync('./test/e2e/*.spec.js');
-  var count = files.length;
-  var finish = function () {
-    if (--count) {
-      done();
-    }
-  };
+  var files = glob.sync('./test/e2e/*.spec.js'),
+  count = files.length;
+
+  function finish () {
+    if (--count) done();
+  }
 
   files.forEach(function (file) {
     require(file)(wd.remote('http://localhost:4444/wd/hub'), {browserName: 'chrome'}, finish);
