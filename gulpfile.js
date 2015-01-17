@@ -117,7 +117,7 @@ gulp.task('e2e', function (done) {
 });
 
 gulp.task('ci', ['build', 'dev'], function (done) {
-  var sauce = require('./sauce'),
+  var sauce = require('./sauce.conf.js'),
     sauceConnectLauncher = require('sauce-connect-launcher'),
     karmaConfig = _.assign({}, require('./karma.conf.js')(), sauce.karma),
     count = Math.ceil(sauce.browsers.length / sauce.concurrency);
