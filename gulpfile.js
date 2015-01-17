@@ -56,20 +56,20 @@ gulp.task('build', function () {
 });
 gulp.task('default', ['build']);
 
+
+var callbackMiddleware = function callbackMiddleware (req, res, next) {
+  if (req.url.indexOf('callback') === -1)
+    next();
+  else if (req.url.indexOf('error') > -1)
+    res.status(400).jsonp({error: true});
+  else
+    res.status(200).jsonp({created: true});
+};
+
 gulp.task('dev', function (done) {
   var app = express();
   app.use(express.static(path.resolve(__dirname, 'test')));
-  app.use(function(req, res, next) {
-    if (req.url.indexOf('callback')) {
-      if (req.url.indexOf('error') > -1) {
-        res.status(400).jsonp({error: true});
-      } else {
-        res.status(200).jsonp({created: true});
-      }
-    } else {
-      next();
-    }
-  });
+  app.use(callbackMiddleware);
   server = app.listen(9999, done);
 });
 
