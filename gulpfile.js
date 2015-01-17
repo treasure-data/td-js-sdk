@@ -64,9 +64,9 @@ gulp.task('default', ['build']);
 // Respond 400 {error: true} when url contains callback and error
 // Respond 200 {created: true} when url contains callback without error
 var callbackMiddleware = function callbackMiddleware (req, res, next) {
-  if (req.url.indexOf('callback') === -1)
+  if (!_.contains(req.url, 'callback'))
     next();
-  else if (req.url.indexOf('error') > -1)
+  else if (_.contains(req.url, 'error'))
     res.status(400).jsonp({error: true});
   else
     res.status(200).jsonp({created: true});
