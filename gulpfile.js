@@ -73,9 +73,7 @@ gulp.task('dev', function (done) {
       next();
     }
   });
-  server = app.listen(config.server.port, function () {
-    done();
-  });
+  server = app.listen(config.server.port, done);
 });
 
 gulp.task('tdd', ['build', 'dev'], function (done) {
