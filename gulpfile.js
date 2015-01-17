@@ -24,27 +24,18 @@ gulp.task('clean', function (cb) {
   del([path.join(config.folders.dist, '/*'), '!.*'], cb);
 });
 
-gulp.task('td', function () {
-  return browserify(config.browserify.index).bundle()
-    .pipe(source('td.js'))
-    .pipe(gulp.dest('dist'))
-    .pipe(streamify(uglify()))
-    .pipe(rename({
-      extname: '.min.js'
-    }))
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('td.legacy', function () {
-  return browserify(config.browserify.legacy).bundle()
-    .pipe(source('td.legacy.js'))
-    .pipe(gulp.dest('dist'))
-    .pipe(streamify(uglify()))
-    .pipe(rename({
-      extname: '.min.js'
-    }))
-    .pipe(gulp.dest('dist'));
-});
+var tdTask = function tdTask (entry, name) {
+  return function () {
+    return browserify(entry).bundle()
+      .pipe(source(name))
+      .pipe(gulp.dest('dist'))
+      .pipe(streamify(uglify()))
+      .pipe(rename({extname: '.min.js'}))
+      .pipe(gulp.dest('dist'));
+  };
+};
+gulp.task('td', tdTask(config.browserify.index, 'td.js'));
+gulp.task('td.legacy', tdTask(config.browserify.legacy, 'td.legacy.js'));
 
 gulp.task('loader', function () {
   return gulp
