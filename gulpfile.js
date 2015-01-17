@@ -2,7 +2,6 @@
 
 var gulp = require('gulp'),
   runSequence = require('run-sequence'),
-  server,
   browserify = require('browserify'),
   source = require('vinyl-source-stream'),
   streamify = require('gulp-streamify'),
@@ -18,7 +17,8 @@ var gulp = require('gulp'),
   async = require('async'),
   glob = require('glob'),
   wd = require('wd'),
-  config = require('./config');
+  config = require('./config'),
+  server;
 
 gulp.task('clean', function (cb) {
   del([path.join(config.folders.dist, '/*'), '!.*'], cb);
