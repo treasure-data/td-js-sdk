@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0
+
+* Bump cookies-js dependency to `^1.1.0`
+* Bump jsonp dependency to `^0.1.0`
+* Bump superagent dependency to `^0.21.0`
+* Bump verge dependency to `^1.9.1`
+* Expose DEFAULT_CONFIG for customizations, for usage look at examples/wrapper
+* Add legacy and modern build
+* Publish on npm
+
 ## 1.2.0
 
 * Removed broken AMD snippet
