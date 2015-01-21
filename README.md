@@ -136,6 +136,17 @@ When a record is sent, an empty record object is created and properties are appl
 2. Table properties are applied to `record` object, overwriting `$global` properties
 3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
 
+## Browser Support and Polyfills
+
+In order to support older browsers while still writing forward-thinking JS, we use polyfills. This means we can write modern code and expect it to "just work", as compared to having a bunch of hacks littered all around the codebase. 
+
+td-js-sdk requires the following polyfills in order to work on older browsers:
+
+* [es5-shim](https://github.com/es-shims/es5-shim)
+* [json3](http://bestiejs.github.io/json3/)
+
+To make our user's lives easier, we provide a **legacy* build of td-js-sdk that bundles the required polyfills. This means that as a user you don't have to take any additional actions, simply select the legacy build from your preferred installation method.
+
 
 ## API
 
