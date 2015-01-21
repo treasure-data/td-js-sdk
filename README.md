@@ -203,7 +203,7 @@ td-js-sdk requires the following polyfills in order to work on older browsers:
 * [es5-shim](https://github.com/es-shims/es5-shim)
 * [json3](http://bestiejs.github.io/json3/)
 
-To make our user's lives easier, we provide a **legacy* build of td-js-sdk that bundles the required polyfills. This means that as a user you don't have to take any additional actions, simply select the legacy build from your preferred installation method.
+To make our user's lives easier, we provide a **legacy** build of td-js-sdk that bundles the required polyfills. This means that as a user you don't have to take any additional actions, simply select the legacy build from your preferred installation method.
 
 
 ## API
