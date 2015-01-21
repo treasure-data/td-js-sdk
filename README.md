@@ -2,17 +2,11 @@
 [![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) 
 [![Sauce Test Status](https://saucelabs.com/buildstatus/dev-treasuredata)](https://saucelabs.com/u/dev-treasuredata)
 
-## Getting started
-
-### Get your write-only API key
-
-Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
-
-### Installing
+## Installing
 
 Read the [Browser Support and Polyfills](#browser-support-and-polyfills) section for information on supporting older browsers.
 
-#### Script snippet
+### Script snippet
 
 Install td-js-sdk on your page by copying the appropriate JavaScript snippet below and pasting it into your page's `<head>` tag:
 
@@ -36,7 +30,7 @@ Use this snippet if you only support modern browsers or if you already include e
 </script>
 ```
 
-#### bower
+### bower
 
 ```sh
 bower install --save td-js-sdk
@@ -49,13 +43,13 @@ This will download our library and include the following:
 * `td-js-sdk/dist/td.legacy.js` - legacy unminified build
 * `td-js-sdk/dist/td.legacy.min.js` - legacy minified build
 
-All builds export the global `Treasure`.
+All builds export the `Treasure` global variable.
 
-Files with **legacy** in the name include es5-shim and json3. Use these if you must support older browsers and are not already including these.
+Files with **legacy** in the name include es5-shim and json3. Use these if you must support older browsers and are not already including them.
 
 Files with **min** in the name are minified version of the library. Use these in production builds, otherwise you will have to minify the library yourself.
 
-#### npm
+### npm
 
 Does not work with NodeJS. **Browser only**.
 
@@ -69,13 +63,22 @@ Exports Treasure class using CommonJS. The entry point is `lib/treasure.js`. Usa
 var Treasure = require('td-js-sdk');
 ```
 
-The CommonJS build does not include es5-shim or json3. You must include those manually. 
+The CommonJS build does not include es5-shim or json3. You must include those manually if you need older browser support. 
+
+
+## Getting started
+
+### Get your write-only API key
+
+Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
 
 ### Initializing
 
 Our library works by creating an instance per database, and sending data into tables.
 
-Initializing it is as simple as:
+First install the library using any of the ways provided above.
+
+After installing, initializing it is as simple as:
 
 ```javascript
   var foo = new Treasure({
