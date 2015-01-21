@@ -8,15 +8,70 @@
 
 Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
 
-### Setup
+### Installing
 
-Install the td-js-sdk on your page by copying the JavaScript snippet below and pasting it into your page's `<head>` tag:
+Read the [Browser Support and Polyfills](#browser-support-and-polyfills) section for information on supporting older browsers.
+
+#### Script snippet
+
+Install td-js-sdk on your page by copying the appropriate JavaScript snippet below and pasting it into your page's `<head>` tag:
+
+**Legacy** 
+
+Use this snippet if you must support older browsers and are not already including json3 and es5-shim.
 
 ```html
 <script type="text/javascript">
 !function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//s3.amazonaws.com/td-cdn/sdk/td-1.2.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
 </script>
 ```
+
+**Modern**
+
+Use this snippet if you only support modern browsers or if you already include es5-shim and json3.
+
+```html
+<script type="text/javascript">
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//s3.amazonaws.com/td-cdn/sdk/td-1.2.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
+</script>
+```
+
+#### bower
+
+```sh
+bower install --save td-js-sdk
+```
+
+This will download our library and include the following:
+
+* `td-js-sdk/dist/td.js` - modern unminified build
+* `td-js-sdk/dist/td.min.js` - modern minified build
+* `td-js-sdk/dist/td.legacy.js` - legacy unminified build
+* `td-js-sdk/dist/td.legacy.min.js` - legacy minified build
+
+All builds export the global `Treasure`.
+
+Files with **legacy** in the name include es5-shim and json3. Use these if you must support older browsers and are not already including these.
+
+Files with **min** in the name are minified version of the library. Use these in production builds, otherwise you will have to minify the library yourself.
+
+#### npm
+
+Does not work with NodeJS. **Browser only**.
+
+```sh
+npm install --save td-js-sdk
+```
+
+Exports Treasure class using CommonJS. The entry point is `lib/treasure.js`. Usable with a build tool such as Browserify or Webpack.
+
+```javascript
+var Treasure = require('td-js-sdk');
+```
+
+The CommonJS build does not include es5-shim or json3. You must include those manually. 
+
+### Initializing
 
 Our library works by creating an instance per database, and sending data into tables.
 
