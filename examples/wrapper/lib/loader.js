@@ -1,3 +1,4 @@
+// copied from td-js-sdk/src/loader.js
 (function(n,c){
   if (c[n] === void 0) {
 

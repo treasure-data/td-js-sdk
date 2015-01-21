@@ -2,15 +2,17 @@
 [![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) 
 [![Sauce Test Status](https://saucelabs.com/buildstatus/dev-treasuredata)](https://saucelabs.com/u/dev-treasuredata)
 
-## Getting started
+## Installing
 
-### Get your write-only API key
+Read the [Browser Support and Polyfills](#browser-support-and-polyfills) section for information on supporting older browsers.
 
-Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
+### Script snippet
 
-### Setup
+Install td-js-sdk on your page by copying the appropriate JavaScript snippet below and pasting it into your page's `<head>` tag:
 
-Install the td-js-sdk on your page by copying the JavaScript snippet below and pasting it into your page's `<head>` tag:
+**Legacy** 
+
+Use this snippet if you must support older browsers and are not already including json3 and es5-shim.
 
 ```html
 <script type="text/javascript">
@@ -18,9 +20,65 @@ Install the td-js-sdk on your page by copying the JavaScript snippet below and p
 </script>
 ```
 
+**Modern**
+
+Use this snippet if you only support modern browsers or if you already include es5-shim and json3.
+
+```html
+<script type="text/javascript">
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//s3.amazonaws.com/td-cdn/sdk/td-1.2.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
+</script>
+```
+
+### bower
+
+```sh
+bower install --save td-js-sdk
+```
+
+This will download our library and include the following:
+
+* `td-js-sdk/dist/td.js` - modern unminified build
+* `td-js-sdk/dist/td.min.js` - modern minified build
+* `td-js-sdk/dist/td.legacy.js` - legacy unminified build
+* `td-js-sdk/dist/td.legacy.min.js` - legacy minified build
+
+All builds export the `Treasure` global variable.
+
+Files with **legacy** in the name include es5-shim and json3. Use these if you must support older browsers and are not already including them.
+
+Files with **min** in the name are minified version of the library. Use these in production builds, otherwise you will have to minify the library yourself.
+
+### npm
+
+Does not work with NodeJS. **Browser only**.
+
+```sh
+npm install --save td-js-sdk
+```
+
+Exports Treasure class using CommonJS. The entry point is `lib/treasure.js`. Usable with a build tool such as Browserify or Webpack.
+
+```javascript
+var Treasure = require('td-js-sdk');
+```
+
+The CommonJS build does not include es5-shim or json3. You must include those manually if you need older browser support. 
+
+
+## Getting started
+
+### Get your write-only API key
+
+Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
+
+### Initializing
+
 Our library works by creating an instance per database, and sending data into tables.
 
-Initializing it is as simple as:
+First install the library using any of the ways provided above.
+
+After installing, initializing it is as simple as:
 
 ```javascript
   var foo = new Treasure({
@@ -135,6 +193,17 @@ When a record is sent, an empty record object is created and properties are appl
 1. `$global` properties are applied to `record` object
 2. Table properties are applied to `record` object, overwriting `$global` properties
 3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
+
+## Browser Support and Polyfills
+
+In order to support older browsers while still writing forward-thinking JS, we use polyfills. This means we can write modern code and expect it to "just work", as compared to having a bunch of hacks littered all around the codebase. 
+
+td-js-sdk requires the following polyfills in order to work on older browsers:
+
+* [es5-shim](https://github.com/es-shims/es5-shim)
+* [json3](http://bestiejs.github.io/json3/)
+
+To make our user's lives easier, we provide a **legacy** build of td-js-sdk that bundles the required polyfills. This means that as a user you don't have to take any additional actions, simply select the legacy build from your preferred installation method.
 
 
 ## API
@@ -359,4 +428,26 @@ td.ready(function(){
 
 ## Support
 
-Need a hand with something? Join us in [IRC](http://webchat.freenode.net/?channels=treasuredata), or shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
+Need a hand with something? Shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
+
+
+## FAQ
+
+* How does the async script snippet work?
+
+The async script snippet will create a fake Treasure object on the window and inject the async script tag with the td-js-sdk url. This fake Treasure object includes a fake of all the public methods exposed by the real version. As you call different methods, they will be buffered in memory until the real td-js-sdk has loaded. Upon td-js-sdk loading, it will look for existing clients and process their buffered actions.
+
+The unminified script loader can be seen in [src/loader.js](src/loader.js). The code to load existing clients and their buffered actions once td-js-sdk has been loaded can be seen in [lib/loadClients.js](lib/loadClients.js).
+
+
+* Can I make my own Treasure wrapper and vendor it?
+
+We've designed td-js-sdk in such a way that you can make a lightweight wrapper. You can see an example of this in [examples/wrapper](examples/wrapper). The main file of interest being [examples/wrapper/lib/index.js](examples/wrapper/lib/index.js).
+
+
+## Other
+
+### Dependency version notes
+
+* `domready` is kept at `0.3.0` for IE6 and above support
+

@@ -4,7 +4,7 @@
   "esnext": true,
   "bitwise": false,
   "camelcase": false,
-  "curly": true,
+  "curly": false,
   "eqeqeq": true,
   "immed": true,
   "indent": 2,

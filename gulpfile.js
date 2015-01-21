@@ -1,121 +1,128 @@
 'use strict';
 
 var gulp = require('gulp'),
-  // runSequence = require('run-sequence'),
-  // gutil = require('gulp-util'),
-  // morgan = require('morgan'),
-  server,
+  $ = require('gulp-load-plugins')(),
+  runSequence = require('run-sequence'),
   browserify = require('browserify'),
   source = require('vinyl-source-stream'),
-  streamify = require('gulp-streamify'),
-  rename = require('gulp-rename'),
+  buffer = require('vinyl-buffer'),
   express = require('express'),
   path = require('path'),
-  uglify = require('gulp-uglify'),
-  rimraf = require('gulp-rimraf'),
-  ignore = require('gulp-ignore'),
+  del = require('del'),
   karma = require('karma').server,
   _ = require('lodash'),
   async = require('async'),
   glob = require('glob'),
   wd = require('wd'),
-  config = require('./config');
+  server;
 
-gulp.task('clean', function () {
-  return gulp
-    .src(path.join(config.folders.dist, '/*'), {read: false})
-    .pipe(ignore('.*'))
-    .pipe(rimraf());
+gulp.task('clean', function (cb) {
+  del([path.join('dist', '/*'), '!.*'], cb);
 });
 
-gulp.task('browserify', function () {
-  return browserify(config.browserify.index).bundle()
-    .pipe(source('td.js'))
+var tdTask = function tdTask (entry, name) {
+  return function () {
+    return browserify(entry).bundle()
+      .pipe(source(name))
+      .pipe(buffer())
+      .pipe(gulp.dest('dist'))
+      .pipe($.uglify())
+      .pipe($.rename({extname: '.min.js'}))
+      .pipe(gulp.dest('dist'));
+  };
+};
+
+// Build td and td.legacy
+gulp.task('td', tdTask('./lib/index.js', 'td.js'));
+gulp.task('td.legacy', tdTask('./lib/index.legacy.js', 'td.legacy.js'));
+
+// Copy and compile async loader for td.js
+gulp.task('loader', function () {
+  return gulp
+    .src('src/loader.js')
+    .pipe($.replace('@URL', process.env.URL || '//td.js'))
+    .pipe($.replace('@SDK_GLOBAL', process.env.SDK_GLOBAL || 'Treasure'))
     .pipe(gulp.dest('dist'))
-    .pipe(streamify(uglify()))
-    .pipe(rename({
-      extname: '.min.js'
-    }))
+    .pipe($.uglify())
+    .pipe($.rename({extname: '.min.js'}))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('loader', function () {
-  return gulp
-    .src(config.loader.src)
-    .pipe(gulp.dest(config.folders.dist))
-    .pipe(uglify())
-    .pipe(rename({
-      extname: '.min.js'
-    }))
-    .pipe(gulp.dest(config.folders.dist));
+// Gzip dist files
+gulp.task('compress', function () {
+  return gulp.src('./dist/*.js')
+    .pipe($.gzip())
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['loader', 'browserify']);
+// Compile and compress files
+gulp.task('build', function () {
+  return runSequence(['loader', 'td', 'td.legacy'], 'compress');
+});
 gulp.task('default', ['build']);
 
-gulp.task('server', function (done) {
+// Respond 400 {error: true} when url contains callback and error
+// Respond 200 {created: true} when url contains callback without error
+var callbackMiddleware = function callbackMiddleware (req, res, next) {
+  if (!_.contains(req.url, 'callback'))
+    next();
+  else if (_.contains(req.url, 'error'))
+    res.status(400).jsonp({error: true});
+  else
+    res.status(200).jsonp({created: true});
+};
+
+// Development server
+gulp.task('dev', function (done) {
   var app = express();
-  // app.use(morgan());
-  app.use(express.static(path.resolve(__dirname, config.folders.test)));
-  app.use(function(req, res, next) {
-    if (req.url.indexOf('callback')) {
-      if (req.url.indexOf('error') > -1) {
-        res.status(400).jsonp(config.server.error);
-      } else {
-        res.status(200).jsonp(config.server.success);
-      }
-    } else {
-      next();
-    }
-  });
-  server = app.listen(config.server.port, function () {
-    done();
-  });
+  app.use(express.static(path.resolve(__dirname, 'test')));
+  app.use(callbackMiddleware);
+  server = app.listen(9999, done);
 });
 
-gulp.task('tdd', ['build', 'server'], function (done) {
-  gulp.watch(config.tdd.watch, ['build']);
-  karma.start(require('./karma.conf.js')(), function (exitCode) {
-    if (server) {
-      server.close();
-    }
+var karmaCallback = function karmaCallback (done) {
+  return function (exitCode) {
+    if (server) server.close();
     done(exitCode);
     process.exit(exitCode);
-  });
+  };
+};
+
+// Continually run unit tests
+gulp.task('tdd', ['build', 'dev'], function (done) {
+  var karmaConfig = require('./karma.conf.js');
+  karma.start(karmaConfig(), karmaCallback(done));
+  gulp.watch('lib/**/*.js', ['build']);
 });
 
-gulp.task('test', ['build', 'server'], function (done) {
-  karma.start(_.assign({}, require('./karma.conf.js')(), {singleRun: true}), function (exitCode) {
-    if (server) {
-      server.close();
-    }
-    done(exitCode);
-    process.exit(exitCode);
-  });
+// Run unit tests once
+gulp.task('test', ['build', 'dev'], function (done) {
+  var karmaConfig = require('./karma.conf.js');
+  karmaConfig = _.defaults({singleRun: true}, karmaConfig());
+  karma.start(karmaConfig, karmaCallback(done));
 });
 
 // Requires webdriver to be installed, up-to-date and running
 gulp.task('e2e', function (done) {
-  var files = glob.sync('./test/e2e/*.spec.js');
-  var count = files.length;
-  var finish = function () {
-    count--;
-    if (count === 0) {
-      done();
-    }
-  };
+  var files = glob.sync('./test/e2e/*.spec.js'),
+  count = files.length;
+
+  function finish () {
+    if (--count) done();
+  }
 
   files.forEach(function (file) {
     require(file)(wd.remote('http://localhost:4444/wd/hub'), {browserName: 'chrome'}, finish);
   });
 });
 
-gulp.task('ci', ['build', 'server'], function (done) {
-  var sauceConnectLauncher = require('sauce-connect-launcher'),
-    karmaConfig = _.assign({}, require('./karma.conf.js')(), config.sauce.karma),
-    count = Math.ceil(config.sauce.browsers.length / config.sauce.concurrency);
+gulp.task('ci', ['build', 'dev'], function (done) {
+  var sauce = require('./sauce.conf.js'),
+    sauceConnectLauncher = require('sauce-connect-launcher'),
+    karmaConfig = _.assign({}, require('./karma.conf.js')(), sauce.karma),
+    count = Math.ceil(sauce.browsers.length / sauce.concurrency);
 
-  sauceConnectLauncher(config.sauce.connect, function (err, sauceConnectProcess) {
+  sauceConnectLauncher(sauce.connect, function (err, sauceConnectProcess) {
     if (err) {
       console.error('Error with sauceConnectLauncher', err);
       done(err);
@@ -124,16 +131,16 @@ gulp.task('ci', ['build', 'server'], function (done) {
     }
 
     console.log('Started Sauce Connect Process');
-    console.log('Tests will be run in', config.sauce.browsers.length, 'browsers');
+    console.log('Tests will be run in', sauce.browsers.length, 'browsers');
     async.timesSeries(count, function(n, next) {
       var browser,
         idx,
         sauceConfig = _.assign({}, karmaConfig);
       sauceConfig.browsers = [];
       sauceConfig.customLaunchers = {};
-      for (var i = 0; i < config.sauce.concurrency; i++) {
-        idx = (n * config.sauce.concurrency) + i;
-        browser = config.sauce.browsers[idx];
+      for (var i = 0; i < sauce.concurrency; i++) {
+        idx = (n * sauce.concurrency) + i;
+        browser = sauce.browsers[idx];
         if (browser) {
           browser.base = 'SauceLabs';
           sauceConfig.customLaunchers[idx] = browser;

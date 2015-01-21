@@ -3,3 +3,6 @@ node_modules
 bower_components
 *.log
 .DS_Store
+dist/loader.*
+dist/*.gz
+examples/wrapper/dist/*
