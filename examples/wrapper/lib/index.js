@@ -16,7 +16,7 @@
  *
  * require params would change in your repo to the following
  * '../../lib/treasure' => 'td-js-sdk'
- * '../../lib/loadClients' => 'td-js-sdk/loadClients'
+ * '../../lib/loadClients' => 'td-js-sdk/lib/loadClients'
  */
 var Example = require('../../../lib/treasure');
 var loadClients = require('../../../lib/loadClients');
