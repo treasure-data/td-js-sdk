@@ -437,12 +437,12 @@ Need a hand with something? Shoot us an email at [support@treasuredata.com](mail
 
 The async script snippet will create a fake Treasure object on the window and inject the async script tag with the td-js-sdk url. This fake Treasure object includes a fake of all the public methods exposed by the real version. As you call different methods, they will be buffered in memory until the real td-js-sdk has loaded. Upon td-js-sdk loading, it will look for existing clients and process their buffered actions.
 
-The unminified script loader can be seen in `src/loader.js`. The code to load existing clients and their buffered actions once td-js-sdk has been loaded can be seen in `lib/loadClients.js`.
+The unminified script loader can be seen in [src/loader.js](src/loader.js). The code to load existing clients and their buffered actions once td-js-sdk has been loaded can be seen in [lib/loadClients.js](lib/loadClients.js).
 
 
 * Can I make my own Treasure wrapper and vendor it?
 
-We've designed td-js-sdk in such a way that you can make a lightweight wrapper. You can see an example of this in `examples/wrapper`. The main file of interest being `examples/wrapper/lib/index.js`.
+We've designed td-js-sdk in such a way that you can make a lightweight wrapper. You can see an example of this in [examples/wrapper](examples/wrapper). The main file of interest being [examples/wrapper/lib/index.js](examples/wrapper/lib/index.js).
 
 
 ## Other
