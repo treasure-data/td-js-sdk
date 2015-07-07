@@ -13,9 +13,6 @@
     "type": "git",
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
-  "engines": {
-    "node": "0.10.x"
-  },
   "scripts": {
     "clean": "./node_modules/.bin/gulp clean",
     "start": "./node_modules/.bin/gulp",
