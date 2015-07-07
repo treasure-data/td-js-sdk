@@ -108,7 +108,9 @@ gulp.task('e2e', function (done) {
   count = files.length;
 
   function finish () {
-    if (--count) done();
+    if (!--count) {
+      done();
+    }
   }
 
   files.forEach(function (file) {
