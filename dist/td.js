@@ -52,7 +52,7 @@ function isCustomized () {
 function validateOptions(options) {
   // options must be an object
   if (!_.isObject(options)) {
-    throw new Error('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk/');
+    throw new Error('Check out our JavaScript SDK Usage Guide: http://docs.treasuredata.com/articles/javascript-sdk');
   }
 
   if (!_.isString(options.writeKey)) {
