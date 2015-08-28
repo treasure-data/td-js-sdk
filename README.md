@@ -221,7 +221,6 @@ If the database does not exist and you have permissions, it will be created for 
 
 * **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
 * **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
-* **config.requestType** : String (optional) - request type for sending events. Allowed values: `xhr`, `jsonp`. Default: `xhr` unless [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is not supported, in which case it'll use `jsonp`
 * **config.protocol** : String (optional) - protocol to use for sending events. Default: result of `document.location.protocol`
 * **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/event/`
 * **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
