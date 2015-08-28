@@ -199,40 +199,16 @@ describe('Treasure Client', function () {
 
     describe('validates request type', function () {
 
-      it('should set request type to "xhr" by default, if unsupported use "jsonp"', function () {
-        var requestType;
-
-        try {
-          if('XMLHttpRequest' in window && 'withCredentials' in new window.XMLHttpRequest()) {
-            requestType = 'xhr';
-          } else {
-            requestType = 'jsonp';
-          }
-        } catch (err) {
-          // if XMLHttp support is disabled in IE then it will throw
-          // when trying to create
-          requestType = 'jsonp';
-        }
-
+      it('should set request type to "jsonp"', function () {
         expect(treasure.client)
           .to.have.property('requestType')
           .that.is.a('string')
-          .that.equals(requestType);
+          .that.equals('jsonp');
 
       });
 
-      it('should set request type to "xhr" if designated', function () {
+      it('should always set request type to "jsonp"', function () {
         configuration.requestType = 'xhr';
-        treasure = new Treasure(configuration);
-        expect(treasure.client)
-          .to.have.property('requestType')
-          .that.is.a('string')
-          .that.equals('xhr');
-
-      });
-
-      it('should set request type to "jsonp" if designated', function () {
-        configuration.requestType = 'jsonp';
         treasure = new Treasure(configuration);
         expect(treasure.client)
           .to.have.property('requestType')
