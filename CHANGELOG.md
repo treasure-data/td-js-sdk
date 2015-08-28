@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0
+
+* Remove has-cors
+* Remove superagent
+* Fix documentation link in Error
+* Remove xhr requestType and force jsonp
+
 ## 1.3.0
 
 * Bump cookies-js dependency to `^1.1.0`
