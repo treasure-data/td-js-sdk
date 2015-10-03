@@ -22,15 +22,8 @@
     "del": "^1.1.1",
     "express": "^4.4.2",
     "glob": "^4.0.4",
-    "karma": "^0.12.16",
-    "karma-mocha": "^0.1.4",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "karma-sauce-launcher": "^0.2.8",
-    "karma-sinon-chai": "^0.2.0",
-    "sauce-connect-launcher": "^0.9.3",
     "tape": "^3.2.0",
     "wd": "^0.3.3",
-    "webdriver-manager": "^2.0.0"
   },
   "dependencies": {
     "cookies-js": "^1.1.0",
