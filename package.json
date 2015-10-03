@@ -50,12 +50,13 @@
     "zuul": "^3.6.0"
   },
   "dependencies": {
+    "Base64": "^0.3.0",
     "cookies-js": "^1.1.0",
     "domready": "^0.3.0",
-    "es5-shim": "^4.0.0",
+    "invariant": "^2.1.1",
     "json3": "^3.3.2",
     "jsonp": "^0.1.0",
-    "lodash": "^2.4.1",
+    "lodash-compat": "^3.10.1",
     "verge": "^1.9.1"
   }
 }
