@@ -2,11 +2,11 @@
 
 var cp = require('child_process')
 
-var runBrowserTests = process.env.CI &&
-  !process.env.TRAVIS_PULL_REQUEST ||
-  process.env.TRAVIS_PULL_REQUEST === 'false'
+// var runBrowserTests = process.env.CI &&
+//   !process.env.TRAVIS_PULL_REQUEST ||
+//   process.env.TRAVIS_PULL_REQUEST === 'false'
 
-var script = runBrowserTests ? 'test-full' : 'test-phantom'
+var script = process.env.CI ? 'test-full' : 'test-phantom'
 var node = cp.spawn('npm', ['run', script], { stdio: 'inherit' })
 node.on('close', function (code) {
   process.exit(code)
