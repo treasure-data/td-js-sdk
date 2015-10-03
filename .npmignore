@@ -1,5 +1,4 @@
 **/.*
-bower_components
 node_modules
 src
 test
@@ -8,4 +7,3 @@ examples
 config.js
 gulpfile.js
 *.conf.js
-bower.json
