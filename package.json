@@ -15,6 +15,16 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
+  "standard": {
+    "ignore": [
+      "dist"
+    ],
+    "global": [
+      "afterEach",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   },
   "devDependencies": {
     "browserify": "^11.2.0",
