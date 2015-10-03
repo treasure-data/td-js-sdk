@@ -23,8 +23,10 @@ function callbackMiddleware (req, res, next) {
 var PORT = process.env.ZUUL_PORT || 9999
 if (require.main === module) {
   app.listen(PORT, function () {
-    console.log('Listening on port: ' + PORT)
-    console.log('Open localhost:' + PORT + '/fixtures/')
+    if (!process.env.CI) {
+      console.log('Listening on port: ' + PORT)
+      console.log('Open localhost:' + PORT + '/fixtures/')
+    }
   })
 }
 
