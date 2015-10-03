@@ -6,81 +6,85 @@
   <title>slow</title>
   <meta name="description" content="test that snippet loader works if delayed"></meta>
   <script type="text/javascript">
-    (function(n,c){
+    (function (n, c) {
       if (c[n] === void 0) {
-
         c[n] = function () {
-          c[n].clients.push(this);
-          this._init = [Array.prototype.slice.call(arguments)];
-        };
-        c[n].clients = [];
+          c[n].clients.push(this)
+          this._init = [Array.prototype.slice.call(arguments)]
+        }
+        c[n].clients = []
 
-        var action = function(method){
+        var action = function (method){
           return function () {
-            this['_'+method] = this['_'+method] || [];
-            this['_'+method].push(Array.prototype.slice.call(arguments));
-            return this;
-          };
-        };
+            this['_'+method] = this['_'+method] || []
+            this['_'+method].push(Array.prototype.slice.call(arguments))
+            return this
+          }
+        }
 
-        var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview', 'ready'];
-        for (var i = 0; i < methods.length; i++){
-          var method = methods[i];
-          c[n].prototype[method] = action(method);
+        var methods = ['addRecord', 'set', 'trackEvent', 'trackPageview', 'ready']
+        for (var i = 0; i < methods.length; i++) {
+          var method = methods[i]
+          c[n].prototype[method] = action(method)
         }
 
         // Delay script load by 1 second
         setTimeout(function () {
-          var s = document.createElement('script');
-          s.type = 'text/javascript';
-          s.async = !0;
-          s.src = '/dist/td.js';
+          var s = document.createElement('script')
+          s.type = 'text/javascript'
+          s.async = !0
+          s.src = '/dist/td.js'
 
-          var t = document.getElementsByTagName('script')[0];
-          t.parentNode.insertBefore(s,t);
-        }, 5000);
+          var t = document.getElementsByTagName('script')[0]
+          t.parentNode.insertBefore(s, t)
+        })
       }
-    })('Treasure', this);
+    })('Treasure', this)
   </script>
 </head>
 <body>
 
 <script type="text/javascript">
   (function () {
-    'use strict';
     function setStatus (num, text) {
-      document.getElementById('status' + num).innerHTML = text;
-      status[num] = text;
+      document.getElementById('status' + num).innerHTML = text
+      status[num] = text
       if (status.length === 3) {
-        document.body.style.background = status.indexOf('failure') === -1 ? 'green' : 'red';
+        var isFailure = false
+        for (var i = 0; i < status.length; i++) {
+          if (status[i] === 'failure') {
+            isFailure = true
+          }
+        }
+        document.body.style.background = isFailure ? 'red' : 'green'
       }
     }
-    var status = [];
+
+    var status = []
     var td = new Treasure({
-      database: "test_db_request",
-      writeKey: "91/96da3cfb876cc50724d0dddef670d95eea2a0018",
-      host: "in-staging.treasuredata.com"
-    });
+      database: 'test_db_request',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      host: 'in-staging.treasuredata.com'
+    })
 
     td.addRecord('slow_loader_add_record', {}, function () {
-      setStatus(0, 'success');
+      setStatus(0, 'success')
     }, function () {
-      setStatus(0, 'failure');
-    });
+      setStatus(0, 'failure')
+    })
 
     td.trackEvent('slow_loader_track_event', {}, function () {
-      setStatus(1, 'success');
+      setStatus(1, 'success')
     }, function () {
-      setStatus(1, 'failure');
-    });
+      setStatus(1, 'failure')
+    })
 
     td.trackPageview('slow_loader_track_pageview', function () {
-      setStatus(2, 'success');
+      setStatus(2, 'success')
     }, function () {
-      setStatus(2, 'failure');
-    });
-
-  })();
+      setStatus(2, 'failure')
+    })
+  })()
 </script>
 
 <h1 id='status0' style="text-align: center;">running</h1>
