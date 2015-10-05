@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.5.0 (2015-10-05)
+
+* Improve browser support to include IE8 without having to include polyfills
+* Improve tests to run on older browsers
+* Remove legacy version of td-js-sdk
+* Remove bower support
+* Replace karma with zuul
+* Replace gulp with npm run-scripts
+* Remove examples
+* Replace chai with expect.js
+* Replace lodash with lodash-compat
+* Update lodash file so we only include the parts we need in order to reduce the bundle size
+* Break out utility functions and add tests
+* Update code to follow Standard style
+* Add Base64 dependency
+* Add invariant dependency
+* Remove es5-shim dependency
+
 ## 1.4.0 (2015-08-28)
 
 * Remove has-cors

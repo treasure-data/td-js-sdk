@@ -12,7 +12,7 @@ Install td-js-sdk on your page by copying the appropriate JavaScript snippet bel
 
 ```html
 <script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/td-1.4.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
+(function(t,e){if(e[t]===void 0){e[t]=function(){e[t].clients.push(this);this._init=[Array.prototype.slice.call(arguments)]};e[t].clients=[];var r=function(t){return function(){this["_"+t]=this["_"+t]||[];this["_"+t].push(Array.prototype.slice.call(arguments));return this}};var a=["addRecord","set","trackEvent","trackPageview","ready"];for(var n=0;n<a.length;n++){var s=a[n];e[t].prototype[s]=r(s)}var i=document.createElement("script");i.type="text/javascript";i.async=!0;i.src=(document.location.protocol==="https:"?"https:":"http:")+"//cdn.treasuredata.com/sdk/td-1.5.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(i,c)}})("Treasure",this);
 </script>
 ```
 
