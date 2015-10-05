@@ -3,7 +3,3 @@ node_modules
 src
 test
 dist
-examples
-config.js
-gulpfile.js
-*.conf.js
