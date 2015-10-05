@@ -11,28 +11,28 @@
 
 <script type="text/javascript">
   (function () {
-    'use strict';
-    function setBackground(color) {
-      document.body.style.background = color;
+    function setBackground (color) {
+      document.body.style.background = color
     }
+
     function setStatus (text) {
-      document.getElementById('status').innerHTML = text;
+      document.getElementById('status').innerHTML = text
     }
+
     var td = new Treasure({
-      database: "test_db_request",
-      writeKey: "91/96da3cfb876cc50724d0dddef670d95eea2a0018",
-      host: "in-staging.treasuredata.com"
-    });
+      database: 'test_db_request',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      host: 'in-staging.treasuredata.com'
+    })
 
     td.addRecord('add_record', {}, function () {
-      setBackground('green');
-      setStatus('success');
+      setBackground('green')
+      setStatus('success')
     }, function () {
-      setBackground('red');
-      setStatus('failure');
-    });
-
-  })();
+      setBackground('red')
+      setStatus('failure')
+    })
+  })()
 </script>
 
 <h1 id='status' style="text-align: center;">running</h1>

@@ -15,49 +15,64 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
-    "clean": "./node_modules/.bin/gulp clean",
-    "start": "./node_modules/.bin/gulp",
-    "test": "./node_modules/.bin/gulp test",
-    "tdd": "./node_modules/.bin/gulp tdd",
-    "ci": "./node_modules/.bin/gulp ci",
-    "e2e": "./node_modules/.bin/gulp e2e",
-    "dev": "./node_modules/.bin/gulp dev",
-    "webdriver:update": "./node_modules/.bin/webdriver-manager update",
-    "webdriver:start": "./node_modules/.bin/webdriver-manager start",
-    "webdriver": "npm run webdriver:update && npm run webdriver:start"
+    "build": "browserify -s Treasure -e ./lib > ./dist/td.js",
+    "build-all": "npm run build-gzip && npm run minify-gzip && npm run build-loader",
+    "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
+    "build-loader": "cat ./src/loader.js | uglifyjs -m > ./dist/loader.min.js",
+    "clean": "rm -rf ./dist && mkdir -p ./dist",
+    "e2e": "node ./bin/e2e.js",
+    "e2e-prepare": "selenium-standalone install",
+    "e2e-server": "node ./bin/server.js",
+    "minify": "browserify -s Treasure -e ./lib | uglifyjs -m > ./dist/td.min.js ",
+    "minify-gzip": "npm run minify && cat ./dist/td.min.js | gzip > ./dist/td.min.js.gz",
+    "test": "standard && node ./bin/test.js",
+    "test-local": "zuul --local -- test/*.spec.js",
+    "test-phantom": "zuul --phantom -- test/*.spec.js",
+    "test-full": "zuul --concurrency 1 -- test/*.spec.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-versionify"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ],
+    "global": [
+      "afterEach",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   },
   "devDependencies": {
-    "async": "^0.9.0",
-    "browserify": "^8.1.1",
-    "del": "^1.1.1",
-    "express": "^4.4.2",
-    "glob": "^4.0.4",
-    "gulp": "^3.8.0",
-    "gulp-gzip": "0.0.8",
-    "gulp-load-plugins": "^0.8.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-replace": "^0.5.1",
-    "gulp-uglify": "^1.0.2",
-    "karma": "^0.12.16",
-    "karma-mocha": "^0.1.4",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "karma-sauce-launcher": "^0.2.8",
-    "karma-sinon-chai": "^0.2.0",
-    "run-sequence": "^1.0.2",
-    "sauce-connect-launcher": "^0.9.3",
-    "tape": "^3.2.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0",
-    "wd": "^0.3.3",
-    "webdriver-manager": "^2.0.0"
+    "browserify": "^11.2.0",
+    "browserify-versionify": "^1.0.6",
+    "del": "^2.0.2",
+    "expect.js": "^0.3.1",
+    "express": "^4.13.3",
+    "glob": "^5.0.15",
+    "lodash": "^3.10.1",
+    "mocha": "^2.3.3",
+    "parse-domain": "^0.1.2",
+    "phantomjs": "^1.9.18",
+    "selenium-standalone": "^4.7.0",
+    "sinon": "^1.17.1",
+    "standard": "^5.3.1",
+    "tape": "^4.2.1",
+    "uglifyjs": "^2.4.10",
+    "wd": "^0.3.12",
+    "zuul": "^3.6.0"
   },
   "dependencies": {
+    "Base64": "^0.3.0",
     "cookies-js": "^1.1.0",
     "domready": "^0.3.0",
-    "es5-shim": "^4.0.0",
+    "invariant": "^2.1.1",
     "json3": "^3.3.2",
     "jsonp": "^0.1.0",
-    "lodash": "^2.4.1",
+    "lodash-compat": "^3.10.1",
     "verge": "^1.9.1"
   }
 }

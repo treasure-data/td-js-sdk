@@ -1,6 +1,4 @@
-dist/*-loader*
 node_modules
-bower_components
 *.log
 .DS_Store
 dist/loader.*

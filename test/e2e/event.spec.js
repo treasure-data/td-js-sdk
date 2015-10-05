@@ -1,43 +1,39 @@
-'use strict';
-
-var test = require('tape');
+var test = require('tape')
 
 module.exports = function (browser, initOpts, finish) {
-
   test('event test', function (t) {
-    t.plan(1);
+    t.plan(1)
 
     function initTest () {
-      browser.get('http://localhost:9999/fixtures/event', getStatus);
+      browser.get('http://localhost:9999/fixtures/event', getStatus)
     }
 
     function getStatus () {
       browser.elementById('status', function (err, el) {
-        return err ? t.fail('Error', err) : el.text(getText);
-      });
+        return err ? t.fail('Error', err) : el.text(getText)
+      })
     }
 
     function getText (err, text) {
       if (err) {
-        t.fail('Error', err);
-        browser.quit();
-        return finish();
+        t.fail('Error', err)
+        browser.quit()
+        return finish()
       }
       switch (text) {
         case 'success':
-          t.pass('status is success');
-          break;
+          t.pass('status is success')
+          break
         case 'failure':
-          t.fail('status is failure');
-          break;
+          t.fail('status is failure')
+          break
         default:
-          return getStatus();
+          return getStatus()
       }
-      browser.quit();
-      finish();
+      browser.quit()
+      finish()
     }
 
-    browser.init(initOpts, initTest);
-  });
-
-};
+    browser.init(initOpts, initTest)
+  })
+}

@@ -4,50 +4,15 @@
 
 ## Installing
 
-Read the [Browser Support and Polyfills](#browser-support-and-polyfills) section for information on supporting older browsers.
-
 ### Script snippet
 
 Install td-js-sdk on your page by copying the appropriate JavaScript snippet below and pasting it into your page's `<head>` tag:
-
-**Legacy** 
-
-Use this snippet if you must support older browsers and are not already including json3 and es5-shim.
-
-```html
-<script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/td-1.4.0.legacy.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
-</script>
-```
-
-**Modern**
-
-Use this snippet if you only support modern browsers or if you already include es5-shim and json3.
 
 ```html
 <script type="text/javascript">
 !function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","set","trackEvent","trackPageview","ready"],n=0;n<s.length;n++){var i=s[n];e[t].prototype[i]=r(i)}var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/td-1.4.0.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a,c)}}("Treasure",this);
 </script>
 ```
-
-### bower
-
-```sh
-bower install --save td-js-sdk
-```
-
-This will download our library and include the following:
-
-* `td-js-sdk/dist/td.js` - modern unminified build
-* `td-js-sdk/dist/td.min.js` - modern minified build
-* `td-js-sdk/dist/td.legacy.js` - legacy unminified build
-* `td-js-sdk/dist/td.legacy.min.js` - legacy minified build
-
-All builds export the `Treasure` global variable.
-
-Files with **legacy** in the name include es5-shim and json3. Use these if you must support older browsers and are not already including them.
-
-Files with **min** in the name are minified version of the library. Use these in production builds, otherwise you will have to minify the library yourself.
 
 ### npm
 
@@ -60,7 +25,7 @@ npm install --save td-js-sdk
 Exports Treasure class using CommonJS. The entry point is `lib/treasure.js`. Usable with a build tool such as Browserify or Webpack.
 
 ```javascript
-var Treasure = require('td-js-sdk');
+var Treasure = require('td-js-sdk')
 ```
 
 The CommonJS build does not include es5-shim or json3. You must include those manually if you need older browser support. 
@@ -193,17 +158,6 @@ When a record is sent, an empty record object is created and properties are appl
 1. `$global` properties are applied to `record` object
 2. Table properties are applied to `record` object, overwriting `$global` properties
 3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
-
-## Browser Support and Polyfills
-
-In order to support older browsers while still writing forward-thinking JS, we use polyfills. This means we can write modern code and expect it to "just work", as compared to having a bunch of hacks littered all around the codebase. 
-
-td-js-sdk requires the following polyfills in order to work on older browsers:
-
-* [es5-shim](https://github.com/es-shims/es5-shim)
-* [json3](http://bestiejs.github.io/json3/)
-
-To make our user's lives easier, we provide a **legacy** build of td-js-sdk that bundles the required polyfills. This means that as a user you don't have to take any additional actions, simply select the legacy build from your preferred installation method.
 
 
 ## API
