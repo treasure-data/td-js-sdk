@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "browserify -s Treasure -e ./lib > ./dist/td.js",
-    "build-all": "npm run build-gzip && npm run minify-gzip && npm run build-loader",
+    "build-all": "NODE_ENV=production npm run build-gzip && npm run minify-gzip && npm run build-loader",
     "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
     "build-loader": "cat ./src/loader.js | uglifyjs -m > ./dist/loader.min.js",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
@@ -32,7 +32,8 @@
   },
   "browserify": {
     "transform": [
-      "browserify-versionify"
+      "browserify-versionify",
+      "envify"
     ]
   },
   "standard": {
@@ -50,6 +51,7 @@
     "browserify": "^11.2.0",
     "browserify-versionify": "^1.0.6",
     "del": "^2.0.2",
+    "envify": "^3.4.0",
     "expect.js": "^0.3.1",
     "express": "^4.13.3",
     "glob": "^5.0.15",
