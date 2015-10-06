@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1 (2015-10-06)
+
+* Use Buffer to get base64 string
+* Remove Base64 dependency
+
 ## 1.5.0 (2015-10-05)
 
 * Improve browser support to include IE8 without having to include polyfills
