@@ -15,7 +15,7 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
-    "build": "browserify -s Treasure -e ./lib > ./dist/td.js",
+    "build": "browserify -s Treasure -e ./lib | bundle-collapser > ./dist/td.js",
     "build-all": "NODE_ENV=production npm run build-gzip && npm run minify-gzip && npm run build-loader",
     "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
     "build-loader": "cat ./src/loader.js | uglifyjs -m -c > ./dist/loader.min.js",
@@ -50,6 +50,7 @@
   "devDependencies": {
     "browserify": "^11.2.0",
     "browserify-versionify": "^1.0.6",
+    "bundle-collapser": "^1.2.1",
     "del": "^2.0.2",
     "envify": "^3.4.0",
     "expect.js": "^0.3.1",
