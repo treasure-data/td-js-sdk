@@ -5,8 +5,15 @@ var generateUUID = require('../lib/utils/generateUUID')
 describe('Treasure Utils', function () {
   describe('objectToBase64', function () {
     it('converts an object to a base64 string', function () {
-      var expectedResult = (new Buffer('{}')).toString('base64')
-      expect(objectToBase64({})).to.equal(expectedResult)
+      var testObject = { text: 'text' }
+      var expectedResult = 'eyJ0ZXh0IjoidGV4dCJ9'
+      expect(objectToBase64(testObject)).to.equal(expectedResult)
+    })
+
+    it('handles unicode strings', function () {
+      var testObject = { ramen: 'ラーメン' }
+      var expectedResult = 'eyJyYW1lbiI6IuODqeODvOODoeODsyJ9'
+      expect(objectToBase64(testObject)).to.equal(expectedResult)
     })
   })
 
