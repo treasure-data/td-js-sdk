@@ -68,7 +68,6 @@
     "zuul": "^3.6.0"
   },
   "dependencies": {
-    "Base64": "^0.3.0",
     "cookies-js": "^1.1.0",
     "domready": "^0.3.0",
     "invariant": "^2.1.1",
