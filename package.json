@@ -69,9 +69,9 @@
     "zuul": "^3.6.0"
   },
   "dependencies": {
-    "cookies-js": "^1.1.0",
+    "cookies-js": "^1.2.2",
     "domready": "^0.3.0",
-    "invariant": "^2.1.1",
+    "invariant": "^2.2.0",
     "json3": "^3.3.2",
     "jsonp": "^0.1.0",
     "lodash-compat": "^3.10.1",

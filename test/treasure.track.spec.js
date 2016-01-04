@@ -73,6 +73,13 @@ describe('Treasure Tracker', function () {
       expect(treasure.client.track.uuid).to.equal('123')
     })
 
+    it('should strip NULL characters from clientId', function () {
+      configuration.clientId = '123\0\0\0'
+      treasure = new Treasure(configuration)
+
+      expect(treasure.client.track.uuid).to.equal('123')
+    })
+
     describe('track values', function () {
       var track = {values: {}}
 
