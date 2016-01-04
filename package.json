@@ -69,7 +69,7 @@
     "zuul": "^3.6.0"
   },
   "dependencies": {
-    "cookies-js": "^1.1.0",
+    "cookies-js": "^1.2.2",
     "domready": "^0.3.0",
     "invariant": "^2.1.1",
     "json3": "^3.3.2",
