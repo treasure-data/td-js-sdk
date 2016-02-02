@@ -23,7 +23,7 @@
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
-    "minify": "browserify -s Treasure -e ./lib | uglifyjs -m -c > ./dist/td.min.js ",
+    "minify": "browserify -s Treasure -e ./lib/index.js | uglifyjs -m -c > ./dist/td.min.js ",
     "minify-gzip": "npm run minify && cat ./dist/td.min.js | gzip > ./dist/td.min.js.gz",
     "test": "standard && node ./bin/test.js",
     "test-local": "zuul --local -- test/*.spec.js",
