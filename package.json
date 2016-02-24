@@ -64,7 +64,7 @@
     "tape": "^4.4.0",
     "uglifyjs": "^2.4.10",
     "wd": "^0.3.12",
-    "zuul": "^3.6.0"
+    "zuul": "^3.9.0"
   },
   "dependencies": {
     "cookies-js": "^1.2.2",
