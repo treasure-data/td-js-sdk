@@ -56,7 +56,6 @@
     "expect.js": "^0.3.1",
     "express": "^4.13.3",
     "glob": "^7.0.0",
-    "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "parse-domain": "0.1.2",
     "phantomjs": "^1.9.18",
