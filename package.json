@@ -18,7 +18,7 @@
     "build": "browserify -s Treasure -e ./lib/index.js | bundle-collapser > ./dist/td.js",
     "build-all": "NODE_ENV=production npm run build-gzip && npm run minify-gzip && npm run build-loader",
     "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
-    "build-loader": "cat ./src/loader.js | uglifyjs -m -c > ./dist/loader.min.js",
+    "build-loader": "cat ./src/loader.js | sed 's/@GLOBAL/Treasure/' | uglifyjs -m -c > ./dist/loader.min.js",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
