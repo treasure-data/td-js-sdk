@@ -1,5 +1,9 @@
+var _ = require('lodash-compat')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
+
+// Copy the default config because we change it later in tests
+var DEFAULT_CONFIG = _.clone(Treasure.prototype._configurator.DEFAULT_CONFIG)
 
 describe('Treasure Client', function () {
   var treasure
@@ -16,9 +20,12 @@ describe('Treasure Client', function () {
 
   beforeEach(resetConfiguration)
   beforeEach(function () {
-    var DEFAULT_CONFIG = Treasure.prototype._configurator._generateDefaultConfig()
-    Treasure.prototype._configurator.DEFAULT_CONFIG = DEFAULT_CONFIG
     treasure = new Treasure(configuration)
+  })
+
+  afterEach(function () {
+    // Reset the config after each test to keep state cleaner
+    Treasure.prototype._configurator.DEFAULT_CONFIG = _.clone(DEFAULT_CONFIG)
   })
 
   describe('DEFAULT_CONFIG', function () {

@@ -10,4 +10,4 @@ browsers:
   - name: safari
     version: 5..latest
   - name: ie
-    version: 6..latest
+    version: 8..latest

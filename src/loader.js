@@ -28,4 +28,4 @@
     var t = document.getElementsByTagName('script')[0]
     t.parentNode.insertBefore(s, t)
   }
-})('Treasure', this)
+})('@GLOBAL', this)
