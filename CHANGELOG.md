@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.2 (2016-03-08)
+
+* Add global package for safely resolving the window object
+* Strip null values from clientId
+* Use performance.now when generating a UUID if it's available
+* Remove bundle-collapser
+* Always use http or https protocol
+
 ## 1.5.1 (2015-10-06)
 
 * Use Buffer to get base64 string
