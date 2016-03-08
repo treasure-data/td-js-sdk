@@ -67,6 +67,7 @@
   "dependencies": {
     "cookies-js": "^1.2.2",
     "domready": "^0.3.0",
+    "global": "^4.3.0",
     "invariant": "^2.2.0",
     "json3": "^3.3.2",
     "jsonp": "^0.1.0",
