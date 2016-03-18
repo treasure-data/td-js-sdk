@@ -397,4 +397,4 @@ The unminified script loader can be seen in [src/loader.js](src/loader.js). The 
 ### Dependency version notes
 
 * `domready` is kept at `0.3.0` for IE6 and above support
-
+* td-js-sdk doesn't support IE6,7 on version 1.5.2 or later.
