@@ -15,7 +15,7 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
-    "build": "browserify -s Treasure -e ./lib/index.js > ./dist/td.js",
+    "build": "webpack",
     "build-all": "NODE_ENV=production npm run build-gzip && npm run minify-gzip && npm run build-loader",
     "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
     "build-loader": "cat ./src/loader.js | sed 's/@GLOBAL/Treasure/' | uglifyjs -m -c > ./dist/loader.min.js",
@@ -23,7 +23,7 @@
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
-    "minify": "browserify -s Treasure -e ./lib/index.js | uglifyjs -m -c > ./dist/td.min.js ",
+    "minify": "webpack --output-filename [name].min.js -p",
     "minify-gzip": "npm run minify && cat ./dist/td.min.js | gzip > ./dist/td.min.js.gz",
     "test": "standard && node ./bin/test.js",
     "test-local": "zuul --local -- test/*.spec.js",
