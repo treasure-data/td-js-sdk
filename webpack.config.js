@@ -6,7 +6,6 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    library: 'Treasure',
     path: './dist'
   },
   target: 'web',
