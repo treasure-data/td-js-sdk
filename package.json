@@ -30,11 +30,6 @@
     "test-phantom": "zuul --phantom -- test/*.spec.js",
     "test-full": "zuul --concurrency 1 -- test/*.spec.js"
   },
-  "browserify": {
-    "transform": [
-      "envify"
-    ]
-  },
   "standard": {
     "ignore": [
       "dist"
@@ -47,8 +42,6 @@
     ]
   },
   "devDependencies": {
-    "browserify": "^11.2.0",
-    "envify": "^3.4.0",
     "expect.js": "^0.3.1",
     "express": "^4.13.3",
     "glob": "^7.0.0",
