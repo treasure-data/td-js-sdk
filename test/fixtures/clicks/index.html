@@ -19,40 +19,30 @@
       document.getElementById('status').innerHTML = text
     }
 
-    function setup () {
-      var timeout = setTimeout(function () {
-        setBackground('red')
-        setStatus('failure')
-      }, 5000)
+    var timeout = setTimeout(function () {
+      setBackground('red')
+      setStatus('failure')
+    }, 5000)
 
-      var td = new Treasure({
-        development: true,
-        database: 'test_db_request',
-        host: 'in-staging.treasuredata.com',
-        writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018'
-      })
+    var td = new Treasure({
+      development: true,
+      database: 'test_db_request',
+      host: 'in-staging.treasuredata.com',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018'
+    })
 
-      td.trackClicks({
-        onClick: function (event, data) {
-          setBackground('green')
-          setStatus('success')
-          clearTimeout(timeout)
-          return data
-        }
-      })
+    td.trackClicks({
+      onClick: function (event, data) {
+        setBackground('green')
+        setStatus('success')
+        clearTimeout(timeout)
+        return data
+      }
+    })
 
-      setTimeout(function () {
-        var button = document.getElementById('button')
-        button.click()
-      }, 0)
-    }
-
-    if (document.body.addEventListener) {
-      setup()
-    } else {
-      setBackground('gray')
-      setStatus('unsupported')
-    }
+    setTimeout(function () {
+      document.getElementById('button').click()
+    }, 0)
   })()
 </script>
 
