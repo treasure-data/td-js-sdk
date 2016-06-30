@@ -43,11 +43,11 @@
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "glob": "^7.0.0",
     "mocha": "^2.4.5",
     "parse-domain": "0.1.2",
     "phantomjs": "^1.9.18",
     "express": "^4.14.0",
+    "glob": "^7.0.5",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^4.7.0",
     "sinon": "^1.17.3",
