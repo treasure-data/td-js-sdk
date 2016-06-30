@@ -1,0 +1,251 @@
+var expect = require('expect.js')
+var elementUtils = require('../lib/utils/element')
+var addEventListener = elementUtils.addEventListener
+var createTreeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute
+var getElementData = elementUtils.getElementData
+var htmlElementAsString = elementUtils.htmlElementAsString
+var htmlTreeAsString = elementUtils.htmlTreeAsString
+var shouldIgnoreElement = elementUtils.shouldIgnoreElement
+
+describe('Element Utils', function () {
+  describe('addEventListener', function () {
+    it('calls the event listener', function (done) {
+      var button = document.createElement('button')
+      var removeEventListener = addEventListener(button, 'click', handler)
+
+      button.click()
+      function handler (e) {
+        expect(this === button).ok()
+        expect(e instanceof window.Event).ok()
+        removeEventListener()
+        done()
+      }
+    })
+
+    it('fails if the element is invalid', function (done) {
+      try {
+        addEventListener(null, 'click', function () {})
+        done(new Error('fail'))
+      } catch (err) {
+        done()
+      }
+    })
+
+    it('removes the event listener', function () {
+      var button = document.createElement('button')
+      var removeEventListener = addEventListener(button, 'click', handler)
+
+      var calls = 0
+      function handler () {
+        calls++
+        expect(calls === 1).ok()
+      }
+
+      button.click()
+      removeEventListener()
+      button.click()
+      expect(calls === 1).ok()
+    })
+  })
+
+  describe('createTreeHasIgnoreAttribute', function () {
+    var treeHasIgnoreAttribute = createTreeHasIgnoreAttribute('td-ignore')
+
+    it('returns true if the root has the ignored attribute', function () {
+      var div = document.createElement('div')
+      div.setAttribute('td-ignore', true)
+      expect(treeHasIgnoreAttribute(div)).ok()
+    })
+
+    it('returns true if the ignored attribute is present', function () {
+      var div = document.createElement('div')
+      div.setAttribute('td-ignore', false)
+      expect(treeHasIgnoreAttribute(div)).ok()
+    })
+
+    it('returns true if any element has the ignored attribute', function () {
+      var div = document.createElement('div')
+      div.innerHTML = '<div td-ignore><div><div></div></div></div>'
+      var leaf = div.children[0].children[0].children[0]
+      expect(treeHasIgnoreAttribute(leaf)).ok()
+    })
+
+    it('returns true if the ignored attribute is prefixed with data-', function () {
+      var div = document.createElement('div')
+      div.setAttribute('data-td-ignore', true)
+      expect(treeHasIgnoreAttribute(div)).ok()
+    })
+
+    it('returns false if the ignored attribute is missing', function () {
+      var div = document.createElement('div')
+      expect(!treeHasIgnoreAttribute(div)).ok()
+    })
+  })
+
+  describe('shouldIgnoreElement', function () {
+    it('ignores div', function () {
+      expect(shouldIgnoreElement(document.createElement('div'))).ok()
+    })
+
+    it('ignores password inputs', function () {
+      var input = document.createElement('input')
+      input.type = 'password'
+      expect(shouldIgnoreElement(input)).ok()
+    })
+
+    it('accepts a', function () {
+      expect(!shouldIgnoreElement(document.createElement('a'))).ok()
+    })
+
+    it('accepts button', function () {
+      expect(!shouldIgnoreElement(document.createElement('button'))).ok()
+    })
+
+    it('accepts input', function () {
+      expect(!shouldIgnoreElement(document.createElement('input'))).ok()
+    })
+
+    it('accepts button role', function () {
+      var div = document.createElement('div')
+      div.setAttribute('role', 'button')
+      expect(!shouldIgnoreElement(div)).ok()
+    })
+
+    it('accepts link role', function () {
+      var div = document.createElement('div')
+      div.setAttribute('role', 'link')
+      expect(!shouldIgnoreElement(div)).ok()
+    })
+  })
+
+  describe('getElementData', function () {
+    it('gets tag', function () {
+      var div = document.createElement('div')
+      var data = getElementData(div)
+      expect(data.tag === 'div').ok()
+    })
+
+    it('gets tree', function () {
+      var div = document.createElement('div')
+      div.innerHTML = '<div><div><div></div></div></div>'
+      var leaf = div.children[0].children[0].children[0]
+      var data = getElementData(leaf)
+      expect(data.tree === 'div > div > div > div').ok()
+    })
+
+    it('gets alt', function () {
+      var a = document.createElement('a')
+      a.setAttribute('alt', 'foobar')
+      var data = getElementData(a)
+      expect(data.alt === 'foobar').ok()
+    })
+
+    it('gets class', function () {
+      var div = document.createElement('div')
+      div.setAttribute('class', 'foo bar baz')
+      var data = getElementData(div)
+      expect(data.class === 'foo bar baz').ok()
+    })
+
+    it('gets href', function () {
+      var a = document.createElement('a')
+      a.setAttribute('href', 'https://www.google.com/')
+      var data = getElementData(a)
+      expect(data.href === 'https://www.google.com/').ok()
+    })
+
+    it('gets id', function () {
+      var div = document.createElement('div')
+      div.setAttribute('id', 'foobar')
+      var data = getElementData(div)
+      expect(data.id === 'foobar').ok()
+    })
+
+    it('gets name', function () {
+      var input = document.createElement('input')
+      input.setAttribute('name', 'foobar')
+      var data = getElementData(input)
+      expect(data.name === 'foobar').ok()
+    })
+
+    it('gets role', function () {
+      var div = document.createElement('div')
+      div.setAttribute('role', 'button')
+      var data = getElementData(div)
+      expect(data.role === 'button')
+    })
+
+    it('gets title', function () {
+      var button = document.createElement('button')
+      button.setAttribute('title', 'foobar')
+      var data = getElementData(button)
+      expect(data.title === 'foobar').ok()
+    })
+
+    it('gets type', function () {
+      var input = document.createElement('input')
+      input.setAttribute('type', 'hidden')
+      var data = getElementData(input)
+      expect(data.type === 'hidden').ok()
+    })
+  })
+
+  describe('htmlTreeAsString', function () {
+    it('returns the tree up to five elements deep', function () {
+      var div = document.createElement('div')
+      div.innerHTML = '<div><div><div><div><div></div></div></div></div></div>'
+      var leaf = leafChild(div)
+      expect(htmlTreeAsString(leaf) === 'div > div > div > div > div').ok()
+    })
+
+    it('returns shallow trees', function () {
+      var div = document.createElement('div')
+      div.innerHTML = '<div></div>'
+      var leaf = leafChild(div)
+      expect(htmlTreeAsString(leaf) === 'div > div').ok()
+    })
+
+    it('breaks upon reaching html element', function () {
+      var html = document.createElement('html')
+      html.innerHTML = '<body><div><div></div></div></body>'
+      var leaf = leafChild(html.children[1])
+      expect(htmlTreeAsString(leaf) === 'body > div > div').ok()
+    })
+  })
+
+  describe('htmlElementAsString', function () {
+    it('includes classes', function () {
+      var div = document.createElement('div')
+      div.setAttribute('class', 'foo bar baz')
+      expect(htmlElementAsString(div) === 'div.foo.bar.baz').ok()
+    })
+
+    it('includes id', function () {
+      var div = document.createElement('div')
+      div.setAttribute('id', 'foo')
+      expect(htmlElementAsString(div) === 'div#foo').ok()
+    })
+
+    it('includes alt and title', function () {
+      var a = document.createElement('a')
+      a.setAttribute('title', 'foobar')
+      a.setAttribute('alt', 'foobar')
+      expect(htmlElementAsString(a) === 'a[title="foobar"][alt="foobar"]').ok()
+    })
+
+    it('includes name and type', function () {
+      var button = document.createElement('button')
+      button.setAttribute('type', 'button')
+      button.setAttribute('name', 'foobar')
+      expect(htmlElementAsString(button) === 'button[type="button"][name="foobar"]').ok()
+    })
+  })
+})
+
+function leafChild (el) {
+  if (el.children && el.children[0]) {
+    return leafChild(el.children[0])
+  } else {
+    return el
+  }
+}
