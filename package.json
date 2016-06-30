@@ -64,7 +64,7 @@
     "global": "^4.3.0",
     "invariant": "^2.2.0",
     "json3": "^3.3.2",
-    "jsonp": "^0.1.0",
+    "jsonp": "^0.2.0",
     "lodash-compat": "^3.10.1",
     "verge": "^1.9.1"
   }
