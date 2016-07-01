@@ -3,6 +3,7 @@ var elementUtils = require('../lib/utils/element')
 var addEventListener = elementUtils.addEventListener
 var createTreeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute
 var getElementData = elementUtils.getElementData
+var getEventTarget = elementUtils.getEventTarget
 var htmlElementAsString = elementUtils.htmlElementAsString
 var htmlTreeAsString = elementUtils.htmlTreeAsString
 var shouldIgnoreElement = elementUtils.shouldIgnoreElement
@@ -240,11 +241,35 @@ describe('Element Utils', function () {
       expect(htmlElementAsString(button) === 'button[type="button"][name="foobar"]').ok()
     })
   })
+
+  describe('getEventTarget', function () {
+    it('handles children event targets', function (done) {
+      var div = document.createElement('div')
+      div.innerHTML = '<div>text</div>'
+      var leaf = leafChild(div)
+      addEventListener(div, 'click', function (e) {
+        expect(getEventTarget(e) === leaf)
+        done()
+      })
+      leaf.click()
+    })
+
+    it('handles direct events', function (done) {
+      var div = document.createElement('div')
+      div.innerHTML = '<div>text</div>'
+      addEventListener(div, 'click', function (e) {
+        expect(getEventTarget(e) === div)
+        done()
+      })
+      div.click()
+    })
+  })
 })
 
 function leafChild (el) {
-  if (el.children && el.children[0]) {
-    return leafChild(el.children[0])
+  var child = el.children && el.children[0]
+  if (child) {
+    return leafChild(child)
   } else {
     return el
   }
