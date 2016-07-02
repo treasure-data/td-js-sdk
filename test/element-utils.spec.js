@@ -1,4 +1,5 @@
 var expect = require('expect.js')
+var helpers = require('./helpers')
 var elementUtils = require('../lib/utils/element')
 var addEventListener = elementUtils.addEventListener
 var createTreeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute
@@ -7,20 +8,19 @@ var getEventTarget = elementUtils.getEventTarget
 var htmlElementAsString = elementUtils.htmlElementAsString
 var htmlTreeAsString = elementUtils.htmlTreeAsString
 var shouldIgnoreElement = elementUtils.shouldIgnoreElement
+var createTestElement = helpers.createTestElement
+var leafChild = helpers.leafChild
 
 describe('Element Utils', function () {
   describe('addEventListener', function () {
     it('calls the event listener', function (done) {
-      var button = document.createElement('button')
-      var removeEventListener = addEventListener(button, 'click', handler)
-
-      button.click()
+      var button = createTestElement('button')
+      addEventListener(button, 'click', handler)
       function handler (e) {
-        expect(this === button).ok()
         expect(e instanceof window.Event).ok()
-        removeEventListener()
         done()
       }
+      button.click()
     })
 
     it('fails if the element is invalid', function (done) {
@@ -33,7 +33,7 @@ describe('Element Utils', function () {
     })
 
     it('removes the event listener', function () {
-      var button = document.createElement('button')
+      var button = createTestElement('button')
       var removeEventListener = addEventListener(button, 'click', handler)
 
       var calls = 0
@@ -127,11 +127,11 @@ describe('Element Utils', function () {
     })
 
     it('gets tree', function () {
-      var div = document.createElement('div')
+      var div = createTestElement('div')
       div.innerHTML = '<div><div><div></div></div></div>'
       var leaf = div.children[0].children[0].children[0]
       var data = getElementData(leaf)
-      expect(data.tree === 'div > div > div > div').ok()
+      expect(data.tree === 'body > div > div > div > div').ok()
     })
 
     it('gets alt', function () {
@@ -145,7 +145,7 @@ describe('Element Utils', function () {
       var div = document.createElement('div')
       div.setAttribute('class', 'foo bar baz')
       var data = getElementData(div)
-      expect(data.class === 'foo bar baz').ok()
+      expect(data['class'] === 'foo bar baz').ok()
     })
 
     it('gets href', function () {
@@ -200,16 +200,10 @@ describe('Element Utils', function () {
     })
 
     it('returns shallow trees', function () {
-      var div = document.createElement('div')
+      var div = createTestElement('div')
       div.innerHTML = '<div></div>'
       var leaf = leafChild(div)
-      expect(htmlTreeAsString(leaf) === 'div > div').ok()
-    })
-
-    it('breaks upon reaching html element', function () {
-      var html = document.createElement('html')
-      html.innerHTML = '<body><div><div></div></div></body>'
-      var leaf = leafChild(html.children[1])
+      console.log(htmlTreeAsString(leaf))
       expect(htmlTreeAsString(leaf) === 'body > div > div').ok()
     })
   })
@@ -244,7 +238,7 @@ describe('Element Utils', function () {
 
   describe('getEventTarget', function () {
     it('handles children event targets', function (done) {
-      var div = document.createElement('div')
+      var div = createTestElement('div')
       div.innerHTML = '<div>text</div>'
       var leaf = leafChild(div)
       addEventListener(div, 'click', function (e) {
@@ -255,7 +249,7 @@ describe('Element Utils', function () {
     })
 
     it('handles direct events', function (done) {
-      var div = document.createElement('div')
+      var div = createTestElement('div')
       div.innerHTML = '<div>text</div>'
       addEventListener(div, 'click', function (e) {
         expect(getEventTarget(e) === div)
@@ -265,12 +259,3 @@ describe('Element Utils', function () {
     })
   })
 })
-
-function leafChild (el) {
-  var child = el.children && el.children[0]
-  if (child) {
-    return leafChild(child)
-  } else {
-    return el
-  }
-}

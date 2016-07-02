@@ -1,6 +1,7 @@
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 var Clicks = require('../lib/plugins/clicks')
+var createTestElement = require('./helpers').createTestElement
 
 describe('Treasure Clicks', function () {
   it('adds trackClicks method', function () {
@@ -16,7 +17,7 @@ describe('Treasure Clicks', function () {
 
   it('sets _clickTrackingInstalled when click tracking is setup', function () {
     var td = {}
-    var button = document.createElement('button')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button
     })
@@ -31,7 +32,7 @@ describe('Treasure Clicks', function () {
         done()
       }
     }
-    var button = document.createElement('button')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button
     })
@@ -40,7 +41,7 @@ describe('Treasure Clicks', function () {
 
   it('calls onClick with the event and data', function (done) {
     var td = { trackEvent: function () {} }
-    var button = document.createElement('button')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
       onClick: function (event, data) {
@@ -60,7 +61,7 @@ describe('Treasure Clicks', function () {
         done()
       }
     }
-    var button = document.createElement('button')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
       onClick: function () {
@@ -78,7 +79,7 @@ describe('Treasure Clicks', function () {
         trackEventCalls++
       }
     }
-    var button = document.createElement('button')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
       onClick: function (event, data) {
@@ -100,7 +101,7 @@ describe('Treasure Clicks', function () {
         calls++
       }
     }
-    var a = document.createElement('a')
+    var a = createTestElement('a')
     Clicks.trackClicks.call(td, {
       element: a,
       ignoreAttribute: 'i-am-a-ninja'
