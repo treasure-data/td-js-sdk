@@ -203,7 +203,6 @@ describe('Element Utils', function () {
       var div = createTestElement('div')
       div.innerHTML = '<div></div>'
       var leaf = leafChild(div)
-      console.log(htmlTreeAsString(leaf))
       expect(htmlTreeAsString(leaf) === 'body > div > div').ok()
     })
   })
