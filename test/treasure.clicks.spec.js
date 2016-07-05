@@ -101,14 +101,14 @@ describe('Treasure Clicks', function () {
         calls++
       }
     }
-    var a = createTestElement('a')
+    var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
-      element: a,
+      element: button,
       ignoreAttribute: 'i-am-a-ninja'
     })
-    a.click()
-    a.setAttribute('i-am-a-ninja', true)
-    a.click()
+    button.click()
+    button.setAttribute('i-am-a-ninja', true)
+    button.click()
     expect(calls === 1).ok()
   })
 

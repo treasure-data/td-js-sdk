@@ -238,7 +238,7 @@ describe('Element Utils', function () {
   describe('getEventTarget', function () {
     it('handles children event targets', function (done) {
       var div = createTestElement('div')
-      div.innerHTML = '<div>text</div>'
+      div.innerHTML = '<button>text</button>'
       var leaf = leafChild(div)
       addEventListener(div, 'click', function (e) {
         expect(getEventTarget(e) === leaf)
@@ -248,13 +248,13 @@ describe('Element Utils', function () {
     })
 
     it('handles direct events', function (done) {
-      var div = createTestElement('div')
-      div.innerHTML = '<div>text</div>'
-      addEventListener(div, 'click', function (e) {
-        expect(getEventTarget(e) === div)
+      var button = createTestElement('button')
+      button.innerHTML = '<div>text</div>'
+      addEventListener(button, 'click', function (e) {
+        expect(getEventTarget(e) === button)
         done()
       })
-      div.click()
+      button.click()
     })
   })
 })
