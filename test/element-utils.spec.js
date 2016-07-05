@@ -196,7 +196,6 @@ describe('Element Utils', function () {
       var div = document.createElement('div')
       div.innerHTML = '<h1><a><button><div></div></button></a></h1>'
       var leaf = leafChild(div)
-      console.log(htmlTreeAsString(leaf))
       expect(htmlTreeAsString(leaf) === 'div > h1 > a > button > div').ok()
     })
 
