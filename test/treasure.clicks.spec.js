@@ -111,4 +111,20 @@ describe('Treasure Clicks', function () {
     a.click()
     expect(calls === 1).ok()
   })
+
+  it('lets you dispose the click tracker', function () {
+    var button = createTestElement('button')
+    var trackEventCalls = 0
+    var dispose = Clicks.trackClicks.call({
+      trackEvent: function () {
+        trackEventCalls++
+      }
+    }, {
+      element: button
+    })
+    button.click()
+    dispose()
+    button.click()
+    expect(trackEventCalls === 1).ok()
+  })
 })
