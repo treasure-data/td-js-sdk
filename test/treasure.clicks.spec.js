@@ -39,12 +39,12 @@ describe('Treasure Clicks', function () {
     button.click()
   })
 
-  it('calls onClick with the event and data', function (done) {
+  it('calls extendClickData with the event and data', function (done) {
     var td = { trackEvent: function () {} }
     var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
-      onClick: function (event, data) {
+      extendClickData: function (event, data) {
         expect(event instanceof window.Event).ok()
         expect(data.tag === 'button').ok()
         done()
@@ -53,7 +53,7 @@ describe('Treasure Clicks', function () {
     button.click()
   })
 
-  it('calls trackEvent with the result of onClick', function (done) {
+  it('calls trackEvent with the result of extendClickData', function (done) {
     var emptyObject = {}
     var td = {
       trackEvent: function (tableName, data) {
@@ -64,14 +64,14 @@ describe('Treasure Clicks', function () {
     var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
-      onClick: function () {
+      extendClickData: function () {
         return emptyObject
       }
     })
     button.click()
   })
 
-  it('only calls trackEvent if onClick returns truthy', function () {
+  it('only calls trackEvent if extendClickData returns truthy', function () {
     var trackEventCalls = 0
     var onClickCalls = 0
     var td = {
@@ -82,7 +82,7 @@ describe('Treasure Clicks', function () {
     var button = createTestElement('button')
     Clicks.trackClicks.call(td, {
       element: button,
-      onClick: function (event, data) {
+      extendClickData: function (event, data) {
         onClickCalls++
         return trackEventCalls === 0 ? data : null
       }
