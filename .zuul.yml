@@ -12,3 +12,9 @@ browsers:
     version: 5..latest
   - name: ie
     version: 8..latest
+
+concurrency: 1
+
+tunnel:
+  type: ngrok
+  bind_tls: true
