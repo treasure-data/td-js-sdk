@@ -194,9 +194,9 @@ describe('Element Utils', function () {
   describe('htmlTreeAsString', function () {
     it('returns the tree up to five elements deep', function () {
       var div = document.createElement('div')
-      div.innerHTML = '<h1><a><button><div></div></button></a></h1>'
+      div.innerHTML = '<h1><a><span><div></div></span></a></h1>'
       var leaf = leafChild(div)
-      expect(htmlTreeAsString(leaf) === 'div > h1 > a > button > div').ok()
+      expect(htmlTreeAsString(leaf) === 'div > h1 > a > span > div').ok()
     })
 
     it('returns shallow trees', function () {
