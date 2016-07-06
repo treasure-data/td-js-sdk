@@ -132,6 +132,8 @@ Every time a track functions is called, the following information is sent:
 * **td_viewport** - viewport size
 * **td_title** - document title
 * **td_url** - document url
+* **td_user_agent** - browser user agent
+* **td_platform** - browser platform
 * **td_host** - document host
 * **td_path** - document pathname
 * **td_referrer** - document referrer
@@ -235,6 +237,18 @@ var errorCallback = function () {
 
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
+
+### Treasure#trackClicks
+
+Setup an event listener to automatically log clicks.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.trackClicks()
+```
+
 
 ### Treasure#trackPageview(table, success, failure)
 
