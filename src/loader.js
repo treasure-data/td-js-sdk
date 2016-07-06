@@ -23,7 +23,11 @@
     var s = document.createElement('script')
     s.type = 'text/javascript'
     s.async = !0
-    s.src = (document.location.protocol === 'https:' ? 'https:' : 'http:') + '@URL'
+    s.src = (
+      document.location.protocol === 'https:'
+      ? 'https:'
+      : 'http:'
+    ) + '//cdn.treasuredata.com/sdk/@VERSION/td.min.js'
 
     var t = document.getElementsByTagName('script')[0]
     t.parentNode.insertBefore(s, t)
