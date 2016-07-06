@@ -8,7 +8,7 @@
   "author": {
     "name": "Cesar Andreu",
     "email": "cesar@treasure-data.com",
-    "url": "http://treasuredata.com"
+    "url": "https://www.treasuredata.com"
   },
   "repository": {
     "type": "git",
@@ -16,24 +16,17 @@
   },
   "scripts": {
     "build": "webpack",
-    "build-all": "NODE_ENV=production npm run build-gzip && npm run minify-gzip && npm run build-loader",
-    "build-gzip": "npm run build && cat ./dist/td.js | gzip > ./dist/td.js.gz",
+    "build-all": "NODE_ENV=production npm run build && npm run minify && npm run build-loader",
     "build-loader": "cat ./src/loader.js | sed 's/@GLOBAL/Treasure/' | uglifyjs -m -c > ./dist/loader.min.js",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "minify": "webpack --output-filename [name].min.js -p",
-    "minify-gzip": "npm run minify && cat ./dist/td.min.js | gzip > ./dist/td.min.js.gz",
     "test": "standard && node ./bin/test.js",
-    "test-local": "zuul --local -- test/*.spec.js",
+    "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
     "test-phantom": "zuul --phantom -- test/*.spec.js",
     "test-full": "zuul --concurrency 1 -- test/*.spec.js"
-  },
-  "browserify": {
-    "transform": [
-      "envify"
-    ]
   },
   "standard": {
     "ignore": [
@@ -47,23 +40,22 @@
     ]
   },
   "devDependencies": {
-    "browserify": "^11.2.0",
-    "envify": "^3.4.0",
     "expect.js": "^0.3.1",
-    "express": "^4.13.3",
-    "glob": "^7.0.0",
-    "mocha": "^2.4.5",
-    "parse-domain": "0.1.2",
-    "phantomjs": "^1.9.18",
+    "express": "^4.14.0",
+    "glob": "^7.0.5",
+    "mocha": "^2.5.3",
+    "parse-domain": "^0.2.1",
+    "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
-    "selenium-standalone": "^4.7.0",
-    "sinon": "^1.17.3",
-    "standard": "^6.0.7",
-    "tape": "^4.4.0",
+    "selenium-standalone": "^5.4.0",
+    "sinon": "^1.17.4",
+    "standard": "^7.1.2",
+    "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
-    "wd": "^0.3.12",
-    "webpack": "^1.12.14",
-    "zuul": "^3.9.0"
+    "wd": "^0.4.0",
+    "webpack": "^1.13.1",
+    "zuul": "^3.9.0",
+    "zuul-ngrok": "^4.0.0"
   },
   "dependencies": {
     "cookies-js": "^1.2.2",
@@ -71,7 +63,7 @@
     "global": "^4.3.0",
     "invariant": "^2.2.0",
     "json3": "^3.3.2",
-    "jsonp": "^0.1.0",
+    "jsonp": "^0.2.0",
     "lodash-compat": "^3.10.1",
     "verge": "^1.9.1"
   }
