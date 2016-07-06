@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0 (2016-07-06)
+
+* Add td_platform and td_user_agent tracked values
+* Add clicks plugins, usable with trackClicks method
+* Add scripts for building loader and uploading releases
+
 ## 1.5.2 (2016-03-08)
 
 * Add global package for safely resolving the window object
