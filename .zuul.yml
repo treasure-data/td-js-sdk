@@ -6,8 +6,7 @@ browsers:
   - name: chrome
     version: -2..latest
   - name: firefox
-    version: 46 # 47 breaks zuul :(
-    # version: -2..latest
+    version: -2..latest
   - name: safari
     version: 5..latest
   - name: ie
