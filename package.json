@@ -58,6 +58,7 @@
     "zuul-ngrok": "^4.0.0"
   },
   "dependencies": {
+    "Base64": "^1.0.0",
     "cookies-js": "^1.2.2",
     "domready": "^0.3.0",
     "global": "^4.3.0",
