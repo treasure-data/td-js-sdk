@@ -1,0 +1,51 @@
+
+
+// var Treasure = require('./treasure')
+// var window = require('global/window')
+
+// // Load all cached clients
+// require('./loadClients')(Treasure, 'Treasure')
+
+// // Expose the library on the window
+// window.Treasure = Treasure
+
+// // Modules
+// var _ = require('./utils/lodash')
+// var window = require('global/window')
+
+// // Helpers
+// function applyToClient (client, method) {
+//   var _method = '_' + method
+//   if (client[_method]) {
+//     var arr = client[_method] || []
+//     while (arr.length) {
+//       client[method].apply(client, arr.shift())
+//     }
+//     delete client[_method]
+//   }
+// }
+
+// // Constants
+// var TREASURE_KEYS = ['init', 'set', 'addRecord', 'trackPageview', 'trackEvent', 'ready']
+
+// /**
+//  * Load clients
+//  */
+// module.exports = function loadClients (Treasure, name) {
+//   if (_.isObject(window[name])) {
+//     var snippet = window[name]
+//     var clients = snippet.clients
+
+//     // Copy over Treasure.prototype functions over to snippet's prototype
+//     // This allows already-instanciated clients to work
+//     _.mixin(snippet.prototype, Treasure.prototype)
+
+//     // Iterate over each client instance
+//     _.forEach(clients, function (client) {
+//       // Call each key and with any stored values
+//       _.forEach(TREASURE_KEYS, function (value) {
+//         applyToClient(client, value)
+//       })
+//     })
+//   }
+// }

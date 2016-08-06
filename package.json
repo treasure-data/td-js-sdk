@@ -40,31 +40,14 @@
     ]
   },
   "devDependencies": {
-    "expect.js": "^0.3.1",
-    "express": "^4.14.0",
-    "glob": "^7.0.5",
-    "mocha": "^2.5.3",
-    "parse-domain": "^0.2.1",
-    "phantomjs-prebuilt": "^2.1.7",
-    "requirejs": "^2.2.0",
-    "selenium-standalone": "^5.4.0",
-    "sinon": "^1.17.4",
-    "standard": "^7.1.2",
-    "tape": "^4.6.0",
-    "uglifyjs": "^2.4.10",
-    "wd": "^0.4.0",
-    "webpack": "^1.13.1",
-    "zuul": "^3.9.0",
-    "zuul-ngrok": "^4.0.0"
+    "standard": "^7.1.2"
   },
   "dependencies": {
-    "cookies-js": "^1.2.2",
+    "blob": "0.0.4",
     "domready": "^0.3.0",
     "global": "^4.3.0",
-    "invariant": "^2.2.0",
-    "json3": "^3.3.2",
-    "jsonp": "^0.2.0",
-    "lodash-compat": "^3.10.1",
+    "js-cookie": "^2.1.2",
+    "object.assign": "^4.0.3",
     "verge": "^1.9.1"
   }
 }

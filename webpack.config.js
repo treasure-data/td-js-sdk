@@ -2,7 +2,8 @@ const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    td: './lib/index.js'
+    // td: './lib/index.js'
+    td: './src/index.js'
   },
   output: {
     filename: '[name].js',
