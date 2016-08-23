@@ -177,7 +177,7 @@ var beacon = {
 var xhr = {
   send: function (url, body, callback) {
     var request = new window.XMLHttpRequest()
-    request.open('PORT', url, true)
+    request.open('POST', url, true)
     request.withCredentials = true
     request.setRequestHeader('Content-Type', 'application/json')
     request.onreadystatechange = function () {
