@@ -43,7 +43,6 @@
     "standard": "^7.1.2"
   },
   "dependencies": {
-    "blob": "0.0.4",
     "domready": "^0.3.0",
     "global": "^4.3.0",
     "js-cookie": "^2.1.2",
