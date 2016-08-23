@@ -40,7 +40,10 @@
     ]
   },
   "devDependencies": {
-    "standard": "^7.1.2"
+    "standard": "^7.1.2",
+    "tape": "^4.6.0",
+    "tape-catch": "^1.0.6",
+    "webpack": "^1.13.2"
   },
   "dependencies": {
     "domready": "^0.3.0",
