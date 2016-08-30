@@ -31,12 +31,6 @@
   "standard": {
     "ignore": [
       "dist"
-    ],
-    "global": [
-      "afterEach",
-      "beforeEach",
-      "describe",
-      "it"
     ]
   },
   "devDependencies": {
