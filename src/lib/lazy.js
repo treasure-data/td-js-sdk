@@ -4,8 +4,8 @@ var collection = require('./collection')
 // Needed because of IE8...
 var canDefineProperty = (function () {
   try {
-    Object.defineProperty({}, 'x', { get: function () {} })
-    return true
+    return Object.defineProperty({}, 'x', { get: function () { return 1 } }).x === 1
+     // true
   } catch (e) {
     return false
   }
