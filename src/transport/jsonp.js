@@ -1,8 +1,8 @@
 var window = require('global/window')
 var encode = require('../lib/base64').encode
 var now = require('../lib/date').now
-var isFunction = require('../lib/lang').isFunction
-var has = require('../lib/object').has
+// var isFunction = require('../lib/lang').isFunction
+var hasIn = require('../lib/object').hasIn
 var addQueryParams = require('../lib/uri').addQueryParams
 var noop = require('../lib/util').noop
 var MAXIMUM_URL_LENGTH = 2084
@@ -10,22 +10,22 @@ var TIMEOUT = 5e3
 
 // Check if environment allows JSONP requests
 function canUse () {
-  return has(window, ['document', 'createElement'])
+  return hasIn(window, 'document.createElement')
 }
 
 // Prepare params for JSONP request
 // type PrepareParams = {
 //   apiKey: string, callback?: (result: boolean) => void,
-//   modified: number, record: Object, url: string
+//   modified: number, data: Object, url: string
 // }
 function prepare (params) {
   jsonp._count = jsonp._count + 1
 
   var apiKey = params.apiKey
-  var callback = isFunction(params.callback) ? params.callback : noop
+  // var callback = isFunction(params.callback) ? params.callback : noop
   var id = jsonp._base + jsonp._count
   var modified = now() // This is used to skip the cache
-  var data = encode(JSON.stringify(params.record))
+  var data = encode(JSON.stringify(params.data))
   var url = addQueryParams(params.url, {
     api_key: apiKey,
     callback: id,
@@ -34,7 +34,7 @@ function prepare (params) {
   })
 
   return {
-    callback: callback,
+    // callback: callback,
     id: id,
     url: url
   }
@@ -45,19 +45,19 @@ function prepare (params) {
 //   callback: (result: boolean) => void, id: string, url: string
 // }
 function send (params) {
-  var callback = params.callback
+  // var callback = params.callback
   var id = params.id
   var target = window.document.getElementsByTagName('head')[0]
   var url = params.url
 
   var timer = setTimeout(function jsonpTimeout () {
     cleanup()
-    callback(false)
+    // callback(false)
   }, TIMEOUT)
 
   window[id] = function jsonpCallback () {
     cleanup()
-    callback(true)
+    // callback(true)
   }
 
   function cleanup () {
@@ -81,7 +81,7 @@ function validate (params) {
 }
 
 var jsonp = {
-  _base: 'td_callback',
+  _base: 'tdJSONPCallback',
   _count: 0,
   canUse: canUse,
   prepare: prepare,

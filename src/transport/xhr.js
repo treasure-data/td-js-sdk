@@ -1,7 +1,7 @@
 var window = require('global/window')
-var isFunction = require('../lib/lang').isFunction
+// var isFunction = require('../lib/lang').isFunction
 var hasKey = require('../lib/object').hasKey
-var noop = require('../lib/util').noop
+// var noop = require('../lib/util').noop
 var MAXIMUM_BODY_SIZE = 8192
 var TIMEOUT = 5e3
 
@@ -15,14 +15,14 @@ function canUse () {
 // Prepare params for CORS XHR request
 function prepare (params) {
   var apiKey = params.apiKey
-  var callback = isFunction(params.callback) ? params.callback : noop
+  // var callback = isFunction(params.callback) ? params.callback : noop
   var data = JSON.stringify(params.record)
   var sync = params.sync === true
   var url = params.url
 
   return {
     apiKey: apiKey,
-    callback: callback,
+    // callback: callback,
     data: data,
     sync: sync,
     url: url
@@ -41,20 +41,19 @@ function createRequest (params) {
 
 // Send an async CORS XHR request
 function sendAsync (params) {
-  var callback = params.callback
   var request = createRequest(params)
   request.timeout = TIMEOUT
   request.onload = function onload () {
     if (request.readyState === 4) {
       request.onload = null
       request.ontimeout = null
-      callback(request.status === 200)
+      request = null
     }
   }
   request.ontimeout = function ontimeout () {
     request.onload = null
     request.ontimeout = null
-    callback(false)
+    request = null
   }
   request.send(params.data)
   return true
@@ -62,18 +61,14 @@ function sendAsync (params) {
 
 // Send a sync CORS XHR request
 function sendSync (params) {
-  var callback = params.callback
   var request = createRequest(params)
   request.send(params.data)
-  var result = request.status === 200
-  callback(result)
-  return result
+  return request.status === 200
 }
 
 // Send a CORS XHR request
 // type SendParams = {
-//   apiKey: string, callback: (result: boolean) => void,
-//   data: string, sync: boolean, url: string
+//   apiKey: string, data: string, sync: boolean, url: string
 // }
 function send (params) {
   return params.sync ? sendSync(params) : sendAsync(params)
