@@ -1,6 +1,12 @@
 var window = require('global/window')
 var isUndefined = require('./lang').isUndefined
 
+function assert (value, message) {
+  if (value !== true) {
+    throw new Error(message)
+  }
+}
+
 function identity (value) {
   return value
 }
@@ -55,6 +61,7 @@ function uuid4 () {
 }
 
 module.exports = {
+  assert: assert,
   identity: identity,
   noop: noop,
   uuid4: uuid4
