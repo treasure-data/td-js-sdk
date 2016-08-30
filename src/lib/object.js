@@ -1,5 +1,5 @@
 var objOwnProperty = Object.prototype.hasOwnProperty
-// var assign = require('object.assign/polyfill')
+var assign = require('object.assign/polyfill')
 // var assign = function () {}
 var lang = require('./lang')
 
@@ -25,15 +25,15 @@ var lang = require('./lang')
 // var keys = Object.keys || function keys (obj) {
 // }
 
-function get (object, path, defaultValue) {
-  if (!lang.isObject(object) || !lang.isArray(path) || !path.length) {
+function getIn (object, path, defaultValue) {
+  if (!lang.isObject(object) || !path) {
     return defaultValue
   }
 
   var currentValue = object
-  var length = path.length
-  for (var idx = 0; idx < length; idx++) {
-    var key = path[idx]
+  var pathArray = path.split('.')
+  for (var idx = 0; idx < pathArray; idx++) {
+    var key = pathArray[idx]
 
     if (lang.isObject(currentValue) && hasKey(currentValue, key)) {
       currentValue = currentValue[key]
@@ -47,8 +47,8 @@ function get (object, path, defaultValue) {
   return currentValue
 }
 
-function has (object, path) {
-  var result = get(object, path)
+function hasIn (object, path) {
+  var result = getIn(object, path)
   return !lang.isUndefined(result)
 }
 
@@ -57,8 +57,8 @@ function hasKey (object, key) {
 }
 
 module.exports = {
-  // assign: assign,
-  get: get,
+  assign: assign,
+  getIn: getIn,
   has: has,
   hasKey: hasKey
 }
