@@ -1,5 +1,4 @@
 var window = require('global/window')
-var isUndefined = require('./lang').isUndefined
 
 function assert (value, message) {
   if (value !== true) {
@@ -30,7 +29,7 @@ function noop () {}
 function uuid4 () {
   var crypto = window.crypto || window.msCrypto
 
-  if (!isUndefined(crypto) && crypto.getRandomValues) {
+  if (crypto !== void 0 && crypto.getRandomValues) {
     // Use window.crypto API if available
     var arr = new Uint16Array(8)
     crypto.getRandomValues(arr)

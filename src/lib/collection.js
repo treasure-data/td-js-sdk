@@ -1,6 +1,6 @@
 var lang = require('./lang')
-var object = require('./object')
-var util = require('./util')
+var object = require('./object').hasKey
+var util = require('./util').identity
 
 function forEach (collection, maybeIteratee) {
   var iteratee = lang.isFunction(maybeIteratee) ? maybeIteratee : util.identity

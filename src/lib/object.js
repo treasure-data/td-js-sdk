@@ -49,7 +49,7 @@ function getIn (object, path, defaultValue) {
 
 function hasIn (object, path) {
   var result = getIn(object, path)
-  return !lang.isUndefined(result)
+  return result === void 0
 }
 
 function hasKey (object, key) {
