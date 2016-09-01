@@ -7,7 +7,7 @@ cache:
 language: node_js
 
 node_js:
-  - '6.2.2'
+  - '6.5.0'
 
 env:
   global:
