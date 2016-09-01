@@ -59,6 +59,6 @@ function hasKey (object, key) {
 module.exports = {
   assign: assign,
   getIn: getIn,
-  has: has,
+  hasIn: hasIn,
   hasKey: hasKey
 }
