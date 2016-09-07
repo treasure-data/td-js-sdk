@@ -1,4 +1,4 @@
-var collection = require('./collection')
+var forEach = require('./forEach')
 
 // If the environment can use Object.defineProperty
 // Needed because of IE8...
@@ -30,7 +30,7 @@ function setLazy (obj, prop, fn) {
 // Similar to setLazy, but allows you to set multiple props at once
 // props should be a map of property to getters
 function setManyLazy (obj, props) {
-  collection.forEach(props, function (fn, prop) {
+  forEach(props, function (fn, prop) {
     setLazy(obj, prop, fn)
   })
   return obj

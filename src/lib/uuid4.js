@@ -1,18 +1,5 @@
 var window = require('global/window')
 
-function assert (value, message) {
-  if (value !== true) {
-    throw new Error(message)
-  }
-}
-
-function identity (value) {
-  return value
-}
-
-function noop () {}
-
-// node-uuid doesn't work with old IE
 // Source: http://stackoverflow.com/a/8809472
 // function uuid () {
 //   var d = now()
@@ -26,7 +13,7 @@ function noop () {}
 //   })
 //   return u
 // }
-function uuid4 () {
+module.exports = function uuid4 () {
   var crypto = window.crypto || window.msCrypto
 
   if (crypto !== void 0 && crypto.getRandomValues) {
@@ -57,11 +44,4 @@ function uuid4 () {
       return v.toString(16)
     })
   }
-}
-
-module.exports = {
-  assert: assert,
-  identity: identity,
-  noop: noop,
-  uuid4: uuid4
 }
