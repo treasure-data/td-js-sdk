@@ -14,8 +14,9 @@ var window = require('global/window')
 //   return u
 // }
 module.exports = function uuid4 () {
-  var crypto = window.crypto || window.msCrypto
+  var crypto = window.crypto || /* istanbul ignore next: legacy */ window.msCrypto
 
+  /* istanbul ignore next */
   if (crypto !== void 0 && crypto.getRandomValues) {
     // Use window.crypto API if available
     var arr = new Uint16Array(8)

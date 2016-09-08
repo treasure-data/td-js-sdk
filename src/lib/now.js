@@ -1,3 +1,3 @@
-module.exports = Date.now || function now () {
+module.exports = Date.now || /* istanbul ignore next: polyfill */ function now () {
   return +new Date()
 }

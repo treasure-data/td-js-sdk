@@ -1,4 +1,5 @@
 module.exports = function log () {
+  /* istanbul ignore else */
   if (typeof console !== 'undefined') {
     var args = ['[td]']
     var length = arguments.length
