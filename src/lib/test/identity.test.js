@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var identity = require('./identity')
+var identity = require('../identity')
 
 test('identity', function (t) {
   t.plan(2)

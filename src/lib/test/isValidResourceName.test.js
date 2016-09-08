@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var isValidResourceName = require('./isValidResourceName')
+var isValidResourceName = require('../isValidResourceName')
 
 test('isValidResourceName', function (t) {
   t.plan(3)

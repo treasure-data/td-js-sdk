@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var forEach = require('./forEach')
+var forEach = require('../forEach')
 
 test('forEach array', function (t) {
   t.plan(5)
@@ -27,4 +27,11 @@ test('forEach object', function (t) {
   })
   t.deepEqual(keys, ['a', 'b', 'c'])
   t.deepEqual(values, [10, 20, 30])
+})
+
+test('forEach invalid', function (t) {
+  t.plan(1)
+  t.throws(function () {
+    forEach(null)
+  }, /TypeError/)
 })

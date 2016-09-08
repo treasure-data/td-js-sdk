@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var assert = require('./assert')
+var assert = require('../assert')
 
 test('assert', function (t) {
   t.plan(2)

@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var uuid4 = require('./uuid4')
+var uuid4 = require('../uuid4')
 
 test('uuid4', function (t) {
   t.plan(3)

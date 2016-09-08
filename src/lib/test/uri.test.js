@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var uri = require('./uri')
+var uri = require('../uri')
 
 test('uri.addQueryParams', function (t) {
   t.plan(2)

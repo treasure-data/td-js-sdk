@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var now = require('./now')
+var now = require('../now')
 
 test('now', function (t) {
   t.plan(1)

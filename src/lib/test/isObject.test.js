@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var isObject = require('./isObject')
+var isObject = require('../isObject')
 
 test('isObject', function (t) {
   t.plan(5)

@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var isArray = require('./isArray')
+var isArray = require('../isArray')
 
 test('isArray', function (t) {
   t.plan(3)

@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var hasKey = require('./hasKey')
+var hasKey = require('../hasKey')
 
 test('hasKey instance', function (t) {
   function TestClass () {

@@ -1,6 +1,6 @@
 // @TODO~
 // var test = require('tape-catch')
-// var element = require('./element')
+// var element = require('../element')
 
 // test('element.addEventListener', function (t) {
 //   t.plan(2)

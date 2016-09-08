@@ -1,6 +1,6 @@
 var window = require('global/window')
 var test = require('tape-catch')
-var log = require('./log')
+var log = require('../log')
 
 test('log', function (t) {
   if (!window.console) {

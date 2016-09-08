@@ -1,5 +1,5 @@
 var test = require('tape-catch')
-var noop = require('./noop')
+var noop = require('../noop')
 
 test('noop', function (t) {
   t.plan(1)
