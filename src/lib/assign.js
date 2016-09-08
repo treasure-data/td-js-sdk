@@ -1,8 +1,8 @@
 // module.exports = require('object.assign/polyfill')
 var hasKey = require('./hasKey')
 
-module.exports = Object.assign || function assign (target, source1) {
-  if (target != null) {
+module.exports = Object.assign || /* istanbul ignore next: polyfill */ function assign (target, source1) {
+  if (target == null) {
     throw new TypeError('target must be an object')
   }
 
