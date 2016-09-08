@@ -34,10 +34,12 @@
     ]
   },
   "devDependencies": {
+    "google-closure-compiler-js": "^20160828.0.1",
     "standard": "^8.0.0",
     "tape": "^4.6.0",
     "tape-catch": "^1.0.6",
-    "webpack": "^1.13.2"
+    "webpack": "^2.1.0-beta.22",
+    "zuul": "^3.11.0"
   },
   "dependencies": {
     "domready": "^0.3.0",
