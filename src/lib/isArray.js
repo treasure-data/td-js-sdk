@@ -1,3 +1,3 @@
 module.exports = Array.isArray || /* istanbul ignore next: polyfill */ function isArray (value) {
-  return require('./isObject')(value) && Object.prototype.call(value) === '[object Array]'
+  return require('./isObject')(value) && Object.prototype.toString.call(value) === '[object Array]'
 }
