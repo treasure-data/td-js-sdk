@@ -10,9 +10,12 @@ module.exports = function forEach (collection, iteratee) {
     }
   } else if (isObject(collection)) {
     for (var key in collection) {
+      /* istanbul ignore else */
       if (hasKey(collection, key)) {
         iteratee(collection[key], key, collection)
       }
     }
+  } else {
+    throw new TypeError('collection must be an object')
   }
 }
