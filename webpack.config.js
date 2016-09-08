@@ -1,18 +1,35 @@
+const path = require('path')
 const webpack = require('webpack')
+const ClosureCompiler = require('google-closure-compiler-js').webpack
 
-module.exports = {
-  entry: {
-    // td: './lib/index.js'
-    td: './src/index.js'
-  },
-  output: {
-    filename: '[name].js',
-    path: './dist'
-  },
-  target: 'web',
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
-    })
-  ]
+module.exports = function webpackConfig ({ build = false }) {
+  const config = {
+    entry: {
+      td: './src/script.js'
+    },
+    output: {
+      filename: build ? '[name].min.js' : '[name].js',
+      path: path.join(__dirname, 'dist')
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': `'${build ? 'development' : 'production'}'`
+      })
+    ]
+  }
+
+  if (build) {
+    config.plugins.push(
+      new ClosureCompiler({
+        options: {
+          languageIn: 'ECMASCRIPT5',
+          languageOut: 'ECMASCRIPT3',
+          compilationLevel: 'ADVANCED',
+          warningLevel: 'VERBOSE'
+        }
+      })
+    )
+  }
+
+  return config
 }
