@@ -8,7 +8,8 @@ module.exports = function getIn (object, path, defaultValue) {
 
   var currentValue = object
   var pathArray = path.split('.')
-  for (var idx = 0; idx < pathArray; idx++) {
+  var length = pathArray.length
+  for (var idx = 0; idx < length; idx++) {
     var key = pathArray[idx]
 
     if (isObject(currentValue) && hasKey(currentValue, key)) {
