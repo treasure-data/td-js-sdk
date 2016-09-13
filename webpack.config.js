@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ClosureCompiler = require('google-closure-compiler-js').webpack
 
-module.exports = function webpackConfig ({ build = false }) {
+module.exports = function webpackConfig ({ build = false } = {}) {
   const config = {
     entry: {
       td: './src/script.js'
