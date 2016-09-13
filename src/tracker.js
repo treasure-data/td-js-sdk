@@ -31,7 +31,7 @@ var trackerValues = {
     }
   },
   td_platform: function () {
-    return window.navigator.platform
+    return getIn(window, 'navigator.platform')
   },
   td_referrer: function () {
     return getIn(window, 'document.referrer')
