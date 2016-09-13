@@ -11,8 +11,8 @@ test('forEach array', function (t) {
     indexes.push(index)
     t.equal(collection, array)
   })
-  t.deepEqual(indexes, [0, 1, 2])
-  t.deepEqual(values, [10, 20, 30])
+  t.deepEqual(indexes, [0, 1, 2], 'array index')
+  t.deepEqual(values, [10, 20, 30], 'array value')
 })
 
 test('forEach object', function (t) {
@@ -25,8 +25,8 @@ test('forEach object', function (t) {
     keys.push(key)
     t.equal(collection, object)
   })
-  t.deepEqual(keys, ['a', 'b', 'c'])
-  t.deepEqual(values, [10, 20, 30])
+  t.deepEqual(keys, ['a', 'b', 'c'], 'object keys')
+  t.deepEqual(values, [10, 20, 30], 'object values')
 })
 
 test('forEach invalid', function (t) {
