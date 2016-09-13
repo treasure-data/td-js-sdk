@@ -1,7 +1,7 @@
 var window = require('global/window')
-var object = require('./lib/object')
+var getIn = require('./lib/getIn')
 
-var protocol = object.getIn(window, 'location.protocol') === 'http:'
+var protocol = getIn(window, 'location.protocol') === 'http:'
   ? 'http:'
   : 'https:'
 
