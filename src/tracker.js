@@ -50,7 +50,8 @@ var trackerValues = {
     return getIn(window, 'navigator.userAgent')
   },
   td_url: function () {
-    return getIn(window, 'document.URL')
+    var hash = getIn(window, 'location.hash', '')
+    return getIn(window, 'location.href', '').replace(hash, '')
   },
   td_version: function () {
     return version
