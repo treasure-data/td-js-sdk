@@ -17,8 +17,8 @@ function setLazy (obj, prop, fn) {
     Object.defineProperty(obj, prop, {
       configurable: true,
       enumerable: true,
-      get: fn,
-      writable: true
+      get: fn
+      // writable: true
     })
   } else {
     obj[prop] = fn()
