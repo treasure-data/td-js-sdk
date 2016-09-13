@@ -12,6 +12,7 @@ module.exports = {
   cookieName: '_td',
   cookiePath: '/',
   development: false,
+  eventsTable: 'events',
   host: 'in.treasuredata.com',
   pageviewsTable: 'pageviews',
   pathname: '/js/v3/event/',
