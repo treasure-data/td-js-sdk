@@ -6,6 +6,7 @@ var protocol = getIn(window, 'location.protocol') === 'http:'
   : 'https:'
 
 module.exports = {
+  clickIgnoreAttribute: 'td-ignore',
   clicksTable: 'clicks',
   cookieDomain: null,
   cookieExpiresDays: 730, // 2 years
