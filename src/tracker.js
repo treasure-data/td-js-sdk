@@ -89,11 +89,13 @@ function createTracker (client) {
   }
 
   function trackEvent (tableName, values) {
-    return client.addRecord(tableName, assign(getTrackerValues(), values))
+    var eventsTable = tableName || client.config.eventsTable
+    return client.addRecord(eventsTable, assign(getTrackerValues(), values))
   }
 
   function trackPageview (tableName) {
-    return trackEvent(tableName || client.config.pageviewsTable, {})
+    var pageviewsTable = tableName || client.config.pageviewsTable
+    return trackEvent(pageviewsTable, {})
   }
 
   function getClientId () {
