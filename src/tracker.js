@@ -58,8 +58,8 @@ var trackerValues = {
   td_viewport: function () {
     var clientHeight = getIn(window, 'document.documentElement.clientHeight')
     var clientWidth = getIn(window, 'document.documentElement.clientWidth')
-    var innerHeight = getIn(window, 'innerHeight')
-    var innerWidth = getIn(window, 'innerWidth')
+    var innerHeight = window.innerHeight
+    var innerWidth = window.innerWidth
     var height = clientHeight < innerHeight ? innerHeight : clientHeight
     var width = clientWidth < innerWidth ? innerWidth : clientWidth
     if (height && width) {
