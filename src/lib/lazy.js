@@ -5,7 +5,6 @@ var forEach = require('./forEach')
 var canDefineProperty = (function () {
   try {
     return Object.defineProperty({}, 'x', { get: function () { return 1 } }).x === 1
-     // true
   } catch (e) {
     return false
   }
