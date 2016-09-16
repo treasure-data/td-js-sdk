@@ -15,18 +15,16 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
-    "build": "webpack",
-    "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
-    "build-loader": "./bin/build-loader.sh",
-    "build-min": "webpack --output-filename [name].min.js -p",
+    "build-all": "npm run build-bundle && npm run build-min && npm run build-loader",
+    "build-bundle": "webpack",
+    "build-loader": "bash ./bin/build-loader.sh",
+    "build-min": "webpack --env.build",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
-    "e2e": "node ./bin/e2e.js",
-    "e2e-prepare": "selenium-standalone install",
-    "e2e-server": "node ./bin/server.js",
-    "test": "standard && node ./bin/test.js",
-    "test-full": "zuul --concurrency 1 -- test/*.spec.js",
-    "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
-    "test-phantom": "zuul --phantom -- test/*.spec.js"
+    "lint": "standard",
+    "test": "standard && npm run test-cloud",
+    "test-debug": "zuul --local 9090 --no-coverage --open 'src/**/*.test.js'",
+    "test-local": "zuul --local 9090 --open 'src/**/*.test.js'",
+    "test-cloud": "zuul --concurrency 1 'src/**/*.test.js'"
   },
   "standard": {
     "ignore": [
