@@ -8,8 +8,8 @@ var protocol = getIn(window, 'location.protocol') === 'http:'
 module.exports = {
   clickIgnoreAttribute: 'td-ignore',
   clicksTable: 'clicks',
-  cookieDomain: null,
-  cookieExpiresDays: 730, // 2 years
+  cookieDomain: 'auto',
+  cookieExpires: 730, // 2 years
   cookieName: '_td',
   cookiePath: '/',
   development: false,

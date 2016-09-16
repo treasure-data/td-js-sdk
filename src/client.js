@@ -1,30 +1,34 @@
 var defaultConfig = require('./defaultConfig')
-var date = require('./lib/date')
-var lang = require('./lib/lang')
-var object = require('./lib/object')
-var isValidResourceName = require('./lib/string').isValidResourceName
-var assert = require('./lib/util').assert
-var transport = require('./transport')
-var isObject = lang.isObject
-var isString = lang.isString
+var assert = require('./lib/assert')
+var assign = require('./lib/assign')
+var isObject = require('./lib/isObject')
+var isString = require('./lib/isString')
+var isValidResourceName = require('./lib/isValidResourceName')
+// var noop = require('./lib/noop')
+var now = require('./lib/now')
+var Transport = require('./transport')
 
-function createClient (clientConfig) {
-  var config = object.assign({}, defaultConfig, clientConfig)
-  assert(
-    isValidResourceName(config.database) && isString(config.apiKey),
-    'invalid database or apikey'
-  )
+module.exports = function createClient (clientConfig) {
+  var config = assign({}, defaultConfig, clientConfig)
 
-  var clientTransport = config.transport
-    ? transport.transports[config.transport]
-    : transport.pickBest()
+  // Backwards compatibility
+  if (config.writeKey) {
+    config.apikey = config.writeKey
+  }
+
+  invalidInvariant(isString(config.apiKey), 'apiKey')
+  invalidInvariant(isValidResourceName(config.database), 'database')
+
+  var transport = config.transport
+    ? Transport.transports[config.transport]
+    : Transport.pickBest()
 
   var tableContext = {}
   var globalContext = {}
 
   var client = {
     addRecord: addRecord,
-    clientTransport: clientTransport,
+    transport: transport,
     config: config,
     createRecord: createRecord,
     getURL: getURL,
@@ -36,67 +40,91 @@ function createClient (clientConfig) {
   }
   return client
 
-  // Given a tableName, generate a destination URL
+  /**
+   * Given a tableName, generate a destination URL
+   * @param {string} tableName
+   * @return {string}
+   */
   function getURL (tableName) {
-    return config.protocol + '//' + config.pathname + config.database + '/' + tableName
+    tableInvariant(tableName)
+    return config.protocol + '//' + config.host + config.pathname + config.database + '/' + tableName
   }
 
-  // Create a record object
+  /**
+   * Create a record object
+   * @param {string} tableName
+   * @param {Object} values
+   */
   function createRecord (tableName, values) {
-    assert(
-      isValidResourceName(tableName) && isObject(values),
-      'invalid tableName or values'
-    )
+    tableInvariant(tableName)
+    valuesInvariant(values)
     return {
       apiKey: config.apiKey,
-      data: object.assign({}, globalContext, tableContext[tableName], values),
-      modified: date.now(),
+      data: assign({}, globalContext, tableContext[tableName], values),
+      modified: now(),
       url: getURL(tableName)
     }
   }
 
-  // Upload a record
+  /**
+   * Upload a record
+   * @return {boolean}
+   */
   function sendRecord (record) {
-    if (!clientTransport) {
+    if (!transport) {
       return false
     }
 
-    const payload = clientTransport.prepare(record)
-    if (!clientTransport.validate(payload)) {
+    var payload = transport.prepare(record)
+    if (!transport.validate(payload)) {
       return false
     }
 
-    return clientTransport.send(payload)
+    return transport.send(payload)
   }
 
-  // Create a record and upload it to Treasure Data
+  /**
+   * Create a record and upload it to Treasure Data
+   * @param {string} tableName
+   */
   function addRecord (tableName, values) {
     var record = client.createRecord(tableName, values)
     return client.sendRecord(record)
   }
 
-  // Set global context values
+  /**
+   * Set global context values
+   * @param {Object} values
+   */
   function setGlobalContext (values) {
-    assert(
-      isObject(values),
-      'invalid values'
-    )
-    object.assign(globalContext, values)
+    valuesInvariant(values)
+    assign(globalContext, values)
   }
 
-  // Set table context values
+  /**
+   * Set table context values
+   * @param {string} tableName
+   * @param {Object} values
+   */
   function setTableContext (tableName, values) {
-    assert(
-      isValidResourceName(tableName) && isObject(values),
-      'invalid tableName or values'
-    )
-    if (!object.hasKey(tableContext, tableName)) {
+    tableInvariant(tableName)
+    valuesInvariant(values)
+    if (!tableContext[tableName]) {
       tableContext[tableName] = {}
     }
-    object.assign(tableContext[tableName], values)
+    assign(tableContext[tableName], values)
   }
 }
 
-module.exports = {
-  createClient: createClient
+// Assertion helpers
+function invalidInvariant (value, name) {
+  assert(value, 'invalid ' + name)
+}
+
+function tableInvariant (tableName) {
+  invalidInvariant(isValidResourceName(tableName), 'table')
+}
+
+function valuesInvariant (values) {
+  invalidInvariant(isObject(values), 'values')
 }

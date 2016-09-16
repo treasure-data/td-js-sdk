@@ -69,15 +69,18 @@ var trackerValues = {
   }
 }
 
-function createTracker (client) {
-  var clientId = null
-  var clientCookieInstalled = false
-  client.getClientId = getClientId
-  client.getTrackerValues = getTrackerValues
-  client.installTrackerCookie = installTrackerCookie
-  client.trackEvent = trackEvent
-  client.trackPageview = trackPageview
-  return client
+module.exports = function createTracker (client) {
+  var tracker = {
+    clientId: null,
+    trackerCookieInstalled: false,
+    getClientId: getClientId,
+    getTrackerValues: getTrackerValues,
+    installTrackerCookie: installTrackerCookie,
+    trackEvent: trackEvent,
+    trackPageview: trackPageview
+  }
+
+  return tracker
 
   function getTrackerValues () {
     var values = {
@@ -102,58 +105,56 @@ function createTracker (client) {
   function getClientId () {
     // Read clientId from config, cookie, or generate one
     // Make sure it's a string, remove null values, and trim it
-    if (!clientId) {
-      clientId = trim(
+    if (!tracker.clientId) {
+      tracker.clientId = trim(
         client.config.clientId ||
         Cookies.get(client.config.cookieName) ||
         uuid4()
       ).replace(/\0/g, '')
     }
-    return clientId
+    return tracker.clientId
   }
 
   function installTrackerCookie () {
     // Don't do anything if cookies are disabled or it's already installed
-    if (!getIn(window, 'navigator.cookieEnabled') || clientCookieInstalled) {
-      return null
+    if (!getIn(window, 'navigator.cookieEnabled') || tracker.trackerCookieInstalled) {
+      return
     }
-    clientCookieInstalled = true
 
     var clientId = getClientId()
     var domainList = []
     if (client.config.cookieDomain) {
-      domainList.push(client.config.cookieDomain)
-    } else {
-      var hostname = getIn(window, 'location.hostname', '')
-      var split = hostname.split('.')
-      var length = split.length
-      var endsWithNumber = split[length - 1] === (parseInt(split[length - 1], 10) + '')
-      if (length === 4 && endsWithNumber) {
-        domainList.push('')
-      } else {
-        for (var index = length - 2; index >= 0; index--) {
-          domainList.push(split.slice(index).join('.'))
+      if (client.config.cookieDomain === 'auto') {
+        var hostname = getIn(window, 'location.hostname', '')
+        var split = hostname.split('.')
+        var length = split.length
+        var endsWithNumber = split[length - 1] === (parseInt(split[length - 1], 10) + '')
+
+        // Skip if the TLD is a number (e.g. it's an IP)
+        if (!endsWithNumber) {
+          for (var index = length - 2; index >= 0; index--) {
+            domainList.push(split.slice(index).join('.'))
+          }
         }
-        domainList.push('')
+      } else {
+        domainList.push(client.config.cookieDomain)
       }
     }
 
+    // Add a fallback value (empty domain) for localhost, IPs, etc
+    domainList.push('')
+
     for (var i = 0; i < domainList.length; i++) {
-      var tryDomain = domainList[i]
       Cookies.set(client.config.cookieName, clientId, {
-        domain: tryDomain,
-        expires: client.config.cookieExpiresDays,
+        domain: domainList[i],
+        expires: client.config.cookieExpires,
         path: client.config.cookiePath
       })
       if (Cookies.get(client.config.cookieName) === clientId) {
         break
       }
     }
-    return clientId
-  }
-}
 
-module.exports = {
-  createTracker: createTracker,
-  trackerValues: trackerValues
+    tracker.trackerCookieInstalled = true
+  }
 }
