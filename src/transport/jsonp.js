@@ -1,16 +1,15 @@
 var window = require('global/window')
-var encode = require('../lib/base64').encode
-var now = require('../lib/date').now
-// var isFunction = require('../lib/lang').isFunction
-var hasIn = require('../lib/object').hasIn
+var toBase64 = require('../lib/toBase64')
+var now = require('../lib/now')
+var getIn = require('../lib/getIn')
 var addQueryParams = require('../lib/uri').addQueryParams
-var noop = require('../lib/util').noop
+var noop = require('../lib/noop')
 var MAXIMUM_URL_LENGTH = 2084
 var TIMEOUT = 5e3
 
 // Check if environment allows JSONP requests
 function canUse () {
-  return hasIn(window, 'document.createElement')
+  return !!getIn(window, 'document.createElement')
 }
 
 // Prepare params for JSONP request
@@ -22,10 +21,9 @@ function prepare (params) {
   jsonp._count = jsonp._count + 1
 
   var apiKey = params.apiKey
-  // var callback = isFunction(params.callback) ? params.callback : noop
   var id = jsonp._base + jsonp._count
   var modified = now() // This is used to skip the cache
-  var data = encode(JSON.stringify(params.data))
+  var data = toBase64(JSON.stringify(params.data))
   var url = addQueryParams(params.url, {
     api_key: apiKey,
     callback: id,
@@ -34,7 +32,6 @@ function prepare (params) {
   })
 
   return {
-    // callback: callback,
     id: id,
     url: url
   }
@@ -45,20 +42,12 @@ function prepare (params) {
 //   callback: (result: boolean) => void, id: string, url: string
 // }
 function send (params) {
-  // var callback = params.callback
   var id = params.id
   var target = window.document.getElementsByTagName('head')[0]
   var url = params.url
 
-  var timer = setTimeout(function jsonpTimeout () {
-    cleanup()
-    // callback(false)
-  }, TIMEOUT)
-
-  window[id] = function jsonpCallback () {
-    cleanup()
-    // callback(true)
-  }
+  var timer = setTimeout(cleanup, TIMEOUT)
+  window[id] = cleanup
 
   function cleanup () {
     if (script.parentNode) {
@@ -68,7 +57,7 @@ function send (params) {
     clearTimeout(timer)
   }
 
-  var script = document.createElement('script')
+  var script = window.document.createElement('script')
   script.src = url
   target.parentNode.insertBefore(script, target)
   return true

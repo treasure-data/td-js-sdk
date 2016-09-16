@@ -1,5 +1,5 @@
 var window = require('global/window')
-var hasIn = require('../lib/object').hasIn
+var getIn = require('../lib/getIn')
 var addQueryParams = require('../lib/uri').addQueryParams
 var MAXIMUM_BODY_SIZE = 8192
 
@@ -13,11 +13,11 @@ function blobSupported () {
 }
 
 function canUse () {
-  return hasIn(window, 'navigator.sendBeacon') && blobSupported()
+  return !!getIn(window, 'navigator.sendBeacon') && blobSupported()
 }
 
 function prepare (params) {
-  var data = JSON.stringify(params.record)
+  var data = JSON.stringify(params.data)
   var body = new window.Blob([data], { type: 'application/json' })
   var url = addQueryParams(params.url, {
     api_key: params.apiKey

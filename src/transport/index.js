@@ -33,7 +33,7 @@ var transports = setManyLazy({}, {
     return require('./jsonp')
   },
   xhr: function () {
-    return require('./jsonp')
+    return require('./xhr')
   }
 })
 

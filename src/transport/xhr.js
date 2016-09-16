@@ -1,22 +1,17 @@
 var window = require('global/window')
-// var isFunction = require('../lib/lang').isFunction
-var hasKey = require('../lib/object').hasKey
-// var noop = require('../lib/util').noop
 var MAXIMUM_BODY_SIZE = 8192
 var TIMEOUT = 5e3
 
 // Check if CORS XHR requests are allowed
 function canUse () {
   var XMLHttpRequest = window.XMLHttpRequest
-  return !!(XMLHttpRequest && hasKey(new XMLHttpRequest(), 'withCredentials'))
-  // return !!(XMLHttpRequest && ('withCredentials' in (new XMLHttpRequest())))
+  return !!(XMLHttpRequest && ('withCredentials' in (new XMLHttpRequest())))
 }
 
 // Prepare params for CORS XHR request
 function prepare (params) {
   var apiKey = params.apiKey
-  // var callback = isFunction(params.callback) ? params.callback : noop
-  var data = JSON.stringify(params.record)
+  var data = JSON.stringify(params.data)
   var sync = params.sync === true
   var url = params.url
 
