@@ -1,7 +1,7 @@
 var window = require('global/window')
 var getIn = require('../lib/getIn')
 var addQueryParams = require('../lib/uri').addQueryParams
-var MAXIMUM_BODY_SIZE = 8192
+var MAXIMUM_BODY_SIZE = 65536
 
 function blobSupported () {
   try {
