@@ -11,11 +11,6 @@ var Transport = require('./transport')
 module.exports = function createClient (clientConfig) {
   var config = assign({}, defaultConfig, clientConfig)
 
-  // Backwards compatibility
-  if (config.writeKey) {
-    config.apikey = config.writeKey
-  }
-
   invalidInvariant(isString(config.apiKey), 'apiKey')
   invalidInvariant(isValidResourceName(config.database), 'database')
 
