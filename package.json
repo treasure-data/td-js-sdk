@@ -28,7 +28,10 @@
   },
   "standard": {
     "ignore": [
-      "dist"
+      "dist",
+      "test2",
+      "src2",
+      "lib2"
     ]
   },
   "devDependencies": {
