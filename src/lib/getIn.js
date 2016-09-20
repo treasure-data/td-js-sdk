@@ -1,4 +1,4 @@
-var hasKey = require('./hasKey')
+// var hasKey = require('./hasKey')
 var isObject = require('./isObject')
 
 module.exports = function getIn (object, path, defaultValue) {
@@ -12,7 +12,7 @@ module.exports = function getIn (object, path, defaultValue) {
   for (var idx = 0; idx < length; idx++) {
     var key = pathArray[idx]
 
-    if (isObject(currentValue) && hasKey(currentValue, key)) {
+    if (isObject(currentValue) && (key in currentValue)) {
       currentValue = currentValue[key]
       continue
     } else {

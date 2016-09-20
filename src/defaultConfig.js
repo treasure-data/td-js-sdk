@@ -1,21 +1,17 @@
 var window = require('global/window')
 var getIn = require('./lib/getIn')
 
-var protocol = getIn(window, 'location.protocol') === 'http:'
-  ? 'http:'
-  : 'https:'
-
 module.exports = {
-  clickIgnoreAttribute: 'td-ignore',
+  clicksIgnoreAttribute: 'td-ignore',
   clicksTable: 'clicks',
   cookieDomain: 'auto',
+  cookieEnabled: getIn(window, 'navigator.cookieEnabled', true),
   cookieExpires: 730, // 2 years
   cookieName: '_td',
-  cookiePath: '/',
-  development: false,
   eventsTable: 'events',
   host: 'in.treasuredata.com',
-  pageviewsTable: 'pageviews',
+  pageviewsTable: 'pageviews_test_cesar',
   pathname: '/js/v3/event/',
-  protocol: protocol
+  protocol: getIn(window, 'location.protocol') === 'http:' ? 'http:' : 'https:',
+  transport: 'auto'
 }
