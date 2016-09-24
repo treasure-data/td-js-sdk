@@ -1,5 +1,3 @@
-var Treasure = require('./Treasure').Treasure
-
 // /** @const */
 // var TreasureInput = require('./types').TreasureInput // eslint-disable-line no-unused-vars
 
@@ -8,6 +6,7 @@ var Treasure = require('./Treasure').Treasure
  * @returns {Treasure}
  */
 module.exports = function createTreasure (inputConfig) {
+  var Treasure = require('./Treasure').Treasure
   var treasure = new Treasure(inputConfig)
   treasure.initialize()
   return treasure
