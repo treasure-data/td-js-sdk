@@ -18,7 +18,7 @@
     "build-all": "npm run build-bundle && npm run build-min && npm run build-loader",
     "build-debug": "webpack",
     "build-loader": "bash ./bin/build-loader.sh",
-    "build-min": "webpack --env.build",
+    "build-min": "webpack --env.build -p",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "lint": "standard",
     "test": "standard && npm run test-cloud",
@@ -35,16 +35,15 @@
     ]
   },
   "devDependencies": {
-    "google-closure-compiler-js": "^20160916.0.0",
     "standard": "^8.1.0",
     "tape": "^4.6.0",
     "tape-catch": "^1.0.6",
-    "webpack": "^2.1.0-beta.23",
-    "zuul": "^3.11.0"
+    "webpack": "^2.1.0-beta.25",
+    "zuul": "^3.11.1"
   },
   "dependencies": {
     "domready": "^0.3.0",
-    "global": "^4.3.0",
+    "global": "^4.3.1",
     "js-cookie": "^2.1.3"
   }
 }

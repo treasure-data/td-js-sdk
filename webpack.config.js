@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const ClosureCompiler = require('google-closure-compiler-js').webpack
 
 module.exports = function webpackConfig ({ build = false } = {}) {
   const config = {
@@ -16,19 +15,6 @@ module.exports = function webpackConfig ({ build = false } = {}) {
         'process.env.NODE_ENV': `'${build ? 'development' : 'production'}'`
       })
     ]
-  }
-
-  if (build) {
-    config.plugins.push(
-      new ClosureCompiler({
-        options: {
-          languageIn: 'ECMASCRIPT5',
-          languageOut: 'ECMASCRIPT3',
-          compilationLevel: 'ADVANCED',
-          warningLevel: 'VERBOSE'
-        }
-      })
-    )
   }
 
   return config
