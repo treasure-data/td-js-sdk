@@ -1,5 +1,7 @@
 // Originally from https://github.com/keen/keen-js/blob/master/src/core/utils/base64.js
 var cc = String.fromCharCode
+
+/** @const {string} */
 var m = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 
 /**

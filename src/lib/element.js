@@ -4,7 +4,7 @@ var once = require('./once')
 var trim = require('./trim')
 
 /**
- * @param {HTMLElement} element
+ * @param {EventTarget} element
  * @param {string} type
  * @param {Function} fn
  * @return {Function}
@@ -18,14 +18,17 @@ function addEventListener (element, type, fn) {
   } else if (element.attachEvent) {
     element.attachEvent('on' + type, handler)
     return once(function disposeEventListener () {
-      element.deatchEvent('on' + type, handler)
+      element.detachEvent('on' + type, handler)
     })
   } else {
     throw new Error('unexpected environment')
   }
 
-  // IE8 doesn't pass an event param, grab it from the window if it's missing
-  // Calls the real handler with the correct context, even if we don't use it
+  /**
+   * IE8 doesn't pass an event param, grab it from the window if it's missing
+   * Calls the real handler with the correct context, even if we don't use it
+   * @param {Event} event
+   */
   function handler (event) {
     fn.call(element, event || window.event)
   }
@@ -34,7 +37,7 @@ function addEventListener (element, type, fn) {
 /**
  * Info: http://www.quirksmode.org/js/events_properties.html
  * @param {Event} event
- * @return {HTMLElement}
+ * @return {EventTarget}
  */
 function getEventTarget (event) {
   // W3C says it's event.target, but IE8 uses event.srcElement
@@ -46,8 +49,8 @@ function getEventTarget (event) {
 }
 
 /**
- * @param {HTMLElement} element
- * @return {Object}
+ * @param {!(HTMLElement|Element)} element
+ * @return {Object<string, *>}
  */
 function getElementData (element) {
   var data = {
@@ -79,7 +82,7 @@ function getElementData (element) {
  * ORIGINAL SOURCE: https://github.com/getsentry/raven-js/
  * Returns a simple, query-selector representation of a DOM element
  * e.g. [HTMLElement] => input#foo.btn[name=baz]
- * @param {HTMLElement} element
+ * @param {!(HTMLElement|Element)} element
  * @return {string}
  */
 function htmlElementAsString (element) {
@@ -116,7 +119,7 @@ function htmlElementAsString (element) {
  * Given a child DOM element, returns a query-selector statement describing that
  * and its ancestors
  * e.g. [HTMLElement] => body > div > input#foo.btn[name=baz]
- * @param {HTMLElement} element
+ * @param {?(HTMLElement|Element)} element
  * @return {string}
  */
 function htmlTreeAsString (element) {
@@ -153,7 +156,7 @@ function htmlTreeAsString (element) {
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {!(HTMLElement|Element)} element
  * @return {boolean}
  */
 function shouldIgnoreElement (element) {
@@ -173,7 +176,7 @@ function shouldIgnoreElement (element) {
 
 /**
  * @param {string} ignoreAttribute
- * @param {HTMLElement} element
+ * @param {!(HTMLElement|Element)} element
  * @return {boolean}
  */
 function treeHasIgnoreAttribute (ignoreAttribute, element) {

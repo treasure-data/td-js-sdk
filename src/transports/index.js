@@ -1,21 +1,37 @@
-var setManyLazy = require('../lib/lazy').setManyLazy
+var setLazy = require('../lib/setLazy')
+
+/** @const */
 var bestOrder = ['beacon', 'xhr', 'jsonp']
 
+// /** @const */
+// var RequestParams = require('../types').RequestParams // eslint-disable-line no-unused-vars
+
+// /** @const */
+// var Transport = require('../types').Transport // eslint-disable-line no-unused-vars
+
+// /** @const */
+// var TransportType = require('../types').TransportType // eslint-disable-line no-unused-vars
+
+/**
+ * @param {TransportType} transportName
+ * @return {?Transport}
+ */
 function getTransport (transportName) {
+  if (choices[transportName]) {
+    return choices[transportName]
+  }
   if (transportName === 'auto') {
     for (var index = 0; index < bestOrder.length; index++) {
-      var transport = options[bestOrder[index]]
+      var transport = choices[bestOrder[index]]
       if (transport.isAvailable()) {
         return transport
       }
     }
-  } else {
-    return options[transportName]
   }
   return null
 }
 
-var options = setManyLazy({}, {
+var choices = setLazy({}, {
   beacon: function () {
     return require('./beacon')
   },
@@ -28,6 +44,6 @@ var options = setManyLazy({}, {
 })
 
 module.exports = {
-  getTransport: getTransport,
-  options: options
+  choices: choices,
+  getTransport: getTransport
 }

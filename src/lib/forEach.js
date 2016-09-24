@@ -2,6 +2,10 @@ var hasKey = require('./hasKey')
 var isArray = require('./isArray')
 var isObject = require('./isObject')
 
+/**
+ * @param {(Array<*>|Object<string, *>)} collection
+ * @param {!(function (*, (number|string), (Array<*>|Object<string, *>)): void)} iteratee
+ */
 module.exports = function forEach (collection, iteratee) {
   if (isArray(collection)) {
     var length = collection.length

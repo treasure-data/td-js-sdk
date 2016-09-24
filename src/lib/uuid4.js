@@ -1,6 +1,8 @@
 var window = require('global/window')
 
-/** @return {string} */
+/**
+ * @return {string}
+ */
 module.exports = function uuid4 () {
   var crypto = window.crypto || /* istanbul ignore next: legacy */ window.msCrypto
 
@@ -15,6 +17,10 @@ module.exports = function uuid4 () {
     // set 2 most significant bits of byte 9 to '10'
     arr[4] = arr[4] & 0x3FFF | 0x8000
 
+    /**
+     * @param {number} num
+     * @return {string}
+     */
     var pad = function (num) {
       var v = num.toString(16)
       while (v.length < 4) {

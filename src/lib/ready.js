@@ -1,5 +1,8 @@
 var window = require('global/window')
 
+/**
+ * @param {!(function (): void)} fn
+ */
 module.exports = function ready (fn) {
   if (window.document.readyState !== 'loading') {
     fn()

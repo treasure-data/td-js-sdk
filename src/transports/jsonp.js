@@ -1,25 +1,38 @@
 var window = require('global/window')
 var toBase64 = require('../lib/toBase64')
-// var isFunction = require('../lib/isFunction')
-var addQueryParams = require('../lib/uri').addQueryParams
+var addQueryParams = require('../lib/addQueryParams')
 var noop = require('../lib/noop')
 
-var base = 'tdJSONPCallback'
-var count = 0
+// /** @const */
+// var RequestParams = require('../types').RequestParams // eslint-disable-line no-unused-vars
+
+// /** @const */
+// var Transport = require('../types').Transport // eslint-disable-line no-unused-vars
+
+/** @const {number} */
 var MAXIMUM_URL_LENGTH = 2084
+
+/** @const {number} */
 var TIMEOUT = 5e3
 
+/** @type {{base: string, count: number}} */
+var config = {
+  base: 'tdJSONPCallback',
+  count: 0
+}
+
+/** @return {boolean} */
 function isAvailable () {
   try {
-    // return isFunction(window.document.createElement)
-    return !!window.document.createElement
+    return !!(JSON.stringify && window.document.createElement('script'))
   } catch (e) {
     return false
   }
 }
 
+/** @param {!RequestParams} requestParams */
 function send (requestParams) {
-  var callbackId = base + ++count
+  var callbackId = config.base + ++config.count
   var data = toBase64(JSON.stringify(requestParams.data))
   var target = window.document.getElementsByTagName('head')[0]
   var url = addQueryParams(requestParams.url, {
@@ -33,19 +46,13 @@ function send (requestParams) {
     requestParams.callback(new Error('url too long'), false)
   } else {
     window[callbackId] = function () {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
-      }
-      window[callbackId] = noop
+      cleanup(script, callbackId)
       clearTimeout(timer)
       requestParams.callback(null, true)
     }
 
     var timer = setTimeout(function () {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
-      }
-      window[callbackId] = noop
+      cleanup(script, callbackId)
       requestParams.callback(new Error('timeout'), false)
     }, TIMEOUT)
 
@@ -55,7 +62,22 @@ function send (requestParams) {
   }
 }
 
+/**
+ * @param {!Element} script
+ * @param {string} callbackId
+ */
+function cleanup (script, callbackId) {
+  if (script.parentNode) {
+    script.parentNode.removeChild(script)
+  }
+  window[callbackId] = noop
+}
+
+/** @type {!Transport} */
 module.exports = {
+  config: config,
   isAvailable: isAvailable,
+  name: 'jsonp',
   send: send
 }
+

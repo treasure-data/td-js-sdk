@@ -1,4 +1,3 @@
-// var hasKey = require('./hasKey')
 var isObject = require('./isObject')
 
 module.exports = function getIn (object, path, defaultValue) {
