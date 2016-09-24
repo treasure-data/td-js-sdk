@@ -1,12 +1,13 @@
 var window = require('global/window')
-// var ready = require('./lib/ready')
+var ready = require('./lib/ready')
 
 // Expose createTreasure on the window
 window['createTreasure'] = require('./createTreasure')
 
-// // Load the global singleton if it's available
-// ready(function () {
-//   // window.transport = require('./transport')
-//   // var globalName = window['TreasureObject'] || 'treasure'
-//   // require('./loadClients')(globalName)
-// })
+// Load the global client scaffold if it's available
+ready(function () {
+  // Default client is window.treasure
+  // You can overwrite this by setting window.TreasureObject
+  var name = window['TreasureObject'] || 'treasure'
+  require('./loadClient')(name, window[name])
+})
