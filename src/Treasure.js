@@ -6,7 +6,6 @@ var getIn = require('./lib/getIn')
 var isObject = require('./lib/isObject')
 var isString = require('./lib/isString')
 var isValidResourceName = require('./lib/isValidResourceName')
-var log = require('./lib/log')
 var noop = require('./lib/noop')
 var now = require('./lib/now')
 var trim = require('./lib/trim')
@@ -204,24 +203,24 @@ Treasure.prototype.sendPageview = function sendPageview (inputParams) {
 }
 
 /**
- * @param {!IObject<string, *>} values
+ * @param {{table: string, values: !IObject<string, *>}} inputParams
  */
-Treasure.prototype.setGlobalContext = function setGlobalContext (values) {
-  assert(isObject(values), 'invalid values')
-  assign(this.globalContext, values)
+Treasure.prototype.setGlobalContext = function setGlobalContext (inputParams) {
+  assert(isObject(inputParams.values), 'invalid values')
+  assign(this.globalContext, inputParams.values)
 }
 
 /**
- * @param {string} table
- * @param {!IObject<string, *>} values
+ * @param {{table: string, values: !IObject<string, *>}} inputParams
  */
-Treasure.prototype.setTableContext = function setTableContext (table, values) {
-  assert(isValidResourceName(table), 'invalid table')
-  assert(isObject(values), 'invalid values')
-  if (!this.tableContext[table]) {
-    this.tableContext[table] = {}
+Treasure.prototype.setTableContext = function setTableContext (inputParams) {
+  // table, values
+  assert(isValidResourceName(inputParams.table), 'invalid table')
+  assert(isObject(inputParams.values), 'invalid values')
+  if (!this.tableContext[inputParams.table]) {
+    this.tableContext[inputParams.table] = {}
   }
-  assign(this.tableContext[table], values)
+  assign(this.tableContext[inputParams.table], inputParams.values)
 }
 
 /**
