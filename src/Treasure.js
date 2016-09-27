@@ -1,17 +1,9 @@
-var Cookies = require('js-cookie')
 var assert = require('./lib/assert')
 var assign = require('./lib/assign')
-var defaultConfig = require('./defaultConfig')
 var getIn = require('./lib/getIn')
 var isObject = require('./lib/isObject')
 var isString = require('./lib/isString')
 var isValidResourceName = require('./lib/isValidResourceName')
-var noop = require('./lib/noop')
-var now = require('./lib/now')
-var trim = require('./lib/trim')
-var uuid4 = require('./lib/uuid4')
-var transports = require('./transports')
-var trackerData = require('./trackerData')
 
 // /** @const */
 // var RequestParams = require('./types').RequestParams // eslint-disable-line no-unused-vars
@@ -72,10 +64,11 @@ function Treasure (inputConfig) {
  * @return {string}
  */
 Treasure.getClientId = function getClientId (config) {
+  var trim = require('./lib/trim')
   return trim(
     config.clientId ||
-    (config.cookieEnabled && Cookies.get(config.cookieName)) ||
-    uuid4()
+    (config.cookieEnabled && require('js-cookie').get(config.cookieName)) ||
+    require('./lib/uuid4')()
   ).replace(/\0/g, '')
 }
 
@@ -87,6 +80,7 @@ Treasure.getConfig = function getConfig (inputConfig) {
   /**
    * type {TreasureConfig}
    */
+  var defaultConfig = require('./defaultConfig')
   var config = assign({}, defaultConfig, inputConfig)
   assert(isString(config.apiKey), 'invalid apiKey')
   assert(isValidResourceName(config.database), 'invalid database')
@@ -128,11 +122,11 @@ Treasure.setClientIdCookie = function (config, clientId) {
 
   // Try to set the cookie until a domain succeeds or the list is empty
   for (var i = 0; i < domainList.length; i++) {
-    Cookies.set(cookieName, clientId, {
+    require('js-cookie').set(cookieName, clientId, {
       domain: domainList[i],
       expires: cookieExpires
     })
-    if (Cookies.get(cookieName) === clientId) {
+    if (require('js-cookie').get(cookieName) === clientId) {
       break
     }
   }
@@ -147,9 +141,9 @@ Treasure.prototype.buildRequestParams = function buildRequestParams (inputParams
   assert(isValidResourceName(inputParams.table), 'invalid table')
   return {
     apiKey: inputParams.apiKey || this.config.apiKey,
-    callback: inputParams.callback || noop,
+    callback: inputParams.callback || require('./lib/noop'),
     data: assign({}, this.globalContext, this.tableContext[inputParams.table], inputParams.data),
-    modified: inputParams.modified || now(),
+    modified: inputParams.modified || require('./lib/now')(),
     sync: inputParams.sync === true,
     url: inputParams.url || Treasure.getURL(this.config, inputParams.table)
   }
@@ -168,6 +162,7 @@ Treasure.prototype.initialize = function initialize () {
   }
 
   // Get the transport
+  var transports = require('./transports')
   this.transport = transports.getTransport(this.config.transport)
 }
 
@@ -189,6 +184,7 @@ Treasure.prototype.trackEvent = function trackEvent (inputParams) {
   var params = assign({ data: {}, table: this.config.eventsTable }, inputParams)
 
   /** @type {!IObject<string, *>} */
+  var trackerData = require('./trackerData')
   params.data = assign(trackerData.getTrackerData(), { td_client_id: this.clientId }, params.data)
 
   this.send(params)
