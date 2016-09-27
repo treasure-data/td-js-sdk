@@ -76,14 +76,12 @@ test('Treasure.getURL', function (t) {
   )
 })
 
-test('Treasure#buildRequestParams', function (t) {
-  t.plan(8)
+test('Treasure#buildRequestParams invalid', function (t) {
+  t.plan(2)
   var treasure = new Treasure({
     apiKey: 'apiKey',
-    database: 'database',
-    protocol: 'https:'
+    database: 'database'
   })
-
   t.throws(function () {
     treasure.buildRequestParams({ table: 'table' })
   }, /invalid/, 'invalid data')
@@ -91,9 +89,16 @@ test('Treasure#buildRequestParams', function (t) {
   t.throws(function () {
     treasure.buildRequestParams({ data: {} })
   }, /invalid/, 'invalid table')
+})
 
+test('Treasure#buildRequestParams overwriting values', function (t) {
+  t.plan(1)
+  var treasure = new Treasure({
+    apiKey: 'apiKey',
+    database: 'database'
+  })
   function callback () {}
-  var overwritingRequestParams = treasure.buildRequestParams({
+  var requestParams = treasure.buildRequestParams({
     apiKey: 'API_KEY',
     callback: callback,
     data: {},
@@ -102,7 +107,7 @@ test('Treasure#buildRequestParams', function (t) {
     table: 'table',
     url: 'https://localhost/'
   })
-  t.deepEqual(overwritingRequestParams, {
+  t.deepEqual(requestParams, {
     apiKey: 'API_KEY',
     callback: callback,
     data: {},
@@ -110,19 +115,49 @@ test('Treasure#buildRequestParams', function (t) {
     sync: true,
     url: 'https://localhost/'
   })
+})
 
-  var defaultsRequestParams = treasure.buildRequestParams({
+test('Treasure#buildRequestParams default values', function (t) {
+  t.plan(5)
+  var treasure = new Treasure({
+    apiKey: 'apiKey',
+    database: 'database',
+    protocol: 'https:'
+  })
+  var requestParams = treasure.buildRequestParams({
     data: {},
     table: 'table'
   })
-  t.equal(defaultsRequestParams.apiKey, 'apiKey')
-  t.equal(defaultsRequestParams.callback, noop)
-  t.equal(defaultsRequestParams.sync, false)
-  t.equal(typeof defaultsRequestParams.modified, 'number')
+  t.equal(requestParams.apiKey, 'apiKey')
+  t.equal(requestParams.callback, noop)
+  t.equal(requestParams.sync, false)
+  t.equal(typeof requestParams.modified, 'number')
   t.equal(
-    defaultsRequestParams.url,
+    requestParams.url,
     'https://in.treasuredata.com/js/v3/event/database/table'
   )
+})
+
+test('Treasure#buildRequestParams context', function (t) {
+  t.plan(1)
+  var treasure = new Treasure({
+    apiKey: 'apiKey',
+    database: 'database',
+    protocol: 'https:'
+  })
+  treasure.setGlobalContext({ values: { global: true } })
+  treasure.setTableContext({ table: 'table', values: { table: true } })
+  var requestParams = treasure.buildRequestParams({
+    data: {
+      data: true
+    },
+    table: 'table'
+  })
+  t.deepEqual(requestParams.data, {
+    data: true,
+    global: true,
+    table: true
+  })
 })
 
 test('Treasure#send', function (t) {
