@@ -10,16 +10,24 @@ var version = require('./version')
 // var TrackerData = require('./types').TrackerData // eslint-disable-line no-unused-vars
 
 /**
- * @nocollapse
  * @type {!TrackerContext}
  */
 var context = {
+  td_browser: function () {
+    return 'td_browser'
+  },
+  td_browser_version: function () {
+    return 'td_browser_version'
+  },
   td_charset: function () {
     return getIn(window, 'document.characterSet') ||
       getIn(window, 'document.charset')
   },
   td_color: function () {
     return getIn(window, 'screen.colorDepth') + '-bit'
+  },
+  td_host: function () {
+    return getIn(window, 'location.host')
   },
   td_ip: function () {
     return 'td_ip'
@@ -29,6 +37,15 @@ var context = {
       getIn(window, 'navigator.language') ||
       getIn(window, 'navigator.browserLanguage')
     ).toLowerCase()
+  },
+  td_os: function () {
+    return 'td_os'
+  },
+  td_os_version: function () {
+    return 'td_os_version'
+  },
+  td_path: function () {
+    return getIn(window, 'location.pathname')
   },
   td_platform: function () {
     return getIn(window, 'navigator.platform')
