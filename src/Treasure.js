@@ -20,7 +20,7 @@ var trackerData = require('./trackerData')
 // var SendInput = require('./types').SendInput // eslint-disable-line no-unused-vars
 
 // /** @const */
-// var SendEventInput = require('./types').SendEventInput // eslint-disable-line no-unused-vars
+// var TrackEventInput = require('./types').TrackEventInput // eslint-disable-line no-unused-vars
 
 // /** @const */
 // var Transport = require('./types').Transport // eslint-disable-line no-unused-vars
@@ -182,9 +182,9 @@ Treasure.prototype.send = function send (inputParams) {
 }
 
 /**
- * @param {SendEventInput} inputParams
+ * @param {TrackEventInput} inputParams
  */
-Treasure.prototype.sendEvent = function sendEvent (inputParams) {
+Treasure.prototype.trackEvent = function trackEvent (inputParams) {
   /** @type {SendInput} */
   var params = assign({ data: {}, table: this.config.eventsTable }, inputParams)
 
@@ -195,11 +195,11 @@ Treasure.prototype.sendEvent = function sendEvent (inputParams) {
 }
 
 /**
- * @param {?SendEventInput} inputParams
+ * @param {?TrackEventInput} inputParams
  */
-Treasure.prototype.sendPageview = function sendPageview (inputParams) {
+Treasure.prototype.trackPageview = function trackPageview (inputParams) {
   var params = assign({ data: {}, table: this.config.pageviewsTable }, inputParams)
-  this.sendEvent(params)
+  this.trackEvent(params)
 }
 
 /**
@@ -214,7 +214,6 @@ Treasure.prototype.setGlobalContext = function setGlobalContext (inputParams) {
  * @param {{table: string, values: !IObject<string, *>}} inputParams
  */
 Treasure.prototype.setTableContext = function setTableContext (inputParams) {
-  // table, values
   assert(isValidResourceName(inputParams.table), 'invalid table')
   assert(isObject(inputParams.values), 'invalid values')
   if (!this.tableContext[inputParams.table]) {
@@ -261,7 +260,7 @@ Treasure.prototype.trackClicks = function trackClicks (inputParams) {
     ) {
       var data = params.extendClickData(event, getElementData(target))
       if (isObject(data)) {
-        instance.sendEvent({
+        instance.trackEvent({
           data: data,
           table: params.table
         })

@@ -22,11 +22,11 @@ module.exports = function loadClient (name, scaffold) {
           client.instance = createTreasure(inputParams)
           break
         case 'send':
-        case 'sendEvent':
-        case 'sendPageview':
         case 'setGlobalContext':
         case 'setTableContext':
         case 'trackClicks':
+        case 'trackEvent':
+        case 'trackPageview':
           assert(!!client.instance, 'must call create')
           client.instance[action](inputParams)
           break

@@ -42,25 +42,25 @@ RequestParams.prototype.url
 /**
  * @record
  */
-function SendEventInput () {}
+function TrackEventInput () {}
 
 /** @type {undefined|string} */
-SendEventInput.prototype.apiKey
+TrackEventInput.prototype.apiKey
 
 /** @type {undefined|!(function (?Error, boolean): void)} */
-SendEventInput.prototype.callback
+TrackEventInput.prototype.callback
 
 /** @type {undefined|?IObject<string, *>} */
-SendEventInput.prototype.data
+TrackEventInput.prototype.data
 
 /** @type {undefined|number} */
-SendEventInput.prototype.modified
+TrackEventInput.prototype.modified
 
 /** @type {undefined|boolean} */
-SendEventInput.prototype.sync
+TrackEventInput.prototype.sync
 
 /** @type {undefined|string} */
-SendEventInput.prototype.table
+TrackEventInput.prototype.table
 
 /**
  * @record
@@ -390,10 +390,10 @@ TreasureInput.prototype.transport
 
 module.exports = {
   RequestParams: RequestParams,
-  SendEventInput: SendEventInput,
   SendInput: SendInput,
   TrackerContext: TrackerContext,
   TrackerData: TrackerData,
+  TrackEventInput: TrackEventInput,
   Transport: Transport,
   TransportType: TransportType,
   TreasureConfig: TreasureConfig,
