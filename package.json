@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
   "description": "Browser JS library for sending events to your Treasure Data account",
-  "main": "src/treasure.js",
+  "main": "src/createTreasure.js",
   "author": {
     "name": "Cesar Andreu",
     "email": "cesar@treasure-data.com",
