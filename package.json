@@ -35,7 +35,7 @@
     ]
   },
   "devDependencies": {
-    "standard": "^8.1.0",
+    "standard": "^8.2.0",
     "tape": "^4.6.0",
     "tape-catch": "^1.0.6",
     "webpack": "^2.1.0-beta.25",
