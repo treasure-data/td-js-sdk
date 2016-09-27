@@ -71,7 +71,6 @@ function getTrackerData () {
   forEach(context, function (getValue, key, collection) {
     data[key] = getValue()
   })
-
   return data
 }
 
