@@ -147,11 +147,51 @@ test('Treasure#send', function (t) {
     }
   }
   treasure.send({
-    data: {
-      a: 1
-    },
+    data: { a: 1 },
     modified: 1,
     sync: true,
     table: 'table'
   })
+})
+
+test('Treasure#setGlobalContext', function (t) {
+  t.plan(2)
+  var treasure = new Treasure({
+    apiKey: 'apiKey',
+    database: 'database'
+  })
+  t.throws(function () {
+    treasure.setGlobalContext({ values: null })
+  }, /invalid/, 'invalid values')
+
+  treasure.setGlobalContext({ values: { a: 1 } })
+  t.deepEqual(treasure.globalContext, { a: 1 })
+})
+
+test('Treasure#setTableContext', function (t) {
+  t.plan(4)
+  var treasure = new Treasure({
+    apiKey: 'apiKey',
+    database: 'database'
+  })
+
+  t.throws(function () {
+    treasure.setTableContext({ values: {} })
+  }, /invalid/, 'invalid table')
+
+  t.throws(function () {
+    treasure.setTableContext({ table: 'table' })
+  }, /invalid/, 'invalid values')
+
+  treasure.setTableContext({
+    table: 'table',
+    values: { a: 1 }
+  })
+  t.deepEqual(treasure.tableContext, { table: { a: 1 } })
+
+  treasure.setTableContext({
+    table: 'table',
+    values: { b: 2 }
+  })
+  t.deepEqual(treasure.tableContext, { table: { a: 1, b: 2 } })
 })
