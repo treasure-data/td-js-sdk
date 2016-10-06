@@ -35,7 +35,7 @@
       host: 'in-staging.treasuredata.com'
     })
 
-    td.globalId(function (value) {
+    td.fetchGlobalID(function (value) {
       if (value !== '123') {
         setError()
         return

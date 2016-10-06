@@ -238,7 +238,7 @@ var errorCallback = function () {
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
-### Treasure#globalId(success, failure)
+### Treasure#fetchGlobalID(success, failure)
 
 **Parameters:**
 
@@ -258,7 +258,7 @@ var errorCallback = function () {
   // cry();
 }
 
-td.globalId(successCallback, errorCallback)
+td.fetchGlobalID(successCallback, errorCallback)
 ```
 
 

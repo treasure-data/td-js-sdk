@@ -65,7 +65,7 @@
 	var _ = __webpack_require__(7)
 	var configurator = __webpack_require__(108)
 	var version = __webpack_require__(109)
-	var globalId = __webpack_require__(110)
+	var fetchGlobalID = __webpack_require__(110)
 
 	function Treasure (options) {
 	  // enforces new
@@ -141,10 +141,10 @@
 	Treasure.prototype._configurator = configurator
 
 	/**
-	 * Treasure#globalId
+	 * Treasure#fetchGlobalID
 	 */
 
-	Treasure.prototype.globalId = globalId
+	Treasure.prototype.fetchGlobalID = fetchGlobalID
 
 	/**
 	 * Plugins
@@ -7825,7 +7825,8 @@
 	  logging: true,
 	  pathname: '/js/v3',
 	  protocol: document.location.protocol === 'https:' ? 'https:' : 'http:',
-	  requestType: 'jsonp'
+	  requestType: 'jsonp',
+	  globalIdCookie: 'td_global_id'
 	}
 
 	/**
@@ -7948,9 +7949,19 @@
 	var _ = __webpack_require__(7)
 	var invariant = __webpack_require__(99)
 
-	module.exports = function globalId (success, error) {
+	function cacheSuccess(result, context) {
+	  context.setCookie(context.client.globalIdCookie, result)
+	  return result
+	}
+
+	module.exports = function fetchGlobalID (success, error, forceFetch) {
 	  success = _.isFunction(success) ? success : _.noop
 	  error = _.isFunction(error) ? error : _.noop
+
+	  const cachedGlobalId = this.getCookie(this.client.globalIdCookie)
+	  if (cachedGlobalId && !forceFetch) {
+	    return cachedGlobalId
+	  }
 
 	  var request = {
 	    url: this.client.endpoint + '/global_id',
@@ -7972,7 +7983,7 @@
 	    prefix: 'TreasureJSONPCallback',
 	    timeout: 10000 // 10 seconds timeout
 	  }, function (err, res) {
-	    return err ? error(err) : success(res)
+	    return err ? error(err) : cacheSuccess(res, this)
 	  })
 	}
 
@@ -8543,6 +8554,10 @@
 
 	  // Values must be initialized later because they depend on knowing the uuid
 	  _.defaults(this.client.track.values, configureValues(this.client.track))
+	  this.setCookie = setCookie
+	  this.getCookie = function (name) {
+	    return cookie.get(name)
+	  }
 	  return this
 	}
 
