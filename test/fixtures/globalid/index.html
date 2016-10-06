@@ -36,7 +36,8 @@
     })
 
     td.fetchGlobalID(function (value) {
-      if (value !== '123') {
+      // we can't check against a specific value
+      if (!value) {
         setError()
         return
       }
