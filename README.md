@@ -238,13 +238,12 @@ var errorCallback = function () {
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
-### Treasure#globalId(success, failure, forceFetch)
+### Treasure#globalId(success, failure)
 
 **Parameters:**
 
 * **success** : Function (optional) - Callback for when sending the event is successful
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
-* **forceFetch** : forceFetch (optional) - forces a request (not to use cache)
 
 **Example:**
 
