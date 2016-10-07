@@ -145,7 +145,7 @@
 	Treasure.Plugins = {
 	  Clicks: __webpack_require__(111),
 	  GlobalID: __webpack_require__(115),
-	  Track: __webpack_require__(117),
+	  Track: __webpack_require__(117)
 	}
 
 	// Load all plugins
@@ -7815,7 +7815,7 @@
 	// Default config for library values
 	exports.DEFAULT_CONFIG = {
 	  development: false,
-	  globalId: '_td_global',
+	  globalIdCookie: '_td_global',
 	  host: 'in.treasuredata.com',
 	  logging: true,
 	  pathname: '/js/v3/event/',
@@ -8304,10 +8304,10 @@
 	  return result['global_id']
 	}
 
-	exports.configure = function () {
+	function configure () {
 	}
 
-	exports.fetchGlobalID = function fetchGlobalID (success, error, forceFetch) {
+	function fetchGlobalID (success, error, forceFetch) {
 	  success = _.isFunction(success) ? success : _.noop
 	  error = _.isFunction(error) ? error : _.noop
 	  var cookieName = this.client.globalIdCookie
@@ -8329,6 +8329,12 @@
 	  }, function (err, res) {
 	    return err ? error(err) : success(cacheSuccess(res, cookieName))
 	  })
+	}
+
+	module.exports = {
+	  cacheSuccess: cacheSuccess,
+	  configure: configure,
+	  fetchGlobalID: fetchGlobalID
 	}
 
 
