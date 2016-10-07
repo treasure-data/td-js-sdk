@@ -177,10 +177,11 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
 * **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
 * **config.protocol** : String (optional) - protocol to use for sending events. Default: result of `document.location.protocol`
-* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3`
+* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
 * **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
+* **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
 
 **Track/Storage parameters:**
 
@@ -251,11 +252,11 @@ company.addRecord('sales', sale, successCallback, errorCallback);
 ```javascript
 var td = new Treasure({...})
 
-var successCallback = function (value) {
+var successCallback = function (globalId) {
   // celebrate();
 };
 
-var errorCallback = function () {
+var errorCallback = function (error) {
   // cry();
 }
 

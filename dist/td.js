@@ -48,7 +48,7 @@
 	 * Treasure Index
 	 */
 	var Treasure = __webpack_require__(1)
-	var window = __webpack_require__(113)
+	var window = __webpack_require__(112)
 
 	// Load all cached clients
 	__webpack_require__(120)(Treasure, 'Treasure')
@@ -65,7 +65,6 @@
 	var _ = __webpack_require__(7)
 	var configurator = __webpack_require__(108)
 	var version = __webpack_require__(109)
-	var fetchGlobalID = __webpack_require__(110)
 
 	function Treasure (options) {
 	  // enforces new
@@ -126,7 +125,7 @@
 	/**
 	 * Treasure#ready
 	 */
-	Treasure.prototype.ready = __webpack_require__(111)
+	Treasure.prototype.ready = __webpack_require__(110)
 
 	/**
 	 * Treasure#applyProperties
@@ -141,17 +140,12 @@
 	Treasure.prototype._configurator = configurator
 
 	/**
-	 * Treasure#fetchGlobalID
-	 */
-
-	Treasure.prototype.fetchGlobalID = fetchGlobalID
-
-	/**
 	 * Plugins
 	 */
 	Treasure.Plugins = {
-	  Clicks: __webpack_require__(112),
-	  Track: __webpack_require__(116)
+	  Clicks: __webpack_require__(111),
+	  GlobalID: __webpack_require__(115),
+	  Track: __webpack_require__(117),
 	}
 
 	// Load all plugins
@@ -283,7 +277,7 @@
 	  validateRecord(table, record)
 
 	  var request = {
-	    url: this.client.endpoint + '/event/' + this.client.database + '/' + table,
+	    url: this.client.endpoint + this.client.database + '/' + table,
 	    record: this.applyProperties(table, record),
 	    type: this.client.requestType,
 	    apikey: this.client.writeKey
@@ -7821,12 +7815,12 @@
 	// Default config for library values
 	exports.DEFAULT_CONFIG = {
 	  development: false,
+	  globalId: '_td_global',
 	  host: 'in.treasuredata.com',
 	  logging: true,
-	  pathname: '/js/v3',
+	  pathname: '/js/v3/event/',
 	  protocol: document.location.protocol === 'https:' ? 'https:' : 'http:',
-	  requestType: 'jsonp',
-	  globalIdCookie: 'td_global_id'
+	  requestType: 'jsonp'
 	}
 
 	/**
@@ -7940,55 +7934,6 @@
 /* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Treasure Global ID
-	 */
-
-	// Modules
-	var jsonp = __webpack_require__(3)
-	var _ = __webpack_require__(7)
-	var invariant = __webpack_require__(99)
-
-	function cacheSuccess(result, context) {
-	  if (context.setCookie) {
-	    context.setCookie(context.client.globalIdCookie, result['global_id'])
-	  }
-	  return result['global_id']
-	}
-
-	module.exports = function fetchGlobalID (success, error, forceFetch) {
-	  success = _.isFunction(success) ? success : _.noop
-	  error = _.isFunction(error) ? error : _.noop
-
-	  const cachedGlobalId = this.getCookie && this.getCookie(this.client.globalIdCookie)
-	  if (cachedGlobalId && !forceFetch) {
-	    return cachedGlobalId
-	  }
-
-	  var request = {
-	    url: this.client.endpoint + '/global_id',
-	    type: this.client.requestType
-	  }
-
-	  invariant(
-	    request.type === 'jsonp',
-	    'Request type ' + request.type + ' not supported'
-	  )
-
-	  var self = this
-	  jsonp(request.url, {
-	    prefix: 'TreasureJSONPCallback',
-	    timeout: 10000 // 10 seconds timeout
-	  }, function (err, res) {
-	    return err ? error(err) : success(cacheSuccess(res, self))
-	  })
-	}
-
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
 	  */
@@ -8047,13 +7992,13 @@
 
 
 /***/ },
-/* 112 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(113)
-	var elementUtils = __webpack_require__(114)
+	var global = __webpack_require__(112)
+	var elementUtils = __webpack_require__(113)
 	var assign = __webpack_require__(7).assign
-	var disposable = __webpack_require__(115).disposable
+	var disposable = __webpack_require__(114).disposable
 
 	function defaultExtendClickData (event, data) {
 	  return data
@@ -8107,7 +8052,7 @@
 
 
 /***/ },
-/* 113 */
+/* 112 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {if (typeof window !== "undefined") {
@@ -8123,12 +8068,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 114 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var forEach = __webpack_require__(7).forEach
 	var isString = __webpack_require__(7).isString
-	var disposable = __webpack_require__(115).disposable
+	var disposable = __webpack_require__(114).disposable
 
 	// Info: http://www.quirksmode.org/js/events_properties.html
 	function getEventTarget (event) {
@@ -8322,7 +8267,7 @@
 
 
 /***/ },
-/* 115 */
+/* 114 */
 /***/ function(module, exports) {
 
 	function disposable (action) {
@@ -8341,7 +8286,232 @@
 
 
 /***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Treasure Global ID
+	 */
+
+	// Modules
+	var jsonp = __webpack_require__(3)
+	var _ = __webpack_require__(7)
+	var invariant = __webpack_require__(99)
+	var cookie = __webpack_require__(116)
+
+	function cacheSuccess (result, cookieName) {
+	  cookie.set(cookieName, result['global_id'])
+	  return result['global_id']
+	}
+
+	exports.configure = function () {
+	}
+
+	exports.fetchGlobalID = function fetchGlobalID (success, error, forceFetch) {
+	  success = _.isFunction(success) ? success : _.noop
+	  error = _.isFunction(error) ? error : _.noop
+	  var cookieName = this.client.globalIdCookie
+	  var cachedGlobalId = cookie.get(this.client.globalIdCookie)
+	  if (cachedGlobalId && !forceFetch) {
+	    return cachedGlobalId
+	  }
+
+	  var url = this.client.protocol + '//' + this.client.host + '/js/v3/global_id'
+
+	  invariant(
+	    this.client.requestType === 'jsonp',
+	    'Request type ' + this.client.requestType + ' not supported'
+	  )
+
+	  jsonp(url, {
+	    prefix: 'TreasureJSONPCallback',
+	    timeout: 10000 // 10 seconds timeout
+	  }, function (err, res) {
+	    return err ? error(err) : success(cacheSuccess(res, cookieName))
+	  })
+	}
+
+
+/***/ },
 /* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Cookies.js - 1.2.2
+	 * https://github.com/ScottHamper/Cookies
+	 *
+	 * This is free and unencumbered software released into the public domain.
+	 */
+	(function (global, undefined) {
+	    'use strict';
+
+	    var factory = function (window) {
+	        if (typeof window.document !== 'object') {
+	            throw new Error('Cookies.js requires a `window` with a `document` object');
+	        }
+
+	        var Cookies = function (key, value, options) {
+	            return arguments.length === 1 ?
+	                Cookies.get(key) : Cookies.set(key, value, options);
+	        };
+
+	        // Allows for setter injection in unit tests
+	        Cookies._document = window.document;
+
+	        // Used to ensure cookie keys do not collide with
+	        // built-in `Object` properties
+	        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
+	        
+	        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
+
+	        Cookies.defaults = {
+	            path: '/',
+	            secure: false
+	        };
+
+	        Cookies.get = function (key) {
+	            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
+	                Cookies._renewCache();
+	            }
+	            
+	            var value = Cookies._cache[Cookies._cacheKeyPrefix + key];
+
+	            return value === undefined ? undefined : decodeURIComponent(value);
+	        };
+
+	        Cookies.set = function (key, value, options) {
+	            options = Cookies._getExtendedOptions(options);
+	            options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
+
+	            Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
+
+	            return Cookies;
+	        };
+
+	        Cookies.expire = function (key, options) {
+	            return Cookies.set(key, undefined, options);
+	        };
+
+	        Cookies._getExtendedOptions = function (options) {
+	            return {
+	                path: options && options.path || Cookies.defaults.path,
+	                domain: options && options.domain || Cookies.defaults.domain,
+	                expires: options && options.expires || Cookies.defaults.expires,
+	                secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
+	            };
+	        };
+
+	        Cookies._isValidDate = function (date) {
+	            return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+	        };
+
+	        Cookies._getExpiresDate = function (expires, now) {
+	            now = now || new Date();
+
+	            if (typeof expires === 'number') {
+	                expires = expires === Infinity ?
+	                    Cookies._maxExpireDate : new Date(now.getTime() + expires * 1000);
+	            } else if (typeof expires === 'string') {
+	                expires = new Date(expires);
+	            }
+
+	            if (expires && !Cookies._isValidDate(expires)) {
+	                throw new Error('`expires` parameter cannot be converted to a valid Date instance');
+	            }
+
+	            return expires;
+	        };
+
+	        Cookies._generateCookieString = function (key, value, options) {
+	            key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
+	            key = key.replace(/\(/g, '%28').replace(/\)/g, '%29');
+	            value = (value + '').replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
+	            options = options || {};
+
+	            var cookieString = key + '=' + value;
+	            cookieString += options.path ? ';path=' + options.path : '';
+	            cookieString += options.domain ? ';domain=' + options.domain : '';
+	            cookieString += options.expires ? ';expires=' + options.expires.toUTCString() : '';
+	            cookieString += options.secure ? ';secure' : '';
+
+	            return cookieString;
+	        };
+
+	        Cookies._getCacheFromString = function (documentCookie) {
+	            var cookieCache = {};
+	            var cookiesArray = documentCookie ? documentCookie.split('; ') : [];
+
+	            for (var i = 0; i < cookiesArray.length; i++) {
+	                var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
+
+	                if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
+	                    cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
+	                }
+	            }
+
+	            return cookieCache;
+	        };
+
+	        Cookies._getKeyValuePairFromCookieString = function (cookieString) {
+	            // "=" is a valid character in a cookie value according to RFC6265, so cannot `split('=')`
+	            var separatorIndex = cookieString.indexOf('=');
+
+	            // IE omits the "=" when the cookie value is an empty string
+	            separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
+
+	            var key = cookieString.substr(0, separatorIndex);
+	            var decodedKey;
+	            try {
+	                decodedKey = decodeURIComponent(key);
+	            } catch (e) {
+	                if (console && typeof console.error === 'function') {
+	                    console.error('Could not decode cookie with key "' + key + '"', e);
+	                }
+	            }
+	            
+	            return {
+	                key: decodedKey,
+	                value: cookieString.substr(separatorIndex + 1) // Defer decoding value until accessed
+	            };
+	        };
+
+	        Cookies._renewCache = function () {
+	            Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
+	            Cookies._cachedDocumentCookie = Cookies._document.cookie;
+	        };
+
+	        Cookies._areEnabled = function () {
+	            var testKey = 'cookies.js';
+	            var areEnabled = Cookies.set(testKey, 1).get(testKey) === '1';
+	            Cookies.expire(testKey);
+	            return areEnabled;
+	        };
+
+	        Cookies.enabled = Cookies._areEnabled();
+
+	        return Cookies;
+	    };
+
+	    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
+
+	    // AMD support
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return cookiesExport; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    // CommonJS/Node.js support
+	    } else if (typeof exports === 'object') {
+	        // Support Node.js specific `module.exports` (which can be a function)
+	        if (typeof module === 'object' && typeof module.exports === 'object') {
+	            exports = module.exports = cookiesExport;
+	        }
+	        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+	        exports.Cookies = cookiesExport;
+	    } else {
+	        global.Cookies = cookiesExport;
+	    }
+	})(typeof window === 'undefined' ? this : window);
+
+/***/ },
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -8351,9 +8521,9 @@
 	*/
 
 	// Modules
-	var verge = __webpack_require__(117)
+	var verge = __webpack_require__(118)
 	var _ = __webpack_require__(7)
-	var cookie = __webpack_require__(118)
+	var cookie = __webpack_require__(116)
 	var generateUUID = __webpack_require__(119)
 	var version = __webpack_require__(109)
 
@@ -8552,13 +8722,6 @@
 	  // Values must be initialized later because they depend on knowing the uuid
 	  _.defaults(this.client.track.values, configureValues(this.client.track))
 
-	  // cookie utils
-	  this.setCookie = function (name, value) {
-	    cookie.set(name, value)
-	  }
-	  this.getCookie = function (name) {
-	    return cookie.get(name)
-	  }
 	  return this
 	}
 
@@ -8624,7 +8787,7 @@
 
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/*!
@@ -8791,191 +8954,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(106)(module)))
 
 /***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Cookies.js - 1.2.2
-	 * https://github.com/ScottHamper/Cookies
-	 *
-	 * This is free and unencumbered software released into the public domain.
-	 */
-	(function (global, undefined) {
-	    'use strict';
-
-	    var factory = function (window) {
-	        if (typeof window.document !== 'object') {
-	            throw new Error('Cookies.js requires a `window` with a `document` object');
-	        }
-
-	        var Cookies = function (key, value, options) {
-	            return arguments.length === 1 ?
-	                Cookies.get(key) : Cookies.set(key, value, options);
-	        };
-
-	        // Allows for setter injection in unit tests
-	        Cookies._document = window.document;
-
-	        // Used to ensure cookie keys do not collide with
-	        // built-in `Object` properties
-	        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
-	        
-	        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
-
-	        Cookies.defaults = {
-	            path: '/',
-	            secure: false
-	        };
-
-	        Cookies.get = function (key) {
-	            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
-	                Cookies._renewCache();
-	            }
-	            
-	            var value = Cookies._cache[Cookies._cacheKeyPrefix + key];
-
-	            return value === undefined ? undefined : decodeURIComponent(value);
-	        };
-
-	        Cookies.set = function (key, value, options) {
-	            options = Cookies._getExtendedOptions(options);
-	            options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
-
-	            Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
-
-	            return Cookies;
-	        };
-
-	        Cookies.expire = function (key, options) {
-	            return Cookies.set(key, undefined, options);
-	        };
-
-	        Cookies._getExtendedOptions = function (options) {
-	            return {
-	                path: options && options.path || Cookies.defaults.path,
-	                domain: options && options.domain || Cookies.defaults.domain,
-	                expires: options && options.expires || Cookies.defaults.expires,
-	                secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
-	            };
-	        };
-
-	        Cookies._isValidDate = function (date) {
-	            return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
-	        };
-
-	        Cookies._getExpiresDate = function (expires, now) {
-	            now = now || new Date();
-
-	            if (typeof expires === 'number') {
-	                expires = expires === Infinity ?
-	                    Cookies._maxExpireDate : new Date(now.getTime() + expires * 1000);
-	            } else if (typeof expires === 'string') {
-	                expires = new Date(expires);
-	            }
-
-	            if (expires && !Cookies._isValidDate(expires)) {
-	                throw new Error('`expires` parameter cannot be converted to a valid Date instance');
-	            }
-
-	            return expires;
-	        };
-
-	        Cookies._generateCookieString = function (key, value, options) {
-	            key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
-	            key = key.replace(/\(/g, '%28').replace(/\)/g, '%29');
-	            value = (value + '').replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
-	            options = options || {};
-
-	            var cookieString = key + '=' + value;
-	            cookieString += options.path ? ';path=' + options.path : '';
-	            cookieString += options.domain ? ';domain=' + options.domain : '';
-	            cookieString += options.expires ? ';expires=' + options.expires.toUTCString() : '';
-	            cookieString += options.secure ? ';secure' : '';
-
-	            return cookieString;
-	        };
-
-	        Cookies._getCacheFromString = function (documentCookie) {
-	            var cookieCache = {};
-	            var cookiesArray = documentCookie ? documentCookie.split('; ') : [];
-
-	            for (var i = 0; i < cookiesArray.length; i++) {
-	                var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
-
-	                if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
-	                    cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
-	                }
-	            }
-
-	            return cookieCache;
-	        };
-
-	        Cookies._getKeyValuePairFromCookieString = function (cookieString) {
-	            // "=" is a valid character in a cookie value according to RFC6265, so cannot `split('=')`
-	            var separatorIndex = cookieString.indexOf('=');
-
-	            // IE omits the "=" when the cookie value is an empty string
-	            separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
-
-	            var key = cookieString.substr(0, separatorIndex);
-	            var decodedKey;
-	            try {
-	                decodedKey = decodeURIComponent(key);
-	            } catch (e) {
-	                if (console && typeof console.error === 'function') {
-	                    console.error('Could not decode cookie with key "' + key + '"', e);
-	                }
-	            }
-	            
-	            return {
-	                key: decodedKey,
-	                value: cookieString.substr(separatorIndex + 1) // Defer decoding value until accessed
-	            };
-	        };
-
-	        Cookies._renewCache = function () {
-	            Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
-	            Cookies._cachedDocumentCookie = Cookies._document.cookie;
-	        };
-
-	        Cookies._areEnabled = function () {
-	            var testKey = 'cookies.js';
-	            var areEnabled = Cookies.set(testKey, 1).get(testKey) === '1';
-	            Cookies.expire(testKey);
-	            return areEnabled;
-	        };
-
-	        Cookies.enabled = Cookies._areEnabled();
-
-	        return Cookies;
-	    };
-
-	    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
-
-	    // AMD support
-	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return cookiesExport; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    // CommonJS/Node.js support
-	    } else if (typeof exports === 'object') {
-	        // Support Node.js specific `module.exports` (which can be a function)
-	        if (typeof module === 'object' && typeof module.exports === 'object') {
-	            exports = module.exports = cookiesExport;
-	        }
-	        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
-	        exports.Cookies = cookiesExport;
-	    } else {
-	        global.Cookies = cookiesExport;
-	    }
-	})(typeof window === 'undefined' ? this : window);
-
-/***/ },
 /* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Maybe look into a more legit solution later
 	// node-uuid doesn't work with old IE's
 	// Source: http://stackoverflow.com/a/8809472
-	var window = __webpack_require__(113)
+	var window = __webpack_require__(112)
 	module.exports = function generateUUID () {
 	  var d = new Date().getTime()
 	  if (window.performance && typeof window.performance.now === 'function') {
@@ -9000,7 +8985,7 @@
 
 	// Modules
 	var _ = __webpack_require__(7)
-	var window = __webpack_require__(113)
+	var window = __webpack_require__(112)
 
 	// Helpers
 	function applyToClient (client, method) {
