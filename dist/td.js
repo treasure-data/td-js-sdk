@@ -7967,8 +7967,7 @@
 
 	  var request = {
 	    url: this.client.endpoint + '/global_id',
-	    type: this.client.requestType,
-	    apiKey: this.client.writeKey
+	    type: this.client.requestType
 	  }
 
 	  invariant(
@@ -7976,13 +7975,8 @@
 	    'Request type ' + request.type + ' not supported'
 	  )
 
-	  var params = [
-	    'api_key=' + encodeURIComponent(request.apiKey)
-	  ]
-
-	  var jsonpUrl = request.url + '?' + params.join('&')
 	  var self = this
-	  jsonp(jsonpUrl, {
+	  jsonp(request.url, {
 	    prefix: 'TreasureJSONPCallback',
 	    timeout: 10000 // 10 seconds timeout
 	  }, function (err, res) {
