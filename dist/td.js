@@ -7950,15 +7950,17 @@
 	var invariant = __webpack_require__(99)
 
 	function cacheSuccess(result, context) {
-	  context.setCookie(context.client.globalIdCookie, result)
-	  return result
+	  if (context.setCookie) {
+	    context.setCookie(context.client.globalIdCookie, result['global_id'])
+	  }
+	  return result['global_id']
 	}
 
 	module.exports = function fetchGlobalID (success, error, forceFetch) {
 	  success = _.isFunction(success) ? success : _.noop
 	  error = _.isFunction(error) ? error : _.noop
 
-	  const cachedGlobalId = this.getCookie(this.client.globalIdCookie)
+	  const cachedGlobalId = this.getCookie && this.getCookie(this.client.globalIdCookie)
 	  if (cachedGlobalId && !forceFetch) {
 	    return cachedGlobalId
 	  }
@@ -7979,11 +7981,12 @@
 	  ]
 
 	  var jsonpUrl = request.url + '?' + params.join('&')
+	  var self = this
 	  jsonp(jsonpUrl, {
 	    prefix: 'TreasureJSONPCallback',
 	    timeout: 10000 // 10 seconds timeout
 	  }, function (err, res) {
-	    return err ? error(err) : cacheSuccess(res, this)
+	    return err ? error(err) : success(cacheSuccess(res, self))
 	  })
 	}
 
@@ -8554,7 +8557,11 @@
 
 	  // Values must be initialized later because they depend on knowing the uuid
 	  _.defaults(this.client.track.values, configureValues(this.client.track))
-	  this.setCookie = setCookie
+
+	  // cookie utils
+	  this.setCookie = function (name, value) {
+	    cookie.set(name, value)
+	  }
 	  this.getCookie = function (name) {
 	    return cookie.get(name)
 	  }

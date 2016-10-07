@@ -19,32 +19,19 @@
       document.getElementById('status').innerHTML = text
     }
 
-    function setError () {
-      setBackground('red')
-      setStatus('failure')
-    }
-
-    function setSuccess () {
-      setBackground('green')
-      setStatus('success')
-    }
-
     var td = new Treasure({
       database: 'test_db_request',
       writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in-staging.treasuredata.com'
+      host: 'in.treasuredata.com'
     })
 
     td.fetchGlobalID(function (value) {
-      // we can't check against a specific value
-      if (!value) {
-        setError()
-        return
-      }
-      setSuccess()
+      setBackground('green')
+      setStatus('success')
     }, function () {
-      setError()
-    })
+      setBackground('red')
+      setStatus('failure')
+    }, true)
   })()
 </script>
 
