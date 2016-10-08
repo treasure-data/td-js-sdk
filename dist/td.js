@@ -8313,7 +8313,7 @@
 	  var cookieName = this.client.globalIdCookie
 	  var cachedGlobalId = cookie.get(this.client.globalIdCookie)
 	  if (cachedGlobalId && !forceFetch) {
-	    return cachedGlobalId
+	    return success(cachedGlobalId)
 	  }
 
 	  var url = this.client.protocol + '//' + this.client.host + '/js/v3/global_id'
@@ -9010,6 +9010,7 @@
 	  'init',
 	  'set',
 	  'addRecord',
+	  'fetchGlobalID',
 	  'trackPageview',
 	  'trackEvent',
 	  'trackClicks',
