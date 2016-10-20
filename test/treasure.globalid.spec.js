@@ -13,7 +13,7 @@ describe('Treasure GlobalID', function () {
     beforeEach(function () {
       cookie.set('foo', undefined)
     })
-    it('should set cookie and return value', () => {
+    it('should set cookie and return value', function () {
       expect(cookie.get('foo')).to.be(undefined)
       expect(GlobalID.cacheSuccess({ global_id: '42' }, 'foo')).to.be('42')
       expect(cookie.get('foo')).to.be('42')
