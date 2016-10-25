@@ -150,7 +150,7 @@ All server values except `td_ip` are found by parsing the user-agent string. Thi
 
 ## Default values
 
-Set default values on a table by using `Treasure#set`. Set default values on *all* tables by passing `$global` as the table name. 
+Set default values on a table by using `Treasure#set`. Set default values on *all* tables by passing `$global` as the table name.
 
 Using `Treasure#get` you can view all global properties by passing the table name `$global`.
 
@@ -177,10 +177,11 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
 * **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
 * **config.protocol** : String (optional) - protocol to use for sending events. Default: result of `document.location.protocol`
-* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/event/`
+* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
 * **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
+* **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
 
 **Track/Storage parameters:**
 
@@ -237,6 +238,31 @@ var errorCallback = function () {
 
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
+
+### Treasure#fetchGlobalID(success, failure, forceFetch)
+
+**Parameters:**
+
+* **success** : Function (optional) - Callback for when sending the event is successful
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+* **forceFetch** : Boolean (optional) - Forces a refetch of global id and ignores cached version (default false)
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+
+var successCallback = function (globalId) {
+  // celebrate();
+};
+
+var errorCallback = function (error) {
+  // cry();
+}
+
+td.fetchGlobalID(successCallback, errorCallback)
+```
+
 
 ### Treasure#trackClicks
 

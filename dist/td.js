@@ -400,7 +400,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+
 	/**
 	 * This is the web browser implementation of `debug()`.
 	 *
@@ -581,7 +581,7 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+
 	/**
 	 * This is the common logic for both the Node.js and web browser
 	 * implementations of `debug()`.
@@ -8360,19 +8360,19 @@
 	        var a = docElem['clientHeight'], b = win['innerHeight'];
 	        return a < b ? b : a;
 	      };
-	  
-	  /** 
+
+	  /**
 	   * Test if a media query is active. Like Modernizr.mq
 	   * @since 1.6.0
 	   * @return {boolean}
-	   */  
+	   */
 	  xports['mq'] = mq;
 
-	  /** 
+	  /**
 	   * Normalized matchMedia
 	   * @since 1.6.0
 	   * @return {MediaQueryList|Object}
-	   */ 
+	   */
 	  xports['matchMedia'] = matchMedia ? function() {
 	    // matchMedia must be binded to window
 	    return matchMedia.apply(win, arguments);
@@ -8389,23 +8389,23 @@
 	    return {'width':viewportW(), 'height':viewportH()};
 	  }
 	  xports['viewport'] = viewport;
-	  
-	  /** 
+
+	  /**
 	   * Cross-browser window.scrollX
 	   * @since 1.0.0
 	   * @return {number}
 	   */
 	  xports['scrollX'] = function() {
-	    return win.pageXOffset || docElem.scrollLeft; 
+	    return win.pageXOffset || docElem.scrollLeft;
 	  };
 
-	  /** 
+	  /**
 	   * Cross-browser window.scrollY
 	   * @since 1.0.0
 	   * @return {number}
 	   */
 	  xports['scrollY'] = function() {
-	    return win.pageYOffset || docElem.scrollTop; 
+	    return win.pageYOffset || docElem.scrollTop;
 	  };
 
 	  /**
@@ -8484,7 +8484,7 @@
 	   * @return {boolean}
 	   */
 	  xports['inViewport'] = function(el, cushion) {
-	    // Equiv to `inX(el, cushion) && inY(el, cushion)` but just manually do both 
+	    // Equiv to `inX(el, cushion) && inY(el, cushion)` but just manually do both
 	    // to avoid calling rectangle() twice. It gzips just as small like this.
 	    var r = rectangle(el, cushion);
 	    return !!r && r.bottom >= 0 && r.right >= 0 && r.top <= viewportH() && r.left <= viewportW();
@@ -8523,7 +8523,7 @@
 	        // Used to ensure cookie keys do not collide with
 	        // built-in `Object` properties
 	        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
-	        
+
 	        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
 
 	        Cookies.defaults = {
@@ -8535,7 +8535,7 @@
 	            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
 	                Cookies._renewCache();
 	            }
-	            
+
 	            var value = Cookies._cache[Cookies._cacheKeyPrefix + key];
 
 	            return value === undefined ? undefined : decodeURIComponent(value);
@@ -8630,7 +8630,7 @@
 	                    console.error('Could not decode cookie with key "' + key + '"', e);
 	                }
 	            }
-	            
+
 	            return {
 	                key: decodedKey,
 	                value: cookieString.substr(separatorIndex + 1) // Defer decoding value until accessed
