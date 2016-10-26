@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 (2016-10-25)
+
+* Add fetchGlobalID
+* Replace Buffer usage with toBase64 util
+
 ## 1.6.0 (2016-07-06)
 
 * Add td_platform and td_user_agent tracked values
