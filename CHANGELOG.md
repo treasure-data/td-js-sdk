@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 (2016-11-01)
+
+* Refactor internal util usage to reduce resulting bundle size
+
 ## 1.7.0 (2016-10-25)
 
 * Add fetchGlobalID
