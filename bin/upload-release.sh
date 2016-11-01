@@ -9,4 +9,4 @@ aws s3 sync ./dist/ s3://td-cdn/sdk/$VERSION/ \
   --acl "public-read" \
   --cache-control "public, max-age=315360000" \
   --exclude "*loader.min.js" \
-  --profile td-cdn --dryrun
+  --profile dev-fluentd --dryrun
