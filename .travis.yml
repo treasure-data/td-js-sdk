@@ -6,9 +6,6 @@ cache:
 
 language: node_js
 
-node_js:
-  - '6.9.1'
-
 env:
   global:
   - secure: Eu9IdOCMDNNtwjs0901xE53zsl6ExoZnGTo+8kOEy4qtZj0/PVCHPEfx3Ty9QFm5mSLVW6BVkJB4gHjZPuSKbMYrKIXwSFZcML4xYXMs7oWh2e9ulOVf8iSH/5MPj8+ib+UPcdwkJLhHXm3lIZs+PhySkIFbA045uPXVRT2Xusw=
