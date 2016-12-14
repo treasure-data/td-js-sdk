@@ -17,13 +17,13 @@
   "scripts": {
     "build": "webpack",
     "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
-    "build-loader": "./bin/build-loader.sh",
+    "build-loader": "./bin/build-loader",
     "build-min": "webpack --output-filename [name].min.js -p",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
-    "e2e": "node ./bin/e2e.js",
+    "e2e": "./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
-    "e2e-server": "node ./bin/server.js",
-    "test": "standard && node ./bin/test.js",
+    "e2e-server": "./bin/server.js",
+    "test": "standard && ./bin/test",
     "test-full": "zuul --concurrency 1 --disable-tunnel -- test/*.spec.js",
     "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
     "test-phantom": "zuul --phantom -- test/*.spec.js"
