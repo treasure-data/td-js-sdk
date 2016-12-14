@@ -17,13 +17,13 @@
   "scripts": {
     "build": "webpack",
     "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
-    "build-loader": "./bin/build-loader.sh",
+    "build-loader": "./bin/build-loader",
     "build-min": "webpack --output-filename [name].min.js -p",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
-    "e2e": "node ./bin/e2e.js",
+    "e2e": "./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
-    "e2e-server": "node ./bin/server.js",
-    "test": "standard && node ./bin/test.js",
+    "e2e-server": "./bin/server.js",
+    "test": "standard && ./bin/test",
     "test-full": "zuul --concurrency 1 --disable-tunnel -- test/*.spec.js",
     "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
     "test-phantom": "zuul --phantom -- test/*.spec.js"
@@ -43,26 +43,25 @@
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
     "glob": "^7.0.5",
-    "mocha": "^2.5.3",
+    "mocha": "^3.2.0",
     "parse-domain": "^0.2.1",
-    "phantomjs-prebuilt": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.14",
     "requirejs": "^2.2.0",
-    "selenium-standalone": "^5.4.0",
+    "selenium-standalone": "^5.9.0",
     "sinon": "^1.17.4",
-    "standard": "^7.1.2",
-    "tape": "^4.6.0",
+    "standard": "^8.6.0",
+    "tape": "^4.6.3",
     "uglifyjs": "^2.4.10",
     "wd": "^0.4.0",
-    "webpack": "^1.13.1",
-    "zuul": "^3.9.0",
-    "zuul-ngrok": "^4.0.0"
+    "webpack": "^1.14.0",
+    "zuul": "^3.9.0"
   },
   "dependencies": {
-    "cookies-js": "^1.2.2",
+    "cookies-js": "^1.2.3",
     "domready": "^0.3.0",
     "global": "^4.3.0",
     "json3": "^3.3.2",
-    "jsonp": "^0.2.0",
+    "jsonp": "^0.2.1",
     "lodash-compat": "^3.10.1"
   }
 }

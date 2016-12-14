@@ -11,9 +11,9 @@ app.use(callbackMiddleware)
 // Respond 400 {error: true} when url contains callback and error
 // Respond 200 {created: true} when url contains callback without error
 function callbackMiddleware (req, res, next) {
-  if (req.url.indexOf('callback') === -1) {
+  if (!req.url.includes('callback')) {
     next()
-  } else if (req.url.indexOf('error') === -1) {
+  } else if (!req.url.includes('error')) {
     res.status(200).jsonp({ created: true })
   } else {
     res.status(400).jsonp({ error: true })
