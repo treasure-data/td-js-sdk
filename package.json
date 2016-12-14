@@ -55,7 +55,6 @@
     "wd": "^0.4.0",
     "webpack": "^1.13.1",
     "zuul": "^3.9.0",
-    "zuul-ngrok": "^4.0.0"
   },
   "dependencies": {
     "cookies-js": "^1.2.3",
