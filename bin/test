@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 if [ -n "${CI:-}" ]; then
-  npm run test-full
+  yarn run test-full
 else
-  npm run test-phantom
+  yarn run test-phantom
 fi

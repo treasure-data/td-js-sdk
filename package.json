@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
+    "build-all": "NODE_ENV=production yarn run build && yarn run build-min && yarn run build-loader",
     "build-loader": "./bin/build-loader",
     "build-min": "webpack --output-filename [name].min.js -p",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
