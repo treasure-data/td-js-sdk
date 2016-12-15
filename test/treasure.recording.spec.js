@@ -198,15 +198,6 @@ describe('Treasure Record', function () {
         expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
         expect(treasure._sendRecord.firstCall.args[0].apikey).to.equal(apikey)
       })
-
-      it('should use record time when present', function () {
-        treasure.addRecord('table', { time: 1 })
-        treasure.addRecord('table', {})
-
-        expect(treasure._sendRecord.calledTwice).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0].time).to.equal(1)
-        expect(treasure._sendRecord.secondCall.args[0].time).to.equal(null)
-      })
     })
   })
 

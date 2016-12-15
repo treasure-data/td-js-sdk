@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euxo pipefail
-
-if [ -n "${CI:-}" ]; then
-  npm run test-full
-else
-  npm run test-phantom
-fi

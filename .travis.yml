@@ -1,16 +1,15 @@
-dist: trusty
 sudo: false
+
 cache:
-  yarn: true
+  directories:
+    - node_modules
+
 language: node_js
+
+node_js:
+  - '6.9.1'
+
 env:
   global:
-    - CXX=g++-4.8
-    - secure: Eu9IdOCMDNNtwjs0901xE53zsl6ExoZnGTo+8kOEy4qtZj0/PVCHPEfx3Ty9QFm5mSLVW6BVkJB4gHjZPuSKbMYrKIXwSFZcML4xYXMs7oWh2e9ulOVf8iSH/5MPj8+ib+UPcdwkJLhHXm3lIZs+PhySkIFbA045uPXVRT2Xusw=
-    - secure: XCtfTIWdmyjp1ZDH9CPs7eXbOTAhfS031GWsru7rlOqPTWy0/RHL3BI5chBnn7Dh6ig34M6jQ2/4hcP/Qy+nPR9Gx44GF0jhEv3oEF5fyeSu3DsanKew3K0CIbnNRC4lEr/4qMaDkN4yLFeYCYpuvr0v2pyGpP9e+k7j3oqOmM8=
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+  - secure: Eu9IdOCMDNNtwjs0901xE53zsl6ExoZnGTo+8kOEy4qtZj0/PVCHPEfx3Ty9QFm5mSLVW6BVkJB4gHjZPuSKbMYrKIXwSFZcML4xYXMs7oWh2e9ulOVf8iSH/5MPj8+ib+UPcdwkJLhHXm3lIZs+PhySkIFbA045uPXVRT2Xusw=
+  - secure: XCtfTIWdmyjp1ZDH9CPs7eXbOTAhfS031GWsru7rlOqPTWy0/RHL3BI5chBnn7Dh6ig34M6jQ2/4hcP/Qy+nPR9Gx44GF0jhEv3oEF5fyeSu3DsanKew3K0CIbnNRC4lEr/4qMaDkN4yLFeYCYpuvr0v2pyGpP9e+k7j3oqOmM8=
