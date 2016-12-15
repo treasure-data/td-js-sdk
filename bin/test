@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+export DEBUG=*
+
 if [ -n "${CI:-}" ]; then
   yarn run test-full
 else
