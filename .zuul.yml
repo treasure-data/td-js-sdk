@@ -1,7 +1,5 @@
 ui: mocha-bdd
 
-server: ./bin/server.js
-
 browsers:
   - name: chrome
     version: -2..latest
@@ -14,6 +12,3 @@ browsers:
     version: 8..latest
 
 concurrency: 1
-
-tunnel:
-  type: ngrok
