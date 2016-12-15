@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "express": "^3.0.0",
+    "express": "^4.14.0",
     "glob": "^7.0.5",
     "mocha": "^2.5.3",
     "parse-domain": "^0.2.1",
@@ -61,7 +61,7 @@
     "domready": "^0.3.0",
     "global": "^4.3.0",
     "json3": "^3.3.2",
-    "jsonp": "^0.2.0",
+    "jsonp": "0.2.0",
     "lodash-compat": "^3.10.1"
   }
 }
