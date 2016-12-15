@@ -2,10 +2,10 @@ ui: mocha-bdd
 concurrency: 1
 browsers:
   - name: chrome
-    version: -2..latest
+    version: -1..latest
   - name: firefox
     version: latest
-    version: -2..latest
+    version: -1..latest
   - name: safari
     version: 5..latest
   - name: ie
