@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2 (2016-12-15)
+
+* When available, use record's time to overwrite the default import time
+
 ## 1.7.1 (2016-11-01)
 
 * Refactor internal util usage to reduce resulting bundle size
