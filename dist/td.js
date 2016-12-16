@@ -219,6 +219,10 @@
 	    'data=' + encodeURIComponent(objectToBase64(request.record))
 	  ]
 
+	  if (request.time) {
+	    params.push('time=' + encodeURIComponent(request.time))
+	  }
+
 	  var jsonpUrl = request.url + '?' + params.join('&')
 	  jsonp(jsonpUrl, {
 	    prefix: 'TreasureJSONPCallback',
@@ -277,10 +281,15 @@
 	  validateRecord(table, record)
 
 	  var request = {
-	    url: this.client.endpoint + this.client.database + '/' + table,
+	    apikey: this.client.writeKey,
 	    record: this.applyProperties(table, record),
+	    time: null,
 	    type: this.client.requestType,
-	    apikey: this.client.writeKey
+	    url: this.client.endpoint + this.client.database + '/' + table
+	  }
+
+	  if (request.record.time) {
+	    request.time = request.record.time
 	  }
 
 	  if (this.client.development) {
@@ -3677,7 +3686,7 @@
 /* 55 */
 /***/ function(module, exports) {
 
-	module.exports = '1.7.1'
+	module.exports = '1.7.2'
 
 
 /***/ },
@@ -4077,7 +4086,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Cookies.js - 1.2.2
+	 * Cookies.js - 1.2.3
 	 * https://github.com/ScottHamper/Cookies
 	 *
 	 * This is free and unencumbered software released into the public domain.
@@ -4231,8 +4240,7 @@
 
 	        return Cookies;
 	    };
-
-	    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
+	    var cookiesExport = (global && typeof global.document === 'object') ? factory(global) : factory;
 
 	    // AMD support
 	    if (true) {
