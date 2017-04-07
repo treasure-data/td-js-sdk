@@ -22,5 +22,14 @@ describe('Treasure Utils', function () {
       var uuidRegex = /^[A-F0-9]{8}(?:-?[A-F0-9]{4}){3}-?[A-F0-9]{12}$/i
       expect(uuidRegex.test(generateUUID())).to.equal(true)
     })
+    it('generate non colliding UUID', function () {
+      this.timeout(60000)
+      var alreadyGenerated = {}
+      for (var i = 0; i < 100000; i++) {
+        var uuid = generateUUID()
+        expect(alreadyGenerated[uuid]).to.be(undefined)
+        alreadyGenerated[uuid] = true
+      }
+    })
   })
 })
