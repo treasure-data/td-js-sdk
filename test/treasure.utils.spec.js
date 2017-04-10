@@ -18,18 +18,23 @@ describe('Treasure Utils', function () {
   })
 
   describe('generateUUID', function () {
-    it('generates a valid UUID', function () {
-      var uuidRegex = /^[A-F0-9]{8}(?:-?[A-F0-9]{4}){3}-?[A-F0-9]{12}$/i
-      expect(uuidRegex.test(generateUUID())).to.equal(true)
-    })
-    it('generate non colliding UUID', function () {
-      this.timeout(60000)
-      var alreadyGenerated = {}
-      for (var i = 0; i < 100000; i++) {
-        var uuid = generateUUID()
-        expect(alreadyGenerated[uuid]).to.be(undefined)
-        alreadyGenerated[uuid] = true
-      }
+    const uuidFunctions = generateUUID.isCryptoAvailable
+      ? [generateUUID.cryptoUUID, generateUUID.genericUUID]
+      : [generateUUID.genericUUID]
+    uuidFunctions.forEach(function (uuidFunction) {
+      it('generates a valid UUID for ' + uuidFunction.name, function () {
+        var uuidRegex = /^[A-F0-9]{8}(?:-?[A-F0-9]{4}){3}-?[A-F0-9]{12}$/i
+        expect(uuidRegex.test(uuidFunction())).to.equal(true)
+      })
+      it('generate non colliding UUID for ' + uuidFunction.name, function () {
+        this.timeout(60000)
+        var alreadyGenerated = {}
+        for (var i = 0; i < 100000; i++) {
+          var uuid = uuidFunction()
+          expect(alreadyGenerated[uuid]).to.be(undefined)
+          alreadyGenerated[uuid] = true
+        }
+      })
     })
   })
 })
