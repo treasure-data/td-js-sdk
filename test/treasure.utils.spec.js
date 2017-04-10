@@ -18,7 +18,7 @@ describe('Treasure Utils', function () {
   })
 
   describe('generateUUID', function () {
-    const uuidFunctions = generateUUID.isCryptoAvailable
+    var uuidFunctions = generateUUID.isCryptoAvailable
       ? [generateUUID.cryptoUUID, generateUUID.genericUUID]
       : [generateUUID.genericUUID]
     uuidFunctions.forEach(function (uuidFunction) {
