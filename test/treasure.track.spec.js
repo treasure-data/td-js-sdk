@@ -1,6 +1,7 @@
 var sinon = require('sinon')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
+var checkUUID = require('../lib/utils/checkUUID')
 // var parseDomain = require('parse-domain')
 
 describe('Treasure Tracker', function () {
@@ -67,17 +68,34 @@ describe('Treasure Tracker', function () {
     })
 
     it('should set uuid to clientId if set manually', function () {
-      configuration.clientId = '123'
+      var value = 'abcdef-ghijklmn-opqr-stuv-wxyz'
+      configuration.clientId = value
       treasure = new Treasure(configuration)
 
-      expect(treasure.client.track.uuid).to.equal('123')
+      expect(treasure.client.track.uuid).to.equal(value)
+    })
+
+    it('should set a new UUID if you choose a UUID with insufficient entropy', function () {
+      var value = 'abc'
+      configuration.clientId = value
+      treasure = new Treasure(configuration)
+
+      expect(treasure.client.track.uuid).to.not.equal(value)
+      expect(checkUUID(treasure.client.track.uuid)).to.equal(true)
+
+      value = '00000000-0000-4000-8000-000000000000'
+      configuration.clientId = value
+      treasure = new Treasure(configuration)
+
+      expect(treasure.client.track.uuid).to.not.equal(value)
+      expect(checkUUID(treasure.client.track.uuid)).to.equal(true)
     })
 
     it('should strip NULL characters from clientId', function () {
-      configuration.clientId = '123\0\0\0'
+      configuration.clientId = 'abcdef-ghijklmn-opqr-stuv-wxyz\0\0\0'
       treasure = new Treasure(configuration)
 
-      expect(treasure.client.track.uuid).to.equal('123')
+      expect(treasure.client.track.uuid).to.equal('abcdef-ghijklmn-opqr-stuv-wxyz')
     })
 
     describe('track values', function () {
@@ -167,12 +185,12 @@ describe('Treasure Tracker', function () {
         configuration = {
           database: 'database',
           writeKey: 'writeKey',
-          clientId: 'foobar',
+          clientId: 'abcdef-ghijklmn-opqr-stuv-wxyz',
           development: true,
           logging: false
         }
         treasure = new Treasure(configuration)
-        expect(treasure.client.track.uuid).to.equal('foobar')
+        expect(treasure.client.track.uuid).to.equal(configuration.clientId)
 
         configuration = {
           database: 'database',
@@ -181,7 +199,7 @@ describe('Treasure Tracker', function () {
           logging: false
         }
         treasure = new Treasure(configuration)
-        expect(treasure.client.track.uuid).to.equal('foobar')
+        expect(treasure.client.track.uuid).to.equal(configuration.clientId)
       })
     })
   })
