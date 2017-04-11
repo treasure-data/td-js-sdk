@@ -54,7 +54,7 @@
     "uglifyjs": "^2.4.10",
     "wd": "^0.4.0",
     "webpack": "^1.13.1",
-    "MikeMcElroy/zuul": "^3.11.1"
+    "zuul": "https://github.com/MikeMcElroy/zuul"
   },
   "dependencies": {
     "cookies-js": "^1.2.2",
