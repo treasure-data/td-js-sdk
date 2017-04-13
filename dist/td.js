@@ -4275,6 +4275,9 @@
 	var generateUUID = __webpack_require__(63)
 	var version = __webpack_require__(55)
 	var document = window.document
+	var tdClientIdSource = 'NONE'
+	var tdDocumentCookieOriginal = ''
+	var tdClientIdOriginal = ''
 
 	// Helpers
 	function configureValues (track) {
@@ -4398,6 +4401,7 @@
 	 */
 	exports.configure = function configure (config) {
 	  config = _.isObject(config) ? config : {}
+	  tdDocumentCookieOriginal = document.cookie
 
 	  // Object configuration for track and storage
 	  this.client.track = config.track = configureTrack(config.track)
@@ -4407,17 +4411,21 @@
 	  // If it's not set after checking cookies, generate a uuid and assign it
 	  if (_.isNumber(config.clientId)) {
 	    config.clientId = config.clientId.toString()
+	    tdClientIdSource = 'CONFIG'
 	  } else if (!config.clientId || !_.isString(config.clientId)) {
 	    if (config.storage && config.storage.name) {
 	      config.clientId = cookie.get(config.storage.name)
+	      tdClientIdSource = 'COOKIE'
 	    }
 	    if (!config.clientId) {
 	      config.clientId = generateUUID()
+	      tdClientIdSource = 'GENERATED'
 	    }
 	  }
 
 	  // Remove any NULLs that might be present in the clientId
 	  this.client.track.uuid = config.clientId.replace(/\0/g, '')
+	  tdClientIdOriginal = this.client.track.uuid
 
 	  // Set cookie on highest allowed domain
 	  var setCookie = function (storage, uuid) {
@@ -4482,6 +4490,15 @@
 	  }
 
 	  record = _.assign(this.getTrackValues(), record)
+	  if (['undefined', undefined, null, 'null', '00000000-0000-4000-8000-000000000000'].indexOf(record.td_client_id) >= 0) {
+	    this.addRecord('anomaly', _.assign({}, record, {
+	      td_client_id_source: tdClientIdSource,
+	      td_document_cookie_original: tdDocumentCookieOriginal,
+	      td_document_cookie: document.cookie,
+	      td_cookie_value: this.client.storage && cookie.get(this.client.storage.name),
+	      td_client_id_original: tdClientIdOriginal
+	    }))
+	  }
 	  this.addRecord(table, record, success, failure)
 	  return this
 	}
@@ -4522,7 +4539,6 @@
 	  })
 	  return result
 	}
-
 
 
 /***/ },
