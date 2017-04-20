@@ -7,10 +7,11 @@ function leafChild (el) {
   }
 }
 
-function createTestElement (name) {
+function createTestElement (name, parentNode) {
   var el = document.createElement(name)
+  parentNode = parentNode || document.body
   el.style.display = 'none'
-  document.body.appendChild(el)
+  parentNode.appendChild(el)
   return el
 }
 
