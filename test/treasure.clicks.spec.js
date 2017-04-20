@@ -39,6 +39,22 @@ describe('Treasure Clicks', function () {
     button.click()
   })
 
+  it('calls trackEvent with the click info for a nested tag', function (done) {
+    var td = {
+      trackEvent: function (tableName, data) {
+        expect(tableName === 'clicks').ok()
+        expect(data.tag === 'a').ok()
+        done()
+      }
+    }
+    var link = createTestElement('a')
+    var span = createTestElement('span', link)
+    Clicks.trackClicks.call(td, {
+      element: link
+    })
+    span.click()
+  })
+
   it('calls extendClickData with the event and data', function (done) {
     var td = { trackEvent: function () {} }
     var button = createTestElement('button')
