@@ -51,7 +51,7 @@
 	var window = __webpack_require__(58)
 
 	// Load all cached clients
-	__webpack_require__(64)(Treasure, 'Treasure')
+	__webpack_require__(65)(Treasure, 'Treasure')
 
 	// Expose the library on the window
 	window.Treasure = Treasure
@@ -147,7 +147,8 @@
 	Treasure.Plugins = {
 	  Clicks: __webpack_require__(57),
 	  GlobalID: __webpack_require__(60),
-	  Track: __webpack_require__(62)
+	  Personalization: __webpack_require__(62),
+	  Track: __webpack_require__(63)
 	}
 
 	// Load all plugins
@@ -3790,10 +3791,10 @@
 	  })
 
 	  function clickTracker (e) {
-	    var target = elementUtils.getEventTarget(e)
+	    var target = elementUtils.findElement(elementUtils.getEventTarget(e))
 	    if (
-	      !treeHasIgnoreAttribute(target) &&
-	      !elementUtils.shouldIgnoreElement(target)
+	      target &&
+	      !treeHasIgnoreAttribute(target)
 	    ) {
 	      var elementData = elementUtils.getElementData(target)
 	      var data = options.extendClickData(e, elementData)
@@ -3866,29 +3867,29 @@
 	  }
 	}
 
-	function shouldIgnoreElement (el) {
+	function findElement (el) {
 	  if (!el || !el.tagName) {
-	    return true
+	    return null
+	  }
+	  for (var tag = el.tagName.toLowerCase(); tag && tag !== 'body'; (el = el.parentNode, tag = el && el.tagName.toLowerCase())) {
+	    var type = el.getAttribute('type')
+	    if (tag === 'input' && type === 'password') {
+	      return null
+	    }
+
+	    var role = el.getAttribute('role')
+	    if (
+	      role === 'button' ||
+	      role === 'link' ||
+	      tag === 'a' ||
+	      tag === 'button' ||
+	      tag === 'input'
+	    ) {
+	      return el
+	    }
 	  }
 
-	  var tag = el.tagName.toLowerCase()
-	  var type = el.getAttribute('type')
-	  if (tag === 'input' && type === 'password') {
-	    return true
-	  }
-
-	  var role = el.getAttribute('role')
-	  if (
-	    role === 'button' ||
-	    role === 'link' ||
-	    tag === 'a' ||
-	    tag === 'button' ||
-	    tag === 'input'
-	  ) {
-	    return false
-	  }
-
-	  return true
+	  return null
 	}
 
 	function createTreeHasIgnoreAttribute (ignoreAttribute) {
@@ -4021,7 +4022,7 @@
 	  getEventTarget: getEventTarget,
 	  htmlElementAsString: htmlElementAsString,
 	  htmlTreeAsString: htmlTreeAsString,
-	  shouldIgnoreElement: shouldIgnoreElement
+	  findElement: findElement
 	}
 
 
@@ -4262,6 +4263,37 @@
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var jsonp = __webpack_require__(4)
+	var noop = __webpack_require__(3).noop
+	var invariant = __webpack_require__(3).invariant
+
+	function fetchUserSegments (audienceToken, successCallback, errorCallback) {
+	  successCallback = successCallback || noop
+	  errorCallback = errorCallback || noop
+
+	  invariant(
+	    typeof audienceToken === 'string',
+	    'audienceToken must be a string; received "' + audienceToken.toString() + '"'
+	  )
+
+	  jsonp('https://cdp.in.treasuredata.com/cdp/lookup/collect/segments?token=' + audienceToken, {
+	    prefix: 'TreasureJSONPCallback',
+	    timeout: 10000
+	  }, function (err, res) {
+	    return err ? errorCallback(err) : successCallback(res && res.key, res && res.values)
+	  })
+	}
+
+	module.exports = {
+	  configure: noop,
+	  fetchUserSegments: fetchUserSegments
+	}
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/*!
 	* ----------------------
 	* Treasure Tracker
@@ -4272,7 +4304,7 @@
 	var window = __webpack_require__(58)
 	var _ = __webpack_require__(8)
 	var cookie = __webpack_require__(61)
-	var generateUUID = __webpack_require__(63)
+	var generateUUID = __webpack_require__(64)
 	var version = __webpack_require__(55)
 	var document = window.document
 
@@ -4526,7 +4558,7 @@
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Maybe look into a more legit solution later
@@ -4548,7 +4580,7 @@
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4580,6 +4612,7 @@
 	  'trackPageview',
 	  'trackEvent',
 	  'trackClicks',
+	  'fetchUserSegments',
 	  'ready'
 	]
 
