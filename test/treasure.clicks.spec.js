@@ -1,3 +1,4 @@
+var window = require('global/window')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 var Clicks = require('../lib/plugins/clicks')
@@ -55,7 +56,11 @@ describe('Treasure Clicks', function () {
     if (span.click) {
       span.click()
     } else {
-      span.onclick()
+      // Safari 5 on Windows 2008 special handling
+      var ev = window.document.createEvent('MouseEvents')
+      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/initMouseEvent
+      ev.initMouseEvent('click', true, true, 0, 0, 0, 0, 0, false, false, false, false, 0, span)
+      span.dispatchEvent(ev)
     }
   })
 
