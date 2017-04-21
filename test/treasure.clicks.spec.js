@@ -52,7 +52,11 @@ describe('Treasure Clicks', function () {
     Clicks.trackClicks.call(td, {
       element: link
     })
-    span.click()
+    if (span.click) {
+      span.click()
+    } else {
+      span.onclick()
+    }
   })
 
   it('calls extendClickData with the event and data', function (done) {
