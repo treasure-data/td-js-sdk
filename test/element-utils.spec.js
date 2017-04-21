@@ -7,7 +7,7 @@ var getElementData = elementUtils.getElementData
 var getEventTarget = elementUtils.getEventTarget
 var htmlElementAsString = elementUtils.htmlElementAsString
 var htmlTreeAsString = elementUtils.htmlTreeAsString
-var shouldIgnoreElement = elementUtils.shouldIgnoreElement
+var findElement = elementUtils.findElement
 var createTestElement = helpers.createTestElement
 var leafChild = helpers.leafChild
 
@@ -83,39 +83,46 @@ describe('Element Utils', function () {
     })
   })
 
-  describe('shouldIgnoreElement', function () {
+  describe('findElement', function () {
     it('ignores div', function () {
-      expect(shouldIgnoreElement(document.createElement('div'))).ok()
+      expect(findElement(document.createElement('div'))).not.ok()
     })
 
     it('ignores password inputs', function () {
       var input = document.createElement('input')
       input.type = 'password'
-      expect(shouldIgnoreElement(input)).ok()
+      expect(findElement(input)).not.ok()
     })
 
     it('accepts a', function () {
-      expect(!shouldIgnoreElement(document.createElement('a'))).ok()
+      expect(findElement(document.createElement('a'))).ok()
     })
 
     it('accepts button', function () {
-      expect(!shouldIgnoreElement(document.createElement('button'))).ok()
+      expect(findElement(document.createElement('button'))).ok()
     })
 
     it('accepts input', function () {
-      expect(!shouldIgnoreElement(document.createElement('input'))).ok()
+      expect(findElement(document.createElement('input'))).ok()
     })
 
     it('accepts button role', function () {
       var div = document.createElement('div')
       div.setAttribute('role', 'button')
-      expect(!shouldIgnoreElement(div)).ok()
+      expect(findElement(div)).ok()
     })
 
     it('accepts link role', function () {
       var div = document.createElement('div')
       div.setAttribute('role', 'link')
-      expect(!shouldIgnoreElement(div)).ok()
+      expect(findElement(div)).ok()
+    })
+
+    it('finds a wrapping link', function () {
+      var div = document.createElement('div')
+      var a = document.createElement('a')
+      a.appendChild(div)
+      expect(findElement(div)).to.equal(a)
     })
   })
 
