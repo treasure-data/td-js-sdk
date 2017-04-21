@@ -263,6 +263,31 @@ var errorCallback = function (error) {
 td.fetchGlobalID(successCallback, errorCallback)
 ```
 
+### Treasure#fetchUserSegments(token, success, failure)
+
+**Parameters:**
+
+* **token** : String (required) - Audience Token for the userId
+* **success** : Function (optional) - Callback for receiving the user key and segments
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+
+var successCallback = function (key, segments) {
+  // celebrate();
+};
+
+var errorCallback = function (error) {
+  // cry();
+};
+
+var token = 'lorem-ipsum-dolor-sit-amet'
+
+td.fetchUserSegments(token, successCallback, errorCallback)
+```
 
 ### Treasure#trackClicks
 
