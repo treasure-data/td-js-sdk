@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.0 (2017-12-24)
+* Add fetchUserSegments
+
 ## 1.7.2 (2016-12-15)
 
 * When available, use record's time to overwrite the default import time
