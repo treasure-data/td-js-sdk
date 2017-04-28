@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.1 (2017-5-01)
+* Allow for CDP host to be configured
+
 ## 1.8.0 (2017-4-24)
 * Add fetchUserSegments
 
