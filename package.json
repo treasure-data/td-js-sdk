@@ -57,9 +57,9 @@
     "zuul": "^3.11.1"
   },
   "dependencies": {
-    "cookies-js": "^1.2.2",
     "domready": "^0.3.0",
     "global": "^4.3.0",
+    "js-cookies": "^1.0.4",
     "json3": "^3.3.2",
     "jsonp": "0.2.0",
     "lodash-compat": "^3.10.1"

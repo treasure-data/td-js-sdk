@@ -1,7 +1,7 @@
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 var GlobalID = require('../lib/plugins/globalid')
-var cookie = require('cookies-js')
+var cookie = require('js-cookies')
 
 describe('Treasure GlobalID', function () {
   it('adds fetchGlobalID method', function () {
@@ -11,12 +11,12 @@ describe('Treasure GlobalID', function () {
 
   describe('cacheSuccess', function () {
     beforeEach(function () {
-      cookie.set('foo', undefined)
+      cookie.setItem('foo', undefined)
     })
     it('should set cookie and return value', function () {
-      expect(cookie.get('foo')).to.be(undefined)
+      expect(cookie.getItem('foo')).to.be(undefined)
       expect(GlobalID.cacheSuccess({ global_id: '42' }, 'foo')).to.be('42')
-      expect(cookie.get('foo')).to.be('42')
+      expect(cookie.getItem('foo')).to.be('42')
     })
   })
 })
