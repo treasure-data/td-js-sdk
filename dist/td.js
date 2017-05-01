@@ -4276,7 +4276,9 @@
 	    'audienceToken must be a string; received "' + audienceToken.toString() + '"'
 	  )
 
-	  jsonp('https://cdp.in.treasuredata.com/cdp/lookup/collect/segments?token=' + audienceToken, {
+	  var url = this.client.protocol + '//cdp.' + this.client.host + '/cdp/lookup/collect/segments?token=' + audienceToken
+
+	  jsonp(url, {
 	    prefix: 'TreasureJSONPCallback',
 	    timeout: 10000
 	  }, function (err, res) {
