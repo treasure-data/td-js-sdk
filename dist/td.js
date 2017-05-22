@@ -3898,8 +3898,8 @@
 	    if (!el || !el.tagName || el.tagName.toLowerCase() === 'html') {
 	      return false
 	    } else if (
-	      el.hasAttribute(ignoreAttribute) ||
-	      el.hasAttribute(dataIgnoreAttribute)
+	      hasAttribute(el, ignoreAttribute) ||
+	      hasAttribute(el, dataIgnoreAttribute)
 	    ) {
 	      return true
 	    } else {
@@ -3924,7 +3924,7 @@
 	    'title',
 	    'type'
 	  ], function (attrName) {
-	    if (el.hasAttribute(attrName)) {
+	    if (hasAttribute(el, attrName)) {
 	      data[attrName] = el.getAttribute(attrName)
 	    }
 	  })
@@ -4015,11 +4015,20 @@
 	  return out.join('')
 	}
 
+	/* IE8 does NOT implement hasAttribute */
+	function hasAttribute (element, attrName) {
+	  if (typeof element.hasAttribute === 'function') {
+	    return element.hasAttribute(attrName)
+	  }
+	  return element.getAttribute(attrName) !== null
+	}
+
 	module.exports = {
 	  addEventListener: addEventListener,
 	  createTreeHasIgnoreAttribute: createTreeHasIgnoreAttribute,
 	  getElementData: getElementData,
 	  getEventTarget: getEventTarget,
+	  hasAttribute: hasAttribute,
 	  htmlElementAsString: htmlElementAsString,
 	  htmlTreeAsString: htmlTreeAsString,
 	  findElement: findElement
