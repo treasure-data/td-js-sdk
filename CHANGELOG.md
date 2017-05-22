@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.2 (2017-5-22)
+* Added `hasAttribute` polyfill for IE8
+
 ## 1.8.1 (2017-5-01)
 * Allow for CDP host to be configured
 
