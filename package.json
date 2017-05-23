@@ -24,7 +24,7 @@
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "test": "standard && node ./bin/test.js",
-    "test-full": "zuul --concurrency 1 -- test/*.spec.js",
+    "test-full": "zuul --concurrency 1 --disable-tunnel -- test/*.spec.js",
     "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
     "test-phantom": "zuul --phantom -- test/*.spec.js"
   },
