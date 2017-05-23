@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.3 (2017-05-22)
+* Bumped version reported by `Treasure#version`
+
 ## 1.8.2 (2017-5-22)
 * Added `hasAttribute` polyfill for IE8
 
