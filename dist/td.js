@@ -4290,7 +4290,7 @@
 	  var name = storage.name
 	  var path = storage.path || '/'
 	  var domainChunks = storage.domain.split('.')
-	  for (var domain, i = domainChunks.length - 1; (domain = domainChunks.slice(i).join('.') && i >= 0); i--) {
+	  for (var domain, i = domainChunks.length - 1; (domain = domainChunks.slice(i).join('.'), i >= 0); i--) {
 	    cookie.removeItem(name, path, domain)
 	  }
 	}
