@@ -4286,6 +4286,15 @@
 	  }, storage)
 	}
 
+	function removeCookie (storage) {
+	  var name = storage.name
+	  var path = storage.path || '/'
+	  var domainChunks = storage.domain.split('.')
+	  for (var domain, i = domainChunks.length - 1; (domain = domainChunks.splice(i).join('.') && i >= 0); i--) {
+	    cookie.removeItem(name, path, domain)
+	  }
+	}
+
 	/**
 	 * Track#configure
 	 *
@@ -4379,7 +4388,7 @@
 	  if (config.storage) {
 	    if (config.storage.expires) {
 	      // Must clear cookie first to ensure it gets set on the top valid domain
-	      setCookie(config.storage, undefined)
+	      removeCookie(config.storage)
 	      setCookie(config.storage, this.client.track.uuid)
 	    }
 	  }
