@@ -4286,6 +4286,15 @@
 	  }, storage)
 	}
 
+	function findDomains (domain) {
+	  var domainChunks = domain.split('.')
+	  var domains = []
+	  for (var i = domainChunks.length - 1; i >= 0; i--) {
+	    domains.push(domainChunks.slice(i).join('.'))
+	  }
+	  return domains
+	}
+
 	/**
 	 * Track#configure
 	 *
@@ -4359,17 +4368,26 @@
 	      // bar.foo.com, baz.foo.com, foo.com
 	      // First it tries setting a cookie on .com, and it fails
 	      // Then it sets the cookie on foo.com, and it'll pass
-	      var domain = storage.domain.split('.')
-	      for (var i = domain.length - 1; i >= 0; i--) {
-	        clone.domain = (domain.slice(i).join('.'))
-	        cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain)
+	      var domains = findDomains(storage.domain)
+	      var ll = domains.length
+	      var i = 0
+	      // Check cookie to see if it's "undefined".  If it is, remove it
+	      if (!uuid) {
+	        for (; i < ll; i++) {
+	          cookie.removeItem(storage.name, storage.path, domains[i])
+	        }
+	      } else {
+	        for (; i < ll; i++) {
+	          clone.domain = domains[i]
+	          cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain)
 
-	        // Break when cookies aren't being cleared and it gets set properly
-	        // Don't break when uuid is falsy so all the cookies get cleared
-	        if (cookie.getItem(storage.name) && uuid) {
-	          // When cookie is set succesfully, save used domain in storage object
-	          storage.domain = clone.domain
-	          break
+	          // Break when cookies aren't being cleared and it gets set properly
+	          // Don't break when uuid is falsy so all the cookies get cleared
+	          if (cookie.getItem(storage.name) === uuid) {
+	            // When cookie is set succesfully, save used domain in storage object
+	            storage.domain = clone.domain
+	            break
+	          }
 	        }
 	      }
 	    }
@@ -4378,7 +4396,6 @@
 	  // Only save cookies if storage is enabled and expires is non-zero
 	  if (config.storage) {
 	    if (config.storage.expires) {
-	      // Must clear cookie first to ensure it gets set on the top valid domain
 	      setCookie(config.storage, undefined)
 	      setCookie(config.storage, this.client.track.uuid)
 	    }
