@@ -18,7 +18,7 @@
     "build": "webpack",
     "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
     "build-loader": "./bin/build-loader.sh",
-    "build-min": "webpack --output-filename [name].min.js -p",
+    "build-min": "MINIFY_BUILD=true webpack --output-filename [name].min.js",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
@@ -52,6 +52,7 @@
     "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "wd": "^0.4.0",
     "webpack": "^1.13.1",
     "zuul": "^3.11.1"

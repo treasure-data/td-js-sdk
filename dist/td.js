@@ -440,7 +440,7 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+
 	/**
 	 * This is the web browser implementation of `debug()`.
 	 *
@@ -621,7 +621,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+
 	/**
 	 * This is the common logic for both the Node.js and web browser
 	 * implementations of `debug()`.
@@ -4120,7 +4120,7 @@
 	        // Used to ensure cookie keys do not collide with
 	        // built-in `Object` properties
 	        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
-	        
+
 	        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
 
 	        Cookies.defaults = {
@@ -4132,7 +4132,7 @@
 	            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
 	                Cookies._renewCache();
 	            }
-	            
+
 	            var value = Cookies._cache[Cookies._cacheKeyPrefix + key];
 
 	            return value === undefined ? undefined : decodeURIComponent(value);
@@ -4227,7 +4227,7 @@
 	                    console.error('Could not decode cookie with key "' + key + '"', e);
 	                }
 	            }
-	            
+
 	            return {
 	                key: decodedKey,
 	                value: cookieString.substr(separatorIndex + 1) // Defer decoding value until accessed
