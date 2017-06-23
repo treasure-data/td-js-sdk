@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.4-beta1 (2017-06-23)
+* Beta test of fix for IE8/9 support
+
 ## 1.8.3 (2017-05-22)
 * Bumped version reported by `Treasure#version`
 
