@@ -2116,7 +2116,7 @@
                 for (var i = domain.length - 1; i >= 0; i--) {
                     clone.domain = domain.slice(i).join(".");
                     cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
-                    if (cookie.getItem(storage.name) === uuid && uuid) {
+                    if (uuid && cookie.getItem(storage.name) === uuid) {
                         storage.domain = clone.domain;
                         break;
                     }
