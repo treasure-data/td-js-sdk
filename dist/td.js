@@ -1613,7 +1613,7 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.8.4";
+    module.exports = "1.8.5-beta1";
 }, function(module, exports, __webpack_require__) {
     /*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
@@ -1844,11 +1844,9 @@
     var jsonp = __webpack_require__(4);
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
-    var cookie = __webpack_require__(61);
+    var cookie = __webpack_require__(61).default;
     function cacheSuccess(result, cookieName) {
-        cookie.set(cookieName, result["global_id"], {
-            expires: 6e3
-        });
+        cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
     }
     function configure() {}
@@ -1856,7 +1854,7 @@
         success = success || noop;
         error = error || noop;
         var cookieName = this.client.globalIdCookie;
-        var cachedGlobalId = cookie.get(this.client.globalIdCookie);
+        var cachedGlobalId = cookie.getItem(this.client.globalIdCookie);
         if (cachedGlobalId && !forceFetch) {
             return setTimeout(function() {
                 success(cachedGlobalId);
@@ -1876,130 +1874,89 @@
         configure: configure,
         fetchGlobalID: fetchGlobalID
     };
-}, function(module, exports, __webpack_require__) {
-    var __WEBPACK_AMD_DEFINE_RESULT__;
-    (function(global, undefined) {
-        "use strict";
-        var factory = function(window) {
-            if (typeof window.document !== "object") {
-                throw new Error("Cookies.js requires a `window` with a `document` object");
-            }
-            var Cookies = function(key, value, options) {
-                return arguments.length === 1 ? Cookies.get(key) : Cookies.set(key, value, options);
-            };
-            Cookies._document = window.document;
-            Cookies._cacheKeyPrefix = "cookey.";
-            Cookies._maxExpireDate = new Date("Fri, 31 Dec 9999 23:59:59 UTC");
-            Cookies.defaults = {
-                path: "/",
-                secure: false
-            };
-            Cookies.get = function(key) {
-                if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
-                    Cookies._renewCache();
-                }
-                var value = Cookies._cache[Cookies._cacheKeyPrefix + key];
-                return value === undefined ? undefined : decodeURIComponent(value);
-            };
-            Cookies.set = function(key, value, options) {
-                options = Cookies._getExtendedOptions(options);
-                options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
-                Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
-                return Cookies;
-            };
-            Cookies.expire = function(key, options) {
-                return Cookies.set(key, undefined, options);
-            };
-            Cookies._getExtendedOptions = function(options) {
-                return {
-                    path: options && options.path || Cookies.defaults.path,
-                    domain: options && options.domain || Cookies.defaults.domain,
-                    expires: options && options.expires || Cookies.defaults.expires,
-                    secure: options && options.secure !== undefined ? options.secure : Cookies.defaults.secure
-                };
-            };
-            Cookies._isValidDate = function(date) {
-                return Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date.getTime());
-            };
-            Cookies._getExpiresDate = function(expires, now) {
-                now = now || new Date();
-                if (typeof expires === "number") {
-                    expires = expires === Infinity ? Cookies._maxExpireDate : new Date(now.getTime() + expires * 1e3);
-                } else if (typeof expires === "string") {
-                    expires = new Date(expires);
-                }
-                if (expires && !Cookies._isValidDate(expires)) {
-                    throw new Error("`expires` parameter cannot be converted to a valid Date instance");
-                }
-                return expires;
-            };
-            Cookies._generateCookieString = function(key, value, options) {
-                key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
-                key = key.replace(/\(/g, "%28").replace(/\)/g, "%29");
-                value = (value + "").replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
-                options = options || {};
-                var cookieString = key + "=" + value;
-                cookieString += options.path ? ";path=" + options.path : "";
-                cookieString += options.domain ? ";domain=" + options.domain : "";
-                cookieString += options.expires ? ";expires=" + options.expires.toUTCString() : "";
-                cookieString += options.secure ? ";secure" : "";
-                return cookieString;
-            };
-            Cookies._getCacheFromString = function(documentCookie) {
-                var cookieCache = {};
-                var cookiesArray = documentCookie ? documentCookie.split("; ") : [];
-                for (var i = 0; i < cookiesArray.length; i++) {
-                    var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
-                    if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
-                        cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
-                    }
-                }
-                return cookieCache;
-            };
-            Cookies._getKeyValuePairFromCookieString = function(cookieString) {
-                var separatorIndex = cookieString.indexOf("=");
-                separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
-                var key = cookieString.substr(0, separatorIndex);
-                var decodedKey;
-                try {
-                    decodedKey = decodeURIComponent(key);
-                } catch (e) {
-                    if (console && typeof console.error === "function") {
-                        console.error('Could not decode cookie with key "' + key + '"', e);
-                    }
-                }
-                return {
-                    key: decodedKey,
-                    value: cookieString.substr(separatorIndex + 1)
-                };
-            };
-            Cookies._renewCache = function() {
-                Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
-                Cookies._cachedDocumentCookie = Cookies._document.cookie;
-            };
-            Cookies._areEnabled = function() {
-                var testKey = "cookies.js";
-                var areEnabled = Cookies.set(testKey, 1).get(testKey) === "1";
-                Cookies.expire(testKey);
-                return areEnabled;
-            };
-            Cookies.enabled = Cookies._areEnabled();
-            return Cookies;
-        };
-        var cookiesExport = global && typeof global.document === "object" ? factory(global) : factory;
-        if (true) {
-            !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-                return cookiesExport;
-            }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-        } else if (typeof exports === "object") {
-            if (typeof module === "object" && typeof module.exports === "object") {
-                exports = module.exports = cookiesExport;
-            }
-            exports.Cookies = cookiesExport;
-        } else {
-            global.Cookies = cookiesExport;
+}, function(module, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    var encode = function encode(val) {
+        try {
+            return encodeURIComponent(val);
+        } catch (e) {
+            console.error("error encode %o");
         }
-    })(typeof window === "undefined" ? this : window);
+        return null;
+    };
+    var decode = function decode(val) {
+        try {
+            return decodeURIComponent(val);
+        } catch (err) {
+            console.error("error decode %o");
+        }
+        return null;
+    };
+    var handleSkey = function handleSkey(sKey) {
+        return encode(sKey).replace(/[\-\.\+\*]/g, "\\$&");
+    };
+    var Cookies = {
+        getItem: function getItem(sKey) {
+            if (!sKey) {
+                return null;
+            }
+            return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+        },
+        setItem: function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+            if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+                return false;
+            }
+            var sExpires = "";
+            if (vEnd) {
+                switch (vEnd.constructor) {
+                  case Number:
+                    if (vEnd === Infinity) {
+                        sExpires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+                    } else {
+                        sExpires = "; max-age=" + vEnd;
+                    }
+                    break;
+
+                  case String:
+                    sExpires = "; expires=" + vEnd;
+                    break;
+
+                  case Date:
+                    sExpires = "; expires=" + vEnd.toUTCString();
+                    break;
+
+                  default:
+                    break;
+                }
+            }
+            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
+            return true;
+        },
+        removeItem: function removeItem(sKey, sPath, sDomain) {
+            if (!this.hasItem(sKey)) {
+                return false;
+            }
+            document.cookie = [ encode(sKey), "=; expires=Thu, 01 Jan 1970 00:00:00 GMT", sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "" ].join("");
+            return true;
+        },
+        hasItem: function hasItem(sKey) {
+            if (!sKey) {
+                return false;
+            }
+            return new RegExp("(?:^|;\\s*)" + encode(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=").test(document.cookie);
+        },
+        keys: function keys() {
+            var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+            aKeys = aKeys.map(function(key) {
+                return decode(key);
+            });
+            return aKeys;
+        }
+    };
+    exports.default = Cookies;
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
@@ -2028,7 +1985,7 @@
 	*/
     var window = __webpack_require__(58);
     var _ = __webpack_require__(8);
-    var cookie = __webpack_require__(61);
+    var cookie = __webpack_require__(61).default;
     var generateUUID = __webpack_require__(64);
     var version = __webpack_require__(55);
     var document = window.document;
@@ -2120,6 +2077,14 @@
             path: "/"
         }, storage);
     }
+    function findDomains(domain) {
+        var domainChunks = domain.split(".");
+        var domains = [];
+        for (var i = domainChunks.length - 1; i >= 0; i--) {
+            domains.push(domainChunks.slice(i).join("."));
+        }
+        return domains;
+    }
     exports.configure = function configure(config) {
         config = _.isObject(config) ? config : {};
         this.client.track = config.track = configureTrack(config.track);
@@ -2128,9 +2093,9 @@
             config.clientId = config.clientId.toString();
         } else if (!config.clientId || !_.isString(config.clientId)) {
             if (config.storage && config.storage.name) {
-                config.clientId = cookie.get(config.storage.name);
+                config.clientId = cookie.getItem(config.storage.name);
             }
-            if (!config.clientId) {
+            if (!config.clientId || config.clientId === "undefined") {
                 config.clientId = generateUUID();
             }
         }
@@ -2144,15 +2109,23 @@
             };
             if (is.ip || is.local || is.custom) {
                 clone.domain = is.local ? null : clone.domain;
-                cookie(storage.name, uuid, clone);
+                cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
             } else {
-                var domain = storage.domain.split(".");
-                for (var i = domain.length - 1; i >= 0; i--) {
-                    clone.domain = domain.slice(i).join(".");
-                    cookie(storage.name, uuid, clone);
-                    if (cookie.get(storage.name) && uuid) {
-                        storage.domain = clone.domain;
-                        break;
+                var domains = findDomains(storage.domain);
+                var ll = domains.length;
+                var i = 0;
+                if (!uuid) {
+                    for (;i < ll; i++) {
+                        cookie.removeItem(storage.name, storage.path, domains[i]);
+                    }
+                } else {
+                    for (;i < ll; i++) {
+                        clone.domain = domains[i];
+                        cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
+                        if (cookie.getItem(storage.name) === uuid) {
+                            storage.domain = clone.domain;
+                            break;
+                        }
                     }
                 }
             }
