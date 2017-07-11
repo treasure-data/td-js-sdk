@@ -1613,7 +1613,7 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.8.4";
+    module.exports = "1.8.5-beta1";
 }, function(module, exports, __webpack_require__) {
     /*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
@@ -2077,14 +2077,13 @@
             path: "/"
         }, storage);
     }
-    function removeCookie(storage) {
-        var name = storage.name;
-        var path = storage.path || "/";
-        var domainChunks = storage.domain.split(".");
-        for (var domain, i = domainChunks.length - 1; domain = domainChunks.slice(i).join("."), 
-        i >= 0; i--) {
-            cookie.removeItem(name, path, domain);
+    function findDomains(domain) {
+        var domainChunks = domain.split(".");
+        var domains = [];
+        for (var i = domainChunks.length - 1; i >= 0; i--) {
+            domains.push(domainChunks.slice(i).join("."));
         }
+        return domains;
     }
     exports.configure = function configure(config) {
         config = _.isObject(config) ? config : {};
@@ -2112,20 +2111,28 @@
                 clone.domain = is.local ? null : clone.domain;
                 cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
             } else {
-                var domain = storage.domain.split(".");
-                for (var i = domain.length - 1; i >= 0; i--) {
-                    clone.domain = domain.slice(i).join(".");
-                    cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
-                    if (uuid && cookie.getItem(storage.name) === uuid) {
-                        storage.domain = clone.domain;
-                        break;
+                var domains = findDomains(storage.domain);
+                var ll = domains.length;
+                var i = 0;
+                if (!uuid) {
+                    for (;i < ll; i++) {
+                        cookie.removeItem(storage.name, storage.path, domains[i]);
+                    }
+                } else {
+                    for (;i < ll; i++) {
+                        clone.domain = domains[i];
+                        cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
+                        if (cookie.getItem(storage.name) === uuid) {
+                            storage.domain = clone.domain;
+                            break;
+                        }
                     }
                 }
             }
         };
         if (config.storage) {
             if (config.storage.expires) {
-                removeCookie(config.storage);
+                setCookie(config.storage, undefined);
                 setCookie(config.storage, this.client.track.uuid);
             }
         }
