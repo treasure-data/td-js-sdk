@@ -3,9 +3,9 @@
     function __webpack_require__(moduleId) {
         if (installedModules[moduleId]) return installedModules[moduleId].exports;
         var module = installedModules[moduleId] = {
-            exports: {},
-            id: moduleId,
-            loaded: false
+            "exports": {},
+            "id": moduleId,
+            "loaded": false
         };
         modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
         module.loaded = true;
@@ -59,10 +59,10 @@
     Treasure.prototype._sendRecord = record._sendRecord;
     Treasure.prototype._configurator = configurator;
     Treasure.Plugins = {
-        Clicks: __webpack_require__(57),
-        GlobalID: __webpack_require__(60),
-        Personalization: __webpack_require__(62),
-        Track: __webpack_require__(63)
+        "Clicks": __webpack_require__(57),
+        "GlobalID": __webpack_require__(60),
+        "Personalization": __webpack_require__(62),
+        "Track": __webpack_require__(63)
     };
     _.forIn(Treasure.Plugins, function(plugin) {
         _.forIn(plugin, function(method, name) {
@@ -93,8 +93,8 @@
         }
         var jsonpUrl = request.url + "?" + params.join("&");
         jsonp(jsonpUrl, {
-            prefix: "TreasureJSONPCallback",
-            timeout: 1e4
+            "prefix": "TreasureJSONPCallback",
+            "timeout": 1e4
         }, function(err, res) {
             return err ? error(err) : success(res);
         });
@@ -105,11 +105,11 @@
     exports.addRecord = function addRecord(table, record, success, error) {
         validateRecord(table, record);
         var request = {
-            apikey: this.client.writeKey,
-            record: this.applyProperties(table, record),
-            time: null,
-            type: this.client.requestType,
-            url: this.client.endpoint + this.client.database + "/" + table
+            "apikey": this.client.writeKey,
+            "record": this.applyProperties(table, record),
+            "time": null,
+            "type": this.client.requestType,
+            "url": this.client.endpoint + this.client.database + "/" + table
         };
         if (request.record.time) {
             request.time = request.record.time;
@@ -138,9 +138,9 @@
     }
     function noop() {}
     module.exports = {
-        disposable: disposable,
-        invariant: invariant,
-        noop: noop
+        "disposable": disposable,
+        "invariant": invariant,
+        "noop": noop
     };
 }, function(module, exports, __webpack_require__) {
     var debug = __webpack_require__(5)("jsonp");
@@ -417,13 +417,13 @@
     }
 }, function(module, exports, __webpack_require__) {
     module.exports = {
-        forEach: __webpack_require__(9),
-        isNumber: __webpack_require__(38),
-        isObject: __webpack_require__(16),
-        isString: __webpack_require__(17),
-        assign: __webpack_require__(39),
-        forIn: __webpack_require__(46),
-        noop: __webpack_require__(48)
+        "forEach": __webpack_require__(9),
+        "isNumber": __webpack_require__(38),
+        "isObject": __webpack_require__(16),
+        "isString": __webpack_require__(17),
+        "assign": __webpack_require__(39),
+        "forIn": __webpack_require__(46),
+        "noop": __webpack_require__(48)
     };
 }, function(module, exports, __webpack_require__) {
     var arrayEach = __webpack_require__(10), baseEach = __webpack_require__(11), createForEach = __webpack_require__(35);
@@ -511,11 +511,11 @@
             this.x = x;
         }, object = {
             "0": x,
-            length: x
+            "length": x
         }, props = [];
         Ctor.prototype = {
-            valueOf: x,
-            y: x
+            "valueOf": x,
+            "y": x
         };
         for (var key in new Ctor()) {
             props.push(key);
@@ -576,7 +576,7 @@
     var isHostObject = function() {
         try {
             Object({
-                toString: 0
+                "toString": 0
             } + "");
         } catch (e) {
             return function() {
@@ -666,22 +666,22 @@
     var objToString = objectProto.toString;
     var nonEnumProps = {};
     nonEnumProps[arrayTag] = nonEnumProps[dateTag] = nonEnumProps[numberTag] = {
-        constructor: true,
-        toLocaleString: true,
-        toString: true,
-        valueOf: true
+        "constructor": true,
+        "toLocaleString": true,
+        "toString": true,
+        "valueOf": true
     };
     nonEnumProps[boolTag] = nonEnumProps[stringTag] = {
-        constructor: true,
-        toString: true,
-        valueOf: true
+        "constructor": true,
+        "toString": true,
+        "valueOf": true
     };
     nonEnumProps[errorTag] = nonEnumProps[funcTag] = nonEnumProps[regexpTag] = {
-        constructor: true,
-        toString: true
+        "constructor": true,
+        "toString": true
     };
     nonEnumProps[objectTag] = {
-        constructor: true
+        "constructor": true
     };
     arrayEach(shadowProps, function(key) {
         for (var tag in nonEnumProps) {
@@ -940,8 +940,8 @@
         (function() {
             var isLoader = "function" === "function" && __webpack_require__(52);
             var objectTypes = {
-                function: true,
-                object: true
+                "function": true,
+                "object": true
             };
             var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
             var root = objectTypes[typeof window] && window || this, freeGlobal = freeExports && objectTypes[typeof module] && module && !module.nodeType && typeof global == "object" && global;
@@ -980,7 +980,7 @@
                                 }).toJSON = value;
                                 try {
                                     stringifySupported = stringify(0) === "0" && stringify(new Number()) === "0" && stringify(new String()) == '""' && stringify(getClass) === undef && stringify(undef) === undef && stringify() === undef && stringify(value) === "1" && stringify([ value ]) == "[1]" && stringify([ undef ]) == "[null]" && stringify(null) == "null" && stringify([ undef, getClass, null ]) == "[null,null,null]" && stringify({
-                                        a: [ value, true, false, null, "\0\b\n\f\r\t" ]
+                                        "a": [ value, true, false, null, "\0\b\n\f\r\t" ]
                                     }) == serialized && stringify(null, value) === "1" && stringify([ 1, 2 ], null, 1) == "[\n 1,\n 2\n]" && stringify(new Date(-864e13)) == '"-271821-04-20T00:00:00.000Z"' && stringify(new Date(864e13)) == '"+275760-09-13T00:00:00.000Z"' && stringify(new Date(-621987552e5)) == '"-000001-01-01T00:00:00.000Z"' && stringify(new Date(-1)) == '"1969-12-31T23:59:59.999Z"';
                                 } catch (exception) {
                                     stringifySupported = false;
@@ -1034,7 +1034,7 @@
                         isProperty = function(property) {
                             var members = {}, constructor;
                             if ((members.__proto__ = null, members.__proto__ = {
-                                toString: 1
+                                "toString": 1
                             }, members).toString != getClass) {
                                 isProperty = function(property) {
                                     var original = this.__proto__, result = property in (this.__proto__ = null, this);
@@ -1102,13 +1102,13 @@
                     };
                     if (!has("json-stringify")) {
                         var Escapes = {
-                            92: "\\\\",
-                            34: '\\"',
-                            8: "\\b",
-                            12: "\\f",
-                            10: "\\n",
-                            13: "\\r",
-                            9: "\\t"
+                            "92": "\\\\",
+                            "34": '\\"',
+                            "8": "\\b",
+                            "12": "\\f",
+                            "10": "\\n",
+                            "13": "\\r",
+                            "9": "\\t"
                         };
                         var leadingZeroes = "000000";
                         var toPaddedString = function(width, value) {
@@ -1246,14 +1246,14 @@
                     if (!has("json-parse")) {
                         var fromCharCode = String.fromCharCode;
                         var Unescapes = {
-                            92: "\\",
-                            34: '"',
-                            47: "/",
-                            98: "\b",
-                            116: "\t",
-                            110: "\n",
-                            102: "\f",
-                            114: "\r"
+                            "92": "\\",
+                            "34": '"',
+                            "47": "/",
+                            "98": "\b",
+                            "116": "\t",
+                            "110": "\n",
+                            "102": "\f",
+                            "114": "\r"
                         };
                         var Index, Source;
                         var abort = function() {
@@ -1492,7 +1492,7 @@
             } else {
                 var nativeJSON = root.JSON, previousJSON = root["JSON3"], isRestored = false;
                 var JSON3 = runInContext(root, root["JSON3"] = {
-                    noConflict: function() {
+                    "noConflict": function() {
                         if (!isRestored) {
                             isRestored = true;
                             root.JSON = nativeJSON;
@@ -1503,8 +1503,8 @@
                     }
                 });
                 root.JSON = {
-                    parse: JSON3.parse,
-                    stringify: JSON3.stringify
+                    "parse": JSON3.parse,
+                    "stringify": JSON3.stringify
                 };
             }
             if (isLoader) {
@@ -1571,19 +1571,19 @@
         invariant(/^[a-z0-9_]{3,255}$/.test(options.database), "Database must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
     }
     exports.DEFAULT_CONFIG = {
-        development: false,
-        globalIdCookie: "_td_global",
-        host: "in.treasuredata.com",
-        logging: true,
-        pathname: "/js/v3/event/",
-        protocol: document.location.protocol === "https:" ? "https:" : "http:",
-        requestType: "jsonp"
+        "development": false,
+        "globalIdCookie": "_td_global",
+        "host": "in.treasuredata.com",
+        "logging": true,
+        "pathname": "/js/v3/event/",
+        "protocol": document.location.protocol === "https:" ? "https:" : "http:",
+        "requestType": "jsonp"
     };
     exports.configure = function configure(options) {
         this.client = _.assign({
-            globals: {}
+            "globals": {}
         }, exports.DEFAULT_CONFIG, options, {
-            requestType: "jsonp"
+            "requestType": "jsonp"
         });
         validateOptions(this.client);
         if (!/:$/.test(this.client.protocol)) {
@@ -1666,9 +1666,9 @@
         if (this._clickTrackingInstalled) return;
         var instance = this;
         var options = assign({
-            element: window.document,
-            extendClickData: defaultExtendClickData,
-            ignoreAttribute: "td-ignore"
+            "element": window.document,
+            "extendClickData": defaultExtendClickData,
+            "ignoreAttribute": "td-ignore"
         }, trackClicksOptions);
         var treeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute(options.ignoreAttribute);
         var removeClickTracker = elementUtils.addEventListener(options.element, "click", clickTracker);
@@ -1689,8 +1689,8 @@
         }
     }
     module.exports = {
-        configure: configure,
-        trackClicks: trackClicks
+        "configure": configure,
+        "trackClicks": trackClicks
     };
 }, function(module, exports) {
     (function(global) {
@@ -1763,8 +1763,8 @@
     }
     function getElementData(el) {
         var data = {
-            tag: el.tagName.toLowerCase(),
-            tree: htmlTreeAsString(el)
+            "tag": el.tagName.toLowerCase(),
+            "tree": htmlTreeAsString(el)
         };
         forEach([ "alt", "class", "href", "id", "name", "role", "title", "type" ], function(attrName) {
             if (hasAttribute(el, attrName)) {
@@ -1831,20 +1831,20 @@
         return element.getAttribute(attrName) !== null;
     }
     module.exports = {
-        addEventListener: addEventListener,
-        createTreeHasIgnoreAttribute: createTreeHasIgnoreAttribute,
-        getElementData: getElementData,
-        getEventTarget: getEventTarget,
-        hasAttribute: hasAttribute,
-        htmlElementAsString: htmlElementAsString,
-        htmlTreeAsString: htmlTreeAsString,
-        findElement: findElement
+        "addEventListener": addEventListener,
+        "createTreeHasIgnoreAttribute": createTreeHasIgnoreAttribute,
+        "getElementData": getElementData,
+        "getEventTarget": getEventTarget,
+        "hasAttribute": hasAttribute,
+        "htmlElementAsString": htmlElementAsString,
+        "htmlTreeAsString": htmlTreeAsString,
+        "findElement": findElement
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
-    var cookie = __webpack_require__(61).default;
+    var cookie = __webpack_require__(61);
     function cacheSuccess(result, cookieName) {
         cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
@@ -1863,22 +1863,18 @@
         var url = this.client.protocol + "//" + this.client.host + "/js/v3/global_id";
         invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
-            prefix: "TreasureJSONPCallback",
-            timeout: 1e4
+            "prefix": "TreasureJSONPCallback",
+            "timeout": 1e4
         }, function(err, res) {
             return err ? error(err) : success(cacheSuccess(res, cookieName));
         });
     }
     module.exports = {
-        cacheSuccess: cacheSuccess,
-        configure: configure,
-        fetchGlobalID: fetchGlobalID
+        "cacheSuccess": cacheSuccess,
+        "configure": configure,
+        "fetchGlobalID": fetchGlobalID
     };
 }, function(module, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
     var encode = function encode(val) {
         try {
             return encodeURIComponent(val);
@@ -1899,13 +1895,13 @@
         return encode(sKey).replace(/[\-\.\+\*]/g, "\\$&");
     };
     var Cookies = {
-        getItem: function getItem(sKey) {
+        "getItem": function getItem(sKey) {
             if (!sKey) {
                 return null;
             }
             return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
         },
-        setItem: function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
             if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
                 return false;
             }
@@ -1935,28 +1931,28 @@
             document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
             return true;
         },
-        removeItem: function removeItem(sKey, sPath, sDomain) {
+        "removeItem": function removeItem(sKey, sPath, sDomain) {
             if (!this.hasItem(sKey)) {
                 return false;
             }
             document.cookie = [ encode(sKey), "=; expires=Thu, 01 Jan 1970 00:00:00 GMT", sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "" ].join("");
             return true;
         },
-        hasItem: function hasItem(sKey) {
+        "hasItem": function hasItem(sKey) {
             if (!sKey) {
                 return false;
             }
             return new RegExp("(?:^|;\\s*)" + encode(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=").test(document.cookie);
         },
-        keys: function keys() {
-            var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+        "keys": function keys() {
+            var aKeys = document.cookie.replace(/((?:^|\s*;)[^=]+)(?=;|$)|^\s*|\s*(?:=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:=[^;]*)?;\s*/);
             aKeys = aKeys.map(function(key) {
                 return decode(key);
             });
             return aKeys;
         }
     };
-    exports.default = Cookies;
+    module.exports = Cookies;
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
@@ -1967,15 +1963,15 @@
         invariant(typeof audienceToken === "string", 'audienceToken must be a string; received "' + audienceToken.toString() + '"');
         var url = this.client.protocol + "//cdp." + this.client.host + "/cdp/lookup/collect/segments?token=" + audienceToken;
         jsonp(url, {
-            prefix: "TreasureJSONPCallback",
-            timeout: 1e4
+            "prefix": "TreasureJSONPCallback",
+            "timeout": 1e4
         }, function(err, res) {
             return err ? errorCallback(err) : successCallback(res && res.key, res && res.values);
         });
     }
     module.exports = {
-        configure: noop,
-        fetchUserSegments: fetchUserSegments
+        "configure": noop,
+        "fetchUserSegments": fetchUserSegments
     };
 }, function(module, exports, __webpack_require__) {
     /*!
@@ -1985,32 +1981,32 @@
 	*/
     var window = __webpack_require__(58);
     var _ = __webpack_require__(8);
-    var cookie = __webpack_require__(61).default;
+    var cookie = __webpack_require__(61);
     var generateUUID = __webpack_require__(64);
     var version = __webpack_require__(55);
     var document = window.document;
     function configureValues(track) {
         return _.assign({
-            td_version: function() {
+            "td_version": function() {
                 return version;
             },
-            td_client_id: function() {
+            "td_client_id": function() {
                 return track.uuid;
             },
-            td_charset: function() {
+            "td_charset": function() {
                 return (document.characterSet || document.charset || "-").toLowerCase();
             },
-            td_language: function() {
+            "td_language": function() {
                 var nav = window.navigator;
                 return (nav && (nav.language || nav.browserLanguage) || "-").toLowerCase();
             },
-            td_color: function() {
+            "td_color": function() {
                 return window.screen ? window.screen.colorDepth + "-bit" : "-";
             },
-            td_screen: function() {
+            "td_screen": function() {
                 return window.screen ? window.screen.width + "x" + window.screen.height : "-";
             },
-            td_viewport: function() {
+            "td_viewport": function() {
                 var clientHeight = document.documentElement && document.documentElement.clientHeight;
                 var clientWidth = document.documentElement && document.documentElement.clientWidth;
                 var innerHeight = window.innerHeight;
@@ -2019,49 +2015,49 @@
                 var width = clientWidth < innerWidth ? innerWidth : clientWidth;
                 return width + "x" + height;
             },
-            td_title: function() {
+            "td_title": function() {
                 return document.title;
             },
-            td_url: function() {
+            "td_url": function() {
                 return document.location.href.split("#")[0];
             },
-            td_user_agent: function() {
+            "td_user_agent": function() {
                 return window.navigator.userAgent;
             },
-            td_platform: function() {
+            "td_platform": function() {
                 return window.navigator.platform;
             },
-            td_host: function() {
+            "td_host": function() {
                 return document.location.host;
             },
-            td_path: function() {
+            "td_path": function() {
                 return document.location.pathname;
             },
-            td_referrer: function() {
+            "td_referrer": function() {
                 return document.referrer;
             },
-            td_ip: function() {
+            "td_ip": function() {
                 return "td_ip";
             },
-            td_browser: function() {
+            "td_browser": function() {
                 return "td_browser";
             },
-            td_browser_version: function() {
+            "td_browser_version": function() {
                 return "td_browser_version";
             },
-            td_os: function() {
+            "td_os": function() {
                 return "td_os";
             },
-            td_os_version: function() {
+            "td_os_version": function() {
                 return "td_os_version";
             }
         }, track.values);
     }
     function configureTrack(track) {
         return _.assign({
-            pageviews: "pageviews",
-            events: "events",
-            values: {}
+            "pageviews": "pageviews",
+            "events": "events",
+            "values": {}
         }, track);
     }
     function configureStorage(storage) {
@@ -2070,11 +2066,11 @@
         }
         storage = _.isObject(storage) ? storage : {};
         return _.assign({
-            name: "_td",
-            expires: 63072e3,
-            domain: document.location.hostname,
-            customDomain: !!storage.domain,
-            path: "/"
+            "name": "_td",
+            "expires": 63072e3,
+            "domain": document.location.hostname,
+            "customDomain": !!storage.domain,
+            "path": "/"
         }, storage);
     }
     function findDomains(domain) {
@@ -2103,9 +2099,9 @@
         var setCookie = function(storage, uuid) {
             var clone = _.assign({}, storage);
             var is = {
-                ip: storage.domain.match(/\d*\.\d*\.\d*\.\d*$/),
-                local: storage.domain === "localhost",
-                custom: storage.customDomain
+                "ip": storage.domain.match(/\d*\.\d*\.\d*\.\d*$/),
+                "local": storage.domain === "localhost",
+                "custom": storage.customDomain
             };
             if (is.ip || is.local || is.custom) {
                 clone.domain = is.local ? null : clone.domain;
