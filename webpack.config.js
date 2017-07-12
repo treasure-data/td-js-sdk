@@ -23,13 +23,17 @@ module.exports = {
           screw_ie8: false
         },
         output: {
-          screw_ie8: false
+          screw_ie8: false,
+          quote_keys: true
         }
       })
       : new UglifyJSPlugin({
         compress: false,
         mangle: false,
-        beautify: true
+        beautify: true,
+        output: {
+          quote_keys: true
+        }
       })
   ]
 }
