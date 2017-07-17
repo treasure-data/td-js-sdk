@@ -14,7 +14,15 @@
       }
     }
 
-    var methods = ['addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
+    c[n].Plugins = {
+      Clicks: {},
+      GlobalID: {},
+      Personalization: {},
+      Records: {},
+      Track: {}
+    }
+
+    var methods = ['configure', 'addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
     for (var i = 0; i < methods.length; i++) {
       var method = methods[i]
       c[n].prototype[method] = action(method)
