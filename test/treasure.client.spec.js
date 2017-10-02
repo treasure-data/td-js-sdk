@@ -196,6 +196,11 @@ describe('Treasure Client', function () {
         treasure = new Treasure(configuration)
         expect(treasure.client.endpoint.indexOf('http://')).to.equal(0)
       })
+
+      it('should default to https', function () {
+        treasure = new Treasure(configuration)
+        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
+      })
     })
 
     describe('validates request type', function () {
