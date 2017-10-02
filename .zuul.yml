@@ -7,6 +7,6 @@ browsers:
     version: latest
     version: -1..latest
   - name: safari
-    version: 5..latest
+    version: 7..latest
   - name: ie
     version: 8..latest
