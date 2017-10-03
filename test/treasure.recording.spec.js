@@ -173,7 +173,7 @@ describe('Treasure Record', function () {
       })
 
       it('should set url', function () {
-        var url = 'http://in.treasuredata.com/js/v3/event/database/table'
+        var url = 'http://@HOST@PATHNAMEdatabase/table'
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.calledOnce).to.equal(true)
