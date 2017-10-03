@@ -15,9 +15,7 @@
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
   "scripts": {
-    "build": "webpack",
-    "build-all": "./bin/build.sh",
-    "build-loader": "./bin/build-loader.sh",
+    "build": "./bin/build.sh",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
