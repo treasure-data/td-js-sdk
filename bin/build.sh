@@ -65,7 +65,7 @@ cat $ROOT_DIR/src/loader.js |
 
 ESCAPED_LOADER="$(echo $ROOT_DIR/dist/loader.min.js | sed -e 's^/^\\/^g')"
 
-sed -i '' "/function.*/ {
+sed -i '' "/\!function.*/ {
   r $ROOT_DIR/dist/loader.min.js
   d
 }" $ROOT_DIR/README.md
