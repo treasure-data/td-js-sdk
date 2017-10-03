@@ -16,9 +16,8 @@
   },
   "scripts": {
     "build": "webpack",
-    "build-all": "NODE_ENV=production npm run build && npm run build-min && npm run build-loader",
+    "build-all": "./bin/build.sh",
     "build-loader": "./bin/build-loader.sh",
-    "build-min": "MINIFY_BUILD=true webpack --output-filename [name].min.js",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
     "e2e-prepare": "selenium-standalone install",
