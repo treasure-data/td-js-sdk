@@ -93,7 +93,6 @@ describe('Treasure Client', function () {
 
     it('should set defaults on client object', function () {
       var client = treasure.client
-      expect(client.protocol).to.be.a('string')
       expect(client.host).to.be.a('string')
       expect(client.pathname).to.be.a('string')
       expect(client.requestType).to.be.a('string')
@@ -174,28 +173,10 @@ describe('Treasure Client', function () {
     })
 
     describe('validates endpoint', function () {
-      it('should set protocol to "https:" if designated as "https:"', function () {
-        configuration.protocol = 'https:'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
-      })
-
-      it('should set protocol to "http:" if designated as "http:"', function () {
-        configuration.protocol = 'http:'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('http://')).to.equal(0)
-      })
-
-      it('should set protocol to "https:" if designated as "https"', function () {
-        configuration.protocol = 'https'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
-      })
-
-      it('should set protocol to "http:" if designated as "http"', function () {
+      it('should force https', function () {
         configuration.protocol = 'http'
         treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('http://')).to.equal(0)
+        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
       })
     })
 
