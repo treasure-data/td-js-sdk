@@ -54,7 +54,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
-    "sinon": "v2.0.0-pre.5",
+    "sinon": "https://github.com/sinonjs/sinon#6dd1114c524cc0ef2c9ae098749a509da4dc86f7",
     "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
