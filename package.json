@@ -24,7 +24,7 @@
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "test": "standard && node ./bin/test.js",
-    "test-full": "karma start",
+    "test-full": "karma start --browserStack.startTunnel false --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3"
   },
   "standard": {
