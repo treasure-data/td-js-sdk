@@ -54,7 +54,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
-    "sinon": "^4.0.1",
+    "sinon": "v2.0.0-pre.5",
     "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
