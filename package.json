@@ -35,7 +35,8 @@
       "afterEach",
       "beforeEach",
       "describe",
-      "it"
+      "it",
+      "expect"
     ]
   },
   "devDependencies": {
