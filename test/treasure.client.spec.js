@@ -1,6 +1,7 @@
 var _ = require('lodash-compat')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
+var cookies = require('../lib/vendor/js-cookies')
 
 // Copy the default config because we change it later in tests
 var DEFAULT_CONFIG = _.clone(Treasure.prototype._configurator.DEFAULT_CONFIG)
@@ -92,7 +93,6 @@ describe('Treasure Client', function () {
 
     it('should set defaults on client object', function () {
       var client = treasure.client
-      expect(client.protocol).to.be.a('string')
       expect(client.host).to.be.a('string')
       expect(client.pathname).to.be.a('string')
       expect(client.requestType).to.be.a('string')
@@ -173,28 +173,10 @@ describe('Treasure Client', function () {
     })
 
     describe('validates endpoint', function () {
-      it('should set protocol to "https:" if designated as "https:"', function () {
-        configuration.protocol = 'https:'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
-      })
-
-      it('should set protocol to "http:" if designated as "http:"', function () {
-        configuration.protocol = 'http:'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('http://')).to.equal(0)
-      })
-
-      it('should set protocol to "https:" if designated as "https"', function () {
-        configuration.protocol = 'https'
-        treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
-      })
-
-      it('should set protocol to "http:" if designated as "http"', function () {
+      it('should force https', function () {
         configuration.protocol = 'http'
         treasure = new Treasure(configuration)
-        expect(treasure.client.endpoint.indexOf('http://')).to.equal(0)
+        expect(treasure.client.endpoint.indexOf('https://')).to.equal(0)
       })
     })
 
@@ -209,6 +191,19 @@ describe('Treasure Client', function () {
         treasure = new Treasure(configuration)
         expect(typeof treasure.client.requestType).to.be('string')
         expect(treasure.client.requestType).to.equal('jsonp')
+      })
+    })
+
+    describe('cookies', function () {
+      it('should expose cookies.getItem', function () {
+        treasure = new Treasure(configuration)
+        expect(typeof treasure.getCookie).to.be('function')
+        expect(treasure.getCookie).to.be(cookies.getItem)
+
+        var cookieKey = 'testKey'
+        var cookieVal = 'testVal'
+        cookies.setItem(cookieKey, cookieVal, 6000)
+        expect(treasure.getCookie(cookieKey)).to.be(cookieVal)
       })
     })
   })

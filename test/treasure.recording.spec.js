@@ -161,7 +161,6 @@ describe('Treasure Record', function () {
     describe('properties', function () {
       beforeEach(function () {
         configuration.development = false
-        configuration.protocol = 'http:'
         configuration.requestType = 'jsonp'
         configuration.writeKey = 'apikey'
         treasure = new Treasure(configuration)
@@ -173,7 +172,7 @@ describe('Treasure Record', function () {
       })
 
       it('should set url', function () {
-        var url = 'http://@HOST@PATHNAMEdatabase/table'
+        var url = 'https://@HOST@PATHNAMEdatabase/table'
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.calledOnce).to.equal(true)
