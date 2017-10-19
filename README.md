@@ -152,6 +152,7 @@ Every time a track functions is called, the following information is sent:
 * **td_version** - td-js-sdk's version
 * **td_client_id** - client's uuid
 * **td_charset** - character set
+* **td_description** - description meta tag
 * **td_language** - browser language
 * **td_color** - screen color depth
 * **td_screen** - screen resolution

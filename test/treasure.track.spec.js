@@ -99,6 +99,7 @@ describe('Treasure Tracker', function () {
         expect(values.td_os).to.be.a('function')
         expect(values.td_os_version).to.be.a('function')
         expect(values.td_title).to.be.a('function')
+        expect(values.td_description).to.be.a('function')
         expect(values.td_url).to.be.a('function')
         expect(values.td_host).to.be.a('function')
         expect(values.td_path).to.be.a('function')
