@@ -25,7 +25,6 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'sinon': ['webpack'],
       'test/*.spec.js': ['webpack']
     },
 
