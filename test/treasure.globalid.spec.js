@@ -1,7 +1,7 @@
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 var GlobalID = require('../lib/plugins/globalid')
-var cookie = require('../lib/vendor/js-cookies')
+var cookie = require('../lib/vendor/js-cookies').default
 
 describe('Treasure GlobalID', function () {
   it('adds fetchGlobalID method', function () {
