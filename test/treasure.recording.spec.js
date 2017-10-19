@@ -161,7 +161,6 @@ describe('Treasure Record', function () {
     describe('properties', function () {
       beforeEach(function () {
         configuration.development = false
-        configuration.protocol = 'http:'
         configuration.requestType = 'jsonp'
         configuration.writeKey = 'apikey'
         treasure = new Treasure(configuration)
@@ -173,7 +172,7 @@ describe('Treasure Record', function () {
       })
 
       it('should set url', function () {
-        var url = 'http://in.treasuredata.com/js/v3/event/database/table'
+        var url = 'https://in.treasuredata.com/js/v3/event/database/table'
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
