@@ -214,7 +214,7 @@ describe('Treasure Record', function () {
     var getKeys = function (obj) {
       var keys = []
       for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
           keys.push(key)
         }
       }
