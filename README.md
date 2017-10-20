@@ -28,7 +28,7 @@ foo.js      foo.min.js      loader.min.js
 The URL of the hosted file. This will be defaulted to the URL for the Treasure Data CDN-hosted file.
 ```sh
 > bin/build.sh --URL=//cdn.yourdomain.com/sdk/foo.min.js
-``
+```
 
 ## Installing
 
