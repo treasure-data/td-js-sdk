@@ -27,7 +27,7 @@
       document.location.protocol === 'https:'
       ? 'https:'
       : 'http:'
-    ) + '//cdn.treasuredata.com/sdk/@VERSION/td.min.js'
+    ) + '@URL'
 
     var t = document.getElementsByTagName('script')[0]
     t.parentNode.insertBefore(s, t)

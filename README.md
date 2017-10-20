@@ -3,6 +3,33 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/dev-treasuredata.svg)](https://saucelabs.com/u/dev-treasuredata)
 
+## Build
+
+The build script (`bin/build.sh`) can be used to configure several aspects of the SDK:
+
+### GLOBAL
+The global export that the SDK is exported on.  This is kept consistent between the full source and the loader's stub.
+```sh
+> bin/build.sh --GLOBAL=AlternateSDK
+```
+```js
+var sdk = new AlternateSDK()
+```
+
+### FILENAME
+The filename to be output, in both full and minified code. This is largely a convenience, and defaults to `td`
+```sh
+> bin/build.sh --FILENAME=foo
+...
+> ls dist/
+foo.js      foo.min.js      loader.min.js
+```
+
+### URL
+The URL of the hosted file. This will be defaulted to the URL for the Treasure Data CDN-hosted file.
+```sh
+> bin/build.sh --URL=//cdn.yourdomain.com/sdk/foo.min.js
+```
 
 ## Installing
 
