@@ -52,6 +52,10 @@ module.exports = function (config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
+    browserStack: {
+      project: 'td-js-sdk'
+    },
+
     // define browsers
     customLaunchers: {
       bs_firefox_mac_ML_latest: {
