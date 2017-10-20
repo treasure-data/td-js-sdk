@@ -1,5 +1,34 @@
 # td-js-sdk
+
 [![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) [![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=ODRhSFV4NCtpdVRFTWpaMC9EU1FpdTVWaGd6Yk83VlppeHIxOTRzZFdJMD0tLStXZW1BVlEydEs3cC92blh5a2RFY1E9PQ==--a3bfa388c7f2ec3d859e819d4f6d3c20433aeaa9)](https://www.browserstack.com/automate/public-build/ODRhSFV4NCtpdVRFTWpaMC9EU1FpdTVWaGd6Yk83VlppeHIxOTRzZFdJMD0tLStXZW1BVlEydEs3cC92blh5a2RFY1E9PQ==--a3bfa388c7f2ec3d859e819d4f6d3c20433aeaa9)
+
+## Build
+
+The build script (`bin/build.sh`) can be used to configure several aspects of the SDK:
+
+### GLOBAL
+The global export that the SDK is exported on.  This is kept consistent between the full source and the loader's stub.
+```sh
+> bin/build.sh --GLOBAL=AlternateSDK
+```
+```js
+var sdk = new AlternateSDK()
+```
+
+### FILENAME
+The filename to be output, in both full and minified code. This is largely a convenience, and defaults to `td`
+```sh
+> bin/build.sh --FILENAME=foo
+...
+> ls dist/
+foo.js      foo.min.js      loader.min.js
+```
+
+### URL
+The URL of the hosted file. This will be defaulted to the URL for the Treasure Data CDN-hosted file.
+```sh
+> bin/build.sh --URL=//cdn.yourdomain.com/sdk/foo.min.js
+``
 
 ## Installing
 
