@@ -1,4 +1,4 @@
-var sinon = require('sinon')
+var simple = require('simple-mock')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 // var parseDomain = require('parse-domain')
@@ -28,22 +28,22 @@ describe('Treasure Tracker', function () {
   beforeEach(resetConfiguration)
   beforeEach(function () {
     treasure = new Treasure(configuration)
-    spy = sinon.spy(Treasure.prototype, 'addRecord')
+    spy = simple.mock(Treasure.prototype, 'addRecord')
   })
 
   afterEach(function () {
-    spy.restore()
+    simple.restore()
   })
 
   describe('#configure', function () {
     it('should call configure', function () {
-      var configSpy = sinon.spy(Treasure.Plugins.Track, 'configure')
+      var configSpy = simple.mock(Treasure.Plugins.Track, 'configure')
       treasure = new Treasure(configuration)
 
-      expect(configSpy.calledOnce).to.equal(true)
+      expect(configSpy.callCount).to.equal(1)
       expect(configSpy.firstCall.args).to.have.length(1)
       expect(configSpy.firstCall.args[0]).to.be.an('object')
-      configSpy.restore()
+      simple.restore()
     })
 
     it('should set default storage values', function () {
@@ -189,14 +189,14 @@ describe('Treasure Tracker', function () {
   describe('#trackPageview', function () {
     it('should work with no parameters', function () {
       treasure.trackPageview()
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('pageviews')
       expect(spy.firstCall.args[1]).to.be.an('object')
     })
 
     it('should allow you to set the table', function () {
       treasure.trackPageview('foobar')
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foobar')
       expect(spy.firstCall.args[1]).to.be.an('object')
     })
@@ -204,7 +204,7 @@ describe('Treasure Tracker', function () {
     it('should allow you to pass success callback', function () {
       var success = function () {}
       treasure.trackPageview('foo', success)
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foo')
       expect(spy.firstCall.args[1]).to.be.an('object')
       expect(spy.firstCall.args[2]).to.equal(success)
@@ -215,7 +215,7 @@ describe('Treasure Tracker', function () {
       var failure = function () {}
 
       treasure.trackPageview('foo', success, failure)
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foo')
       expect(spy.firstCall.args[1]).to.be.an('object')
       expect(spy.firstCall.args[2]).to.equal(success)
@@ -225,7 +225,7 @@ describe('Treasure Tracker', function () {
     it('should pass all track values', function () {
       var trackValues = treasure.getTrackValues()
       treasure.trackPageview()
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
 
       var callKeys = getKeys(spy.firstCall.args[1])
       expect(callKeys).to.eql(getKeys(trackValues))
@@ -235,28 +235,28 @@ describe('Treasure Tracker', function () {
   describe('#trackEvent', function () {
     it('should use default events table', function () {
       treasure.trackEvent()
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('events')
       expect(spy.firstCall.args[1]).to.be.an('object')
     })
 
     it('should work when only table is passed', function () {
       treasure.trackEvent('table')
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('table')
       expect(spy.firstCall.args[1]).to.be.an('object')
     })
 
     it('should allow you to set the table', function () {
       treasure.trackEvent('foobar')
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foobar')
       expect(spy.firstCall.args[1]).to.be.an('object')
     })
 
     it('should allow you to pass normal parameters', function () {
       treasure.trackEvent('table', {foo: 'bar'})
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('table')
       expect(spy.firstCall.args[1]).to.be.an('object')
       expect(spy.firstCall.args[1].foo).to.equal('bar')
@@ -267,7 +267,7 @@ describe('Treasure Tracker', function () {
       var failure = function () {}
 
       treasure.trackEvent('foo', {foo: 'bar'}, success, failure)
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foo')
       expect(spy.firstCall.args[1]).to.be.an('object')
       expect(spy.firstCall.args[1].foo).to.equal('bar')
@@ -278,7 +278,7 @@ describe('Treasure Tracker', function () {
     it('should pass all track values', function () {
       var trackValues = treasure.getTrackValues()
       treasure.trackEvent()
-      expect(spy.calledOnce).to.equal(true)
+      expect(spy.callCount).to.equal(1)
 
       var callKeys = getKeys(spy.firstCall.args[1])
       expect(callKeys).to.eql(getKeys(trackValues))

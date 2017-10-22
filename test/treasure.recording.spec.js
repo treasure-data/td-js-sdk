@@ -1,4 +1,4 @@
-var sinon = require('sinon')
+var simple = require('simple-mock')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 
@@ -96,29 +96,29 @@ describe('Treasure Record', function () {
       beforeEach(function () {
         configuration.development = false
         treasure = new Treasure(configuration)
-        sinon.stub(treasure, '_sendRecord')
+        simple.mock(treasure, '_sendRecord')
       })
 
       afterEach(function () {
-        treasure._sendRecord.restore()
+        simple.restore()
       })
 
       it('should send the object with $global attributes', function () {
         treasure.set('$global', {foo: 'foo'})
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
       })
 
       it('should send the object with table attributes', function () {
         treasure.set('table', {foo: 'foo'})
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
       })
 
       it('should send the object with $global and table attributes', function () {
@@ -126,10 +126,10 @@ describe('Treasure Record', function () {
         treasure.set('table', {bar: 'bar'})
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('bar', 'bar')
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', 'bar')
       })
 
       it('should send the object with $global, table, and record attributes', function () {
@@ -137,11 +137,11 @@ describe('Treasure Record', function () {
         treasure.set('table', {bar: 'bar'})
         treasure.addRecord('table', {baz: 'baz'})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('bar', 'bar')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('baz', 'baz')
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', 'bar')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('baz', 'baz')
       })
 
       it('should send the object with record attributes overwriting globals', function () {
@@ -149,12 +149,12 @@ describe('Treasure Record', function () {
         treasure.set('table', {baz: 'baz', qux: 'qux'})
         treasure.addRecord('table', {bar: '1', qux: '2'})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('bar', '1')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('baz', 'baz')
-        expect(treasure._sendRecord.firstCall.args[0].record).to.have.property('qux', '2')
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', '1')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('baz', 'baz')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('qux', '2')
       })
     })
 
@@ -164,47 +164,47 @@ describe('Treasure Record', function () {
         configuration.requestType = 'jsonp'
         configuration.writeKey = 'apikey'
         treasure = new Treasure(configuration)
-        sinon.stub(treasure, '_sendRecord')
+        simple.mock(treasure, '_sendRecord')
       })
 
       afterEach(function () {
-        treasure._sendRecord.restore()
+        simple.restore()
       })
 
       it('should set url', function () {
         var url = 'https://@HOST@PATHNAMEdatabase/table'
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].url).to.equal(url)
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].url).to.equal(url)
       })
 
       it('should set type', function () {
         var requestType = 'jsonp'
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].type).to.equal(requestType)
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].type).to.equal(requestType)
       })
 
       it('should set apikey', function () {
         var apikey = 'apikey'
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledOnce).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0]).to.be.an('object')
-        expect(treasure._sendRecord.firstCall.args[0].apikey).to.equal(apikey)
+        expect(treasure._sendRecord.callCount).to.equal(1)
+        expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
+        expect(treasure._sendRecord.calls[0].args[0].apikey).to.equal(apikey)
       })
 
       it('should use record time when present', function () {
         treasure.addRecord('table', { time: 1 })
         treasure.addRecord('table', {})
 
-        expect(treasure._sendRecord.calledTwice).to.equal(true)
-        expect(treasure._sendRecord.firstCall.args[0].time).to.equal(1)
-        expect(treasure._sendRecord.secondCall.args[0].time).to.equal(null)
+        expect(treasure._sendRecord.callCount).to.equal(2)
+        expect(treasure._sendRecord.calls[0].args[0].time).to.equal(1)
+        expect(treasure._sendRecord.calls[1].args[0].time).to.equal(null)
       })
     })
   })

@@ -1,7 +1,6 @@
 # td-js-sdk
-[![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/dev-treasuredata.svg)](https://saucelabs.com/u/dev-treasuredata)
+[![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) [![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=ODRhSFV4NCtpdVRFTWpaMC9EU1FpdTVWaGd6Yk83VlppeHIxOTRzZFdJMD0tLStXZW1BVlEydEs3cC92blh5a2RFY1E9PQ==--a3bfa388c7f2ec3d859e819d4f6d3c20433aeaa9)](https://www.browserstack.com/automate/public-build/ODRhSFV4NCtpdVRFTWpaMC9EU1FpdTVWaGd6Yk83VlppeHIxOTRzZFdJMD0tLStXZW1BVlEydEs3cC92blh5a2RFY1E9PQ==--a3bfa388c7f2ec3d859e819d4f6d3c20433aeaa9)
 
 ## Build
 
@@ -490,3 +489,18 @@ The unminified script loader can be seen in [src/loader.js](src/loader.js). The 
 
 * `domready` is kept at `0.3.0` for IE6 and above support
 * td-js-sdk doesn't support IE6,7 on version 1.5.2 or later.
+
+## Contributing
+
+### Running the test suite on BrowserStack
+
+First you'll need to install `BrowserStackTunnel`. You can download the binary from [the BrowserStack website](https://www.browserstack.com/local-testing). If you're on Mac OS you can install it through homebrew: `brew install caskroom/cask/browserstacklocal`.
+
+Next, you'll need to set the appropriate environment variables:
+ - `BROWSER_STACK_BINARY_BASE_PATH`: This should be the directory you put the `BrowserStackTunnel` binary in. If you installed with homebrew you can run `which browserstacklocal` to find the directory.
+ - `BROWSER_STACK_USERNAME`: You can find this under the *Automate* section of 
+the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings) 
+ - `BROWSER_STACK_ACCESS_KEY`: You can find this under the *Automate* section of 
+the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
+
+Now, you can run the command `npm run test-full`.
