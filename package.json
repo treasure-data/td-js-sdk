@@ -21,9 +21,9 @@
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "test": "standard && node ./bin/test.js",
-    "test-full": "zuul --concurrency 1 -- test/*.spec.js",
-    "test-local": "zuul --local 11111 --no-coverage -- test/*.spec.js",
-    "test-phantom": "zuul --phantom -- test/*.spec.js"
+    "test-full": "karma start",
+    "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
+    "test-ci": "karma start --browserStack.startTunnel 0 --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
   "standard": {
     "ignore": [
@@ -40,19 +40,27 @@
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
     "glob": "^7.0.5",
+    "js-polyfills": "^0.1.34",
+    "karma": "1.3.0",
+    "karma-browserstack-launcher": "^1.3.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-min-reporter": "^0.1.0",
+    "karma-mocha": "^1.3.0",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-webpack": "^2.0.4",
     "mocha": "^2.5.3",
     "parse-domain": "^0.2.1",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
-    "sinon": "^1.17.4",
+    "simple-mock": "^0.8.0",
     "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "wd": "^0.4.0",
-    "webpack": "^1.13.1",
-    "zuul": "^3.11.1"
+    "webpack": "^1.13.1"
   },
   "dependencies": {
     "domready": "^0.3.0",
