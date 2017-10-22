@@ -216,6 +216,10 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
 * **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
 
+**Personalization parameters**
+
+* **config.cdpHost**: String (optional) - The host to use for the Personalization API. Default: 'cdp.in.treasuredata.com'
+
 **Returns:**
 
 * Treasure logger instance object
