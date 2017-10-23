@@ -1,12 +1,13 @@
 # Changelog
 
 ## 1.8.6 (2017-10-22)
-* Full release of fic for td_client_id being set to `'undefined'`
+* Full release of fix for td_client_id being set to `'undefined'`
 * `https` protocol used for all JSONP requests
 * `getCookie` method added to easily access cookie contents
 * Modify build process to allow easier rebranding
 * Allow CDP customers to configure hostname for Personalization API
 * Changes to build process to allow for more reliable tests
+* Fix e2e test broken by renaming of `onClick` handler to `extendClickData`
 
 ## 1.8.5-beta1 (2017-07-11)
 * Beta test of fix for td_client_id being set to `'undefined'`
