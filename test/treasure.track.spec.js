@@ -106,6 +106,15 @@ describe('Treasure Tracker', function () {
         expect(values.td_referrer).to.be.a('function')
       })
 
+      it('should set td_description from meta description', function () {
+        var metaDescription = document.createElement('meta')
+        metaDescription.name = 'description'
+        metaDescription.content = 'test description'
+        document.head.appendChild(metaDescription)
+        var values = treasure.client.track.values
+        expect(values.td_description()).to.equal('test description')
+      })
+
       it('should let you overwrite values', function () {
         track.values.td_version = function () {
           return 'foo'
