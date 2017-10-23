@@ -108,9 +108,10 @@ describe('Treasure Tracker', function () {
 
       it('should set td_description from meta description', function () {
         var metaDescription = document.createElement('meta')
+        var head = document.head || document.getElementsByTagName('head')[0]
         metaDescription.name = 'description'
         metaDescription.content = 'test description'
-        document.head.appendChild(metaDescription)
+        head.appendChild(metaDescription)
         var values = treasure.client.track.values
         expect(values.td_description()).to.equal('test description')
       })
