@@ -31,7 +31,7 @@
     })
 
     td.trackClicks({
-      onClick: function (event, data) {
+      extendClickData: function (event, data) {
         setBackground('green')
         setStatus('success')
         clearTimeout(timeout)

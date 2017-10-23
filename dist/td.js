@@ -17,14 +17,15 @@
     return __webpack_require__(0);
 })([ function(module, exports, __webpack_require__) {
     var Treasure = __webpack_require__(1);
-    var window = __webpack_require__(58);
+    var window = __webpack_require__(59);
     __webpack_require__(65)(Treasure, "Treasure");
-    window.Treasure = Treasure;
+    window["Treasure"] = Treasure;
 }, function(module, exports, __webpack_require__) {
     var record = __webpack_require__(2);
     var _ = __webpack_require__(8);
     var configurator = __webpack_require__(54);
     var version = __webpack_require__(55);
+    var cookie = __webpack_require__(56);
     function Treasure(options) {
         if (!(this instanceof Treasure)) {
             return new Treasure(options);
@@ -53,14 +54,15 @@
     Treasure.prototype.configure = configurator.configure;
     Treasure.prototype.set = configurator.set;
     Treasure.prototype.get = configurator.get;
-    Treasure.prototype.ready = __webpack_require__(56);
+    Treasure.prototype.ready = __webpack_require__(57);
     Treasure.prototype.applyProperties = record.applyProperties;
     Treasure.prototype.addRecord = record.addRecord;
     Treasure.prototype._sendRecord = record._sendRecord;
+    Treasure.prototype.getCookie = cookie.getItem;
     Treasure.prototype._configurator = configurator;
     Treasure.Plugins = {
-        "Clicks": __webpack_require__(57),
-        "GlobalID": __webpack_require__(60),
+        "Clicks": __webpack_require__(58),
+        "GlobalID": __webpack_require__(61),
         "Personalization": __webpack_require__(62),
         "Track": __webpack_require__(63)
     };
@@ -1571,12 +1573,12 @@
         invariant(/^[a-z0-9_]{3,255}$/.test(options.database), "Database must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
     }
     exports.DEFAULT_CONFIG = {
+        "database": "",
         "development": false,
         "globalIdCookie": "_td_global",
         "host": "in.treasuredata.com",
         "logging": true,
         "pathname": "/js/v3/event/",
-        "protocol": document.location.protocol === "https:" ? "https:" : "http:",
         "requestType": "jsonp"
     };
     exports.configure = function configure(options) {
@@ -1586,11 +1588,8 @@
             "requestType": "jsonp"
         });
         validateOptions(this.client);
-        if (!/:$/.test(this.client.protocol)) {
-            this.client.protocol += ":";
-        }
         if (!this.client.endpoint) {
-            this.client.endpoint = this.client.protocol + "//" + this.client.host + this.client.pathname;
+            this.client.endpoint = "https://" + this.client.host + this.client.pathname;
         }
         return this;
     };
@@ -1613,7 +1612,86 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.8.5-beta1";
+    module.exports = "1.8.6";
+}, function(module, exports) {
+    var encode = function encode(val) {
+        try {
+            return encodeURIComponent(val);
+        } catch (e) {
+            console.error("error encode %o");
+        }
+        return null;
+    };
+    var decode = function decode(val) {
+        try {
+            return decodeURIComponent(val);
+        } catch (err) {
+            console.error("error decode %o");
+        }
+        return null;
+    };
+    var handleSkey = function handleSkey(sKey) {
+        return encode(sKey).replace(/[\-\.\+\*]/g, "\\$&");
+    };
+    var Cookies = {
+        "getItem": function getItem(sKey) {
+            if (!sKey) {
+                return null;
+            }
+            return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+        },
+        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+            if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+                return false;
+            }
+            var sExpires = "";
+            if (vEnd) {
+                switch (vEnd.constructor) {
+                  case Number:
+                    if (vEnd === Infinity) {
+                        sExpires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+                    } else {
+                        sExpires = "; max-age=" + vEnd;
+                    }
+                    break;
+
+                  case String:
+                    sExpires = "; expires=" + vEnd;
+                    break;
+
+                  case Date:
+                    sExpires = "; expires=" + vEnd.toUTCString();
+                    break;
+
+                  default:
+                    break;
+                }
+            }
+            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
+            return true;
+        },
+        "removeItem": function removeItem(sKey, sPath, sDomain) {
+            if (!this.hasItem(sKey)) {
+                return false;
+            }
+            document.cookie = [ encode(sKey), "=; expires=Thu, 01 Jan 1970 00:00:00 GMT", sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "" ].join("");
+            return true;
+        },
+        "hasItem": function hasItem(sKey) {
+            if (!sKey) {
+                return false;
+            }
+            return new RegExp("(?:^|;\\s*)" + encode(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=").test(document.cookie);
+        },
+        "keys": function keys() {
+            var aKeys = document.cookie.replace(/((?:^|\s*;)[^=]+)(?=;|$)|^\s*|\s*(?:=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:=[^;]*)?;\s*/);
+            aKeys = aKeys.map(function(key) {
+                return decode(key);
+            });
+            return aKeys;
+        }
+    };
+    module.exports = Cookies;
 }, function(module, exports, __webpack_require__) {
     /*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
@@ -1652,8 +1730,8 @@
         };
     });
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(58);
-    var elementUtils = __webpack_require__(59);
+    var window = __webpack_require__(59);
+    var elementUtils = __webpack_require__(60);
     var assign = __webpack_require__(8).assign;
     var disposable = __webpack_require__(3).disposable;
     function defaultExtendClickData(event, data) {
@@ -1694,15 +1772,17 @@
     };
 }, function(module, exports) {
     (function(global) {
+        var win;
         if (typeof window !== "undefined") {
-            module.exports = window;
+            win = window;
         } else if (typeof global !== "undefined") {
-            module.exports = global;
+            win = global;
         } else if (typeof self !== "undefined") {
-            module.exports = self;
+            win = self;
         } else {
-            module.exports = {};
+            win = {};
         }
+        module.exports = win;
     }).call(exports, function() {
         return this;
     }());
@@ -1844,7 +1924,7 @@
     var jsonp = __webpack_require__(4);
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
-    var cookie = __webpack_require__(61);
+    var cookie = __webpack_require__(56);
     function cacheSuccess(result, cookieName) {
         cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
@@ -1860,7 +1940,7 @@
                 success(cachedGlobalId);
             }, 0);
         }
-        var url = this.client.protocol + "//" + this.client.host + "/js/v3/global_id";
+        var url = "https://" + this.client.host + "/js/v3/global_id";
         invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
@@ -1874,94 +1954,21 @@
         "configure": configure,
         "fetchGlobalID": fetchGlobalID
     };
-}, function(module, exports) {
-    var encode = function encode(val) {
-        try {
-            return encodeURIComponent(val);
-        } catch (e) {
-            console.error("error encode %o");
-        }
-        return null;
-    };
-    var decode = function decode(val) {
-        try {
-            return decodeURIComponent(val);
-        } catch (err) {
-            console.error("error decode %o");
-        }
-        return null;
-    };
-    var handleSkey = function handleSkey(sKey) {
-        return encode(sKey).replace(/[\-\.\+\*]/g, "\\$&");
-    };
-    var Cookies = {
-        "getItem": function getItem(sKey) {
-            if (!sKey) {
-                return null;
-            }
-            return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
-        },
-        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-            if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
-                return false;
-            }
-            var sExpires = "";
-            if (vEnd) {
-                switch (vEnd.constructor) {
-                  case Number:
-                    if (vEnd === Infinity) {
-                        sExpires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-                    } else {
-                        sExpires = "; max-age=" + vEnd;
-                    }
-                    break;
-
-                  case String:
-                    sExpires = "; expires=" + vEnd;
-                    break;
-
-                  case Date:
-                    sExpires = "; expires=" + vEnd.toUTCString();
-                    break;
-
-                  default:
-                    break;
-                }
-            }
-            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
-            return true;
-        },
-        "removeItem": function removeItem(sKey, sPath, sDomain) {
-            if (!this.hasItem(sKey)) {
-                return false;
-            }
-            document.cookie = [ encode(sKey), "=; expires=Thu, 01 Jan 1970 00:00:00 GMT", sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "" ].join("");
-            return true;
-        },
-        "hasItem": function hasItem(sKey) {
-            if (!sKey) {
-                return false;
-            }
-            return new RegExp("(?:^|;\\s*)" + encode(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=").test(document.cookie);
-        },
-        "keys": function keys() {
-            var aKeys = document.cookie.replace(/((?:^|\s*;)[^=]+)(?=;|$)|^\s*|\s*(?:=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:=[^;]*)?;\s*/);
-            aKeys = aKeys.map(function(key) {
-                return decode(key);
-            });
-            return aKeys;
-        }
-    };
-    module.exports = Cookies;
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
     var invariant = __webpack_require__(3).invariant;
+    var _ = __webpack_require__(8);
+    function configure(config) {
+        config = _.isObject(config) ? config : {};
+        this.client.cdpHost = config.cdpHost || "cdp.in.treasuredata.com";
+        return this;
+    }
     function fetchUserSegments(audienceToken, successCallback, errorCallback) {
         successCallback = successCallback || noop;
         errorCallback = errorCallback || noop;
         invariant(typeof audienceToken === "string", 'audienceToken must be a string; received "' + audienceToken.toString() + '"');
-        var url = this.client.protocol + "//cdp." + this.client.host + "/cdp/lookup/collect/segments?token=" + audienceToken;
+        var url = "https://" + this.client.cdpHost + "/cdp/lookup/collect/segments?token=" + audienceToken;
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": 1e4
@@ -1970,7 +1977,7 @@
         });
     }
     module.exports = {
-        "configure": noop,
+        "configure": configure,
         "fetchUserSegments": fetchUserSegments
     };
 }, function(module, exports, __webpack_require__) {
@@ -1979,9 +1986,9 @@
 	* Treasure Tracker
 	* ----------------------
 	*/
-    var window = __webpack_require__(58);
+    var window = __webpack_require__(59);
     var _ = __webpack_require__(8);
-    var cookie = __webpack_require__(61);
+    var cookie = __webpack_require__(56);
     var generateUUID = __webpack_require__(64);
     var version = __webpack_require__(55);
     var document = window.document;
@@ -2160,7 +2167,7 @@
         return result;
     };
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(58);
+    var window = __webpack_require__(59);
     module.exports = function generateUUID() {
         var d = new Date().getTime();
         if (window.performance && typeof window.performance.now === "function") {
@@ -2175,7 +2182,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(8);
-    var window = __webpack_require__(58);
+    var window = __webpack_require__(59);
     function applyToClient(client, method) {
         var _method = "_" + method;
         if (client[_method]) {
