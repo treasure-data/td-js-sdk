@@ -26,7 +26,7 @@ describe('Treasure Personalization', function () {
     expect(td.client.cdpHost).to.be('test.host')
   })
   describe('first parameter', function () {
-    it('should accept a string or array or object', () => {
+    it('should accept a string or array or object', function () {
       var td = new Treasure({
         database: 'database',
         writeKey: 'writeKey',
