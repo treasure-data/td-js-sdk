@@ -319,6 +319,41 @@ td.fetchUserSegments(token, successCallback, errorCallback)
 ```
 *N.B.* This feature is not enabled on accounts by defaut, please contact support for more information.
 
+### Treasure#fetchUserSegments(options, success, failure)
+
+**Parameters:**
+
+* **options** : Object (required) - User Segment object 
+  * **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
+  * **options.keys** : Object (optional) - Key Value to be sent for this segment
+* **success** : Function (optional) - Callback for receiving the user key and segments
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+
+var successCallback = function (key, segments) {
+  // celebrate();
+};
+
+var errorCallback = function (error) {
+  // cry();
+};
+
+var token = 'lorem-ipsum-dolor-sit-amet'
+
+td.fetchUserSegments({
+  audienceToken: ['token1', 'token2'],
+  keys: {
+    someKey: 'someValue',
+    someOtherKey: 'someOtherValue',
+  }
+}, successCallback, errorCallback)
+```
+*N.B.* This feature is not enabled on accounts by defaut, please contact support for more information.
+
 ### Treasure#trackClicks
 
 Setup an event listener to automatically log clicks.
