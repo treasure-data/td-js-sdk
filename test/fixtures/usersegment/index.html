@@ -23,51 +23,23 @@
       document.getElementById('status').innerHTML = text
     }
 
-    function setSuccess () {
-      if (getBackground() === 'red') {
-        return
-      }
-      setBackground('green')
-      setStatus('success')
-    }
-
     var td = new Treasure({
       database: 'test_db_request',
       writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
       host: 'in-staging.treasuredata.com'
     })
-    /*
-    td.fetchUserSegments('token', function () {
-      setSuccess()
-    }, function () {
-      setBackground('red')
-      setStatus('failure')
-    })
-    td.fetchUserSegments(['token', 'token2'], function () {
-      setSuccess()
-    }, function () {
-      setBackground('red')
-      setStatus('failure')
-    })
     td.fetchUserSegments({
-      audienceToken: 'token'
-    }, function () {
-      setSuccess()
-    }, function () {
-      setBackground('red')
-      setStatus('failure')
-    })
-    td.fetchUserSegments({
-      audienceToken: 'token',
+      audienceToken: '4ea246a5-7e9e-4d05-a789-5e038e4ddf1d',
       keys: {
-        someKey: 'someValue'
+        user: 'abc'
       }
     }, function () {
-      setSuccess()
+      setBackground('green')
+      setStatus('success')
     }, function () {
       setBackground('red')
       setStatus('failure')
-    })*/
+    })
 
   })()
 </script>
