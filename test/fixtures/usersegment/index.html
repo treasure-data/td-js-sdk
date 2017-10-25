@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>event</title>
+  <meta name="description" content="test that event tracking works"></meta>
+  <script src="/dist/td.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+  (function () {
+    function setBackground (color) {
+      document.body.style.background = color
+    }
+
+    function getBackground () {
+      return document.body.style.background
+    }
+
+    function setStatus (text) {
+      document.getElementById('status').innerHTML = text
+    }
+
+    function setSuccess () {
+      if (getBackground() === 'red') {
+        return
+      }
+      setBackground('green')
+      setStatus('success')
+    }
+
+    var td = new Treasure({
+      database: 'test_db_request',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      host: 'in-staging.treasuredata.com'
+    })
+    /*
+    td.fetchUserSegments('token', function () {
+      setSuccess()
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })
+    td.fetchUserSegments(['token', 'token2'], function () {
+      setSuccess()
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })
+    td.fetchUserSegments({
+      audienceToken: 'token'
+    }, function () {
+      setSuccess()
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })
+    td.fetchUserSegments({
+      audienceToken: 'token',
+      keys: {
+        someKey: 'someValue'
+      }
+    }, function () {
+      setSuccess()
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })*/
+
+  })()
+</script>
+
+<h1 id='status' style="text-align: center;">running</h1>
+
+</body>
+</html>
