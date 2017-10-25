@@ -44,7 +44,7 @@ describe('Treasure Personalization', function () {
         })
       }).not.to.throwException()
     })
-    it('should not accept non string and non array non object', () => {
+    it('should not accept non string and non array non object', function () {
       var td = new Treasure({
         database: 'database',
         writeKey: 'writeKey',
