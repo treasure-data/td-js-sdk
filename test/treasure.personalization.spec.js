@@ -25,4 +25,39 @@ describe('Treasure Personalization', function () {
     })
     expect(td.client.cdpHost).to.be('test.host')
   })
+  describe('first parameter', () => {
+    it('should accept a string or array or object', () => {
+      var td = new Treasure({
+        database: 'database',
+        writeKey: 'writeKey',
+        cdpHost: 'test.host'
+      })
+      expect(function () { td.fetchUserSegments('token') }).not.to.throwException()
+      expect(function () { td.fetchUserSegments(['token']) }).not.to.throwException()
+      expect(function () { td.fetchUserSegments({ audienceToken: 'token' }) }).not.to.throwException()
+      expect(function () {
+        td.fetchUserSegments({
+          audienceToken: 'token',
+          keys: {
+            someKey: 'someValue'
+          }
+        })
+      }).not.to.throwException()
+    })
+    it('should not accept non string and non array non object', () => {
+      var td = new Treasure({
+        database: 'database',
+        writeKey: 'writeKey',
+        cdpHost: 'test.host'
+      })
+      expect(function () { td.fetchUserSegments(2) }).to.throwException()
+      expect(function () { td.fetchUserSegments({ audienceToken: 2 }) }).to.throwException()
+      expect(function () {
+        td.fetchUserSegments({
+          audienceToken: 'token',
+          keys: '234'
+        })
+      }).to.throwException()
+    })
+  })
 })
