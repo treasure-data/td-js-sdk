@@ -423,6 +423,8 @@
         "isNumber": __webpack_require__(38),
         "isObject": __webpack_require__(16),
         "isString": __webpack_require__(17),
+        "isArray": __webpack_require__(31),
+        "keys": __webpack_require__(20),
         "assign": __webpack_require__(39),
         "forIn": __webpack_require__(46),
         "noop": __webpack_require__(48)
@@ -1612,7 +1614,7 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.8.6";
+    module.exports = "1.9.0";
 }, function(module, exports) {
     var encode = function encode(val) {
         try {
@@ -1772,17 +1774,15 @@
     };
 }, function(module, exports) {
     (function(global) {
-        var win;
         if (typeof window !== "undefined") {
-            win = window;
+            module.exports = window;
         } else if (typeof global !== "undefined") {
-            win = global;
+            module.exports = global;
         } else if (typeof self !== "undefined") {
-            win = self;
+            module.exports = self;
         } else {
-            win = {};
+            module.exports = {};
         }
-        module.exports = win;
     }).call(exports, function() {
         return this;
     }());
@@ -1964,11 +1964,22 @@
         this.client.cdpHost = config.cdpHost || "cdp.in.treasuredata.com";
         return this;
     }
-    function fetchUserSegments(audienceToken, successCallback, errorCallback) {
+    function fetchUserSegments(tokenOrConfig, successCallback, errorCallback) {
+        var isConfigObject = _.isObject(tokenOrConfig) && !_.isArray(tokenOrConfig);
+        var audienceToken = isConfigObject ? tokenOrConfig.audienceToken : tokenOrConfig;
+        var keys = isConfigObject && tokenOrConfig.keys || {};
         successCallback = successCallback || noop;
         errorCallback = errorCallback || noop;
-        invariant(typeof audienceToken === "string", 'audienceToken must be a string; received "' + audienceToken.toString() + '"');
-        var url = "https://" + this.client.cdpHost + "/cdp/lookup/collect/segments?token=" + audienceToken;
+        invariant(typeof audienceToken === "string" || _.isArray(audienceToken), 'audienceToken must be a string or array; received "' + audienceToken.toString() + '"');
+        invariant(_.isObject(keys), 'keys must be an object; received "' + keys + '"');
+        var token = _.isArray(audienceToken) ? audienceToken.join(",") : audienceToken;
+        var keysName = _.keys(keys);
+        var keysArray = [];
+        _.forEach(keysName, function(key) {
+            keysArray.push([ "key.", key, "=", keys[key] ].join(""));
+        });
+        var keyString = keysArray.join("&");
+        var url = "https://" + this.client.cdpHost + "/cdp/lookup/collect/segments?version=1&token=" + token + (keyString && "&" + keyString);
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": 1e4
@@ -2024,6 +2035,9 @@
             },
             "td_title": function() {
                 return document.title;
+            },
+            "td_description": function() {
+                return getMeta("description");
             },
             "td_url": function() {
                 return document.location.href.split("#")[0];
@@ -2087,6 +2101,17 @@
             domains.push(domainChunks.slice(i).join("."));
         }
         return domains;
+    }
+    function getMeta(metaName) {
+        var head = document.head || document.getElementsByTagName("head")[0];
+        var metas = head.getElementsByTagName("meta");
+        var metaLength = metas.length;
+        for (var i = 0; i < metaLength; i++) {
+            if (metas[i].getAttribute("name") === metaName) {
+                return metas[i].getAttribute("content").substr(0, 8192);
+            }
+        }
+        return "";
     }
     exports.configure = function configure(config) {
         config = _.isObject(config) ? config : {};

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 (2017-11-07)
+* Add support for CDP segmentation token & keys to the Personalization API
+* Add td_description tracked value
+
 ## 1.8.6 (2017-10-22)
 * Full release of fix for td_client_id being set to `'undefined'`
 * `https` protocol used for all JSONP requests
