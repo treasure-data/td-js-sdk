@@ -99,10 +99,21 @@ describe('Treasure Tracker', function () {
         expect(values.td_os).to.be.a('function')
         expect(values.td_os_version).to.be.a('function')
         expect(values.td_title).to.be.a('function')
+        expect(values.td_description).to.be.a('function')
         expect(values.td_url).to.be.a('function')
         expect(values.td_host).to.be.a('function')
         expect(values.td_path).to.be.a('function')
         expect(values.td_referrer).to.be.a('function')
+      })
+
+      it('should set td_description from meta description', function () {
+        var metaDescription = document.createElement('meta')
+        var head = document.head || document.getElementsByTagName('head')[0]
+        metaDescription.name = 'description'
+        metaDescription.content = 'test description'
+        head.appendChild(metaDescription)
+        var values = treasure.client.track.values
+        expect(values.td_description()).to.equal('test description')
       })
 
       it('should let you overwrite values', function () {
