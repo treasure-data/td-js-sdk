@@ -317,7 +317,7 @@ var token = 'lorem-ipsum-dolor-sit-amet'
 
 td.fetchUserSegments(token, successCallback, errorCallback)
 ```
-*N.B.* This feature is not enabled on accounts by defaut, please contact support for more information.
+*N.B.* This feature is not enabled on accounts by default, please contact support for more information.
 
 ### Treasure#fetchUserSegments(options, success, failure)
 
@@ -352,7 +352,7 @@ td.fetchUserSegments({
   }
 }, successCallback, errorCallback)
 ```
-*N.B.* This feature is not enabled on accounts by defaut, please contact support for more information.
+*N.B.* This feature is not enabled on accounts by default, please contact support for more information.
 
 ### Treasure#trackClicks
 
