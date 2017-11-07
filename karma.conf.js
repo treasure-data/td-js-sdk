@@ -53,7 +53,8 @@ module.exports = function (config) {
     autoWatch: false,
 
     browserStack: {
-      project: 'td-js-sdk'
+      project: 'td-js-sdk',
+      startTunnel: false
     },
 
     // define browsers
