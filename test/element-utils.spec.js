@@ -130,6 +130,7 @@ describe('Element Utils', function () {
       var span = document.createElement('span')
       fragment.appendChild(span)
       expect(function () { findElement(span) }).to.not.throwError()
+      expect(findElement(span)).to.be(null)
     })
   })
 
