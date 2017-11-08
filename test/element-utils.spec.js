@@ -124,6 +124,13 @@ describe('Element Utils', function () {
       a.appendChild(div)
       expect(findElement(div)).to.equal(a)
     })
+
+    it('does not error if it traverses a node without a tagName', function () {
+      var fragment = document.createDocumentFragment()
+      var span = document.createElement('span')
+      fragment.appendChild(span)
+      expect(function () { findElement(span) }).to.not.throwError()
+    })
   })
 
   describe('getElementData', function () {
