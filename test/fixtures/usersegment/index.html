@@ -11,21 +11,27 @@
 
 <script type="text/javascript">
   (function () {
-    function setBackground (color) {
-      document.body.style.background = color
-    }
-
     function getBackground () {
       return document.body.style.background
     }
 
-    function setStatus (text) {
-      document.getElementById('status').innerHTML = text
+    function setStatus (num, text) {
+      document.getElementById('status' + num).innerHTML = text
+      status[num] = text
+      if (status.length === 2) {
+        var isFailure = false
+        for (var i = 0; i < status.length; i++) {
+          if (status[i] === 'failure') {
+            isFailure = true
+          }
+        }
+        document.body.style.background = isFailure ? 'red' : 'green'
+      }
     }
-
+    var status = []
     var td = new Treasure({
       database: 'test_db_request',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      writeKey: '<91/96da3cfb876cc50724d0dddef670d95eea2a0018>',
       host: 'in-staging.treasuredata.com'
     })
     td.fetchUserSegments({
@@ -33,18 +39,37 @@
       keys: {
         user: 'abc'
       }
+    }, function (keys) {
+      if (keys !== undefined) {
+        setStatus(0, 'success')
+      } else {
+        setStatus(0, 'failure')
+      }
     }, function () {
-      setBackground('green')
-      setStatus('success')
-    }, function () {
-      setBackground('red')
-      setStatus('failure')
+      setStatus(0, 'failure')
     })
+
+    var td = new Treasure({
+      database: 'test_db_request',
+      writeKey: '<91/96da3cfb876cc50724d0dddef670d95eea2a0018>',
+      host: 'in-staging.treasuredata.com'
+    })
+    td.fetchUserSegments('<placeholdetoken>', function (key) {
+      if (key !== undefined) {
+        setStatus(1, 'success')
+      } else {
+        setStatus(1, 'failure')
+      }
+    }, function () {
+      setStatus(1, 'failure')
+    })
+
 
   })()
 </script>
 
-<h1 id='status' style="text-align: center;">running</h1>
+<h1 id='status0' style="text-align: center;">running</h1>
+<h1 id='status1' style="text-align: center;">running</h1>
 
 </body>
 </html>
