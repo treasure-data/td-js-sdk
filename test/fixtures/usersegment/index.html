@@ -31,7 +31,7 @@
     var status = []
     var td = new Treasure({
       database: 'test_db_request',
-      writeKey: '<91/96da3cfb876cc50724d0dddef670d95eea2a0018>',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
       host: 'in-staging.treasuredata.com'
     })
     td.fetchUserSegments({
@@ -51,10 +51,10 @@
 
     var td = new Treasure({
       database: 'test_db_request',
-      writeKey: '<91/96da3cfb876cc50724d0dddef670d95eea2a0018>',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
       host: 'in-staging.treasuredata.com'
     })
-    td.fetchUserSegments('<placeholdetoken>', function (key) {
+    td.fetchUserSegments('3cd02e89-f580-4526-8058-1953fe2eb991', function (key) {
       if (key !== undefined) {
         setStatus(1, 'success')
       } else {
