@@ -35,9 +35,9 @@
       host: 'in-staging.treasuredata.com'
     })
     td.fetchUserSegments({
-      audienceToken: ['4ea246a5-7e9e-4d05-a789-5e038e4ddf1d'],
+      audienceToken: ['05e97f6c-e56c-41a2-bf69-a2ead74dd89d'],
       keys: {
-        user: 'abc'
+        email: 'someone@somewhere.com'
       }
     }, function (keys) {
       if (keys !== undefined) {
@@ -54,7 +54,7 @@
       writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
       host: 'in-staging.treasuredata.com'
     })
-    td.fetchUserSegments('3cd02e89-f580-4526-8058-1953fe2eb991', function (key) {
+    td.fetchUserSegments('55198252-3752-4a1f-b011-62a821cae61d', function (key) {
       if (key !== undefined) {
         setStatus(1, 'success')
       } else {
