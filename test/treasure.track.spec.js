@@ -156,22 +156,36 @@ describe('Treasure Tracker', function () {
         expect(treasure.client.storage).to.equal(false)
       })
 
-      it('should let you set expiration to 0', function () {
+      it('should let you set expires to 0', function () {
         configuration.storage = {
-          expiration: 0
+          expires: 0
         }
         treasure = new Treasure(configuration)
 
-        expect(treasure.client.storage.expiration).to.equal(0)
+        expect(treasure.client.storage.expires).to.equal(0)
       })
 
-      it('should let you set expiration to an integer', function () {
+      it('should let you set expires to an integer', function () {
         configuration.storage = {
-          expiration: 128
+          expires: 128
         }
         treasure = new Treasure(configuration)
 
-        expect(treasure.client.storage.expiration).to.equal(128)
+        expect(treasure.client.storage.expires).to.equal(128)
+      })
+
+      it('should set a cookie with the desired expires', function (done) {
+        configuration.storage = {
+          expires: 1
+        }
+        treasure = new Treasure(configuration)
+
+        expect(treasure.getCookie('_td')).to.be.ok()
+
+        setTimeout(function () {
+          expect(treasure.getCookie('_td')).to.not.be.ok()
+          done()
+        }, 1500) // 1500ms is longer than 1s
       })
 
       it('should remember your previous clientId', function () {
