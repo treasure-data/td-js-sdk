@@ -214,7 +214,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.clientId** : String (optional) - uuid for this client. When undefined it will attempt fetching the value from a cookie if storage is enabled, if none is found it will generate a v4 uuid
 * **config.storage** : Object | String (optional) - storage configuration object. When `none` it will disable cookie storage
 * **config.storage.name** : String (optional) - cookie name. Default: `_td`
-* **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
+* **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `315360000` (10 years)
 * **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
 
 **Personalization parameters**
