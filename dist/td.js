@@ -1614,7 +1614,7 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.9.0";
+    module.exports = "1.9.1";
 }, function(module, exports) {
     var encode = function encode(val) {
         try {
@@ -1774,17 +1774,15 @@
     };
 }, function(module, exports) {
     (function(global) {
-        var win;
         if (typeof window !== "undefined") {
-            win = window;
+            module.exports = window;
         } else if (typeof global !== "undefined") {
-            win = global;
+            module.exports = global;
         } else if (typeof self !== "undefined") {
-            win = self;
+            module.exports = self;
         } else {
-            win = {};
+            module.exports = {};
         }
-        module.exports = win;
     }).call(exports, function() {
         return this;
     }());
@@ -1819,7 +1817,7 @@
             return null;
         }
         for (var tag = el.tagName.toLowerCase(); tag && tag !== "body"; el = el.parentNode, 
-        tag = el && el.tagName.toLowerCase()) {
+        tag = el && el.tagName && el.tagName.toLowerCase()) {
             var type = el.getAttribute("type");
             if (tag === "input" && type === "password") {
                 return null;
@@ -1986,7 +1984,7 @@
             "prefix": "TreasureJSONPCallback",
             "timeout": 1e4
         }, function(err, res) {
-            return err ? errorCallback(err) : successCallback(res && res.key, res && res.values);
+            return err ? errorCallback(err) : successCallback(res && (res.key || res.keys), res && res.values);
         });
     }
     module.exports = {
@@ -2042,7 +2040,7 @@
                 return getMeta("description");
             },
             "td_url": function() {
-                return document.location.href.split("#")[0];
+                return !document.location || !document.location.href ? "" : document.location.href.split("#")[0];
             },
             "td_user_agent": function() {
                 return window.navigator.userAgent;
@@ -2139,7 +2137,7 @@
             };
             if (is.ip || is.local || is.custom) {
                 clone.domain = is.local ? null : clone.domain;
-                cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
+                cookie.setItem(storage.name, uuid, clone.expires, clone.path, clone.domain);
             } else {
                 var domains = findDomains(storage.domain);
                 var ll = domains.length;
@@ -2151,7 +2149,7 @@
                 } else {
                     for (;i < ll; i++) {
                         clone.domain = domains[i];
-                        cookie.setItem(storage.name, uuid, clone.expiry, clone.path, clone.domain);
+                        cookie.setItem(storage.name, uuid, clone.expires, clone.path, clone.domain);
                         if (cookie.getItem(storage.name) === uuid) {
                             storage.domain = clone.domain;
                             break;
