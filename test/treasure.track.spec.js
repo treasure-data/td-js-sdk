@@ -50,7 +50,7 @@ describe('Treasure Tracker', function () {
       var storage = treasure.client.storage
       expect(typeof storage === 'object').ok()
       expect(storage.name === '_td').ok()
-      expect(storage.expires === 63072000).ok()
+      expect(storage.expires === 315360000).ok()
 
       // var result = parseDomain(document.location.hostname, {})
       // if (result) {
