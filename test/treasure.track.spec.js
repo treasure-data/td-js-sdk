@@ -175,8 +175,10 @@ describe('Treasure Tracker', function () {
       })
 
       it('should set a cookie with the desired expires', function (done) {
+        var expires = new Date()
+        expires.setSeconds(expires.getSeconds() + 1)
         configuration.storage = {
-          expires: 1
+          expires: expires
         }
         treasure = new Treasure(configuration)
 
