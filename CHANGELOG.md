@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.1 (2017-11-17)
+* Corrected cookie expiration date issue
+* Always return key or keys from Personalization API
+* Correct two possible scenarios for initialization failures
+
 ## 1.9.0 (2017-11-07)
 * Add support for CDP segmentation token & keys to the Personalization API
 * Add td_description tracked value
