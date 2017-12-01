@@ -31,7 +31,7 @@
         var s = document.createElement('script')
         s.type = 'text/javascript'
         s.async = !0
-        s.src = '/dist/td.js'
+        s.src = '/dist/td.min.js'
 
         var t = document.getElementsByTagName('script')[0]
         t.parentNode.insertBefore(s, t)
@@ -46,7 +46,7 @@
     function setStatus (num, text) {
       document.getElementById('status' + num).innerHTML = text
       status[num] = text
-      if (status.length === 3) {
+      if (status.length === 4) {
         var isFailure = false
         for (var i = 0; i < status.length; i++) {
           if (status[i] === 'failure') {
@@ -78,6 +78,19 @@
 
     td.trackPageview('loader_track_pageview', function () {
       setStatus(2, 'success')
+      var td2 = new Treasure({
+        database: 'test_db_request',
+        writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+        host: 'in-staging.treasuredata.com'
+      })
+      try {
+        var failure = function () { setStatus(3, 'failure') }
+        td2.trackPageview('loader_track_pageview', function () {
+          setStatus(3, 'success')
+        }, failure)
+      } catch (e) {
+        failure()
+      }
     }, function () {
       setStatus(2, 'failure')
     })
@@ -87,6 +100,7 @@
 <h1 id='status0' style="text-align: center;">running</h1>
 <h1 id='status1' style="text-align: center;">running</h1>
 <h1 id='status2' style="text-align: center;">running</h1>
+<h1 id='status3' style="text-align: center;">running</h1>
 
 </body>
 </html>

@@ -2,8 +2,8 @@ var test = require('tape')
 
 module.exports = function (browser, initOpts, finish) {
   test('loader test', function (t) {
-    var count = 3
-    t.plan(3)
+    var count = 4
+    t.plan(4)
 
     function finished () {
       count--
@@ -18,6 +18,7 @@ module.exports = function (browser, initOpts, finish) {
         getStatus(0)
         getStatus(1)
         getStatus(2)
+        getStatus(3)
       })
     }
 
