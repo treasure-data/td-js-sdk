@@ -8,6 +8,7 @@ module.exports = function (browser, initOpts, finish) {
     function finished () {
       count--
       if (count === 0) {
+        t.end()
         browser.quit()
         finish()
       }

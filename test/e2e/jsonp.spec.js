@@ -17,6 +17,7 @@ module.exports = function (browser, initOpts, finish) {
     function getText (err, text) {
       if (err) {
         t.fail('Error', err)
+        t.end()
         browser.quit()
         return finish()
       }
