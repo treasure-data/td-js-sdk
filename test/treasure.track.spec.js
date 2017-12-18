@@ -114,6 +114,19 @@ describe('Treasure Tracker', function () {
         head.appendChild(metaDescription)
         var values = treasure.client.track.values
         expect(values.td_description()).to.equal('test description')
+        // Tidy up
+        head.removeChild(metaDescription)
+      })
+
+      it('should handle null meta values', function () {
+        var metaDescription = document.createElement('meta')
+        var head = document.head || document.getElementsByTagName('head')[0]
+        metaDescription.name = 'description'
+        head.appendChild(metaDescription)
+        var values = treasure.client.track.values
+        expect(values.td_description()).to.equal('')
+        // Tidy up
+        head.removeChild(metaDescription)
       })
 
       it('should let you overwrite values', function () {
