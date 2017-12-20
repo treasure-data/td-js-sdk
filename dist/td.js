@@ -1614,7 +1614,7 @@
         return key ? this.client.globals[table][key] : this.client.globals[table];
     };
 }, function(module, exports) {
-    module.exports = "1.9.1";
+    module.exports = "1.9.2";
 }, function(module, exports) {
     var encode = function encode(val) {
         try {
@@ -2108,7 +2108,7 @@
         var metaLength = metas.length;
         for (var i = 0; i < metaLength; i++) {
             if (metas[i].getAttribute("name") === metaName) {
-                return metas[i].getAttribute("content").substr(0, 8192);
+                return (metas[i].getAttribute("content") || "").substr(0, 8192);
             }
         }
         return "";
@@ -2135,9 +2135,11 @@
                 "local": storage.domain === "localhost",
                 "custom": storage.customDomain
             };
+            var expires = new Date();
+            expires.setSeconds(expires.getSeconds() + clone.expires);
             if (is.ip || is.local || is.custom) {
                 clone.domain = is.local ? null : clone.domain;
-                cookie.setItem(storage.name, uuid, clone.expires, clone.path, clone.domain);
+                cookie.setItem(storage.name, uuid, expires, clone.path, clone.domain);
             } else {
                 var domains = findDomains(storage.domain);
                 var ll = domains.length;
@@ -2149,7 +2151,7 @@
                 } else {
                     for (;i < ll; i++) {
                         clone.domain = domains[i];
-                        cookie.setItem(storage.name, uuid, clone.expires, clone.path, clone.domain);
+                        cookie.setItem(storage.name, uuid, expires, clone.path, clone.domain);
                         if (cookie.getItem(storage.name) === uuid) {
                             storage.domain = clone.domain;
                             break;
