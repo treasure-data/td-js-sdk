@@ -36,6 +36,11 @@
       "it"
     ]
   },
+   "greenkeeper": {
+    "ignore": [
+      "domready"
+    ]
+  },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
@@ -55,7 +60,7 @@
     "requirejs": "^2.2.0",
     "selenium-standalone": "^6.12.0",
     "simple-mock": "^0.8.0",
-    "standard": "^10.0.3",
+    "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
     "uglifyjs-webpack-plugin": "^1.1.5",
@@ -63,7 +68,7 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
-    "domready": "^1.0.8",
+    "domready": "^0.3.0",
     "global": "^4.3.0",
     "json3": "^3.3.2",
     "jsonp": "0.2.1",
