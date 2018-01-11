@@ -110,30 +110,35 @@ module.exports = function (config) {
         base: 'BrowserStack',
         browser: 'ie',
         browser_version: '8.0',
-        os: 'Windows'
+        os: 'Windows',
+        os_version: '7'
       },
       bs_ie_9_win: {
         base: 'BrowserStack',
         browser: 'ie',
         browser_version: '9.0',
-        os: 'Windows'
+        os: 'Windows',
+        os_version: '7'
       },
       bs_ie_10_win: {
         base: 'BrowserStack',
         browser: 'ie',
         browser_version: '10.0',
-        os: 'Windows'
+        os: 'Windows',
+        os_version: '8'
       },
       bs_ie_11_win: {
         base: 'BrowserStack',
         browser: 'ie',
         browser_version: '11.0',
-        os: 'Windows'
+        os: 'Windows',
+        os_version: '10'
       },
       bs_edge_latest_win: {
         base: 'BrowserStack',
         browser: 'edge',
-        os: 'Windows'
+        os: 'Windows',
+        os_version: '10'
       }
     },
 
