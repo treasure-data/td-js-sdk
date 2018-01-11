@@ -62,42 +62,49 @@ module.exports = function (config) {
       bs_firefox_latest_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
-        os: 'OS X'
+        os: 'OS X',
+        os_version: 'High Sierra'
       },
       bs_chrome_latest_mac: {
         base: 'BrowserStack',
         browser: 'chrome',
-        os: 'OS X'
+        os: 'OS X',
+        os_version: 'High Sierra'
       },
       bs_safari_7_mac: {
         base: 'BrowserStack',
         browser: 'safari',
-        browser_version: '7.0',
-        os: 'OS X'
+        browser_version: '7.1',
+        os: 'OS X',
+        os_version: 'Mavericks'
       },
       bs_safari_8_mac: {
         base: 'BrowserStack',
         browser: 'safari',
         browser_version: '8.0',
-        os: 'OS X'
+        os: 'OS X',
+        os_version: 'Yosemite'
       },
       bs_safari_9_mac: {
         base: 'BrowserStack',
         browser: 'safari',
-        browser_version: '9.0',
-        os: 'OS X'
+        browser_version: '9.1',
+        os: 'OS X',
+        os_version: 'El Capitan'
       },
       bs_safari_10_mac: {
         base: 'BrowserStack',
         browser: 'safari',
         browser_version: '10.0',
-        os: 'OS X'
+        os: 'OS X',
+        os_version: 'Sierra'
       },
       bs_safari_11_mac: {
         base: 'BrowserStack',
         browser: 'safari',
         browser_version: '11.0',
-        os: 'OS X'
+        os: 'OS X',
+        os_version: 'High Sierra'
       },
       bs_ie_8_win: {
         base: 'BrowserStack',
