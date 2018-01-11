@@ -59,41 +59,91 @@ module.exports = function (config) {
 
     // define browsers
     customLaunchers: {
-      bs_firefox_mac_ML_latest: {
+      bs_firefox_latest_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
-        os: 'OS X',
-        os_version: 'Mountain Lion'
+        os: 'OS X'
       },
-      bs_chrome_mac_ML_latest: {
+      bs_chrome_latest_mac: {
         base: 'BrowserStack',
         browser: 'chrome',
-        os: 'OS X',
-        os_version: 'Mountain Lion'
+        os: 'OS X'
       },
-      bs_chrome_Win_7_latest: {
+      bs_safari_7_mac: {
         base: 'BrowserStack',
-        browser: 'chrome',
-        os: 'Windows',
-        os_version: '7'
+        browser: 'safari',
+        browser_version: '7.0',
+        os: 'OS X'
       },
-      bs_ie_10_Win_7: {
+      bs_safari_8_mac: {
         base: 'BrowserStack',
-        browser: 'ie',
+        browser: 'safari',
+        browser_version: '8.0',
+        os: 'OS X'
+      },
+      bs_safari_9_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '9.0',
+        os: 'OS X'
+      },
+      bs_safari_10_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
         browser_version: '10.0',
-        os: 'Windows',
-        os_version: '7'
+        os: 'OS X'
       },
-      bs_ie_8_Win_7: {
+      bs_safari_11_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '11.0',
+        os: 'OS X'
+      },
+      bs_ie_8_win: {
         base: 'BrowserStack',
         browser: 'ie',
         browser_version: '8.0',
-        os: 'Windows',
-        os_version: '7'
+        os: 'Windows'
+      },
+      bs_ie_9_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '9.0',
+        os: 'Windows'
+      },
+      bs_ie_10_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '10.0',
+        os: 'Windows'
+      },
+      bs_ie_11_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '11.0',
+        os: 'Windows'
+      },
+      bs_edge_latest_win: {
+        base: 'BrowserStack',
+        browser: 'edge',
+        os: 'Windows'
       }
     },
 
-    browsers: ['bs_chrome_mac_ML_latest', 'bs_firefox_mac_ML_latest', 'bs_chrome_Win_7_latest', 'bs_ie_10_Win_7', 'bs_ie_8_Win_7'],
+    browsers: [
+      'bs_firefox_latest_mac',
+      'bs_chrome_latest_mac',
+      'bs_safari_7_mac',
+      'bs_safari_8_mac',
+      'bs_safari_9_mac',
+      'bs_safari_10_mac',
+      'bs_safari_11_mac',
+      'bs_ie_8_win',
+      'bs_ie_9_win',
+      'bs_ie_10_win',
+      'bs_ie_11_win',
+      'bs_edge_latest_win'
+    ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
