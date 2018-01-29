@@ -65,7 +65,7 @@
     "standard": "^7.1.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
-    "uglifyjs-webpack-plugin": "^0.4.6",
+    "uglifyjs-webpack-plugin": "^1.1.7",
     "wd": "^1.5.0",
     "webpack": "^1.13.1"
   },
