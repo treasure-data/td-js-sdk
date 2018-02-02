@@ -36,7 +36,7 @@
       "it"
     ]
   },
-   "greenkeeper": {
+  "greenkeeper": {
     "ignore": [
       "domready",
       "karma",
@@ -67,6 +67,11 @@
     "uglifyjs": "^2.4.10",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "wd": "^1.5.0",
+    "wdio-browserstack-service": "^0.1.14",
+    "wdio-mocha-framework": "^0.5.12",
+    "wdio-selenium-standalone-service": "0.0.9",
+    "wdio-static-server-service": "^1.0.1",
+    "webdriverio": "^4.10.2",
     "webpack": "^1.13.1"
   },
   "dependencies": {
