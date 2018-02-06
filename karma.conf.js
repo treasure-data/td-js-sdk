@@ -1,5 +1,8 @@
 // Karma configuration
 var browserlist = require('./browserlist.json')
+var build = require('child_process')
+  .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
+  .toString().trim()
 
 module.exports = function (config) {
   config.set({
@@ -54,6 +57,7 @@ module.exports = function (config) {
 
     browserStack: {
       project: 'td-js-sdk',
+      build: build,
       startTunnel: false
     },
 
