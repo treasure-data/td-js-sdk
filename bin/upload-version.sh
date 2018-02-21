@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-DRYRUN=''
-if [ "$1" = '-d' ]; then
-  DRYRUN='--dryrun'
+DRYRUN='--dryrun'
+if [ "$1" = '-f' | "$1" = '--force' ]; then
+  DRYRUN=''
 fi
 
 set -euo pipefail

@@ -3,13 +3,13 @@
 set -euo pipefail
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 VERSION=$(jq -r '.version' < "${ROOT_DIR}/package.json")
-DRYRUN=''
+DRYRUN='--dryrun'
 WAIT=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    -d)
-      DRYRUN="--dryrun"
+    -f|--force)
+      DRYRUN=""
       ;;
     --version=*)
       VERSION="${1#*=}"

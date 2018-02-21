@@ -1,19 +1,14 @@
 #!/usr/bin/env bash
 
-DRYRUN=''
-VERSION=''
-TO_VERSION=''
+DRYRUN='--dryrun'
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+VERSION=$(jq -r '.version' < "${ROOT_DIR}/package.json")
+TO_VERSION=$(echo $VERSION | sed 's/\.[0-9]*$//g')
 WAIT=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    -d)
-      DRYRUN="--dryrun"
-      ;;
-    --version=*)
-      VERSION="${1#*=}"
-      ;;
-    --to-version=*)
-      TO_VERSION="${1#*=}"
+    -f|--force)
+      DRYRUN=""
       ;;
     --wait)
       WAIT=1
@@ -28,16 +23,6 @@ while [ $# -gt 0 ]; do
 done
 
 set -euo pipefail
-
-if [ "$VERSION" = '' ]; then
-  printf "Must specify VERSION"
-  exit 1
-fi
-
-if [ "$TO_VERSION" = '' ]; then
-  printf "Must specify TO_VERSION"
-  exit 1
-fi
 
 aws --profile dev-frontend                      \
   s3 sync "s3://td-cdn-experiment/sdk/${VERSION}/" "s3://td-cdn-experiment/sdk/${TO_VERSION}/" \
