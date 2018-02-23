@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
 DRYRUN='--dryrun'
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-VERSION=$(jq -r '.version' < "${ROOT_DIR}/package.json")
-TO_VERSION=$(echo $VERSION | sed 's/\.[0-9]*$//g')
+VERSION=''
 WAIT=0
 while [ $# -gt 0 ]; do
   case "$1" in
     -f|--force)
       DRYRUN=""
+      ;;
+    --version=*)
+      VERSION="${1#*=}"
       ;;
     --wait)
       WAIT=1
@@ -21,6 +22,13 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+
+if [ "$VERSION" = "" ]; then
+  echo "You must supply a --version"
+  exit 1
+fi
+
+TO_VERSION=$(echo $VERSION | sed 's/\.[0-9]*$//g')
 
 set -euo pipefail
 
