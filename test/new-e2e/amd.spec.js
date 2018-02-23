@@ -10,6 +10,7 @@ describe('amd', function () {
       return browser.getText('#rjs') === 'success'
     }, 5000, 'expected Require.js status to be success after 5s')
 
+    browser.timeouts('script', 5000)
     var result = browser.executeAsync(function (done) {
       var td = new Treasure({
         database: 'test_db_request',
