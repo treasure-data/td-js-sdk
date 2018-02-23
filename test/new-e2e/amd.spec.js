@@ -1,3 +1,4 @@
+/* global Treasure */
 var expect = require('expect.js')
 
 describe('amd', function () {
@@ -7,7 +8,7 @@ describe('amd', function () {
     // RequireJS Module should load an execute correctly
     browser.waitUntil(function () {
       return browser.getText('#rjs') === 'success'
-    }, 5000, 'expected Require.js status to be success after 5s');
+    }, 5000, 'expected Require.js status to be success after 5s')
 
     var result = browser.executeAsync(function (done) {
       var td = new Treasure({
@@ -23,6 +24,5 @@ describe('amd', function () {
     })
 
     expect(result.value).to.be(true)
-
   })
 })
