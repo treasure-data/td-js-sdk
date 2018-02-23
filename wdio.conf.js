@@ -72,7 +72,8 @@ exports.config = Object.assign({}, {
   connectionRetryCount: 3,
   framework: 'mocha',
   mochaOpts: {
-    ui: 'bdd'
+    ui: 'bdd',
+    timeout: 30000
   },
   staticServerPort: 1337
 }, local ? localConfig : browserstackConfig)
