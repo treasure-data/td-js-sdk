@@ -33,7 +33,10 @@ var browserstackConfig = {
   host: 'hub.browserstack.com',
   user: process.env.BROWSER_STACK_USERNAME,
   key: process.env.BROWSER_STACK_ACCESS_KEY,
-  browserstackLocal: true
+  browserstackLocal: true,
+  browserstackOpts: {
+    localIdentifier: process.env.BROWSERSTACK_LOCAL_IDENTIFIER
+  }
 }
 
 exports.config = Object.assign(
