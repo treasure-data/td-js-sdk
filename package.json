@@ -17,10 +17,9 @@
   "scripts": {
     "build": "./bin/build.sh",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
-    "e2e": "node ./bin/e2e.js",
-    "e2e-prepare": "selenium-standalone install",
-    "e2e-server": "node ./bin/server.js",
-    "test": "standard && node ./bin/test.js",
+    "e2e-local": "wdio --local",
+    "e2e-full": "wdio",
+    "test": "standard && node ./bin/test.js && yarn run e2e-full",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
     "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
