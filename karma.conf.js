@@ -1,9 +1,8 @@
 // Karma configuration
 // Generated on Tue Oct 03 2017 21:21:19 GMT-0500 (CDT)
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -14,13 +13,12 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       require.resolve('js-polyfills/es5.js'),
-      {pattern: 'lib/**/*.js', included: false},
-      {pattern: 'test/*.spec.js', included: true, watched: false}
+      { pattern: 'lib/**/*.js', included: false },
+      { pattern: 'test/*.spec.js', included: true, watched: false }
     ],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -139,6 +137,42 @@ module.exports = function (config) {
         browser: 'edge',
         os: 'Windows',
         os_version: '10'
+      },
+      bs_iphone4: {
+        base: 'BrowserStack',
+        device: 'iPhone 4',
+        os: 'ios',
+        os_version: '6.0'
+      },
+      bs_iphone5: {
+        base: 'BrowserStack',
+        device: 'iPhone 5',
+        os: 'ios',
+        os_version: '7.0'
+      },
+      bs_iphone6: {
+        base: 'BrowserStack',
+        device: 'iPhone 6',
+        os: 'ios',
+        os_version: '8.0'
+      },
+      bs_iphone6_9: {
+        base: 'BrowserStack',
+        device: 'iPhone 6',
+        os: 'ios',
+        os_version: '9.0'
+      },
+      bs_iphone7: {
+        base: 'BrowserStack',
+        device: 'iPhone 7',
+        os: 'ios',
+        os_version: '10.0'
+      },
+      bs_iphone7_11: {
+        base: 'BrowserStack',
+        device: 'iPhone 7',
+        os: 'ios',
+        os_version: '11.0'
       }
     },
 
@@ -154,7 +188,12 @@ module.exports = function (config) {
       'bs_ie_9_win',
       'bs_ie_10_win',
       'bs_ie_11_win',
-      'bs_edge_latest_win'
+      'bs_edge_latest_win',
+      'bs_iphone5',
+      'bs_iphone6',
+      'bs_iphone6_9',
+      'bs_iphone7',
+      'bs_iphone7_11'
     ],
 
     // Continuous Integration mode
@@ -164,5 +203,5 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: 5
-  })
-}
+  });
+};
