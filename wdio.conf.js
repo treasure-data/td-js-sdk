@@ -67,3 +67,4 @@ exports.config = Object.assign(
   },
   local ? localConfig : browserstackConfig
 )
+console.log(exports.config)
