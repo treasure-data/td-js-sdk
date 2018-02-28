@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Tue Oct 03 2017 21:21:19 GMT-0500 (CDT)
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -168,7 +168,7 @@ module.exports = function (config) {
         os: 'ios',
         os_version: '10.3'
       },
-      bs_iphone7_11: {
+      bs_iphone8: {
         base: 'BrowserStack',
         device: 'iPhone 8',
         os: 'ios',
@@ -211,7 +211,7 @@ module.exports = function (config) {
       'bs_iphone6',
       'bs_iphone6_9',
       'bs_iphone7',
-      'bs_iphone7_11',
+      'bs_iphone8',
       'bs_galaxys5',
       'bs_galaxys6',
       'bs_galaxys7'
@@ -224,5 +224,5 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: 5
-  })
-}
+  });
+};
