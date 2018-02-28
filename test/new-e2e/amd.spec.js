@@ -2,16 +2,16 @@
 var expect = require('expect.js')
 
 describe('amd', function () {
-  it('should be compatible with require.js', function () {
-    browser.url('http://localhost:1337/fixtures/amd/index.html')
+  it('should be compatible with require.js', async function () {
+    await browser.url('http://localhost:1337/fixtures/amd/index.html')
 
     // RequireJS Module should load an execute correctly
-    browser.waitUntil(function () {
+    await browser.waitUntil(function () {
       return browser.getText('#rjs') === 'success'
     }, 5000, 'expected Require.js status to be success after 5s')
 
-    browser.timeouts('script', 5000)
-    var result = browser.executeAsync(function (done) {
+    await browser.timeouts('script', 5000)
+    var result = await browser.executeAsync(function (done) {
       var td = new Treasure({
         database: 'test_db_request',
         writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',

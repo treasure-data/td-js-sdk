@@ -48,7 +48,7 @@ exports.config = Object.assign(
       { mount: '/assets', path: './test/assets' }
     ],
     maxInstances: 1,
-    sync: true,
+    async: true,
     logLevel: 'error',
     coloredLogs: true,
     deprecationWarnings: true,
