@@ -72,7 +72,7 @@
     "wdio-mocha-framework": "^0.5.12",
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "^4.10.2",
+    "webdriverio": "^4.11.0",
     "webpack": "^1.13.1"
   },
   "dependencies": {
