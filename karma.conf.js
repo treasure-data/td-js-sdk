@@ -170,7 +170,7 @@ module.exports = function (config) {
       },
       bs_iphone7_11: {
         base: 'BrowserStack',
-        device: 'iPhone 7',
+        device: 'iPhone 8',
         os: 'ios',
         os_version: '11.0'
       },
