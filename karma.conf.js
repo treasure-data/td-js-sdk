@@ -173,6 +173,24 @@ module.exports = function (config) {
         device: 'iPhone 7',
         os: 'ios',
         os_version: '11.0'
+      },
+      bs_galaxys5: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy S5',
+        os: 'android',
+        os_version: '4.4'
+      },
+      bs_galaxys6: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy S6',
+        os: 'android',
+        os_version: '5.0'
+      },
+      bs_galaxys7: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy S7',
+        os: 'android',
+        os_version: '6.0'
       }
     },
 
@@ -193,7 +211,10 @@ module.exports = function (config) {
       'bs_iphone6',
       'bs_iphone6_9',
       'bs_iphone7',
-      'bs_iphone7_11'
+      'bs_iphone7_11',
+      'bs_galaxys5',
+      'bs_galaxys6',
+      'bs_galaxys7'
     ],
 
     // Continuous Integration mode
