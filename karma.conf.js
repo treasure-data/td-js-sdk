@@ -193,14 +193,16 @@ module.exports = function (config) {
         device: 'Google Nexus 6',
         os: 'android',
         browser: 'android',
-        os_version: '6.0'
+        os_version: '6.0',
+        real_mobile: true
       },
       android71: {
         base: 'BrowserStack',
-        device: 'Google Pixel',
+        device: 'Samsung Galaxy S8 Plus',
         os: 'android',
         browser: 'android',
-        os_version: '7.1'
+        os_version: '7.1',
+        real_mobile: true
       },
       android80: {
         base: 'BrowserStack',
