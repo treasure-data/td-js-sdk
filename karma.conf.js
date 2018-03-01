@@ -178,18 +178,21 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S5',
         os: 'android',
-        os_version: '4.4'
+        os_version: '4.4',
+        browser: 'android'
       },
       bs_galaxys6: {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S6',
         os: 'android',
-        os_version: '5.0'
+        os_version: '5.0',
+        browser: 'android'
       },
       bs_galaxys7: {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S7',
         os: 'android',
+        browser: 'android',
         os_version: '6.0'
       }
     },
