@@ -224,7 +224,6 @@ module.exports = function (config) {
       'bs_iphone8',
       'bs_galaxys5',
       'bs_galaxys6',
-      'bs_nexus6',
       'bs_galaxys8'
     ],
 
