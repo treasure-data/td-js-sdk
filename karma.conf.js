@@ -188,12 +188,19 @@ module.exports = function (config) {
         os_version: '5.0',
         browser: 'android'
       },
-      bs_galaxys7: {
+      bs_nexus6: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy S7',
+        device: 'Google Nexus 6',
         os: 'android',
         browser: 'android',
         os_version: '6.0'
+      },
+      bs_galaxys8: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy S8',
+        os: 'android',
+        browser: 'android',
+        os_version: '7.0'
       }
     },
 
@@ -217,7 +224,8 @@ module.exports = function (config) {
       'bs_iphone8',
       'bs_galaxys5',
       'bs_galaxys6',
-      'bs_galaxys7'
+      'bs_nexus6',
+      'bs_galaxys8'
     ],
 
     // Continuous Integration mode
