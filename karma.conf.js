@@ -174,33 +174,40 @@ module.exports = function (config) {
         os: 'ios',
         os_version: '11.0'
       },
-      bs_galaxys5: {
+      android44: {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S5',
         os: 'android',
         os_version: '4.4',
         browser: 'android'
       },
-      bs_galaxys6: {
+      android50: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy S6',
+        device: 'Google Nexus 5',
         os: 'android',
         os_version: '5.0',
         browser: 'android'
       },
-      bs_nexus6: {
+      android60: {
         base: 'BrowserStack',
         device: 'Google Nexus 6',
         os: 'android',
         browser: 'android',
         os_version: '6.0'
       },
-      bs_galaxys8: {
+      android71: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy S8',
+        device: 'Samsung Galaxy Note 8',
         os: 'android',
         browser: 'android',
-        os_version: '7.0'
+        os_version: '7.1'
+      },
+      android80: {
+        base: 'BrowserStack',
+        device: 'Google Pixel',
+        os: 'android',
+        browser: 'android',
+        os_version: '8.0'
       }
     },
 
@@ -222,9 +229,10 @@ module.exports = function (config) {
       'bs_iphone6_9',
       'bs_iphone7',
       'bs_iphone8',
-      'bs_galaxys5',
-      'bs_galaxys6',
-      'bs_galaxys8'
+      'android44',
+      'android50',
+      'android60',
+      'android71'
     ],
 
     // Continuous Integration mode
