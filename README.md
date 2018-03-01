@@ -210,7 +210,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
 * **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
-* **config.globalIdCookie** : String (optional) - name of the table to which the click event will be sent. Default: `clicks`
+* **config.clickTable** : String (optional) - name of the table to which the click event will be sent. Default: `clicks`
 
 **Track/Storage parameters:**
 
