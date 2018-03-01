@@ -25,8 +25,8 @@
     s.async = !0
     s.src = (
       document.location.protocol === 'https:'
-      ? 'https:'
-      : 'http:'
+        ? 'https:'
+        : 'http:'
     ) + '@URL'
 
     var t = document.getElementsByTagName('script')[0]
