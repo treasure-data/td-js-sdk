@@ -197,7 +197,7 @@ module.exports = function (config) {
       },
       android71: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy Note 8',
+        device: 'Google Pixel',
         os: 'android',
         browser: 'android',
         os_version: '7.1'
