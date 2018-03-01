@@ -146,7 +146,7 @@ module.exports = function (config) {
       },
       bs_iphone5: {
         base: 'BrowserStack',
-        device: 'iPhone 5',
+        device: 'iPhone 5S',
         os: 'ios',
         os_version: '7.0'
       },
@@ -154,7 +154,7 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'iPhone 6',
         os: 'ios',
-        os_version: '8.0'
+        os_version: '8.3'
       },
       bs_iphone6_9: {
         base: 'BrowserStack',
