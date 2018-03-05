@@ -200,7 +200,8 @@ module.exports = function (config) {
         device: 'Samsung Galaxy Note 8',
         os: 'android',
         browser: 'android',
-        os_version: '7.1'
+        os_version: '7.1',
+        realMobile: true
       },
       android80: {
         base: 'BrowserStack',
