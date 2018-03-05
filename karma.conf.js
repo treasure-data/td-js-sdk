@@ -146,7 +146,7 @@ module.exports = function (config) {
       },
       bs_iphone5: {
         base: 'BrowserStack',
-        device: 'iPhone 5',
+        device: 'iPhone 5S',
         os: 'ios',
         os_version: '7.0'
       },
@@ -154,7 +154,7 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'iPhone 6',
         os: 'ios',
-        os_version: '8.0'
+        os_version: '8.3'
       },
       bs_iphone6_9: {
         base: 'BrowserStack',
@@ -193,15 +193,16 @@ module.exports = function (config) {
         device: 'Google Nexus 6',
         os: 'android',
         browser: 'android',
-        os_version: '6.0'
+        os_version: '6.0',
+        real_mobile: true
       },
       android71: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy Note 8',
+        device: 'Samsung Galaxy S8 Plus',
         os: 'android',
         browser: 'android',
         os_version: '7.1',
-        realMobile: true
+        real_mobile: true
       },
       android80: {
         base: 'BrowserStack',
