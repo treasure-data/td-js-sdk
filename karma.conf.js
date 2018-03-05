@@ -57,87 +57,87 @@ module.exports = function (config) {
 
     // define browsers
     customLaunchers: {
-      // bs_firefox_latest_mac: {
-      // base: 'BrowserStack',
-      // browser: 'firefox',
-      // os: 'OS X',
-      // os_version: 'High Sierra'
-      // },
-      // bs_chrome_latest_mac: {
-      // base: 'BrowserStack',
-      // browser: 'chrome',
-      // os: 'OS X',
-      // os_version: 'High Sierra'
-      // },
-      // bs_safari_7_mac: {
-      // base: 'BrowserStack',
-      // browser: 'safari',
-      // browser_version: '7.1',
-      // os: 'OS X',
-      // os_version: 'Mavericks'
-      // },
-      // bs_safari_8_mac: {
-      // base: 'BrowserStack',
-      // browser: 'safari',
-      // browser_version: '8.0',
-      // os: 'OS X',
-      // os_version: 'Yosemite'
-      // },
-      // bs_safari_9_mac: {
-      // base: 'BrowserStack',
-      // browser: 'safari',
-      // browser_version: '9.1',
-      // os: 'OS X',
-      // os_version: 'El Capitan'
-      // },
-      // bs_safari_10_mac: {
-      // base: 'BrowserStack',
-      // browser: 'safari',
-      // browser_version: '10.0',
-      // os: 'OS X',
-      // os_version: 'Sierra'
-      // },
-      // bs_safari_11_mac: {
-      // base: 'BrowserStack',
-      // browser: 'safari',
-      // browser_version: '11.0',
-      // os: 'OS X',
-      // os_version: 'High Sierra'
-      // },
-      // bs_ie_8_win: {
-      // base: 'BrowserStack',
-      // browser: 'ie',
-      // browser_version: '8.0',
-      // os: 'Windows',
-      // os_version: '7'
-      // },
-      // bs_ie_9_win: {
-      // base: 'BrowserStack',
-      // browser: 'ie',
-      // browser_version: '9.0',
-      // os: 'Windows',
-      // os_version: '7'
-      // },
-      // bs_ie_10_win: {
-      // base: 'BrowserStack',
-      // browser: 'ie',
-      // browser_version: '10.0',
-      // os: 'Windows',
-      // os_version: '8'
-      // },
-      // bs_ie_11_win: {
-      // base: 'BrowserStack',
-      // browser: 'ie',
-      // browser_version: '11.0',
-      // os: 'Windows',
-      // os_version: '10'
-      // },
-      // bs_edge_latest_win: {
-      // base: 'BrowserStack',
-      // browser: 'edge',
-      // os: 'Windows',
-      // os_version: '10'
-      // },
+      bs_firefox_latest_mac: {
+        base: 'BrowserStack',
+        browser: 'firefox',
+        os: 'OS X',
+        os_version: 'High Sierra'
+      },
+      bs_chrome_latest_mac: {
+        base: 'BrowserStack',
+        browser: 'chrome',
+        os: 'OS X',
+        os_version: 'High Sierra'
+      },
+      bs_safari_7_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '7.1',
+        os: 'OS X',
+        os_version: 'Mavericks'
+      },
+      bs_safari_8_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '8.0',
+        os: 'OS X',
+        os_version: 'Yosemite'
+      },
+      bs_safari_9_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '9.1',
+        os: 'OS X',
+        os_version: 'El Capitan'
+      },
+      bs_safari_10_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '10.0',
+        os: 'OS X',
+        os_version: 'Sierra'
+      },
+      bs_safari_11_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '11.0',
+        os: 'OS X',
+        os_version: 'High Sierra'
+      },
+      bs_ie_8_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '8.0',
+        os: 'Windows',
+        os_version: '7'
+      },
+      bs_ie_9_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '9.0',
+        os: 'Windows',
+        os_version: '7'
+      },
+      bs_ie_10_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '10.0',
+        os: 'Windows',
+        os_version: '8'
+      },
+      bs_ie_11_win: {
+        base: 'BrowserStack',
+        browser: 'ie',
+        browser_version: '11.0',
+        os: 'Windows',
+        os_version: '10'
+      },
+      bs_edge_latest_win: {
+        base: 'BrowserStack',
+        browser: 'edge',
+        os: 'Windows',
+        os_version: '10'
+      },
       bs_iphone4: {
         base: 'BrowserStack',
         device: 'iPhone 4',
@@ -192,43 +192,44 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'Google Nexus 6',
         os: 'android',
-        browser: 'android',
         os_version: '6.0',
-        real_mobile: true
+        browser: 'android',
+        real_mobile: 'true'
       },
       android71: {
         base: 'BrowserStack',
-        device: 'Samsung Galaxy S8 Plus',
+        device: 'Samsung Galaxy Note 8',
+        os: 'android',
         os_version: '7.1',
-        real_mobile: true
+        real_mobile: 'true'
       },
       android80: {
         base: 'BrowserStack',
         device: 'Google Pixel',
         os: 'android',
-        browser: 'android',
-        os_version: '8.0'
+        os_version: '8.0',
+        browser: 'android'
       }
     },
 
     browsers: [
-      'bs_firefox_latest_mac',
-      'bs_chrome_latest_mac',
-      'bs_safari_7_mac',
-      'bs_safari_8_mac',
-      'bs_safari_9_mac',
-      'bs_safari_10_mac',
-      'bs_safari_11_mac',
-      'bs_ie_8_win',
-      'bs_ie_9_win',
-      'bs_ie_10_win',
-      'bs_ie_11_win',
-      'bs_edge_latest_win',
-      'bs_iphone5',
-      'bs_iphone6',
-      'bs_iphone6_9',
-      'bs_iphone7',
-      'bs_iphone8',
+      // 'bs_firefox_latest_mac',
+      // 'bs_chrome_latest_mac',
+      // 'bs_safari_7_mac',
+      // 'bs_safari_8_mac',
+      // 'bs_safari_9_mac',
+      // 'bs_safari_10_mac',
+      // 'bs_safari_11_mac',
+      // 'bs_ie_8_win',
+      // 'bs_ie_9_win',
+      // 'bs_ie_10_win',
+      // 'bs_ie_11_win',
+      // 'bs_edge_latest_win',
+      // 'bs_iphone5',
+      // 'bs_iphone6',
+      // 'bs_iphone6_9',
+      // 'bs_iphone7',
+      // 'bs_iphone8',
       'android44',
       'android50',
       'android60',
