@@ -199,8 +199,6 @@ module.exports = function (config) {
       android71: {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S8 Plus',
-        os: 'android',
-        browser: 'android',
         os_version: '7.1',
         real_mobile: true
       },
