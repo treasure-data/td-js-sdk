@@ -23,7 +23,7 @@ var capabilities = local
       project: 'td-js-sdk',
       build: build
     })
-  }).slice(0, 1)
+  })
 
 var localConfig = {
   host: 'localhost'
