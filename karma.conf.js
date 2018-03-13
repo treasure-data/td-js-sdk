@@ -6,7 +6,6 @@ var build = require('child_process')
 
 module.exports = function (config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -17,13 +16,12 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       require.resolve('js-polyfills/es5.js'),
-      {pattern: 'lib/**/*.js', included: false},
-      {pattern: 'test/*.spec.js', included: true, watched: false}
+      { pattern: 'lib/**/*.js', included: false },
+      { pattern: 'test/*.spec.js', included: true, watched: false }
     ],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -76,7 +74,16 @@ module.exports = function (config) {
       'bs_ie_9_win',
       'bs_ie_10_win',
       'bs_ie_11_win',
-      'bs_edge_latest_win'
+      'bs_edge_latest_win',
+      'bs_iphone5',
+      'bs_iphone6',
+      'bs_iphone6_9',
+      'bs_iphone7',
+      'bs_iphone8',
+      'android44',
+      'android50',
+      'android60',
+      'android71'
     ],
 
     // Continuous Integration mode
