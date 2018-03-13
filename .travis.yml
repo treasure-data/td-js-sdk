@@ -5,7 +5,7 @@ cache:
 language: node_js
 env:
   global:
-  - secure: o1E51adkfzse6ayaKkf+YPi4xMxDvj6ez1oEsI5HljhVuMbgvOYkrs3dkOSfsORBAR+a9F8bSbrOcXyBDzloj3v1G47r4LaSWFk8QTBDvn8cpAzbx1eErT6FcdzxqmeZ22xWXQhEg17mfomCvULc+ueDToXEP1GGkozp7KZyldk=
+  - secure: C5yaHRgSicbQeM2RjnKD24f+JIJwqEOcGCGObgca8/oYrTEtEO2sbTVw/g23LknmcwPKulKfP9zZQ/+Skx3Yqx8d2cR5QjyktqaiNarjCGiG6RDGkvEzPebtSqyw5C7ZHv+zHVaWNXUmHSX/2Zy8rGEQwoCTNv21hjI5zTAUaWA=
   - secure: AtH9KI7WHnPtxn+ib+BJTKSe7Rr7B3nzwxXEy+dPOhGTT+DikM1XnNOoDaebsx2a1h4JnLZ+6MafpLWmH30us4t3xcqju/Amymf8zhcKswPNnmAzuY+LYgULmpbJ9QHz2X+yh/5eTCe7EzIsSD3nj/XPYzRLQynp47uZnjG+F54=
 addons:
   browserstack:
