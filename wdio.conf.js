@@ -53,7 +53,7 @@ exports.config = Object.assign(
       { mount: '/dist', path: './test/dist' },
       { mount: '/assets', path: './test/assets' }
     ],
-    maxInstances: 1,
+    maxInstances: 5,
     async: true,
     logLevel: 'error',
     coloredLogs: true,
