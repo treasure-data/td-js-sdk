@@ -6,8 +6,7 @@ language: node_js
 env:
   global:
   - secure: o1E51adkfzse6ayaKkf+YPi4xMxDvj6ez1oEsI5HljhVuMbgvOYkrs3dkOSfsORBAR+a9F8bSbrOcXyBDzloj3v1G47r4LaSWFk8QTBDvn8cpAzbx1eErT6FcdzxqmeZ22xWXQhEg17mfomCvULc+ueDToXEP1GGkozp7KZyldk=
-  - secure: j71BS6q9LvD2XIXf+uRXUgDKLH8Tor3r/Fvi5amLT5EquHoZi+DpjYlLchOBJk7VcVJ8Qm4FV2NGk4pxI7Iik0fyioLUN+sPALMLQcXnqsYkYHcpqNkJ/U41PNXyPDdDKG9098NaX9Ae4LGhl7BC1tbA9KQSG1Ycr8KEd8e6I3Q=
-  - secure: Chw+a94wM4Rpjpp0HYOTNrHhKuiztPIHpBYKJ4jOuqw4KxKj5+tD/S2SS8xhDVrrnTVOrA24MNN6S/xtpzvS5EvFLC6q6n1J6S/qtMpbjs9tk/XChYyqS6sKTjNdirZSUHM+j3yo91oi4CQHLm68sdGaBTeigDRxqyySUwc/m1E=
+  - secure: AtH9KI7WHnPtxn+ib+BJTKSe7Rr7B3nzwxXEy+dPOhGTT+DikM1XnNOoDaebsx2a1h4JnLZ+6MafpLWmH30us4t3xcqju/Amymf8zhcKswPNnmAzuY+LYgULmpbJ9QHz2X+yh/5eTCe7EzIsSD3nj/XPYzRLQynp47uZnjG+F54=
 addons:
   browserstack:
     username: dev@treasure-data.com
