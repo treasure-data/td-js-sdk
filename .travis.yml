@@ -9,8 +9,9 @@ env:
   - secure: XCtfTIWdmyjp1ZDH9CPs7eXbOTAhfS031GWsru7rlOqPTWy0/RHL3BI5chBnn7Dh6ig34M6jQ2/4hcP/Qy+nPR9Gx44GF0jhEv3oEF5fyeSu3DsanKew3K0CIbnNRC4lEr/4qMaDkN4yLFeYCYpuvr0v2pyGpP9e+k7j3oqOmM8=
   - secure: o1E51adkfzse6ayaKkf+YPi4xMxDvj6ez1oEsI5HljhVuMbgvOYkrs3dkOSfsORBAR+a9F8bSbrOcXyBDzloj3v1G47r4LaSWFk8QTBDvn8cpAzbx1eErT6FcdzxqmeZ22xWXQhEg17mfomCvULc+ueDToXEP1GGkozp7KZyldk=
   - secure: j71BS6q9LvD2XIXf+uRXUgDKLH8Tor3r/Fvi5amLT5EquHoZi+DpjYlLchOBJk7VcVJ8Qm4FV2NGk4pxI7Iik0fyioLUN+sPALMLQcXnqsYkYHcpqNkJ/U41PNXyPDdDKG9098NaX9Ae4LGhl7BC1tbA9KQSG1Ycr8KEd8e6I3Q=
-# addons:
-  # browserstack:
-    # username: dev@treasure-data.com
-    # access_key:
-      # secure: knd/zgP9vNnNj5AlYbHr4AK/B4A/V+FtQAGoE4IWnnD5VXf054LT4Nd0d7J23Zau77JjGDLwJmW2J+BZA/zCVmbyw0x0/JrFjPe7pdNGBWd4LLk8R/qqXl+3h6wJiN1IR6US0vBI+lUAFSnn7unfHd4i8/8suLVb1lpvSc0nP/E=
+  - secure: knd/zgP9vNnNj5AlYbHr4AK/B4A/V+FtQAGoE4IWnnD5VXf054LT4Nd0d7J23Zau77JjGDLwJmW2J+BZA/zCVmbyw0x0/JrFjPe7pdNGBWd4LLk8R/qqXl+3h6wJiN1IR6US0vBI+lUAFSnn7unfHd4i8/8suLVb1lpvSc0nP/E=
+addons:
+  browserstack:
+    username: dev@treasure-data.com
+    access_key:
+      secure: knd/zgP9vNnNj5AlYbHr4AK/B4A/V+FtQAGoE4IWnnD5VXf054LT4Nd0d7J23Zau77JjGDLwJmW2J+BZA/zCVmbyw0x0/JrFjPe7pdNGBWd4LLk8R/qqXl+3h6wJiN1IR6US0vBI+lUAFSnn7unfHd4i8/8suLVb1lpvSc0nP/E=
