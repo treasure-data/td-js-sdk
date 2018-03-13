@@ -35,7 +35,6 @@ var browserstackConfig = {
   key: process.env.BROWSER_STACK_ACCESS_KEY,
   browserstackLocal: true,
   browserstackOpts: {
-    localIdentifier: process.env.BROWSERSTACK_LOCAL_IDENTIFIER,
     user: process.env.BROWSER_STACK_USERNAME,
     key: process.env.BROWSER_STACK_ACCESS_KEY,
     verbose: true,
