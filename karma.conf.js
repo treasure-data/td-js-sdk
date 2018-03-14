@@ -74,17 +74,18 @@ module.exports = function (config) {
       'bs_ie_9_win',
       'bs_ie_10_win',
       'bs_ie_11_win',
-      'bs_edge_latest_win',
-      'bs_iphone5',
-      'bs_iphone6',
-      'bs_iphone6_9',
-      'bs_iphone7',
-      'bs_iphone8',
-      'android44',
-      'android50',
-      'android60',
-      'android71'
+      'bs_edge_latest_win'
+      // 'bs_iphone5',
+      // 'bs_iphone6',
+      // 'bs_iphone6_9',
+      // 'bs_iphone7',
+      // 'bs_iphone8',
+      // 'android44',
+      // 'android50',
+      // 'android60',
+      // 'android71'
     ],
+    // TODO Don't filter out real devices
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
