@@ -57,7 +57,7 @@ module.exports = function (config) {
       testName: 'td-js-sdk',
       build: build,
       recordVideo: true,
-      startConnect: !!process.env.CI,
+      startConnect: !process.env.CI,
       connectOptions: {
         // retry to establish a tunnel multiple times
         connectRetries: 3,
