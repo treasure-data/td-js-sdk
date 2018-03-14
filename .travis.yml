@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 cache:
   yarn: true
-  language: node_js
+language: node_js
 env:
   global:
     - secure: Eu9IdOCMDNNtwjs0901xE53zsl6ExoZnGTo+8kOEy4qtZj0/PVCHPEfx3Ty9QFm5mSLVW6BVkJB4gHjZPuSKbMYrKIXwSFZcML4xYXMs7oWh2e9ulOVf8iSH/5MPj8+ib+UPcdwkJLhHXm3lIZs+PhySkIFbA045uPXVRT2Xusw=
