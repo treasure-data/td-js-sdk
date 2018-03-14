@@ -57,6 +57,7 @@ module.exports = function (config) {
       testName: 'td-js-sdk',
       build: build,
       recordVideo: true,
+      startConnect: !!process.env.CI,
       connectOptions: {
         // retry to establish a tunnel multiple times
         connectRetries: 3,
@@ -83,6 +84,6 @@ module.exports = function (config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 5
+    concurrency: 1
   })
 }
