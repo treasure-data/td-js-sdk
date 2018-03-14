@@ -20,6 +20,7 @@ var capabilities = local
   : browserlist.map(function (browser) {
     return Object.assign({}, browser, {
       'browserstack.local': true,
+      real_mobile: false,
       project: 'td-js-sdk',
       build: build
     })

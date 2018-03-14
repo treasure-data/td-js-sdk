@@ -1,5 +1,5 @@
 // Karma configuration
-var browserlist = require('./browserlist.json')
+var browserlist = require('./saucelist.json')
 var build = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
   .toString().trim()
@@ -38,7 +38,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['min'],
+    reporters: ['min', 'saucelabs'],
 
     // web server port
     port: 9876,
@@ -53,38 +53,29 @@ module.exports = function (config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
-    browserStack: {
-      project: 'td-js-sdk',
+    sauceLabs: {
+      testName: 'td-js-sdk',
       build: build,
-      startTunnel: false
+      recordVideo: true,
+      connectOptions: {
+        // retry to establish a tunnel multiple times
+        connectRetries: 3,
+        // time to wait between connection retries in ms
+        connectRetryTimeout: 2000
+      }
     },
+    // Allocating a browser can take pretty long (eg. if we are out of capacity and need to wait
+    // for another build to finish) and so the `captureTimeout` typically kills
+    // an in-queue-pending request, which makes no sense.
+    captureTimeout: 0,
+    // Karma (with socket.io 1.x) buffers by 50 and 50 tests can take a long time on IEs
+    browserNoActivityTimeout: 120000,
 
-    // define browsers
+    // Define browsers
     customLaunchers: browserlist,
 
-    browsers: [
-      'bs_firefox_latest_mac',
-      'bs_chrome_latest_mac',
-      'bs_safari_7_mac',
-      'bs_safari_8_mac',
-      'bs_safari_9_mac',
-      'bs_safari_10_mac',
-      'bs_safari_11_mac',
-      'bs_ie_8_win',
-      'bs_ie_9_win',
-      'bs_ie_10_win',
-      'bs_ie_11_win',
-      'bs_edge_latest_win',
-      'bs_iphone5',
-      'bs_iphone6',
-      'bs_iphone6_9',
-      'bs_iphone7',
-      'bs_iphone8',
-      'android44',
-      'android50',
-      'android60',
-      'android71'
-    ],
+    // Run them all
+    browsers: Object.keys(browserlist),
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
