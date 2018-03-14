@@ -20,7 +20,7 @@
     "e2e-local": "wdio --local",
     "e2e-full": "wdio",
     "test": "standard && node ./bin/test.js",
-    "test-full": "karma start",
+    "test-full": "karma start --browserStack.startTunnel true",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
     "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
@@ -82,8 +82,6 @@
     "global": "^4.3.0",
     "json3": "^3.3.2",
     "jsonp": "0.2.1",
-    "karma-sauce-launcher": "^1.2.0",
-    "lodash-compat": "^3.10.1",
-    "wdio-sauce-service": "^0.4.8"
+    "lodash-compat": "^3.10.1"
   }
 }

@@ -1,5 +1,5 @@
 // Karma configuration
-var browserlist = require('./saucelist.json')
+var browserlist = require('./browserlist.json')
 var build = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
   .toString().trim()
@@ -38,7 +38,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['min', 'saucelabs'],
+    reporters: ['min'],
 
     // web server port
     port: 9876,
@@ -53,30 +53,38 @@ module.exports = function (config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
-    sauceLabs: {
-      testName: 'td-js-sdk',
+    browserStack: {
+      project: 'td-js-sdk',
       build: build,
-      recordVideo: true,
-      startConnect: !process.env.CI,
-      connectOptions: {
-        // retry to establish a tunnel multiple times
-        connectRetries: 3,
-        // time to wait between connection retries in ms
-        connectRetryTimeout: 2000
-      }
+      startTunnel: false
     },
-    // Allocating a browser can take pretty long (eg. if we are out of capacity and need to wait
-    // for another build to finish) and so the `captureTimeout` typically kills
-    // an in-queue-pending request, which makes no sense.
-    captureTimeout: 0,
-    // Karma (with socket.io 1.x) buffers by 50 and 50 tests can take a long time on IEs
-    browserNoActivityTimeout: 120000,
 
-    // Define browsers
+    // define browsers
     customLaunchers: browserlist,
 
-    // Run them all
-    browsers: Object.keys(browserlist),
+    browsers: [
+      'bs_firefox_latest_mac',
+      'bs_chrome_latest_mac',
+      'bs_safari_7_mac',
+      'bs_safari_8_mac',
+      'bs_safari_9_mac',
+      'bs_safari_10_mac',
+      'bs_safari_11_mac',
+      'bs_ie_8_win',
+      'bs_ie_9_win',
+      'bs_ie_10_win',
+      'bs_ie_11_win',
+      'bs_edge_latest_win',
+      'bs_iphone5',
+      'bs_iphone6',
+      'bs_iphone6_9',
+      'bs_iphone7',
+      'bs_iphone8',
+      'android44',
+      'android50',
+      'android60',
+      'android71'
+    ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -84,6 +92,6 @@ module.exports = function (config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 1
+    concurrency: 5
   })
 }
