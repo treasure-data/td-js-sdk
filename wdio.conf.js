@@ -23,8 +23,7 @@ var capabilities = local
       project: 'td-js-sdk',
       build: build
     })
-  }).filter(browser => browser.real_mobile !== 'true')
-  // TODO Don't filter out real devices
+  })
 
 var localConfig = {
   host: 'localhost'
