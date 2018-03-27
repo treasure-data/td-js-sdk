@@ -1,12 +1,12 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
-var config = require('../config')
+var config = require('../lib/config')
 
-describe('Treasure Record', function() {
+describe('Treasure Record', function () {
   var treasure, configuration
 
-  function resetConfiguration() {
+  function resetConfiguration () {
     configuration = {
       database: 'database',
       writeKey: 'writeKey',
@@ -16,24 +16,24 @@ describe('Treasure Record', function() {
   }
   beforeEach(resetConfiguration)
 
-  describe('#addRecord', function() {
-    describe('validation', function() {
-      beforeEach(function() {
+  describe('#addRecord', function () {
+    describe('validation', function () {
+      beforeEach(function () {
         treasure = new Treasure(configuration)
       })
 
-      var tryAddRecordWithValues = function(table, value) {
-        expect(function() {
+      var tryAddRecordWithValues = function (table, value) {
+        expect(function () {
           treasure.addRecord(table, value)
         }).to.throwException()
       }
 
-      describe('event', function() {
-        it('should error if event is absent', function() {
+      describe('event', function () {
+        it('should error if event is absent', function () {
           tryAddRecordWithValues('table')
         })
 
-        it('should error if event is of incorrect type', function() {
+        it('should error if event is of incorrect type', function () {
           // Number
           tryAddRecordWithValues('table', 0)
 
@@ -48,16 +48,16 @@ describe('Treasure Record', function() {
         })
       })
 
-      describe('table', function() {
-        it('should error if table is absent', function() {
+      describe('table', function () {
+        it('should error if table is absent', function () {
           tryAddRecordWithValues()
         })
 
-        it('should error if table is empty', function() {
+        it('should error if table is empty', function () {
           tryAddRecordWithValues('')
         })
 
-        it('should error if table is of incorrect type', function() {
+        it('should error if table is of incorrect type', function () {
           // Number
           tryAddRecordWithValues(0)
 
@@ -71,7 +71,7 @@ describe('Treasure Record', function() {
           tryAddRecordWithValues({})
         })
 
-        it('should error if table is invalid', function() {
+        it('should error if table is invalid', function () {
           // Under 3 characters
           tryAddRecordWithValues('12', {})
 
@@ -88,26 +88,26 @@ describe('Treasure Record', function() {
           tryAddRecordWithValues('!@#$%ˆ&*()-+=', {})
         })
 
-        it('should accept a valid table', function() {
-          expect(function() {
+        it('should accept a valid table', function () {
+          expect(function () {
             treasure.addRecord('table', {})
           }).to.not.throwException()
         })
       })
     })
 
-    describe('globals', function() {
-      beforeEach(function() {
+    describe('globals', function () {
+      beforeEach(function () {
         configuration.development = false
         treasure = new Treasure(configuration)
         simple.mock(treasure, '_sendRecord')
       })
 
-      afterEach(function() {
+      afterEach(function () {
         simple.restore()
       })
 
-      it('should send the object with $global attributes', function() {
+      it('should send the object with $global attributes', function () {
         treasure.set('$global', { foo: 'foo' })
         treasure.addRecord('table', {})
 
@@ -119,7 +119,7 @@ describe('Treasure Record', function() {
         )
       })
 
-      it('should send the object with table attributes', function() {
+      it('should send the object with table attributes', function () {
         treasure.set('table', { foo: 'foo' })
         treasure.addRecord('table', {})
 
@@ -131,7 +131,7 @@ describe('Treasure Record', function() {
         )
       })
 
-      it('should send the object with $global and table attributes', function() {
+      it('should send the object with $global and table attributes', function () {
         treasure.set('$global', { foo: 'foo' })
         treasure.set('table', { bar: 'bar' })
         treasure.addRecord('table', {})
@@ -148,7 +148,7 @@ describe('Treasure Record', function() {
         )
       })
 
-      it('should send the object with $global, table, and record attributes', function() {
+      it('should send the object with $global, table, and record attributes', function () {
         treasure.set('$global', { foo: 'foo' })
         treasure.set('table', { bar: 'bar' })
         treasure.addRecord('table', { baz: 'baz' })
@@ -169,7 +169,7 @@ describe('Treasure Record', function() {
         )
       })
 
-      it('should send the object with record attributes overwriting globals', function() {
+      it('should send the object with record attributes overwriting globals', function () {
         treasure.set('$global', { foo: 'foo', bar: 'bar' })
         treasure.set('table', { baz: 'baz', qux: 'qux' })
         treasure.addRecord('table', { bar: '1', qux: '2' })
@@ -195,8 +195,8 @@ describe('Treasure Record', function() {
       })
     })
 
-    describe('properties', function() {
-      beforeEach(function() {
+    describe('properties', function () {
+      beforeEach(function () {
         configuration.development = false
         configuration.requestType = 'jsonp'
         configuration.writeKey = 'apikey'
@@ -204,11 +204,11 @@ describe('Treasure Record', function() {
         simple.mock(treasure, '_sendRecord')
       })
 
-      afterEach(function() {
+      afterEach(function () {
         simple.restore()
       })
 
-      it('should set url', function() {
+      it('should set url', function () {
         var url = 'https://' + config.HOST + config.PATHNAME + 'database/table'
         treasure.addRecord('table', {})
 
@@ -217,7 +217,7 @@ describe('Treasure Record', function() {
         expect(treasure._sendRecord.calls[0].args[0].url).to.equal(url)
       })
 
-      it('should set type', function() {
+      it('should set type', function () {
         var requestType = 'jsonp'
         treasure.addRecord('table', {})
 
@@ -226,7 +226,7 @@ describe('Treasure Record', function() {
         expect(treasure._sendRecord.calls[0].args[0].type).to.equal(requestType)
       })
 
-      it('should set apikey', function() {
+      it('should set apikey', function () {
         var apikey = 'apikey'
         treasure.addRecord('table', {})
 
@@ -235,7 +235,7 @@ describe('Treasure Record', function() {
         expect(treasure._sendRecord.calls[0].args[0].apikey).to.equal(apikey)
       })
 
-      it('should use record time when present', function() {
+      it('should use record time when present', function () {
         treasure.addRecord('table', { time: 1 })
         treasure.addRecord('table', {})
 
@@ -246,8 +246,8 @@ describe('Treasure Record', function() {
     })
   })
 
-  describe('#applyProperties', function() {
-    var getKeys = function(obj) {
+  describe('#applyProperties', function () {
+    var getKeys = function (obj) {
       var keys = []
       for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -257,11 +257,11 @@ describe('Treasure Record', function() {
       return keys
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       treasure = new Treasure(configuration)
     })
 
-    it('should apply $global properties', function() {
+    it('should apply $global properties', function () {
       treasure.set('$global', 'foo', 'bar')
       var result = treasure.applyProperties('table', {})
       expect(result).to.be.an('object')
@@ -269,7 +269,7 @@ describe('Treasure Record', function() {
       expect(getKeys(result)).to.have.length(1)
     })
 
-    it('should apply table properties', function() {
+    it('should apply table properties', function () {
       treasure.set('table', 'foo', 'bar')
       var result = treasure.applyProperties('table', {})
       expect(result).to.be.an('object')
@@ -277,7 +277,7 @@ describe('Treasure Record', function() {
       expect(getKeys(result)).to.have.length(1)
     })
 
-    it('should apply both table and $global properties', function() {
+    it('should apply both table and $global properties', function () {
       treasure.set('$global', 'foo', 'bar')
       treasure.set('table', 'bar', 'foo')
       var result = treasure.applyProperties('table', {})
@@ -287,7 +287,7 @@ describe('Treasure Record', function() {
       expect(getKeys(result)).to.have.length(2)
     })
 
-    it('should apply $global, table, and payload properties', function() {
+    it('should apply $global, table, and payload properties', function () {
       treasure.set('$global', 'foo', 'bar')
       treasure.set('table', 'bar', 'foo')
       var result = treasure.applyProperties('table', { baz: 'qux' })
@@ -298,7 +298,7 @@ describe('Treasure Record', function() {
       expect(getKeys(result)).to.have.length(3)
     })
 
-    it('should favor table properties over $global', function() {
+    it('should favor table properties over $global', function () {
       treasure.set('$global', 'foo', 'bar')
       treasure.set('table', 'foo', 'foo')
       var result = treasure.applyProperties('table', {})
@@ -306,7 +306,7 @@ describe('Treasure Record', function() {
       expect(getKeys(result)).to.have.length(1)
     })
 
-    it('should favor payload properties over table', function() {
+    it('should favor payload properties over table', function () {
       treasure.set('table', 'foo', 'bar')
       var result = treasure.applyProperties('table', { foo: 'foo' })
       expect(result).to.have.property('foo', 'foo')
