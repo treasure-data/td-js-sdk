@@ -365,7 +365,7 @@ Setup an event listener to automatically log clicks.
 
 ```javascript
 var td = new Treasure({...})
-td.trackClicks()
+td.trackClicks({ tableName: 'custom_table_name' })
 ```
 
 
