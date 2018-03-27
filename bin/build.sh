@@ -9,7 +9,7 @@ DATABASE=""
 PATHNAME="/js/v3/event/"
 GLOBAL="Treasure"
 FILENAME="td"
-URL="//cdn.treasuredata.com/sdk/${VERSION}/td.min.js"
+TO_VERSION=$(echo $VERSION | sed 's/\.[-a-zA-Z0-9]*$//g')
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -31,6 +31,9 @@ while [ $# -gt 0 ]; do
     --URL=*)
       URL="${1#*=}"
       ;;
+    --TO-VERSION=*)
+      TO_VERSION="${1#*=}"
+      ;;
     *)
       printf "***************************\n"
       printf "* Error: Invalid argument.*\n"
@@ -40,6 +43,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+URL="//cdn.treasuredata.com/sdk/${TO_VERSION}/td.min.js"
 VERSION_REPLACE="s/@VERSION/$VERSION/g"
 GLOBAL_REPLACE="s/@GLOBAL/$GLOBAL/g"
 HOST_REPLACE="s/@HOST/$HOST/g"
