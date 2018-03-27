@@ -41,7 +41,7 @@ exports.config = Object.assign(
   {
     capabilities: capabilities,
     services: services,
-    specs: ['./test/new-e2e/*.js'],
+    specs: ['./test/e2e/*.js'],
     staticServerFolders: [
       { mount: '/fixtures', path: './test/fixtures' },
       { mount: '/dist', path: './test/dist' },
