@@ -1,15 +1,10 @@
 /* global Treasure */
 var expect = require('expect.js')
 
-describe('amd', function () {
-  it('should be compatible with require.js', async function () {
-    await browser.url('http://localhost:1337/fixtures/amd/index.html')
+describe('addRecord', function () {
+  it('is a smoketest', async function () {
+    await browser.url('http://localhost:1337/fixtures/event/index.html')
     await browser.timeouts('script', 5000)
-
-    // RequireJS Module should load an execute correctly
-    await browser.waitUntil(function () {
-      return browser.getText('#rjs') === 'success'
-    }, 5000, 'expected Require.js status to be success after 5s')
 
     var result = await browser.executeAsync(function (done) {
       var td = new Treasure({
@@ -18,7 +13,7 @@ describe('amd', function () {
         host: 'in-staging.treasuredata.com'
       })
 
-      td.trackEvent('track_event', {date_string: (new Date()).toString()}, function () {
+      td.addRecord('add_record', { ramen: 'ラーメン' }, function () {
         done(true)
       }, function () {
         done(false)
