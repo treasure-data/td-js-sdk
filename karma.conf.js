@@ -1,8 +1,8 @@
 var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
-var buildId = process.env.TRAVIS_BUILD_NUMBER
 var sha = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
   .toString().trim()
+var startTime = new Date().toISOString()
 
 module.exports = function (config) {
   config.set({
@@ -55,7 +55,7 @@ module.exports = function (config) {
 
     browserStack: {
       project: branch === 'master' ? 'td-js-sdk' : 'td-js-sdk-dev',
-      build: sha + (buildId ? ` ${buildId}` : ''),
+      build: `${sha} ${startTime}`,
       startTunnel: false
     },
 
