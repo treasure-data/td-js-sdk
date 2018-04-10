@@ -1,5 +1,7 @@
-// Karma configuration
-// Generated on Tue Oct 03 2017 21:21:19 GMT-0500 (CDT)
+var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
+var sha = require('child_process')
+  .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
+  .toString().trim()
 
 module.exports = function (config) {
   config.set({
@@ -35,7 +37,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['min'],
+    reporters: ['min', 'BrowserStack'],
 
     // web server port
     port: 9876,
@@ -51,7 +53,8 @@ module.exports = function (config) {
     autoWatch: false,
 
     browserStack: {
-      project: 'td-js-sdk',
+      project: branch === 'master' ? 'td-js-sdk' : 'td-js-sdk-dev',
+      build: sha,
       startTunnel: false
     },
 
