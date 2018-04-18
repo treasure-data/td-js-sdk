@@ -28,7 +28,7 @@ if [ "$VERSION" = "" ]; then
   exit 1
 fi
 
-TO_VERSION=$(echo $VERSION | sed 's/\.[0-9]*$//g')
+TO_VERSION=$(echo $VERSION | sed 's/\.[-a-zA-Z0-9]*$//g')
 
 set -euo pipefail
 
