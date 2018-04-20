@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 DRYRUN='--dryrun'
-if [ "$1" = '-f' | "$1" = '--force' ]; then
+if [ "$1" == "-f" ] || [ "$1" == "--force" ]
+then
   DRYRUN=''
 fi
 

@@ -1,6 +1,7 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
+var config = require('../lib/config')
 
 describe('Treasure Record', function () {
   var treasure, configuration
@@ -75,7 +76,10 @@ describe('Treasure Record', function () {
           tryAddRecordWithValues('12', {})
 
           // Over 255 characters
-          tryAddRecordWithValues('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111', {})
+          tryAddRecordWithValues(
+            '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
+            {}
+          )
 
           // Uppercase chracters
           tryAddRecordWithValues('FOO_BAR', {})
@@ -104,57 +108,90 @@ describe('Treasure Record', function () {
       })
 
       it('should send the object with $global attributes', function () {
-        treasure.set('$global', {foo: 'foo'})
+        treasure.set('$global', { foo: 'foo' })
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
         expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'foo',
+          'foo'
+        )
       })
 
       it('should send the object with table attributes', function () {
-        treasure.set('table', {foo: 'foo'})
+        treasure.set('table', { foo: 'foo' })
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
         expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'foo',
+          'foo'
+        )
       })
 
       it('should send the object with $global and table attributes', function () {
-        treasure.set('$global', {foo: 'foo'})
-        treasure.set('table', {bar: 'bar'})
+        treasure.set('$global', { foo: 'foo' })
+        treasure.set('table', { bar: 'bar' })
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
         expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', 'bar')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'foo',
+          'foo'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'bar',
+          'bar'
+        )
       })
 
       it('should send the object with $global, table, and record attributes', function () {
-        treasure.set('$global', {foo: 'foo'})
-        treasure.set('table', {bar: 'bar'})
-        treasure.addRecord('table', {baz: 'baz'})
+        treasure.set('$global', { foo: 'foo' })
+        treasure.set('table', { bar: 'bar' })
+        treasure.addRecord('table', { baz: 'baz' })
 
         expect(treasure._sendRecord.callCount).to.equal(1)
         expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', 'bar')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('baz', 'baz')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'foo',
+          'foo'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'bar',
+          'bar'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'baz',
+          'baz'
+        )
       })
 
       it('should send the object with record attributes overwriting globals', function () {
-        treasure.set('$global', {foo: 'foo', bar: 'bar'})
-        treasure.set('table', {baz: 'baz', qux: 'qux'})
-        treasure.addRecord('table', {bar: '1', qux: '2'})
+        treasure.set('$global', { foo: 'foo', bar: 'bar' })
+        treasure.set('table', { baz: 'baz', qux: 'qux' })
+        treasure.addRecord('table', { bar: '1', qux: '2' })
 
         expect(treasure._sendRecord.callCount).to.equal(1)
         expect(treasure._sendRecord.calls[0].args[0]).to.be.an('object')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('foo', 'foo')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('bar', '1')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('baz', 'baz')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('qux', '2')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'foo',
+          'foo'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'bar',
+          '1'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'baz',
+          'baz'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'qux',
+          '2'
+        )
       })
     })
 
@@ -172,7 +209,7 @@ describe('Treasure Record', function () {
       })
 
       it('should set url', function () {
-        var url = 'https://@HOST@PATHNAMEdatabase/table'
+        var url = 'https://' + config.HOST + config.PATHNAME + 'database/table'
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
@@ -253,7 +290,7 @@ describe('Treasure Record', function () {
     it('should apply $global, table, and payload properties', function () {
       treasure.set('$global', 'foo', 'bar')
       treasure.set('table', 'bar', 'foo')
-      var result = treasure.applyProperties('table', {baz: 'qux'})
+      var result = treasure.applyProperties('table', { baz: 'qux' })
       expect(result).to.be.an('object')
       expect(result).to.have.property('foo', 'bar')
       expect(result).to.have.property('bar', 'foo')
@@ -271,7 +308,7 @@ describe('Treasure Record', function () {
 
     it('should favor payload properties over table', function () {
       treasure.set('table', 'foo', 'bar')
-      var result = treasure.applyProperties('table', {foo: 'foo'})
+      var result = treasure.applyProperties('table', { foo: 'foo' })
       expect(result).to.have.property('foo', 'foo')
       expect(getKeys(result)).to.have.length(1)
     })

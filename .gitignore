@@ -3,4 +3,5 @@ node_modules
 .DS_Store
 dist/loader.*
 dist/*.gz
+lib/config.js
 errorShots

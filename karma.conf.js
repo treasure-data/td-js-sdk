@@ -1,8 +1,10 @@
 // Karma configuration
 var browserlist = require('./browserlist.json')
-var build = require('child_process')
+var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
+var sha = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
   .toString().trim()
+var startTime = new Date().toISOString()
 
 module.exports = function (config) {
   config.set({
@@ -62,8 +64,8 @@ module.exports = function (config) {
     autoWatch: false,
 
     browserStack: {
-      project: 'td-js-sdk',
-      build: build,
+      project: branch === 'master' ? 'td-js-sdk' : 'td-js-sdk-dev',
+      build: `${sha} ${startTime}`,
       startTunnel: false
     },
 
