@@ -9,6 +9,15 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
+    // Allocating a browser can take pretty long (eg. if we are out of capacity and need to wait
+    // for another build to finish) and so the `captureTimeout` typically kills
+    // an in-queue-pending request, which makes no sense.
+    captureTimeout: 120000,
+
+    // Increase default browser timeout for when
+    // devices or emulators take a while to boot up
+    browserNoActivityTimeout: 120000,
+
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha'],
