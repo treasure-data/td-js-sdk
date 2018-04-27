@@ -22,6 +22,7 @@
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "version": "npm run build && git add README.md dist/td.js dist/td.min.js",
+    "pretest": "npm run build",
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local":
