@@ -18,7 +18,7 @@
     function setStatus (num, text) {
       document.getElementById('status' + num).innerHTML = text
       status[num] = text
-      if (status.length === 2) {
+      if (status.length === 3) {
         var isFailure = false
         for (var i = 0; i < status.length; i++) {
           if (status[i] === 'failure') {
@@ -65,11 +65,26 @@
     })
 
 
+    var td = new Treasure({
+      database: 'test_db_request',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      host: 'in-staging.treasuredata.com'
+    })
+    td.fetchUserSegments('55198252-3752-4a1f-b011-62a821cae61d', function (key, values, attributes) {
+      if (key !== undefined && values !== undefined && attributes !== undefined) {
+        setStatus(1, 'success')
+      } else {
+        setStatus(2, 'failure')
+      }
+    }, function () {
+      setStatus(2, 'failure')
+    })
   })()
 </script>
 
 <h1 id='status0' style="text-align: center;">running</h1>
 <h1 id='status1' style="text-align: center;">running</h1>
+<h1 id='status2' style="text-align: center;">running</h1>
 
 </body>
 </html>
