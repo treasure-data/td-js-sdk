@@ -308,7 +308,17 @@ td.fetchGlobalID(successCallback, errorCallback)
 ```javascript
 var td = new Treasure({...})
 
-var successCallback = function (key, segments, attributes) {
+var successCallback = function (values) {
+  /* values format => [... {
+    key: {
+      [key]:value
+    },
+    values: ["1234"],
+    attributes: {
+      age: 30
+    },
+    
+  } ... ]*/
   // celebrate();
 };
 
