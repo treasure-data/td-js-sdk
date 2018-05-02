@@ -21,6 +21,7 @@
     "e2e-local": "wdio --local",
     "e2e-full": "wdio",
     "version": "npm run build && git add README.md dist/td.js dist/td.min.js",
+    "pretest": "npm run build",
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local":

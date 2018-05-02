@@ -15,6 +15,7 @@ module.exports = function (config) {
     // for another build to finish) and so the `captureTimeout` typically kills
     // an in-queue-pending request, which makes no sense.
     captureTimeout: 120000,
+
     // Increase default browser timeout for when
     // devices or emulators take a while to boot up
     browserNoActivityTimeout: 120000,
