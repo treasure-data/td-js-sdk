@@ -2,10 +2,11 @@ var browserlist = Object.values(require('./browserlist.json'))
 var args = process.argv.slice(2)
 var local = args.includes('--local')
 
-var build = require('child_process')
+var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
+var sha = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
-  .toString()
-  .trim()
+  .toString().trim()
+var startTime = new Date().toISOString()
 
 var services = local
   ? ['selenium-standalone', 'static-server']
@@ -20,8 +21,8 @@ var capabilities = local
   : browserlist.map(function (browser) {
     return Object.assign({}, browser, {
       'browserstack.local': true,
-      project: 'td-js-sdk',
-      build: build
+      project: branch === 'master' ? 'td-js-sdk' : 'td-js-sdk-dev',
+      build: `${sha} ${startTime}`
     })
   })
 
