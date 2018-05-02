@@ -6,7 +6,7 @@ function npm (command) {
   return cp.spawn('npm', ['run', command], { stdio: 'inherit' })
 }
 
-var unittests = process.env.CI ? 'test-ci' : 'test-local'
+// var unittests = process.env.CI ? 'test-ci' : 'test-local'
 var e2etests = process.env.CI ? 'e2e-full' : 'e2e-local'
 
 // var unit = npm(unittests)
