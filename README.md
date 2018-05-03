@@ -300,7 +300,7 @@ td.fetchGlobalID(successCallback, errorCallback)
 **Parameters:**
 
 * **token** : String (required) - Audience Token for the userId
-* **success** : Function (optional) - Callback for receiving the user key, attributes an segments
+* **success** : Function (optional) - Callback for receiving the user key, attributes and segments
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
