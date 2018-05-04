@@ -1,5 +1,6 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
+var cookie = require('../lib/vendor/js-cookies')
 var Treasure = require('../lib/treasure')
 var config = require('../lib/config')
 
@@ -361,6 +362,51 @@ describe('Treasure Record', function () {
       treasure.unblockEvents()
 
       expect(treasure.areEventsBlocked()).to.be(false)
+    })
+
+    it('events are by default unblocked', () => {
+      cookie.removeItem('__blockEvents')
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+    })
+
+    describe('Signed Mode', () => {
+      beforeEach(() => cookie.removeItem('__signed'))
+
+      it('should send the generated PII records in tracking values if desired', () => {
+        treasure.setSignedMode(true)
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_client_id')
+      })
+      it('should be in Unsigned Mode by default', () => {
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+      })
+      it('should block the generated PII records from being sent in tracking values if desired', () => {
+        treasure.setSignedMode(false)
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+      })
+      it('should block the generated PII records from being sent in set values as well', () => {
+        treasure.set('$global', 'td_global_id', 'td_global_id')
+        treasure.setSignedMode(false)
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_global_id')
+      })
+      it('getSignedMode() will return the ', () => {
+        expect(treasure.getSignedMode()).to.be(false)
+        treasure.setSignedMode(true)
+        expect(treasure.getSignedMode()).to.be(true)
+        treasure.setSignedMode(false)
+        expect(treasure.getSignedMode()).to.be(false)
+      })
     })
   })
 })
