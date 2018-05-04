@@ -313,4 +313,54 @@ describe('Treasure Record', function () {
       expect(getKeys(result)).to.have.length(1)
     })
   })
+
+  describe('GDPR', () => {
+    beforeEach(() => {
+      configuration.development = false
+      treasure = new Treasure(configuration)
+      simple.mock(treasure, '_sendRecord')
+    })
+
+    afterEach(() => simple.restore())
+
+    it('blockEvents() should stop all events from being sent', () => {
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+      treasure._sendRecord.reset()
+
+      treasure.blockEvents()
+
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(0)
+    })
+
+    it('unblockEvents() should allow sending events again', () => {
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.blockEvents()
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(0)
+
+      treasure.unblockEvents()
+
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+    })
+
+    it('areEventsBlocked() should appropriately return the status of event-blocking', () => {
+      treasure.blockEvents()
+
+      expect(treasure.areEventsBlocked()).to.be(true)
+
+      treasure.unblockEvents()
+
+      expect(treasure.areEventsBlocked()).to.be(false)
+    })
+  })
 })
