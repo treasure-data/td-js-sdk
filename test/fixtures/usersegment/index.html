@@ -44,7 +44,6 @@
           response.length &&
           response[0].key !== undefined &&
           response[0].attributes !== undefined &&
-          response[0].extraFields !== undefined &&
           Object.prototype.toString.call(response[0].values) === '[object Array]'
       ) {
         setStatus(0, 'success')
@@ -65,7 +64,6 @@
           response.length &&
           response[0].key !== undefined &&
           response[0].attributes !== undefined &&
-          response[0].extraFields !== undefined &&
           Object.prototype.toString.call(response[0].values) === '[object Array]'
       ) {
         setStatus(1, 'success')
