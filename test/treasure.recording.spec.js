@@ -357,7 +357,7 @@ describe('Treasure Record', function () {
     it('areEventsBlocked() should appropriately return the status of event-blocking', () => {
       treasure.blockEvents()
 
-      expect(treasure.areEventsBlocked()).to.be(false)
+      expect(treasure.areEventsBlocked()).to.be(true)
 
       treasure.unblockEvents()
 
