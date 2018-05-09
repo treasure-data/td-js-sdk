@@ -315,16 +315,18 @@ describe('Treasure Record', function () {
     })
   })
 
-  describe('GDPR', () => {
-    beforeEach(() => {
+  describe('GDPR', function () {
+    beforeEach(function() {
       configuration.development = false
       treasure = new Treasure(configuration)
       simple.mock(treasure, '_sendRecord')
     })
 
-    afterEach(() => simple.restore())
+    afterEach(function () {
+      simple.restore()
+    })
 
-    it('blockEvents() should stop all events from being sent', () => {
+    it('blockEvents() should stop all events from being sent', function () {
       expect(treasure._sendRecord.callCount).to.be(0)
       treasure.addRecord('foo', {})
       expect(treasure._sendRecord.callCount).to.be(1)
@@ -339,7 +341,7 @@ describe('Treasure Record', function () {
       expect(treasure._sendRecord.callCount).to.be(0)
     })
 
-    it('unblockEvents() should allow sending events again', () => {
+    it('unblockEvents() should allow sending events again', function () {
       expect(treasure._sendRecord.callCount).to.be(0)
       treasure.blockEvents()
       treasure.addRecord('foo', {})
@@ -354,7 +356,7 @@ describe('Treasure Record', function () {
       expect(treasure._sendRecord.callCount).to.be(1)
     })
 
-    it('areEventsBlocked() should appropriately return the status of event-blocking', () => {
+    it('areEventsBlocked() should appropriately return the status of event-blocking', function () {
       treasure.blockEvents()
 
       expect(treasure.areEventsBlocked()).to.be(true)
@@ -364,43 +366,43 @@ describe('Treasure Record', function () {
       expect(treasure.areEventsBlocked()).to.be(false)
     })
 
-    it('events are by default unblocked', () => {
+    it('events are by default unblocked', function () {
       cookie.removeItem('__blockEvents')
       treasure.addRecord('foo', {})
       expect(treasure._sendRecord.callCount).to.be(1)
     })
 
-    describe('Signed Mode', () => {
-      beforeEach(() => cookie.removeItem('__signed'))
+    describe('Signed Mode', function () {
+      beforeEach(function () cookie.removeItem('__signed'))
 
-      it('should send the generated PII records in tracking values if desired', () => {
+      it('should send the generated PII records in tracking values if desired', function () {
         treasure.setSignedMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
         expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_client_id')
       })
-      it('should be in Anonymous Mode by default', () => {
+      it('should be in Anonymous Mode by default', function () {
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
       })
-      it('should block the generated PII records from being sent in tracking values if desired', () => {
+      it('should block the generated PII records from being sent in tracking values if desired', function () {
         treasure.setAnonymousMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
       })
-      it('should block the generated PII records from being sent in set values as well', () => {
+      it('should block the generated PII records from being sent in set values as well', function () {
         treasure.set('$global', 'td_global_id', 'td_global_id')
         treasure.setAnonymousMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_global_id')
       })
-      it('inSignedMode() will return true if in Signed Mode', () => {
+      it('inSignedMode() will return true if in Signed Mode', function () {
         expect(treasure.inSignedMode()).to.be(false)
         treasure.setSignedMode()
         expect(treasure.inSignedMode()).to.be(true)
