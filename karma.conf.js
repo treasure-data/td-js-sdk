@@ -113,7 +113,7 @@ module.exports = function (config) {
       bs_safari_11_mac: {
         base: 'BrowserStack',
         browser: 'safari',
-        browser_version: '11.0',
+        browser_version: '11.1',
         os: 'OS X',
         os_version: 'High Sierra'
       },
