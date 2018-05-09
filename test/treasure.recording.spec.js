@@ -316,7 +316,7 @@ describe('Treasure Record', function () {
   })
 
   describe('GDPR', function () {
-    beforeEach(function() {
+    beforeEach(function () {
       configuration.development = false
       treasure = new Treasure(configuration)
       simple.mock(treasure, '_sendRecord')
@@ -373,7 +373,9 @@ describe('Treasure Record', function () {
     })
 
     describe('Signed Mode', function () {
-      beforeEach(function () cookie.removeItem('__signed'))
+      beforeEach(function () {
+        cookie.removeItem('__signed')
+      })
 
       it('should send the generated PII records in tracking values if desired', function () {
         treasure.setSignedMode()
