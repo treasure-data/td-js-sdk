@@ -3,6 +3,10 @@ var expect = require('expect.js')
 var cookie = require('../lib/vendor/js-cookies')
 var Treasure = require('../lib/treasure')
 var config = require('../lib/config')
+var record = require('../lib/record')
+
+var BLOCKEVENTSCOOKIE = record.BLOCKEVENTSCOOKIE
+var SIGNEDMODECOOKIE = record.SIGNEDMODECOOKIE
 
 describe('Treasure Record', function () {
   var treasure, configuration
@@ -367,14 +371,14 @@ describe('Treasure Record', function () {
     })
 
     it('events are by default unblocked', function () {
-      cookie.removeItem('__blockEvents')
+      cookie.removeItem(BLOCKEVENTSCOOKIE)
       treasure.addRecord('foo', {})
       expect(treasure._sendRecord.callCount).to.be(1)
     })
 
     describe('Signed Mode', function () {
       beforeEach(function () {
-        cookie.removeItem('__signed')
+        cookie.removeItem(SIGNEDMODECOOKIE)
       })
 
       it('should send the generated PII records in tracking values if desired', function () {
