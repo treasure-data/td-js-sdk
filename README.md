@@ -438,6 +438,17 @@ td.inSignedMode() // true
 td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id will also be sent if set.
 ```
 
+### Treasure#resetUUID
+
+Reset the client's UUID, set to Treasure Data as `td_client_id`.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.resetUUID() // set td_client_id as random uuid
+```
+
 ### Treasure#trackClicks
 
 Setup an event listener to automatically log clicks.
