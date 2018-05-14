@@ -300,7 +300,7 @@ td.fetchGlobalID(successCallback, errorCallback)
 **Parameters:**
 
 * **token** : String (required) - Audience Token for the userId
-* **success** : Function (optional) - Callback for receiving the user key and segments
+* **success** : Function (optional) - Callback for receiving the user key, attributes and segments
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
@@ -308,7 +308,17 @@ td.fetchGlobalID(successCallback, errorCallback)
 ```javascript
 var td = new Treasure({...})
 
-var successCallback = function (key, segments) {
+var successCallback = function (values) {
+  /* values format => [... {
+    key: {
+      [key]:value
+    },
+    values: ["1234"],
+    attributes: {
+      age: 30
+    },
+    
+  } ... ]*/
   // celebrate();
 };
 
