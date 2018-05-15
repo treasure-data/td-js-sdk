@@ -374,7 +374,7 @@ td.trackEvent('willnotbetracked')
 
 ### Treasure#unblockEvents
 
-Unblock all events; events will not be sent to Treasure Data.
+Unblock all events; events will be sent to Treasure Data.
 
 **Example:**
 
