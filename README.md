@@ -191,6 +191,59 @@ When a record is sent, an empty record object is created and properties are appl
 2. Table properties are applied to `record` object, overwriting `$global` properties
 3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
 
+## Data Privacy
+
+Treasure Data's SDK enables compliance with many common requirements of the EU's GDPR laws. Several methods have been enabled to help you comply with newer and more stringent data privacy policies:
+
+* `blockEvents` / `unblockEvents` - non-argument methods to shut down or re-enable all sending of events to Treasure Data. No messages will be sent, no calls will be cached. Default is for events to be unblocked. See documentation around these methods: [`blockEvents`](#treasureblockevents), [`unblockEvents`](#treasureunblockevents), [`areEventsBlocked`](#treasureareeventsblocked)
+* `setSignedMode` - non-argument method to enter "Signed Mode", where some PII may be collected automatically by the SDK. The data sent to Treasure Data will include `td_ip`, `td_client_id`, and `td_global_id`, if specified. See documentation around this method: [`setSignedMode`](#treasuresetsignedmode)
+* `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK.  These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified.  This is the default behavior.  See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
+* `resetUUID` - method to reset the `td_client_id` value.  This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user.  It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values.  See documentation around this method: [`resetUUID`](#treasureresetuuid)
+
+### Examples
+Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes.  You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
+```js
+var foo = new Treasure({
+  database: 'foo',
+  writeKey: 'your_write_only_key'
+});
+td.trackClicks()
+
+var successConsentCallback = function (consented) {
+  if (consented) {
+    td.setSignedMode()
+  } else {
+    td.setAnonymousMode()
+  }
+}
+
+var failureConsentCallback = function () {
+  // error occurred, consent unknown
+  td.setAnonymousMode()
+}
+
+ConsentManagementVendor.getConsent(userId, successConsentCallback, failureConsentCallback)
+```
+
+In this scenario, the Consent Management Vendor returns a true or false value in the callback based on whether or not the user associated with the `userId` has consented to their PII being used for marketing purposes.  Non-PII data may still be collected.
+
+Now suppose your Consent Management Vendor provides strings based on the consent level: `MARKETING`, `NON-MARKETING`, `REFUSED`, for "Consented to PII being used for marketing purposes", "Consented to data being collected for non-marketing purposes", and "Refused all data collection".  There's only a minor change to make in the `successConsentCallback`:
+
+```js
+var successConsentCallback = function (consented) {
+  if (consented === 'MARKETING') {
+    td.unblockEvents()
+    td.setSignedMode()
+  } else if (consented === 'NON-MARKETING') {
+    td.unblockEvents()
+    td.setAnonymousMode()
+  } else if (consented === 'REFUSED') {
+    td.blockEvents()
+  }
+}
+```
+
+This way, when emerging from Signed or Anonymous mode, you can be sure you'll actually be collecting data in Treasure Data. If the customer has refused all tracking, their events are blocked, and this status will be persisted across page refreshes.
 
 ## API
 
