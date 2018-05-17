@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 (2018-05-17)
+* Web Personalization API v2 now provides key attribute values
+* GDPR compliance methods added, see [README](README.md#dataprivacy)
+* New Build system and process to help releases
+* Add iOS and Android browsers to E2E test matrix
+* Customizable table name for click events
+
 ## 1.9.1 (2017-11-17)
 * Corrected cookie expiration date issue
 * Always return key or keys from Personalization API
