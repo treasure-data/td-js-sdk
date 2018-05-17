@@ -1,5 +1,5 @@
-**/.*
 node_modules
-src
-test
-dist
+*.log
+.DS_Store
+dist/loader.*
+dist/*.gz
