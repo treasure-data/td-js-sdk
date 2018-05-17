@@ -438,11 +438,6 @@
     process.removeListener = noop;
     process.removeAllListeners = noop;
     process.emit = noop;
-    process.prependListener = noop;
-    process.prependOnceListener = noop;
-    process.listeners = function(name) {
-        return [];
-    };
     process.binding = function(name) {
         throw new Error("process.binding is not supported");
     };
@@ -2128,7 +2123,7 @@
 }, function(module, exports) {
     module.exports = {
         "GLOBAL": "Treasure",
-        "VERSION": "2.0.0-0",
+        "VERSION": "2.0.0",
         "HOST": "in.treasuredata.com",
         "DATABASE": "",
         "PATHNAME": "/js/v3/event/"
@@ -2216,17 +2211,15 @@
     };
 }, function(module, exports) {
     (function(global) {
-        var win;
         if (typeof window !== "undefined") {
-            win = window;
+            module.exports = window;
         } else if (typeof global !== "undefined") {
-            win = global;
+            module.exports = global;
         } else if (typeof self !== "undefined") {
-            win = self;
+            module.exports = self;
         } else {
-            win = {};
+            module.exports = {};
         }
-        module.exports = win;
     }).call(exports, function() {
         return this;
     }());
