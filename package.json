@@ -1,10 +1,9 @@
 {
   "name": "td-js-sdk",
-  "version": "1.9.2",
+  "version": "2.0.0-0",
   "license": "Apache-2.0",
   "bugs": "https://github.com/treasure-data/td-js-sdk/issues",
-  "description":
-    "Browser JS library for sending events to your Treasure Data account",
+  "description": "Browser JS library for sending events to your Treasure Data account",
   "main": "lib/treasure.js",
   "author": {
     "name": "Cesar Andreu",
@@ -25,17 +24,26 @@
     "pretest": "npm run build",
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
-    "test-local":
-      "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci":
-      "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
+    "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
+    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
   "standard": {
-    "ignore": ["dist"],
-    "global": ["afterEach", "beforeEach", "describe", "it"]
+    "ignore": [
+      "dist"
+    ],
+    "global": [
+      "afterEach",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   },
   "greenkeeper": {
-    "ignore": ["domready", "karma", "mocha"]
+    "ignore": [
+      "domready",
+      "karma",
+      "mocha"
+    ]
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
