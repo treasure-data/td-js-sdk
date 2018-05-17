@@ -152,7 +152,7 @@ var buttonEvent2 = function () {
 Every time a track functions is called, the following information is sent:
 
 * **td_version** - td-js-sdk's version
-* **td_client_id** - client's uuid
+* **td_client_id** - client's uuid*
 * **td_charset** - character set
 * **td_description** - description meta tag
 * **td_language** - browser language
@@ -166,7 +166,7 @@ Every time a track functions is called, the following information is sent:
 * **td_host** - document host
 * **td_path** - document pathname
 * **td_referrer** - document referrer
-* **td_ip** - request IP (server)
+* **td_ip** - request IP (server)*
 * **td_browser** - client browser (server)
 * **td_browser_version** - client browser version (server)
 * **td_os** - client operating system (server)
@@ -175,6 +175,8 @@ Every time a track functions is called, the following information is sent:
 Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces the values upon receipt. For examples: `{"td_ip": "td_ip"}` is sent by the browser, and the server will update it to something like `{"td_ip": "1.2.3.4"}`
 
 All server values except `td_ip` are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
+
+<nowiki>*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.  
 
 
 ## Default values
@@ -189,6 +191,59 @@ When a record is sent, an empty record object is created and properties are appl
 2. Table properties are applied to `record` object, overwriting `$global` properties
 3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
 
+## Data Privacy
+
+Treasure Data's SDK enables compliance with many common requirements of the EU's GDPR laws. Several methods have been enabled to help you comply with newer and more stringent data privacy policies:
+
+* `blockEvents` / `unblockEvents` - non-argument methods to shut down or re-enable all sending of events to Treasure Data. No messages will be sent, no calls will be cached. Default is for events to be unblocked. See documentation around these methods: [`blockEvents`](#treasureblockevents), [`unblockEvents`](#treasureunblockevents), [`areEventsBlocked`](#treasureareeventsblocked)
+* `setSignedMode` - non-argument method to enter "Signed Mode", where some PII may be collected automatically by the SDK. The data sent to Treasure Data will include `td_ip`, `td_client_id`, and `td_global_id`, if specified. See documentation around this method: [`setSignedMode`](#treasuresetsignedmode)
+* `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK.  These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified.  This is the default behavior.  See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
+* `resetUUID` - method to reset the `td_client_id` value.  This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user.  It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values.  See documentation around this method: [`resetUUID`](#treasureresetuuid)
+
+### Examples
+Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes.  You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
+```js
+var foo = new Treasure({
+  database: 'foo',
+  writeKey: 'your_write_only_key'
+});
+td.trackClicks()
+
+var successConsentCallback = function (consented) {
+  if (consented) {
+    td.setSignedMode()
+  } else {
+    td.setAnonymousMode()
+  }
+}
+
+var failureConsentCallback = function () {
+  // error occurred, consent unknown
+  td.setAnonymousMode()
+}
+
+ConsentManagementVendor.getConsent(userId, successConsentCallback, failureConsentCallback)
+```
+
+In this scenario, the Consent Management Vendor returns a true or false value in the callback based on whether or not the user associated with the `userId` has consented to their PII being used for marketing purposes.  Non-PII data may still be collected.
+
+Now suppose your Consent Management Vendor provides strings based on the consent level: `MARKETING`, `NON-MARKETING`, `REFUSED`, for "Consented to PII being used for marketing purposes", "Consented to data being collected for non-marketing purposes", and "Refused all data collection".  There's only a minor change to make in the `successConsentCallback`:
+
+```js
+var successConsentCallback = function (consented) {
+  if (consented === 'MARKETING') {
+    td.unblockEvents()
+    td.setSignedMode()
+  } else if (consented === 'NON-MARKETING') {
+    td.unblockEvents()
+    td.setAnonymousMode()
+  } else if (consented === 'REFUSED') {
+    td.blockEvents()
+  }
+}
+```
+
+This way, when emerging from Signed or Anonymous mode, you can be sure you'll actually be collecting data in Treasure Data. If the customer has refused all tracking, their events are blocked, and this status will be persisted across page refreshes.
 
 ## API
 
@@ -336,7 +391,7 @@ td.fetchUserSegments(token, successCallback, errorCallback)
 
 **Parameters:**
 
-* **options** : Object (required) - User Segment object 
+* **options** : Object (required) - User Segment object
   * **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
   * **options.keys** : Object (optional) - Key Value to be sent for this segment
 * **success** : Function (optional) - Callback for receiving the user key and segments
@@ -366,6 +421,96 @@ td.fetchUserSegments({
 }, successCallback, errorCallback)
 ```
 *N.B.* This feature is not enabled on accounts by default, please contact support for more information.
+
+### Treasure#blockEvents
+
+Block all events from being sent to Treasure Data.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.trackEvent('customevent')
+td.blockEvents()
+td.trackEvent('willnotbetracked')
+```
+
+### Treasure#unblockEvents
+
+Unblock all events; events will be sent to Treasure Data.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.blockEvents()
+td.trackEvent('willnotbetracked')
+td.unblockEvents()
+td.trackEvent('willbetracked')
+```
+
+### Treasure#areEventsBlocked
+
+Informational method, expressing whether events are blocked or not.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.areEventsBlocked() // false, default
+td.blockEvents()
+td.areEventsBlocked() // true
+```
+
+### Treasure#setSignedMode
+
+Permit sending of Personally Identifying Information over the wire: td_ip, td_client_id, and td_global_id
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.setSignedMode()
+td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id will also be sent if set.
+```
+
+### Treasure#setAnonymousMode
+
+Prohibit sending of Personally Identifying Information over the wire: td_ip, td_client_id, and td_global_id
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.setAnonymousMode()
+td.trackEvent('willbetracked') // will NOT send td_ip and td_client_id; td_global_id will also NOT be sent if set.
+```
+
+### Treasure#inSignedMode
+
+Informational method, indicating whether `trackEvents` method will automatically collect td_ip, td_client_id, and td_global_id if set.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.inSignedMode() // false, default
+td.trackEvent('willbetracked') // will NOT send td_ip and td_client_id; td_global_id will also NOT be sent if set.
+td.setSignedMode()
+td.inSignedMode() // true
+td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id will also be sent if set.
+```
+
+### Treasure#resetUUID
+
+Reset the client's UUID, set to Treasure Data as `td_client_id`.
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+td.resetUUID() // set td_client_id as random uuid
+```
 
 ### Treasure#trackClicks
 
@@ -550,9 +695,9 @@ First you'll need to install `BrowserStackTunnel`. You can download the binary f
 
 Next, you'll need to set the appropriate environment variables:
  - `BROWSER_STACK_BINARY_BASE_PATH`: This should be the directory you put the `BrowserStackTunnel` binary in. If you installed with homebrew you can run `which browserstacklocal` to find the directory.
- - `BROWSER_STACK_USERNAME`: You can find this under the *Automate* section of 
-the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings) 
- - `BROWSER_STACK_ACCESS_KEY`: You can find this under the *Automate* section of 
+ - `BROWSER_STACK_USERNAME`: You can find this under the *Automate* section of
+the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
+ - `BROWSER_STACK_ACCESS_KEY`: You can find this under the *Automate* section of
 the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
 
 Now, you can run the command `npm run test-full`.

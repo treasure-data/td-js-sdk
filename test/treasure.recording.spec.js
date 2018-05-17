@@ -1,7 +1,12 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
+var cookie = require('../lib/vendor/js-cookies')
 var Treasure = require('../lib/treasure')
 var config = require('../lib/config')
+var record = require('../lib/record')
+
+var BLOCKEVENTSCOOKIE = record.BLOCKEVENTSCOOKIE
+var SIGNEDMODECOOKIE = record.SIGNEDMODECOOKIE
 
 describe('Treasure Record', function () {
   var treasure, configuration
@@ -311,6 +316,105 @@ describe('Treasure Record', function () {
       var result = treasure.applyProperties('table', { foo: 'foo' })
       expect(result).to.have.property('foo', 'foo')
       expect(getKeys(result)).to.have.length(1)
+    })
+  })
+
+  describe('GDPR', function () {
+    beforeEach(function () {
+      configuration.development = false
+      treasure = new Treasure(configuration)
+      simple.mock(treasure, '_sendRecord')
+    })
+
+    afterEach(function () {
+      simple.restore()
+    })
+
+    it('blockEvents() should stop all events from being sent', function () {
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+      treasure._sendRecord.reset()
+
+      treasure.blockEvents()
+
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(0)
+    })
+
+    it('unblockEvents() should allow sending events again', function () {
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.blockEvents()
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(0)
+
+      treasure.unblockEvents()
+
+      expect(treasure._sendRecord.callCount).to.be(0)
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+    })
+
+    it('areEventsBlocked() should appropriately return the status of event-blocking', function () {
+      treasure.blockEvents()
+
+      expect(treasure.areEventsBlocked()).to.be(true)
+
+      treasure.unblockEvents()
+
+      expect(treasure.areEventsBlocked()).to.be(false)
+    })
+
+    it('events are by default unblocked', function () {
+      cookie.removeItem(BLOCKEVENTSCOOKIE)
+      treasure.addRecord('foo', {})
+      expect(treasure._sendRecord.callCount).to.be(1)
+    })
+
+    describe('Signed Mode', function () {
+      beforeEach(function () {
+        cookie.removeItem(SIGNEDMODECOOKIE)
+      })
+
+      it('should send the generated PII records in tracking values if desired', function () {
+        treasure.setSignedMode()
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_client_id')
+      })
+      it('should be in Anonymous Mode by default', function () {
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+      })
+      it('should block the generated PII records from being sent in tracking values if desired', function () {
+        treasure.setAnonymousMode()
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+      })
+      it('should block the generated PII records from being sent in set values as well', function () {
+        treasure.set('$global', 'td_global_id', 'td_global_id')
+        treasure.setAnonymousMode()
+        treasure.trackEvent('foo', {})
+        expect(treasure._sendRecord.callCount).to.be(1)
+        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_global_id')
+      })
+      it('inSignedMode() will return true if in Signed Mode', function () {
+        expect(treasure.inSignedMode()).to.be(false)
+        treasure.setSignedMode()
+        expect(treasure.inSignedMode()).to.be(true)
+        treasure.setAnonymousMode()
+        expect(treasure.inSignedMode()).to.be(false)
+      })
     })
   })
 })
