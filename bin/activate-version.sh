@@ -3,10 +3,19 @@
 DRYRUN='--dryrun'
 VERSION=''
 WAIT=0
+BUCKET='td-cdn-experiment'
+REGION="--region us-east-2"
+PROD=''
+
 while [ $# -gt 0 ]; do
   case "$1" in
     -f|--force)
       DRYRUN=""
+      ;;
+    --prod)
+      BUCKET='td-cdn'
+      REGION=''
+      PROD='--prod'
       ;;
     --version=*)
       VERSION="${1#*=}"
@@ -33,9 +42,9 @@ TO_VERSION=$(echo $VERSION | sed 's/\.[-a-zA-Z0-9]*$//g')
 set -euo pipefail
 
 aws --profile dev-frontend                      \
-  s3 sync "s3://td-cdn-experiment/sdk/${VERSION}/" "s3://td-cdn-experiment/sdk/${TO_VERSION}/" \
+  s3 sync "s3://${BUCKET}/sdk/${VERSION}/" "s3://${BUCKET}/sdk/${TO_VERSION}/" \
     ${DRYRUN}                                   \
-    --region 'us-east-2'                        \
+    ${REGION}                                   \
     --acl 'public-read'                         \
     --cache-control 'public, max-age=315360000' \
     --exclude "*loader.min.js"
@@ -45,7 +54,7 @@ if [ "$DRYRUN" != '' ]; then
 fi
 
 if [ $WAIT -eq 1 ]; then
-  ./bin/invalidate-release.sh --version=${TO_VERSION} --wait
+  ./bin/invalidate-release.sh --version=${TO_VERSION} ${PROD} --wait
 else
-  ./bin/invalidate-release.sh --version=${TO_VERSION}
+  ./bin/invalidate-release.sh --version=${TO_VERSION} ${PROD}
 fi
