@@ -2,7 +2,7 @@
 
 DRYRUN='--dryrun'
 VERSION=''
-WAIT=0
+WAIT=''
 BUCKET='td-cdn-experiment'
 REGION="--region us-east-2"
 PROD=''
@@ -21,7 +21,7 @@ while [ $# -gt 0 ]; do
       VERSION="${1#*=}"
       ;;
     --wait)
-      WAIT=1
+      WAIT='--wait'
       ;;
     *)
       printf "***************************\n"
@@ -53,8 +53,4 @@ if [ "$DRYRUN" != '' ]; then
   exit 0
 fi
 
-if [ $WAIT -eq 1 ]; then
-  ./bin/invalidate-release.sh --version=${TO_VERSION} ${PROD} --wait
-else
-  ./bin/invalidate-release.sh --version=${TO_VERSION} ${PROD}
-fi
+./bin/invalidate-release.sh --version=${TO_VERSION} ${PROD} ${WAIT}
