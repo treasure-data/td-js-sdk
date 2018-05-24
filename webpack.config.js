@@ -1,5 +1,5 @@
-const webpack = require('webpack')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+var webpack = require('webpack')
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {

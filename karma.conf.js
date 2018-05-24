@@ -64,7 +64,7 @@ module.exports = function (config) {
 
     browserStack: {
       project: branch === 'master' ? 'td-js-sdk' : 'td-js-sdk-dev',
-      build: `${sha} ${startTime}`,
+      build: sha + ' ' + startTime,
       startTunnel: false
     },
 
