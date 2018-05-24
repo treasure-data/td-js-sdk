@@ -1,5 +1,6 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
+var _ = require('../lib/utils/lodash')
 var cookie = require('../lib/vendor/js-cookies')
 var Treasure = require('../lib/treasure')
 var config = require('../lib/config')
@@ -11,15 +12,17 @@ var SIGNEDMODECOOKIE = record.SIGNEDMODECOOKIE
 describe('Treasure Record', function () {
   var treasure, configuration
 
-  function resetConfiguration () {
-    configuration = {
+  function resetConfiguration (options) {
+    configuration = _.assign({
       database: 'database',
       writeKey: 'writeKey',
       logging: false,
       development: true
-    }
+    }, options)
   }
-  beforeEach(resetConfiguration)
+  beforeEach(function () {
+    resetConfiguration()
+  })
 
   describe('#addRecord', function () {
     describe('validation', function () {
@@ -103,7 +106,7 @@ describe('Treasure Record', function () {
 
     describe('globals', function () {
       beforeEach(function () {
-        configuration.development = false
+        resetConfiguration({ development: false })
         treasure = new Treasure(configuration)
         simple.mock(treasure, '_sendRecord')
       })
@@ -202,9 +205,11 @@ describe('Treasure Record', function () {
 
     describe('properties', function () {
       beforeEach(function () {
-        configuration.development = false
-        configuration.requestType = 'jsonp'
-        configuration.writeKey = 'apikey'
+        resetConfiguration({
+          development: false,
+          requestType: 'jsonp',
+          writeKey: 'apikey'
+        })
         treasure = new Treasure(configuration)
         simple.mock(treasure, '_sendRecord')
       })
@@ -321,7 +326,7 @@ describe('Treasure Record', function () {
 
   describe('GDPR', function () {
     beforeEach(function () {
-      configuration.development = false
+      resetConfiguration({ development: false })
       treasure = new Treasure(configuration)
       simple.mock(treasure, '_sendRecord')
     })
@@ -414,6 +419,33 @@ describe('Treasure Record', function () {
         expect(treasure.inSignedMode()).to.be(true)
         treasure.setAnonymousMode()
         expect(treasure.inSignedMode()).to.be(false)
+      })
+      describe('startInSignedMode', function () {
+        function makeNewTD (startInSignedMode) {
+          resetConfiguration({
+            startInSignedMode: startInSignedMode
+          })
+          treasure = new Treasure(configuration)
+        }
+
+        it('will favor cookies if set', function () {
+          cookie.setItem(SIGNEDMODECOOKIE, 'true')
+          makeNewTD(false)
+          expect(treasure.inSignedMode()).to.be(true)
+
+          cookie.setItem(SIGNEDMODECOOKIE, 'false')
+          makeNewTD(true)
+          expect(treasure.inSignedMode()).to.be(false)
+        })
+        it('will start in Signed Mode if cookie is not set', function () {
+          cookie.removeItem(SIGNEDMODECOOKIE)
+          makeNewTD(false)
+          expect(treasure.inSignedMode()).to.be(false)
+
+          expect(cookie.getItem(SIGNEDMODECOOKIE)).to.not.be.ok()
+          makeNewTD(true)
+          expect(treasure.inSignedMode()).to.be(true)
+        })
       })
     })
   })
