@@ -20,7 +20,9 @@ describe('Treasure Record', function () {
       development: true
     }, options)
   }
-  beforeEach(() => resetConfiguration())
+  beforeEach(function () {
+    resetConfiguration()
+  })
 
   describe('#addRecord', function () {
     describe('validation', function () {
