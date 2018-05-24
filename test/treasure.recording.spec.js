@@ -418,17 +418,32 @@ describe('Treasure Record', function () {
         treasure.setAnonymousMode()
         expect(treasure.inSignedMode()).to.be(false)
       })
-      it('inSignedMode() will return true if in Signed Mode or default is set', function () {
-        cookie.removeItem(SIGNEDMODECOOKIE)
-        resetConfiguration({
-          development: false,
-          startInSignedMode: true
+      describe('startInSignedMode', function () {
+        function makeNewTD (startInSignedMode) {
+          resetConfiguration({
+            startInSignedMode: startInSignedMode
+          })
+          treasure = new Treasure(configuration)
+        }
+
+        it('will favor cookies if set', function () {
+          cookie.setItem(SIGNEDMODECOOKIE, 'true')
+          makeNewTD(false)
+          expect(treasure.inSignedMode()).to.be(true)
+
+          cookie.setItem(SIGNEDMODECOOKIE, 'false')
+          makeNewTD(true)
+          expect(treasure.inSignedMode()).to.be(false)
         })
-        treasure = new Treasure(configuration)
-        simple.mock(treasure, '_sendRecord')
-        expect(treasure.inSignedMode()).to.be(true)
-        treasure.setAnonymousMode()
-        expect(treasure.inSignedMode()).to.be(false)
+        it('will start in Signed Mode if cookie is not set', function () {
+          cookie.removeItem(SIGNEDMODECOOKIE)
+          makeNewTD(false)
+          expect(treasure.inSignedMode()).to.be(false)
+
+          expect(cookie.getItem(SIGNEDMODECOOKIE)).to.not.be.ok()
+          makeNewTD(true)
+          expect(treasure.inSignedMode()).to.be(true)
+        })
       })
     })
   })
