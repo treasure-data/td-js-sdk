@@ -12,7 +12,7 @@ var SIGNEDMODECOOKIE = record.SIGNEDMODECOOKIE
 describe('Treasure Record', function () {
   var treasure, configuration
 
-  function resetConfiguration (options = {}) {
+  function resetConfiguration (options) {
     configuration = _.assign({
       database: 'database',
       writeKey: 'writeKey',
