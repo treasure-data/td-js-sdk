@@ -200,6 +200,8 @@ Treasure Data's SDK enables compliance with many common requirements of the EU's
 * `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK.  These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified.  This is the default behavior.  See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
 * `resetUUID` - method to reset the `td_client_id` value.  This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user.  It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values.  See documentation around this method: [`resetUUID`](#treasureresetuuid)
 
+A new configuration property has also been added: `config.startInSignedMode`.  This configuration option tells the SDK that, if no express decision has been made on whether the user wants to be in Signed or Anonymous modes, it should default into Signed Mode. The default behavior is to default the user into Anonymous Mode.
+
 ### Examples
 Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes.  You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
 ```js
@@ -265,6 +267,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
 * **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
+* **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
 
 **Track/Storage parameters:**
 
@@ -372,7 +375,7 @@ var successCallback = function (values) {
     attributes: {
       age: 30
     },
-    
+
   } ... ]*/
   // celebrate();
 };
