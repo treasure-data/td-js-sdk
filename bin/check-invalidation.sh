@@ -3,10 +3,18 @@
 set -euo pipefail
 ID=''
 
+PRODUCTION_OPTIONS='--distribution-id E2L8AHDWNOCKE'
+TEST_OPTIONS="--distribution-id E1F7ECRVBF3EX2 --region us-east-2"
+
+DISTRIBUTION_OPTIONS=$TEST_OPTIONS
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --id=*)
       ID="${1#*=}"
+      ;;
+    --prod)
+      DISTRIBUTION_OPTIONS=$PRODUCTION_OPTIONS
       ;;
     *)
       printf "***************************\n"
@@ -19,15 +27,13 @@ done
 
 while [ $(aws --profile dev-frontend     \
   cloudfront get-invalidation         \
-    --distribution-id E1F7ECRVBF3EX2  \
-    --id ${ID}                        \
-    --region 'us-east-2' | jq -r '.Invalidation.Status') = "InProgress" ]; do
+    ${DISTRIBUTION_OPTIONS}           \
+    --id ${ID} | jq -r '.Invalidation.Status') = "InProgress" ]; do
       printf '.'
       sleep 4
     done
 
 echo Invalidation $(aws --profile dev-frontend     \
   cloudfront get-invalidation         \
-    --distribution-id E1F7ECRVBF3EX2  \
-    --id ${ID}                        \
-    --region 'us-east-2' | jq -r '.Invalidation.Status')
+    ${DISTRIBUTION_OPTIONS}           \
+    --id ${ID} | jq -r '.Invalidation.Status')
