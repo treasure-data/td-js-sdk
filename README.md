@@ -9,16 +9,21 @@
 The build script (`bin/build.sh`) can be used to configure several aspects of the SDK:
 
 ### GLOBAL
-The global export that the SDK is exported on.  This is kept consistent between the full source and the loader's stub.
+
+The global export that the SDK is exported on. This is kept consistent between the full source and the loader's stub.
+
 ```sh
 > bin/build.sh --GLOBAL=AlternateSDK
 ```
+
 ```js
 var sdk = new AlternateSDK()
 ```
 
 ### FILENAME
+
 The filename to be output, in both full and minified code. This is largely a convenience, and defaults to `td`
+
 ```sh
 > bin/build.sh --FILENAME=foo
 ...
@@ -27,7 +32,9 @@ foo.js      foo.min.js      loader.min.js
 ```
 
 ### URL
+
 The URL of the hosted file. This will be defaulted to the URL for the Treasure Data CDN-hosted file.
+
 ```sh
 > bin/build.sh --URL=//cdn.yourdomain.com/sdk/foo.min.js
 ```
@@ -73,10 +80,10 @@ First install the library using any of the ways provided above.
 After installing, initializing it is as simple as:
 
 ```javascript
-  var foo = new Treasure({
-    database: 'foo',
-    writeKey: 'your_write_only_key'
-  });
+var foo = new Treasure({
+  database: 'foo',
+  writeKey: 'your_write_only_key'
+})
 ```
 
 If you're an administrator, databases will automatically be created for you. Otherwise you'll need to ask an administrator to create the database and grant you `import only` or `full access` on it, otherwise you will be unable to send events.
@@ -99,7 +106,6 @@ company.addRecord('sales', sale);
 ```
 
 Send as many events as you like. Each event will fire off asynchronously.
-
 
 ## Tracking
 
@@ -128,90 +134,91 @@ This will send all the tracked information to the pageviews table.
 In addition to tracking pageviews, you can track events. The syntax is similar to `addRecord`, with the difference being that `trackEvent` will include all the tracked information.
 
 ```javascript
-var td = new Treasure({});
+var td = new Treasure({})
 
-var buttonEvent1 = function () {
+var buttonEvent1 = function() {
   td.trackEvent('button', {
     number: 1
-  });
+  })
 
   // doButtonEvent(1);
-};
+}
 
-var buttonEvent2 = function () {
+var buttonEvent2 = function() {
   td.trackEvent('button', {
     number: 2
-  });
+  })
 
   // doButtonEvent(2);
-};
+}
 ```
 
 ### Tracked information
 
 Every time a track functions is called, the following information is sent:
 
-* **td_version** - td-js-sdk's version
-* **td_client_id** - client's uuid*
-* **td_charset** - character set
-* **td_description** - description meta tag
-* **td_language** - browser language
-* **td_color** - screen color depth
-* **td_screen** - screen resolution
-* **td_viewport** - viewport size
-* **td_title** - document title
-* **td_url** - document url
-* **td_user_agent** - browser user agent
-* **td_platform** - browser platform
-* **td_host** - document host
-* **td_path** - document pathname
-* **td_referrer** - document referrer
-* **td_ip** - request IP (server)*
-* **td_browser** - client browser (server)
-* **td_browser_version** - client browser version (server)
-* **td_os** - client operating system (server)
-* **td_os_version** - client operating system version (server)
+- **td_version** - td-js-sdk's version
+- **td_client_id** - client's uuid\*
+- **td_charset** - character set
+- **td_description** - description meta tag
+- **td_language** - browser language
+- **td_color** - screen color depth
+- **td_screen** - screen resolution
+- **td_viewport** - viewport size
+- **td_title** - document title
+- **td_url** - document url
+- **td_user_agent** - browser user agent
+- **td_platform** - browser platform
+- **td_host** - document host
+- **td_path** - document pathname
+- **td_referrer** - document referrer
+- **td_ip** - request IP (server)\*
+- **td_browser** - client browser (server)
+- **td_browser_version** - client browser version (server)
+- **td_os** - client operating system (server)
+- **td_os_version** - client operating system version (server)
 
 Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces the values upon receipt. For examples: `{"td_ip": "td_ip"}` is sent by the browser, and the server will update it to something like `{"td_ip": "1.2.3.4"}`
 
 All server values except `td_ip` are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
 
-<nowiki>*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.  
-
+<nowiki>\*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.
 
 ## Default values
 
-Set default values on a table by using `Treasure#set`. Set default values on *all* tables by passing `$global` as the table name.
+Set default values on a table by using `Treasure#set`. Set default values on _all_ tables by passing `$global` as the table name.
 
 Using `Treasure#get` you can view all global properties by passing the table name `$global`.
 
 When a record is sent, an empty record object is created and properties are applied to it in the following order:
 
-1. `$global` properties are applied to `record` object
-2. Table properties are applied to `record` object, overwriting `$global` properties
-3. Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
+1.  `$global` properties are applied to `record` object
+2.  Table properties are applied to `record` object, overwriting `$global` properties
+3.  Record properties passed to `addRecord` function are applied to `record` object, overwriting table properties
 
 ## Data Privacy
 
 Treasure Data's SDK enables compliance with many common requirements of the EU's GDPR laws. Several methods have been enabled to help you comply with newer and more stringent data privacy policies:
 
-* `blockEvents` / `unblockEvents` - non-argument methods to shut down or re-enable all sending of events to Treasure Data. No messages will be sent, no calls will be cached. Default is for events to be unblocked. See documentation around these methods: [`blockEvents`](#treasureblockevents), [`unblockEvents`](#treasureunblockevents), [`areEventsBlocked`](#treasureareeventsblocked)
-* `setSignedMode` - non-argument method to enter "Signed Mode", where some PII may be collected automatically by the SDK. The data sent to Treasure Data will include `td_ip`, `td_client_id`, and `td_global_id`, if specified. See documentation around this method: [`setSignedMode`](#treasuresetsignedmode)
-* `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK.  These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified.  This is the default behavior.  See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
-* `resetUUID` - method to reset the `td_client_id` value.  This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user.  It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values.  See documentation around this method: [`resetUUID`](#treasureresetuuid)
+- `blockEvents` / `unblockEvents` - non-argument methods to shut down or re-enable all sending of events to Treasure Data. No messages will be sent, no calls will be cached. Default is for events to be unblocked. See documentation around these methods: [`blockEvents`](#treasureblockevents), [`unblockEvents`](#treasureunblockevents), [`areEventsBlocked`](#treasureareeventsblocked)
+- `setSignedMode` - non-argument method to enter "Signed Mode", where some PII may be collected automatically by the SDK. The data sent to Treasure Data will include `td_ip`, `td_client_id`, and `td_global_id`, if specified. See documentation around this method: [`setSignedMode`](#treasuresetsignedmode)
+- `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK. These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified. This is the default behavior. See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
+- `resetUUID` - method to reset the `td_client_id` value. This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user. It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values. See documentation around this method: [`resetUUID`](#treasureresetuuid)
 
-A new configuration property has also been added: `config.startInSignedMode`.  This configuration option tells the SDK that, if no express decision has been made on whether the user wants to be in Signed or Anonymous modes, it should default into Signed Mode. The default behavior is to default the user into Anonymous Mode.
+A new configuration property has also been added: `config.startInSignedMode`. This configuration option tells the SDK that, if no express decision has been made on whether the user wants to be in Signed or Anonymous modes, it should default into Signed Mode. The default behavior is to default the user into Anonymous Mode.
 
 ### Examples
-Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes.  You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
+
+Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes. You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
+
 ```js
 var foo = new Treasure({
   database: 'foo',
   writeKey: 'your_write_only_key'
-});
+})
 td.trackClicks()
 
-var successConsentCallback = function (consented) {
+var successConsentCallback = function(consented) {
   if (consented) {
     td.setSignedMode()
   } else {
@@ -219,20 +226,24 @@ var successConsentCallback = function (consented) {
   }
 }
 
-var failureConsentCallback = function () {
+var failureConsentCallback = function() {
   // error occurred, consent unknown
   td.setAnonymousMode()
 }
 
-ConsentManagementVendor.getConsent(userId, successConsentCallback, failureConsentCallback)
+ConsentManagementVendor.getConsent(
+  userId,
+  successConsentCallback,
+  failureConsentCallback
+)
 ```
 
-In this scenario, the Consent Management Vendor returns a true or false value in the callback based on whether or not the user associated with the `userId` has consented to their PII being used for marketing purposes.  Non-PII data may still be collected.
+In this scenario, the Consent Management Vendor returns a true or false value in the callback based on whether or not the user associated with the `userId` has consented to their PII being used for marketing purposes. Non-PII data may still be collected.
 
-Now suppose your Consent Management Vendor provides strings based on the consent level: `MARKETING`, `NON-MARKETING`, `REFUSED`, for "Consented to PII being used for marketing purposes", "Consented to data being collected for non-marketing purposes", and "Refused all data collection".  There's only a minor change to make in the `successConsentCallback`:
+Now suppose your Consent Management Vendor provides strings based on the consent level: `MARKETING`, `NON-MARKETING`, `REFUSED`, for "Consented to PII being used for marketing purposes", "Consented to data being collected for non-marketing purposes", and "Refused all data collection". There's only a minor change to make in the `successConsentCallback`:
 
 ```js
-var successConsentCallback = function (consented) {
+var successConsentCallback = function(consented) {
   if (consented === 'MARKETING') {
     td.unblockEvents()
     td.setSignedMode()
@@ -256,34 +267,35 @@ If the database does not exist and you have permissions, it will be created for 
 
 **Parameters:**
 
-* **config** : Object (required) - instance configuration
+- **config** : Object (required) - instance configuration
 
 **Core parameters:**
 
-* **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
-* **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
-* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
-* **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
-* **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
-* **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
-* **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
-* **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
+- **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and \_
+- **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
+- **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
+- **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
+- **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
+- **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
+- **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
+- **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
+- **config.jsonpTimeout** : Number (optional) - JSONP timeout (in milliseconds)
 
 **Track/Storage parameters:**
 
-* **config.clientId** : String (optional) - uuid for this client. When undefined it will attempt fetching the value from a cookie if storage is enabled, if none is found it will generate a v4 uuid
-* **config.storage** : Object | String (optional) - storage configuration object. When `none` it will disable cookie storage
-* **config.storage.name** : String (optional) - cookie name. Default: `_td`
-* **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
-* **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
+- **config.clientId** : String (optional) - uuid for this client. When undefined it will attempt fetching the value from a cookie if storage is enabled, if none is found it will generate a v4 uuid
+- **config.storage** : Object | String (optional) - storage configuration object. When `none` it will disable cookie storage
+- **config.storage.name** : String (optional) - cookie name. Default: `_td`
+- **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
+- **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
 
 **Personalization parameters**
 
-* **config.cdpHost**: String (optional) - The host to use for the Personalization API. Default: 'cdp.in.treasuredata.com'
+- **config.cdpHost**: String (optional) - The host to use for the Personalization API. Default: 'cdp.in.treasuredata.com'
 
 **Returns:**
 
-* Treasure logger instance object
+- Treasure logger instance object
 
 **Example:**
 
@@ -291,7 +303,7 @@ If the database does not exist and you have permissions, it will be created for 
 var foo = new Treasure({
   database: 'foo',
   writeKey: 'your_write_only_key'
-});
+})
 ```
 
 ### Treasure#addRecord(table, record, success, error)
@@ -302,10 +314,10 @@ Records will have additional properties applied to them if `$global` or table-sp
 
 **Parameters:**
 
-* **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
-* **record** : Object (required) - Object that will be serialized to JSON and sent to the server
-* **success** : Function (optional) - Callback for when sending the event is successful
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and \_
+- **record** : Object (required) - Object that will be serialized to JSON and sent to the server
+- **success** : Function (optional) - Callback for when sending the event is successful
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
 
@@ -333,9 +345,9 @@ company.addRecord('sales', sale, successCallback, errorCallback);
 
 **Parameters:**
 
-* **success** : Function (optional) - Callback for when sending the event is successful
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
-* **forceFetch** : Boolean (optional) - Forces a refetch of global id and ignores cached version (default false)
+- **success** : Function (optional) - Callback for when sending the event is successful
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **forceFetch** : Boolean (optional) - Forces a refetch of global id and ignores cached version (default false)
 
 **Example:**
 
@@ -357,9 +369,9 @@ td.fetchGlobalID(successCallback, errorCallback)
 
 **Parameters:**
 
-* **token** : String (required) - Audience Token for the userId
-* **success** : Function (optional) - Callback for receiving the user key, attributes and segments
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **token** : String (required) - Audience Token for the userId
+- **success** : Function (optional) - Callback for receiving the user key, attributes and segments
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
 
@@ -388,17 +400,18 @@ var token = 'lorem-ipsum-dolor-sit-amet'
 
 td.fetchUserSegments(token, successCallback, errorCallback)
 ```
-*N.B.* This feature is not enabled on accounts by default, please contact support for more information.
+
+_N.B._ This feature is not enabled on accounts by default, please contact support for more information.
 
 ### Treasure#fetchUserSegments(options, success, failure)
 
 **Parameters:**
 
-* **options** : Object (required) - User Segment object
-  * **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
-  * **options.keys** : Object (optional) - Key Value to be sent for this segment
-* **success** : Function (optional) - Callback for receiving the user key and segments
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **options** : Object (required) - User Segment object
+  - **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
+  - **options.keys** : Object (optional) - Key Value to be sent for this segment
+- **success** : Function (optional) - Callback for receiving the user key and segments
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
 
@@ -423,7 +436,8 @@ td.fetchUserSegments({
   }
 }, successCallback, errorCallback)
 ```
-*N.B.* This feature is not enabled on accounts by default, please contact support for more information.
+
+_N.B._ This feature is not enabled on accounts by default, please contact support for more information.
 
 ### Treasure#blockEvents
 
@@ -526,16 +540,15 @@ var td = new Treasure({...})
 td.trackClicks({ tableName: 'custom_table_name' })
 ```
 
-
 ### Treasure#trackPageview(table, success, failure)
 
 Helper function that calls trackEvent with an empty record.
 
 **Parameters:**
 
-* **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
-* **success** : Function (optional) - Callback for when sending the event is successful
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and \_
+- **success** : Function (optional) - Callback for when sending the event is successful
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
 
@@ -550,10 +563,10 @@ Creates an empty object, applies all tracked information values, and applies rec
 
 **Parameters:**
 
-* **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
-* **record** : Object (optional) - Additional key-value pairs that get sent with the tracked values. These values overwrite default tracking values
-* **success** : Function (optional) - Callback for when sending the event is successful
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+- **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and \_
+- **record** : Object (optional) - Additional key-value pairs that get sent with the tracked values. These values overwrite default tracking values
+- **success** : Function (optional) - Callback for when sending the event is successful
+- **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
 
@@ -587,9 +600,9 @@ Useful when you want to set a single value.
 
 **Parameters:**
 
-* **table** : String (required) - table name
-* **key** : String (required) - property name
-* **value** : String | Number | Object (required) - property value
+- **table** : String (required) - table name
+- **key** : String (required) - property name
+- **value** : String | Number | Object (required) - property value
 
 **Example:**
 
@@ -611,8 +624,8 @@ Useful when you want to set multiple values.
 
 **Parameters:**
 
-* **table** : String (required) - table name
-* **properties** : Object (required) - Object with keys and values that you wish applies on the table each time a record is sent
+- **table** : String (required) - table name
+- **properties** : Object (required) - Object with keys and values that you wish applies on the table each time a record is sent
 
 **Example:**
 
@@ -629,7 +642,6 @@ td.addRecord('table', {baz: 'baz'});
 */
 ```
 
-
 ### Treasure#get(table)
 
 Takes a table name and returns an object with its default values.
@@ -638,18 +650,17 @@ Takes a table name and returns an object with its default values.
 
 **Parameters:**
 
-* **table** : String (required) - table name
+- **table** : String (required) - table name
 
 **Example:**
 
-```javascript```
+`javascript`
 var td = new Treasure({..});
 td.set('table', 'foo', 'bar');
 td.get('table');
 // {foo: 'bar'}
-```
 
-
+````
 ### Treasure#ready(fn)
 
 Takes a callback which gets called one the library and DOM have both finished loading.
@@ -667,28 +678,26 @@ td.ready(function(){
   td.get('table');
   // {foo: 'bar'}
 });
-```
+````
 
 ## Support
 
 Need a hand with something? Shoot us an email at [support@treasuredata.com](mailto:support@treasuredata.com)
 
-
 ## FAQ
 
-* How does the async script snippet work?
+- How does the async script snippet work?
 
 The async script snippet will create a fake Treasure object on the window and inject the async script tag with the td-js-sdk url. This fake Treasure object includes a fake of all the public methods exposed by the real version. As you call different methods, they will be buffered in memory until the real td-js-sdk has loaded. Upon td-js-sdk loading, it will look for existing clients and process their buffered actions.
 
 The unminified script loader can be seen in [src/loader.js](src/loader.js). The code to load existing clients and their buffered actions once td-js-sdk has been loaded can be seen in [lib/loadClients.js](lib/loadClients.js).
 
-
 ## Other
 
 ### Dependency version notes
 
-* `domready` is kept at `0.3.0` for IE6 and above support
-* td-js-sdk doesn't support IE6,7 on version 1.5.2 or later.
+- `domready` is kept at `0.3.0` for IE6 and above support
+- td-js-sdk doesn't support IE6,7 on version 1.5.2 or later.
 
 ## Contributing
 
@@ -697,10 +706,11 @@ The unminified script loader can be seen in [src/loader.js](src/loader.js). The 
 First you'll need to install `BrowserStackTunnel`. You can download the binary from [the BrowserStack website](https://www.browserstack.com/local-testing). If you're on Mac OS you can install it through homebrew: `brew install caskroom/cask/browserstacklocal`.
 
 Next, you'll need to set the appropriate environment variables:
- - `BROWSER_STACK_BINARY_BASE_PATH`: This should be the directory you put the `BrowserStackTunnel` binary in. If you installed with homebrew you can run `which browserstacklocal` to find the directory.
- - `BROWSER_STACK_USERNAME`: You can find this under the *Automate* section of
-the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
- - `BROWSER_STACK_ACCESS_KEY`: You can find this under the *Automate* section of
-the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
+
+- `BROWSER_STACK_BINARY_BASE_PATH`: This should be the directory you put the `BrowserStackTunnel` binary in. If you installed with homebrew you can run `which browserstacklocal` to find the directory.
+- `BROWSER_STACK_USERNAME`: You can find this under the _Automate_ section of
+  the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
+- `BROWSER_STACK_ACCESS_KEY`: You can find this under the _Automate_ section of
+  the [BrowserStack account settings page](https://www.browserstack.com/accounts/settings)
 
 Now, you can run the command `npm run test-full`.
