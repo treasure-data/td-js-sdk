@@ -99,6 +99,7 @@ describe('Treasure Client', function () {
       expect(client.development).to.be.a('boolean')
       expect(client.logging).to.be.a('boolean')
       expect(client.endpoint).to.be.a('string')
+      expect(client.jsonpTimeout).to.be.a('number')
     })
 
     it('should allow you to manually set values on client', function () {
