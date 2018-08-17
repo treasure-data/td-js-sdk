@@ -643,7 +643,7 @@ Takes a table name and returns an object with its default values.
 
 **Example:**
 
-```javascript```
+```javascript
 var td = new Treasure({..});
 td.set('table', 'foo', 'bar');
 td.get('table');
