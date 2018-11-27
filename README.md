@@ -40,7 +40,7 @@ Install td-js-sdk on your page by copying the appropriate JavaScript snippet bel
 
 ```html
 <script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["addRecord","fetchGlobalID","set","trackEvent","trackPageview","trackClicks","ready"],a=0;a<s.length;a++){var c=s[a];e[t].prototype[c]=r(c)}var n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.0/td.min.js";var i=document.getElementsByTagName("script")[0];i.parentNode.insertBefore(n,i)}}("Treasure",this);
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["blockEvents","unblockEvents","setSignedMode","setAnonymousMode","resetUUID","addRecord","fetchGlobalID","set","trackEvent","trackPageview","trackClicks","ready"],n=0;n<s.length;n++){var c=s[n];e[t].prototype[c]=r(c)}var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.1/td.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)}}("Treasure",this);
 </script>
 ```
 
@@ -200,6 +200,8 @@ Treasure Data's SDK enables compliance with many common requirements of the EU's
 * `setAnonymousMode` - non-argument method to enter "Anonymous Mode", where PII will not be collected automatically by the SDK.  These data will specifically omit `td_ip`, `td_client_id`, and `td_global_id`, if specified.  This is the default behavior.  See documentation around this method: [`setAnonymousMode`](#treasuresetanonymousmode)
 * `resetUUID` - method to reset the `td_client_id` value.  This will overwrite the original value stored on the user's cookie, and will likely appear in your data as a brand-new user.  It's possible to specify a client ID while resetting, as well as custom expiration times by passing in appropriate values.  See documentation around this method: [`resetUUID`](#treasureresetuuid)
 
+A new configuration property has also been added: `config.startInSignedMode`.  This configuration option tells the SDK that, if no express decision has been made on whether the user wants to be in Signed or Anonymous modes, it should default into Signed Mode. The default behavior is to default the user into Anonymous Mode.
+
 ### Examples
 Suppose a user first accesses your site, and you need to know if they have agreed to tracking for marketing purposes.  You contract with a Consent Management Vendor to maintain this information, and want to set appropriate values once you know their consent information.
 ```js
@@ -265,6 +267,8 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
 * **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
+* **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
+- **config.jsonpTimeout** : Number (optional) - JSONP timeout (in milliseconds) Default: `10000`
 
 **Track/Storage parameters:**
 
@@ -372,7 +376,7 @@ var successCallback = function (values) {
     attributes: {
       age: 30
     },
-    
+
   } ... ]*/
   // celebrate();
 };
@@ -639,7 +643,7 @@ Takes a table name and returns an object with its default values.
 
 **Example:**
 
-```javascript```
+```javascript
 var td = new Treasure({..});
 td.set('table', 'foo', 'bar');
 td.get('table');

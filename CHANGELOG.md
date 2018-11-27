@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 (2018-05-24)
+* Modifications to release scripts for test environments
+* Add `startInSignedMode` property to select the default behavior
+
 ## 2.0.0 (2018-05-17)
 * Web Personalization API v2 now provides key attribute values
 * GDPR compliance methods added, see [README](README.md#dataprivacy)
