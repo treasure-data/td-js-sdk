@@ -85,7 +85,7 @@ module.exports = function (config) {
       'bs_ie_9_win',
       'bs_ie_10_win',
       'bs_ie_11_win',
-      'bs_edge_latest_win',
+      'bs_edge_latest_win'
     ],
 
     // Continuous Integration mode
