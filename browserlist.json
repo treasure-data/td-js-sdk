@@ -83,17 +83,20 @@
   "bs_ios_10": {
     "base": "BrowserStack",
     "device": "iPhone 7",
-    "os_version": "10"
+    "os_version": "10",
+    "real_mobile": "true"
   },
   "bs_ios_11": {
     "base": "BrowserStack",
     "device": "iPhone 8",
-    "os_version": "11"
+    "os_version": "11",
+    "real_mobile": "true"
   },
   "bs_ios_12": {
     "base": "BrowserStack",
     "device": "iPhone 8",
-    "os_version": "12"
+    "os_version": "12",
+    "real_mobile": "true"
   },
   "android44": {
     "base": "BrowserStack",
