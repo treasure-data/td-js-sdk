@@ -82,74 +82,57 @@
   },
   "bs_iphone4": {
     "base": "BrowserStack",
-    "device": "iPhone 4",
     "os": "ios",
     "os_version": "6.0"
   },
   "bs_iphone5": {
     "base": "BrowserStack",
-    "device": "iPhone 5S",
     "os": "ios",
     "os_version": "7.0"
   },
   "bs_iphone6": {
     "base": "BrowserStack",
-    "device": "iPhone 6",
     "os": "ios",
     "os_version": "8.3"
   },
   "bs_iphone6_9": {
     "base": "BrowserStack",
-    "device": "iPhone 6S",
     "os": "ios",
     "os_version": "9.1"
   },
   "bs_iphone7": {
     "base": "BrowserStack",
-    "device": "iPhone 7",
     "os": "ios",
     "os_version": "10.3"
   },
   "bs_iphone8": {
     "base": "BrowserStack",
-    "device": "iPhone 8",
     "os": "ios",
     "os_version": "11.0"
   },
   "android44": {
     "base": "BrowserStack",
-    "device": "Samsung Galaxy S5",
     "os": "android",
     "os_version": "4.4",
     "browser": "android"
   },
   "android50": {
     "base": "BrowserStack",
-    "device": "Samsung Galaxy S6",
     "os": "android",
-    "os_version": "5.0",
-    "real_mobile": "true",
-    "browserstack.local": "true"
+    "os_version": "5.0"
   },
   "android60": {
     "base": "BrowserStack",
-    "device": "Google Nexus 6",
     "os": "android",
-    "os_version": "6.0",
-    "real_mobile": "true",
-    "browserstack.local": "true"
+    "os_version": "6.0"
   },
   "android71": {
     "base": "BrowserStack",
-    "device": "Google Pixel",
     "os": "android",
-    "os_version": "7.1",
-    "real_mobile": "true",
-    "browserstack.local": "true"
+    "os_version": "7.1"
   },
   "android80": {
     "base": "BrowserStack",
-    "device": "Google Pixel",
     "os": "android",
     "os_version": "8.0",
     "browser": "android"
