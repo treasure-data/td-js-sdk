@@ -196,8 +196,12 @@ describe('Treasure Tracker', function () {
         expect(treasure.getCookie('_td')).to.be.ok()
 
         setTimeout(function () {
-          expect(treasure.getCookie('_td')).to.not.be.ok()
-          done()
+          try {
+            expect(treasure.getCookie('_td')).to.not.be.ok()
+            done()
+          } catch (e) {
+            done(e)
+          }
         }, 1500) // 1500ms is longer than 1s
       })
 

@@ -5,6 +5,12 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 VERSION=$(jq -r '.version' < "${ROOT_DIR}/package.json")
 WAIT=0
 
+PRODUCTION_OPTIONS='--distribution-id E2L8AHDWNOCKE'
+TEST_OPTIONS="--distribution-id E1F7ECRVBF3EX2 --region us-east-2"
+PROD=''
+
+DISTRIBUTION_OPTIONS=$TEST_OPTIONS
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --version=*)
@@ -12,6 +18,10 @@ while [ $# -gt 0 ]; do
       ;;
     --wait)
       WAIT=1
+      ;;
+    --prod)
+      DISTRIBUTION_OPTIONS=${PRODUCTION_OPTIONS}
+      PROD='--prod'
       ;;
     *)
       printf "***************************\n"
@@ -24,14 +34,13 @@ done
 
 JSON=$(aws --profile dev-frontend                            \
   cloudfront create-invalidation                             \
-    --distribution-id E1F7ECRVBF3EX2                         \
-    --paths /sdk/${VERSION}/td.js /sdk/${VERSION}/td.min.js  \
-    --region 'us-east-2')
+    ${DISTRIBUTION_OPTIONS}                                  \
+    --paths /sdk/${VERSION}/td.js /sdk/${VERSION}/td.min.js)
 
 INVALIDATION_ID=$(echo $JSON | jq -r '.Invalidation.Id')
 echo Created Invalidation: $INVALIDATION_ID
 
 if [ $WAIT -eq 1 ]; then
   echo "Waiting until invalidation complete"
-  ./bin/check-invalidation.sh --id=$INVALIDATION_ID
+  ./bin/check-invalidation.sh --id=$INVALIDATION_ID ${PROD}
 fi
