@@ -20,8 +20,13 @@ describe('addRecord', function () {
         keys: {
           email: 'someone@somewhere.com'
         }
-      }, function (keys) {
-        if (keys !== undefined) {
+      }, function (response) {
+        if (response &&
+          response.length &&
+          response[0].key !== undefined &&
+          response[0].attributes !== undefined &&
+          Object.prototype.toString.call(response[0].values) === '[object Array]'
+        ) {
           done(true)
         } else {
           done(false)
@@ -33,8 +38,13 @@ describe('addRecord', function () {
     expect(result1.value).to.be(true)
 
     var result2 = await browser.executeAsync(function (done) {
-      window.td.fetchUserSegments('55198252-3752-4a1f-b011-62a821cae61d', function (key) {
-        if (key !== undefined) {
+      window.td.fetchUserSegments('55198252-3752-4a1f-b011-62a821cae61d', function (response) {
+        if (response &&
+          response.length &&
+          response[0].key !== undefined &&
+          response[0].attributes !== undefined &&
+          Object.prototype.toString.call(response[0].values) === '[object Array]'
+        ) {
           done(true)
         } else {
           done(false)

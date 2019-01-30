@@ -82,17 +82,17 @@
   },
   "bs_ios_10": {
     "base": "BrowserStack",
-    "os": "ios",
+    "device": "iPhone 7",
     "os_version": "10"
   },
   "bs_ios_11": {
     "base": "BrowserStack",
-    "os": "ios",
+    "device": "iPhone 8",
     "os_version": "11"
   },
   "bs_ios_12": {
     "base": "BrowserStack",
-    "os": "ios",
+    "device": "iPhone 8",
     "os_version": "12"
   },
   "android44": {
