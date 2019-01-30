@@ -80,35 +80,20 @@
     "os": "Windows",
     "os_version": "10"
   },
-  "bs_iphone4": {
+  "bs_ios_10": {
     "base": "BrowserStack",
     "os": "ios",
-    "os_version": "6.0"
+    "os_version": "10"
   },
-  "bs_iphone5": {
+  "bs_ios_11": {
     "base": "BrowserStack",
     "os": "ios",
-    "os_version": "7.0"
+    "os_version": "11"
   },
-  "bs_iphone6": {
+  "bs_ios_12": {
     "base": "BrowserStack",
     "os": "ios",
-    "os_version": "8.3"
-  },
-  "bs_iphone6_9": {
-    "base": "BrowserStack",
-    "os": "ios",
-    "os_version": "9.1"
-  },
-  "bs_iphone7": {
-    "base": "BrowserStack",
-    "os": "ios",
-    "os_version": "10.3"
-  },
-  "bs_iphone8": {
-    "base": "BrowserStack",
-    "os": "ios",
-    "os_version": "11.0"
+    "os_version": "12"
   },
   "android44": {
     "base": "BrowserStack",
@@ -135,6 +120,12 @@
     "base": "BrowserStack",
     "os": "android",
     "os_version": "8.0",
+    "browser": "android"
+  },
+  "android90": {
+    "base": "BrowserStack",
+    "os": "android",
+    "os_version": "9.0",
     "browser": "android"
   }
 }
