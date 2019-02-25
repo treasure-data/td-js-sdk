@@ -62,7 +62,7 @@
     "parse-domain": "^2.0.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
-    "selenium-standalone": "^5.4.0",
+    "selenium-standalone": "^6.15.5",
     "simple-mock": "^0.8.0",
     "standard": "^11.0.0",
     "tape": "^4.6.0",
