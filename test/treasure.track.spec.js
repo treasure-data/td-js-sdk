@@ -81,7 +81,7 @@ describe('Treasure Tracker', function () {
     })
 
     describe('track values', function () {
-      var track = {values: {}}
+      var track = { values: {} }
 
       it('should set defaults', function () {
         var values = treasure.client.track.values
@@ -161,6 +161,21 @@ describe('Treasure Tracker', function () {
       })
     })
 
+    describe('localStorage', function () {
+      it('should avoid using cookies if the navigator is a safari type', function () {
+        treasure = new Treasure(configuration)
+
+        var uuid = treasure.client.track.uuid
+        expect(treasure.getCookie('_td')).to.be(uuid)
+        if (
+          window.navigator.appVersion.indexOf('KHTML') > 0 &&
+          window.navigator.appVersion.indexOf('Chrome') === -1
+        ) {
+          expect(window.localStorage.getItem('_td')).to.be(uuid)
+        }
+      })
+    })
+
     describe('cookies', function () {
       it('should let you disable storage by setting it to none', function () {
         configuration.storage = 'none'
@@ -189,6 +204,7 @@ describe('Treasure Tracker', function () {
 
       it('should set a cookie with the desired expires', function (done) {
         configuration.storage = {
+          disableLocalStorage: true,
           expires: 1
         }
         treasure = new Treasure(configuration)
@@ -297,7 +313,7 @@ describe('Treasure Tracker', function () {
     })
 
     it('should allow you to pass normal parameters', function () {
-      treasure.trackEvent('table', {foo: 'bar'})
+      treasure.trackEvent('table', { foo: 'bar' })
       expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('table')
       expect(spy.firstCall.args[1]).to.be.an('object')
@@ -308,7 +324,7 @@ describe('Treasure Tracker', function () {
       var success = function () {}
       var failure = function () {}
 
-      treasure.trackEvent('foo', {foo: 'bar'}, success, failure)
+      treasure.trackEvent('foo', { foo: 'bar' }, success, failure)
       expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foo')
       expect(spy.firstCall.args[1]).to.be.an('object')

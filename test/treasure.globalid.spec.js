@@ -15,7 +15,9 @@ describe('Treasure GlobalID', function () {
     })
     it('should set cookie and return value', function () {
       expect(cookie.getItem('foo')).to.be(null)
-      expect(GlobalID.cacheSuccess({ global_id: '42' }, 'foo')).to.be('42')
+      expect(
+        GlobalID.cacheSuccess({ domain: '' }, { global_id: '42' }, 'foo')
+      ).to.be('42')
       expect(cookie.getItem('foo')).to.be('42')
     })
   })

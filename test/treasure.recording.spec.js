@@ -13,12 +13,15 @@ describe('Treasure Record', function () {
   var treasure, configuration
 
   function resetConfiguration (options) {
-    configuration = _.assign({
-      database: 'database',
-      writeKey: 'writeKey',
-      logging: false,
-      development: true
-    }, options)
+    configuration = _.assign(
+      {
+        database: 'database',
+        writeKey: 'writeKey',
+        logging: false,
+        development: true
+      },
+      options
+    )
   }
   beforeEach(function () {
     resetConfiguration()
@@ -106,7 +109,7 @@ describe('Treasure Record', function () {
 
     describe('globals', function () {
       beforeEach(function () {
-        resetConfiguration({ development: false })
+        resetConfiguration({ development: false, disableLocalStorage: true })
         treasure = new Treasure(configuration)
         simple.mock(treasure, '_sendRecord')
       })
@@ -377,6 +380,7 @@ describe('Treasure Record', function () {
 
     it('events are by default unblocked', function () {
       cookie.removeItem(BLOCKEVENTSCOOKIE)
+      window.localStorage.removeItem(BLOCKEVENTSCOOKIE)
       treasure.addRecord('foo', {})
       expect(treasure._sendRecord.callCount).to.be(1)
     })
@@ -384,34 +388,49 @@ describe('Treasure Record', function () {
     describe('Signed Mode', function () {
       beforeEach(function () {
         cookie.removeItem(SIGNEDMODECOOKIE)
+        window.localStorage.removeItem(SIGNEDMODECOOKIE)
       })
 
       it('should send the generated PII records in tracking values if desired', function () {
         treasure.setSignedMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_ip')
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_client_id')
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'td_ip'
+        )
+        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property(
+          'td_client_id'
+        )
       })
       it('should be in Anonymous Mode by default', function () {
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+        expect(
+          treasure._sendRecord.calls[0].args[0].record
+        ).not.to.have.property('td_ip')
+        expect(
+          treasure._sendRecord.calls[0].args[0].record
+        ).not.to.have.property('td_client_id')
       })
       it('should block the generated PII records from being sent in tracking values if desired', function () {
         treasure.setAnonymousMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
+        expect(
+          treasure._sendRecord.calls[0].args[0].record
+        ).not.to.have.property('td_ip')
+        expect(
+          treasure._sendRecord.calls[0].args[0].record
+        ).not.to.have.property('td_client_id')
       })
       it('should block the generated PII records from being sent in set values as well', function () {
         treasure.set('$global', 'td_global_id', 'td_global_id')
         treasure.setAnonymousMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_global_id')
+        expect(
+          treasure._sendRecord.calls[0].args[0].record
+        ).not.to.have.property('td_global_id')
       })
       it('inSignedMode() will return true if in Signed Mode', function () {
         expect(treasure.inSignedMode()).to.be(false)
@@ -439,6 +458,7 @@ describe('Treasure Record', function () {
         })
         it('will start in Signed Mode if cookie is not set', function () {
           cookie.removeItem(SIGNEDMODECOOKIE)
+          window.localStorage.removeItem(SIGNEDMODECOOKIE)
           makeNewTD(false)
           expect(treasure.inSignedMode()).to.be(false)
 
