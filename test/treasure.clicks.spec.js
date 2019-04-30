@@ -59,7 +59,22 @@ describe('Treasure Clicks', function () {
       // Safari 5 on Windows 2008 special handling
       var ev = window.document.createEvent('MouseEvents')
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/initMouseEvent
-      ev.initMouseEvent('click', true, true, 0, 0, 0, 0, 0, false, false, false, false, 0, span)
+      ev.initMouseEvent(
+        'click',
+        true,
+        true,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        span
+      )
       span.dispatchEvent(ev)
     }
   })
@@ -140,16 +155,57 @@ describe('Treasure Clicks', function () {
   it('lets you dispose the click tracker', function () {
     var button = createTestElement('button')
     var trackEventCalls = 0
-    var dispose = Clicks.trackClicks.call({
-      trackEvent: function () {
-        trackEventCalls++
+    var dispose = Clicks.trackClicks.call(
+      {
+        trackEvent: function () {
+          trackEventCalls++
+        }
+      },
+      {
+        element: button
       }
-    }, {
-      element: button
-    })
+    )
     button.click()
     dispose()
     button.click()
     expect(trackEventCalls === 1).ok()
+  })
+
+  it('should delay navigation if anchor tags and href is chosen', function (cb) {
+    var href = 'www.google.com'
+    var link = createTestElement('a')
+    link.setAttribute('href', href)
+
+    var trackEventCalls = 0
+    var trackNavigation = 0
+    var trackNavigationArgs = []
+    Clicks.trackClicks.call(
+      {
+        trackEvent: function () {
+          trackEventCalls++
+        },
+        _clickNavigationHandler: function () {
+          trackNavigation++
+          trackNavigationArgs = Array.prototype.slice.call(arguments, [])
+        }
+      },
+      {
+        delayAnchorClicks: 100,
+        element: link
+      }
+    )
+    if (link.click) {
+      link.click()
+    }
+    expect(trackEventCalls === 1).ok()
+    setTimeout(function () {
+      expect(trackNavigation === 0).ok()
+    }, 60)
+    setTimeout(function () {
+      expect(trackNavigation === 1).ok()
+      expect(trackNavigationArgs.length === 1).ok()
+      expect(trackNavigationArgs[0] === href).ok()
+      cb()
+    }, 120)
   })
 })
