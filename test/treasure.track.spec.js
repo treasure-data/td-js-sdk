@@ -81,7 +81,7 @@ describe('Treasure Tracker', function () {
     })
 
     describe('track values', function () {
-      var track = {values: {}}
+      var track = { values: {} }
 
       it('should set defaults', function () {
         var values = treasure.client.track.values
@@ -188,6 +188,8 @@ describe('Treasure Tracker', function () {
       })
 
       it('should set a cookie with the desired expires', function (done) {
+        this.timeout(4000)
+
         configuration.storage = {
           expires: 1
         }
@@ -297,7 +299,7 @@ describe('Treasure Tracker', function () {
     })
 
     it('should allow you to pass normal parameters', function () {
-      treasure.trackEvent('table', {foo: 'bar'})
+      treasure.trackEvent('table', { foo: 'bar' })
       expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('table')
       expect(spy.firstCall.args[1]).to.be.an('object')
@@ -308,7 +310,7 @@ describe('Treasure Tracker', function () {
       var success = function () {}
       var failure = function () {}
 
-      treasure.trackEvent('foo', {foo: 'bar'}, success, failure)
+      treasure.trackEvent('foo', { foo: 'bar' }, success, failure)
       expect(spy.callCount).to.equal(1)
       expect(spy.firstCall.args[0]).to.equal('foo')
       expect(spy.firstCall.args[1]).to.be.an('object')
