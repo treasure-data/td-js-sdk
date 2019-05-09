@@ -229,27 +229,27 @@ module.exports = function (config) {
     },
 
     browsers: [
-      // 'bs_firefox_latest_mac',
-      // 'bs_chrome_latest_mac',
-      // 'bs_safari_7_mac',
-      // 'bs_safari_8_mac',
-      // 'bs_safari_9_mac',
-      // 'bs_safari_10_mac',
+      'bs_firefox_latest_mac',
+      'bs_chrome_latest_mac',
+      'bs_safari_7_mac',
+      'bs_safari_8_mac',
+      'bs_safari_9_mac',
+      'bs_safari_10_mac',
       'bs_safari_11_mac',
-      // 'bs_ie_8_win',
-      // 'bs_ie_9_win',
-      // 'bs_ie_10_win',
-      // 'bs_ie_11_win',
-      // 'bs_edge_latest_win',
+      'bs_ie_8_win',
+      'bs_ie_9_win',
+      'bs_ie_10_win',
+      'bs_ie_11_win',
+      'bs_edge_latest_win',
       'bs_iphone5',
       'bs_iphone6',
       'bs_iphone6_9',
       // 'bs_iphone7',
-      'bs_iphone8'
-      // 'android44',
-      // 'android50',
-      // 'android60',
-      // 'android71'
+      'bs_iphone8',
+      'android44',
+      'android50',
+      'android60',
+      'android71'
     ],
 
     // Continuous Integration mode
