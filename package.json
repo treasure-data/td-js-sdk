@@ -59,7 +59,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^2.0.4",
     "mocha": "^2.5.3",
-    "parse-domain": "^2.0.0",
+    "parse-domain": "^2.3.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
