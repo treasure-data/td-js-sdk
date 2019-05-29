@@ -693,6 +693,16 @@ The unminified script loader can be seen in [src/loader.js](src/loader.js). The 
 
 ## Contributing
 
+### Running the test suite locally
+
+`cd` into the test subdirectory and run `npm run test-${flavor}`. Running the tests in `test/` allows build files specific for the test to be isolated from the release build files in `dist/`.
+
+`npm run test` will run `npm run test-ci` if in a CI environment, otherwise it will run `npm run test-local`.
+
+`npm run test-local-not-mac` will run the same tests but exclude the Safari browser, which is usually not available outside of Apple devices.
+
+`npm run test-full` will run the test suite on BrowserStack. Please see the next section for more details on how to set this up.  
+
 ### Running the test suite on BrowserStack
 
 First you'll need to install `BrowserStackTunnel`. You can download the binary from [the BrowserStack website](https://www.browserstack.com/local-testing). If you're on Mac OS you can install it through homebrew: `brew install caskroom/cask/browserstacklocal`.

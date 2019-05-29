@@ -25,6 +25,7 @@
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
+    "test-local-not-mac": "karma start --browsers Chrome,Firefox --concurrency 3",
     "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
   "standard": {
