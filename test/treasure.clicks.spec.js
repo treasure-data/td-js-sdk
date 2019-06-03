@@ -171,41 +171,103 @@ describe('Treasure Clicks', function () {
     expect(trackEventCalls === 1).ok()
   })
 
-  it('should delay navigation if anchor tags and href is chosen', function (cb) {
+  describe('navigation', function() {
     var href = 'www.google.com'
     var link = createTestElement('a')
     link.setAttribute('href', href)
 
-    var trackEventCalls = 0
-    var trackNavigation = 0
-    var trackNavigationArgs = []
+    var trackEventCalls
+        , trackNavigation
+        , trackNavigationArgs
+        , callSuccessOrError = 'success'
+
     Clicks.trackClicks.call(
-      {
-        trackEvent: function () {
-          trackEventCalls++
+        {
+          trackEvent: function (_, __, success, error) {
+            trackEventCalls++
+
+            if (callSuccessOrError === 'success') success()
+            if (callSuccessOrError === 'error') error()
+          },
+          _clickNavigationHandler: function () {
+            trackNavigation++
+            trackNavigationArgs = Array.prototype.slice.call(arguments, [])
+          }
         },
-        _clickNavigationHandler: function () {
-          trackNavigation++
-          trackNavigationArgs = Array.prototype.slice.call(arguments, [])
+        {
+          delayAnchorClicks: 100,
+          element: window.document
         }
-      },
-      {
-        delayAnchorClicks: 100,
-        element: link
-      }
     )
-    if (link.click) {
+
+    beforeEach(function() {
+      trackEventCalls = 0
+      trackNavigation = 0
+      trackNavigationArgs = []
+    })
+
+    it('jump to top if anchor is clicked', function (cb) {
+      var spacer = createTestElement('div')
+      spacer.setAttribute('style', 'display: block; height: 10000px')
+      var wrapper = createTestElement('div')
+      wrapper.setAttribute('style', 'display: block')
+      var target = createTestElement('a', wrapper)
+      target.setAttribute('style', 'display: block')
+      target.setAttribute('href', '#')
+      target.innerHTML = 'test'
+      window.scrollTo(0, 1000)
+      /* make sure some scrolling happened. different browsers won't scroll
+       * precisely to 1000px, so a relative test is better. as long as
+       * pageYOffset is not zero scrolling happened, 800 seemed to be a good
+       * cutoff during testing
+       */
+      expect(window.scrollY).to.equal(1000)
+
+      target.click()
+
+      expect(trackEventCalls).to.equal(1)
+      setTimeout(function () {
+        expect(window.scrollY).to.equal(0)
+        expect(trackNavigation).to.equal(1)
+        expect(trackNavigationArgs.length).to.equal(1)
+        expect(trackNavigationArgs[0]).to.equal(target.getAttribute('href'))
+        cb()
+      }, 120)
+    })
+    it('should delay navigation if anchor tags and href is chosen', function (cb) {
       link.click()
-    }
-    expect(trackEventCalls === 1).ok()
-    setTimeout(function () {
-      expect(trackNavigation === 0).ok()
-    }, 60)
-    setTimeout(function () {
-      expect(trackNavigation === 1).ok()
-      expect(trackNavigationArgs.length === 1).ok()
-      expect(trackNavigationArgs[0] === href).ok()
-      cb()
-    }, 120)
+
+      expect(trackEventCalls).to.equal(1)
+      setTimeout(function () {
+        expect(trackNavigation).to.equal(1)
+        expect(trackNavigationArgs.length).to.equal(1)
+        expect(trackNavigationArgs[0]).to.equal(href)
+        cb()
+      }, 120)
+    })
+    it('should delay navigation even if jsonp does not load within timeout', function (cb) {
+      callSuccessOrError = 'neither'
+      link.click()
+
+      expect(trackEventCalls).to.equal(1)
+      setTimeout(function () {
+        expect(trackNavigation).to.equal(1)
+        expect(trackNavigationArgs.length).to.equal(1)
+        expect(trackNavigationArgs[0]).to.equal(href)
+        cb()
+      }, 120)
+    })
+    it('should continue the navigation event event if JSONP produced an error', function (cb) {
+      callSuccessOrError = 'error'
+      link.click()
+
+      expect(trackEventCalls).to.equal(1)
+      setTimeout(function () {
+        expect(trackNavigation).to.equal(1)
+        expect(trackNavigationArgs.length).to.equal(1)
+        expect(trackNavigationArgs[0]).to.equal(href)
+        cb()
+      }, 120)
+    })
   })
 })
