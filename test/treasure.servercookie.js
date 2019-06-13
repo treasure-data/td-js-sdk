@@ -1,6 +1,5 @@
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
-var ServerCookie = require('../lib/plugins/servercookie')
 var cookie = require('../lib/vendor/js-cookies')
 
 describe('Treasure Server Cookie', function () {
@@ -14,14 +13,16 @@ describe('Treasure Server Cookie', function () {
     expect(typeof td.fetchServerCookie === 'function').ok()
   })
 
-  describe('cacheSuccess', function () {
+  describe('cookie ', function () {
     beforeEach(function () {
-      cookie.removeItem('foo')
+      cookie.setItem('td_ssc_id', 'foo')
     })
-    it('should set cookie and return value', function () {
-      expect(cookie.getItem('foo')).to.be(null)
-      expect(ServerCookie.cacheSuccess({ td_ssc_id: '42' }, 'foo')).to.be('42')
-      expect(cookie.getItem('foo')).to.be('42')
+    it('should return td_ssc_id from cookie if available', function (done) {
+      var td = new Treasure({ database: 'foo', writeKey: 'writeKey' })
+      td.fetchServerCookie(function (val) {
+        expect(val).to.be('foo')
+        done()
+      })
     })
   })
 })
