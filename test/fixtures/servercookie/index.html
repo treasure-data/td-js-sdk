@@ -18,7 +18,7 @@
     function setStatus (num, text) {
       document.getElementById('status' + num).innerHTML = text
       status[num] = text
-      if (status.length === 3) {
+      if (status.length === 2) {
         var isFailure = false
         for (var i = 0; i < status.length; i++) {
           if (status[i] === 'failure') {
