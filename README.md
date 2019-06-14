@@ -512,6 +512,7 @@ td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id
 ```
 
 ### Treasure#fetchServerCookie(success, failure, forceFetch)
+This functionality complies with ITP 1.2 tracking. Contact customer support for enabling this feature.
 
 **Parameters:**
 
