@@ -279,7 +279,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
 
 **Server Side Cookie:**
-* **useServerSideCookie** : Boolean (optional) - enables/disable using ServerSide Cookie - Default False
+* **config.useServerSideCookie** : Boolean (optional) - enables/disable using ServerSide Cookie - Default False
 * **config.cookieDomain** : String | (String) => String (optional) - Domain against which the Server Side Cokkie is set Default: `window.location.hostname`
 * **config.cookieDomainHost** : String (optional) - hostname to request server side cookie from Default `ssc.${cookieDomain}`
 
