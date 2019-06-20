@@ -260,7 +260,7 @@ If the database does not exist and you have permissions, it will be created for 
 
 **Core parameters:**
 
-* **config.database** : String (required) - database name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
+* **config.database** : String (required) - database name, must consist only of lower case letters, numbers, and `_`, must be longer than or equal to 3 chars, and the total length of database and table must be shorter than 129 chars.
 * **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
 * **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
 * **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
@@ -303,7 +303,7 @@ Records will have additional properties applied to them if `$global` or table-sp
 
 **Parameters:**
 
-* **table** : String (required) - table name, must be between 3 and 255 characters and must consist only of lower case letters, numbers, and _
+* **table** : String (required) - table name, must consist only of lower case letters, numbers, and `_`, must be longer than or equal to 3 chars, the total length of database and table must be shorter than 129 chars.
 * **record** : Object (required) - Object that will be serialized to JSON and sent to the server
 * **success** : Function (optional) - Callback for when sending the event is successful
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
