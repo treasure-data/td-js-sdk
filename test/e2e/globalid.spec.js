@@ -15,7 +15,7 @@ module.exports = function (browser, initOpts, finish) {
     }
 
     function initTest () {
-      browser.get('http://localhost:9999/fixtures/globalid', function() {
+      browser.get('http://localhost:9999/fixtures/globalid', function () {
         getStatus(0)
         getStatus(1)
       })

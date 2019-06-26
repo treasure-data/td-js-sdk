@@ -15,7 +15,7 @@ module.exports = function (browser, initOpts, finish) {
     }
 
     function initTest () {
-      browser.get('http://localhost:9999/fixtures/servercookie', function() {
+      browser.get('http://localhost:9999/fixtures/servercookie', function () {
         getStatus(0)
         getStatus(1)
         getStatus(2)
