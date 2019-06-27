@@ -228,7 +228,9 @@ module.exports = function (config) {
     },
 
     browsers: [
-      'bs_firefox_latest_mac',
+      // At the suggestion of Browserstack, we're commenting these
+      // out until our support tickets are resolved.
+      // 'bs_firefox_latest_mac',
       'bs_chrome_latest_mac',
       'bs_safari_7_mac',
       'bs_safari_8_mac',
@@ -243,7 +245,7 @@ module.exports = function (config) {
       'bs_iphone5',
       'bs_iphone6',
       'bs_iphone6_9',
-      'bs_iphone7',
+      // 'bs_iphone7',
       'bs_iphone8',
       'android44',
       'android50',
