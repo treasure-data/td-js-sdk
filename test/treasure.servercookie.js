@@ -3,16 +3,16 @@ var Treasure = require('../lib/treasure')
 var cookie = require('../lib/vendor/js-cookies')
 
 describe('Treasure Server Cookie', function () {
-  describe('configure', () => {
+  describe('configure', function () {
     it('should support cookieDomain as string', function () {
       var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: 'foo' })
       expect(td.client.cookieDomain).to.be('foo')
     })
     it('should support cookieDomain as function', function () {
-      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: () => 'foo' })
+      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: function () { return 'foo' }})
       expect(td.client.cookieDomain).to.be('foo')
     })
-    it('should create cookieDomainHost based on cookieDomain, as default', () => {
+    it('should create cookieDomainHost based on cookieDomain, as default', function () {
       var td = new Treasure({ database: 'foo', writeKey: 'writeKey' })
       expect(td.client.cookieDomainHost).to.be('ssc.localhost')
     })
