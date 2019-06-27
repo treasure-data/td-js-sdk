@@ -179,7 +179,8 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'iPhone 7',
         os: 'ios',
-        os_version: '10.3'
+        os_version: '10.3',
+        realMobile: 'true'
       },
       bs_iphone8: {
         base: 'BrowserStack',
@@ -243,7 +244,7 @@ module.exports = function (config) {
       'bs_iphone5',
       'bs_iphone6',
       'bs_iphone6_9',
-      // 'bs_iphone7',
+      'bs_iphone7',
       'bs_iphone8',
       'android44',
       'android50',
