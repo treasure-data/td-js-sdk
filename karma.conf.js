@@ -175,6 +175,12 @@ module.exports = function (config) {
         os: 'ios',
         os_version: '9.1'
       },
+      bs_iphone7: {
+        base: 'BrowserStack',
+        device: 'iPhone 7',
+        os: 'ios',
+        os_version: '10.3'
+      },
       bs_iphone8: {
         base: 'BrowserStack',
         device: 'iPhone 8',
@@ -222,7 +228,7 @@ module.exports = function (config) {
     },
 
     browsers: [
-      'bs_firefox_latest_mac',
+      // 'bs_firefox_latest_mac',
       'bs_chrome_latest_mac',
       'bs_safari_7_mac',
       'bs_safari_8_mac',
@@ -237,6 +243,7 @@ module.exports = function (config) {
       'bs_iphone5',
       'bs_iphone6',
       'bs_iphone6_9',
+      // 'bs_iphone7',
       'bs_iphone8',
       'android44',
       'android50',
