@@ -2,38 +2,49 @@ var test = require('tape')
 
 module.exports = function (browser, initOpts, finish) {
   test('server cookie test', function (t) {
+    var count = 2
     t.plan(2)
 
-    function initTest () {
-      browser.get('http://localhost:9999/fixtures/servercookie', getStatus)
+    function finished () {
+      count--
+      if (count === 0) {
+        t.end()
+        browser.quit()
+        finish()
+      }
     }
 
-    function getStatus () {
-      browser.elementById('status', function (err, el) {
-        return err ? t.fail('Error', err) : el.text(getText)
+    function initTest () {
+      browser.get('http://localhost:9999/fixtures/servercookie', function () {
+        getStatus(0)
+        getStatus(1)
+        getStatus(2)
       })
     }
 
-    function getText (err, text) {
-      if (err) {
-        t.fail('Error', err)
-        t.end()
-        browser.quit()
-        return finish()
+    function getStatus (num) {
+      browser.elementById('status' + num, function (err, el) {
+        return err ? t.fail('Error', err) : el.text(getText(num))
+      })
+    }
+
+    function getText (num) {
+      return function (err, text) {
+        if (err) {
+          t.fail('Error', err)
+          return finished()
+        }
+        switch (text) {
+          case 'success':
+            t.pass('status is success')
+            return finished()
+          case 'failure':
+            t.fail('status is failure')
+            return finished()
+          default:
+            return getStatus(num)
+        }
       }
-      switch (text) {
-        case 'success':
-          t.pass('status is success')
-          break
-        case 'failure':
-          t.fail('status is failure')
-          break
-        default:
-          return getStatus()
-      }
-      t.end()
-      browser.quit()
-      finish()
     }
 
     browser.init(initOpts, initTest)
