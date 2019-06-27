@@ -399,7 +399,7 @@ describe('Treasure Record', function () {
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
       })
-      describe('cookie anonymous mode', () => {
+      describe('cookie anonymous mode', function () {
         it('should block the generated PII records from being sent in tracking values if desired', function () {
           treasure.setAnonymousMode()
           treasure.trackEvent('foo', {})
@@ -422,7 +422,7 @@ describe('Treasure Record', function () {
           expect(treasure.inSignedMode()).to.be(false)
         })
       })
-      describe('localStorage anonymous mode', () => {
+      describe('localStorage anonymous mode', function () {
         beforeEach(function () {
           treasure = new Treasure({
             database: 'database',

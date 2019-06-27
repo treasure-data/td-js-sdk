@@ -4,11 +4,11 @@ var cookie = require('../lib/vendor/js-cookies')
 
 describe('Treasure Server Cookie', function () {
   describe('configure', () => {
-    it('should support cookieDomain as string', () => {
+    it('should support cookieDomain as string', function () {
       var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: 'foo' })
       expect(td.client.cookieDomain).to.be('foo')
     })
-    it('should support cookieDomain as function', () => {
+    it('should support cookieDomain as function', function () {
       var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: () => 'foo' })
       expect(td.client.cookieDomain).to.be('foo')
     })
