@@ -35,19 +35,18 @@
       database: 'test_db_request',
       writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
       host: 'in-staging.treasuredata.com',
-      cookieDomain: 'console-local.treasure-data.com',
+      cookieDomain: 'localhost',
       cookieDomainHost: 'ssc.treasuredata.com',
       useServerSideCookie: true,
     })
-
+    td.setSignedMode()
     td.fetchServerCookie(function (value1) {
       setStatus(0, 'success')
-      td.fetchServerCookie(function (value2) {
-        if(value1 === value2) {
-          setStatus(1, 'success')
-        }
-      }, function () {
+      td.setAnonymousMode()
+      td.fetchServerCookie(function(){
         setStatus(1, 'failure')
+      }, function(error) {
+        setStatus(1, 'success')
       })
     }, function () {
       setBackground('red')

@@ -269,6 +269,7 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
 * **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
 * **config.jsonpTimeout** : Number (optional) - JSONP timeout (in milliseconds) Default: `10000`
+* **config.storeConsentByLocalStorage** : Boolean (optional) - Tell the SDK to use localStorage to store user consent. Default: `false`
 
 **Track/Storage parameters:**
 
