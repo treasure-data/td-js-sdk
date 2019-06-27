@@ -86,5 +86,3 @@ if [ $FILENAME != "td" ]
 then
   rm $BUILT_FILENAME $MINIFIED_FILENAME
 fi || 0
-
-cat -n test/treasure.recording.spec.js | tail -n 85 | head -n 36
