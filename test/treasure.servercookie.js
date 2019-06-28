@@ -9,12 +9,9 @@ describe('Treasure Server Cookie', function () {
       expect(td.client.cookieDomain).to.be('foo')
     })
     it('should support cookieDomain as function', function () {
-      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: function () { return 'foo' }})
-      expect(td.client.cookieDomain).to.be('foo')
-    })
-    it('should create cookieDomainHost based on cookieDomain, as default', function () {
-      var td = new Treasure({ database: 'foo', writeKey: 'writeKey' })
-      expect(td.client.cookieDomainHost).to.be('ssc.localhost')
+      var foo = function () { return 'foo' }
+      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: foo })
+      expect(td.client.cookieDomain).to.be(foo)
     })
   })
   it('adds fetchServerCookie method', function () {
