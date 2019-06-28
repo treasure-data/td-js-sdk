@@ -10,8 +10,13 @@ describe('Treasure Server Cookie', function () {
     })
     it('should support cookieDomain as function', function () {
       var foo = function () { return 'foo' }
-      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: foo })
+      var cookieDomainHost = function (host) { return ['ssc', foo] }
+      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', cookieDomain: foo, cookieDomainHost: cookieDomainHost })
       expect(td.client.cookieDomain).to.be(foo)
+      // we need to set cookie to prevent the real jsonp going out
+      cookie.setItem('td_ssc_id', 'foo')
+      expect(td._serverCookieDomain).to.be('foo')
+      expect(td._serverCookieDomainHost).to.be('ssc.foo')
     })
   })
   it('adds fetchServerCookie method', function () {
