@@ -5,7 +5,7 @@ var cookie = require('../lib/vendor/js-cookies')
 describe('Treasure Server Cookie', function () {
   describe('configure', function () {
     it('should support cookieDomain as string', function () {
-      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', sscDomain: 'foo', useServerSideCookie: true, })
+      var td = new Treasure({ database: 'foo', writeKey: 'writeKey', sscDomain: 'foo', useServerSideCookie: true })
       expect(td.client.cookieDomain).to.be('foo')
     })
     it('should support cookieDomain as function', function () {
