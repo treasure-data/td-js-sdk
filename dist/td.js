@@ -17,17 +17,17 @@
     return __webpack_require__(0);
 })([ function(module, exports, __webpack_require__) {
     var Treasure = __webpack_require__(1);
-    var window = __webpack_require__(76);
-    var GLOBAL = __webpack_require__(72).GLOBAL;
-    __webpack_require__(82)(Treasure, GLOBAL);
+    var window = __webpack_require__(64);
+    var GLOBAL = __webpack_require__(73).GLOBAL;
+    __webpack_require__(83)(Treasure, GLOBAL);
     window[GLOBAL] = Treasure;
 }, function(module, exports, __webpack_require__) {
     var record = __webpack_require__(2);
     var _ = __webpack_require__(9);
-    var configurator = __webpack_require__(71);
-    var version = __webpack_require__(73);
-    var cookie = __webpack_require__(64);
-    var config = __webpack_require__(72);
+    var configurator = __webpack_require__(72);
+    var version = __webpack_require__(74);
+    var cookie = __webpack_require__(65);
+    var config = __webpack_require__(73);
     function Treasure(options) {
         if (!(this instanceof Treasure)) {
             return new Treasure(options);
@@ -56,7 +56,7 @@
     Treasure.prototype.configure = configurator.configure;
     Treasure.prototype.set = configurator.set;
     Treasure.prototype.get = configurator.get;
-    Treasure.prototype.ready = __webpack_require__(74);
+    Treasure.prototype.ready = __webpack_require__(75);
     Treasure.prototype.applyProperties = record.applyProperties;
     Treasure.prototype.addRecord = record.addRecord;
     Treasure.prototype._sendRecord = record._sendRecord;
@@ -69,10 +69,11 @@
     Treasure.prototype.getCookie = cookie.getItem;
     Treasure.prototype._configurator = configurator;
     Treasure.Plugins = {
-        "Clicks": __webpack_require__(75),
+        "Clicks": __webpack_require__(76),
         "GlobalID": __webpack_require__(78),
         "Personalization": __webpack_require__(79),
-        "Track": __webpack_require__(80)
+        "Track": __webpack_require__(80),
+        "ServerSideCookie": __webpack_require__(82)
     };
     _.forIn(Treasure.Plugins, function(plugin) {
         _.forIn(plugin, function(method, name) {
@@ -87,9 +88,10 @@
     var noop = __webpack_require__(3).noop;
     var jsonp = __webpack_require__(4);
     var _ = __webpack_require__(9);
-    var cookie = __webpack_require__(64);
-    var setCookie = __webpack_require__(65);
-    var objectToBase64 = __webpack_require__(66);
+    var global = __webpack_require__(64);
+    var cookie = __webpack_require__(65);
+    var setCookie = __webpack_require__(66);
+    var objectToBase64 = __webpack_require__(67);
     function validateRecord(table, record) {
         invariant(_.isString(table), "Must provide a table");
         invariant(/^[a-z0-9_]{3,255}$/.test(table), "Table must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
@@ -109,14 +111,25 @@
         return cookie.getItem(BLOCKEVENTSCOOKIE) === "true";
     };
     exports.setSignedMode = function setSignedMode(signedMode) {
-        setCookie(this.client.storage, SIGNEDMODECOOKIE, "true");
+        if (this.client.storeConsentByLocalStorage) {
+            global.localStorage.setItem(SIGNEDMODECOOKIE, "true");
+        } else {
+            setCookie(this.client.storage, SIGNEDMODECOOKIE, "true");
+        }
         return this;
     };
     exports.setAnonymousMode = function setAnonymousMode(signedMode) {
-        setCookie(this.client.storage, SIGNEDMODECOOKIE, "false");
+        if (this.client.storeConsentByLocalStorage) {
+            global.localStorage.setItem(SIGNEDMODECOOKIE, "false");
+        } else {
+            setCookie(this.client.storage, SIGNEDMODECOOKIE, "false");
+        }
         return this;
     };
     exports.inSignedMode = function inSignedMode() {
+        if (this.client.storeConsentByLocalStorage) {
+            return global.localStorage.getItem([ SIGNEDMODECOOKIE ]) !== "false" && (global.localStorage.getItem([ SIGNEDMODECOOKIE ]) === "true" || this.client.startInSignedMode);
+        }
         return cookie.getItem(SIGNEDMODECOOKIE) !== "false" && (cookie.getItem(SIGNEDMODECOOKIE) === "true" || this.client.startInSignedMode);
     };
     exports._sendRecord = function _sendRecord(request, success, error) {
@@ -133,7 +146,7 @@
         var jsonpUrl = request.url + "?" + params.join("&");
         jsonp(jsonpUrl, {
             "prefix": "TreasureJSONPCallback",
-            "timeout": 1e4
+            "timeout": this.client.jsonpTimeout
         }, function(err, res) {
             return err ? error(err) : success(res);
         });
@@ -1361,6 +1374,20 @@
     function noop() {}
     module.exports = noop;
 }, function(module, exports) {
+    (function(global) {
+        if (typeof window !== "undefined") {
+            module.exports = window;
+        } else if (typeof global !== "undefined") {
+            module.exports = global;
+        } else if (typeof self !== "undefined") {
+            module.exports = self;
+        } else {
+            module.exports = {};
+        }
+    }).call(exports, function() {
+        return this;
+    }());
+}, function(module, exports) {
     var encode = function encode(val) {
         try {
             return encodeURIComponent(val);
@@ -1440,7 +1467,7 @@
     };
     module.exports = Cookies;
 }, function(module, exports, __webpack_require__) {
-    var cookie = __webpack_require__(64);
+    var cookie = __webpack_require__(65);
     var _ = __webpack_require__(9);
     function findDomains(domain) {
         var domainChunks = domain.split(".");
@@ -1483,8 +1510,8 @@
         }
     };
 }, function(module, exports, __webpack_require__) {
-    var JSON3 = __webpack_require__(67);
-    var toBase64 = __webpack_require__(70);
+    var JSON3 = __webpack_require__(68);
+    var toBase64 = __webpack_require__(71);
     module.exports = function objectToBase64(object) {
         return toBase64(JSON3.stringify(object));
     };
@@ -1492,7 +1519,7 @@
     var __WEBPACK_AMD_DEFINE_RESULT__;
     (function(module, global) {
         (function() {
-            var isLoader = "function" === "function" && __webpack_require__(69);
+            var isLoader = "function" === "function" && __webpack_require__(70);
             var objectTypes = {
                 "function": true,
                 "object": true
@@ -2067,7 +2094,7 @@
                 }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
             }
         }).call(this);
-    }).call(exports, __webpack_require__(68)(module), function() {
+    }).call(exports, __webpack_require__(69)(module), function() {
         return this;
     }());
 }, function(module, exports) {
@@ -2118,13 +2145,26 @@
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);
     var invariant = __webpack_require__(3).invariant;
-    var config = __webpack_require__(72);
+    var config = __webpack_require__(73);
+    var cookie = __webpack_require__(65);
     function validateOptions(options) {
         invariant(_.isObject(options), "Check out our JavaScript SDK Usage Guide: " + "http://docs.treasuredata.com/articles/javascript-sdk");
         invariant(_.isString(options.writeKey), "Must provide a writeKey");
         invariant(_.isString(options.database), "Must provide a database");
         invariant(/^[a-z0-9_]{3,255}$/.test(options.database), "Database must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
     }
+    var defaultSSCCookieDomain = function() {
+        var domainChunks = document.location.hostname.split(".");
+        for (var i = domainChunks.length - 2; i >= 1; i--) {
+            var domain = domainChunks.slice(i).join(".");
+            var name = "_td_domain_" + domain;
+            cookie.setItem(name, domain, 3600, "/", domain);
+            if (cookie.getItem(name) === domain) {
+                return domain;
+            }
+        }
+        return document.location.hostname;
+    };
     exports.DEFAULT_CONFIG = {
         "database": config.DATABASE,
         "development": false,
@@ -2133,7 +2173,14 @@
         "logging": true,
         "pathname": config.PATHNAME,
         "requestType": "jsonp",
-        "startInSignedMode": false
+        "jsonpTimeout": 1e4,
+        "startInSignedMode": false,
+        "useServerSideCookie": false,
+        "sscDomain": defaultSSCCookieDomain,
+        "sscServer": function(cookieDomain) {
+            return [ "ssc", cookieDomain ].join(".");
+        },
+        "storeConsentByLocalStorage": false
     };
     exports.configure = function configure(options) {
         this.client = _.assign({
@@ -2168,13 +2215,13 @@
 }, function(module, exports) {
     module.exports = {
         "GLOBAL": "Treasure",
-        "VERSION": "2.1.0",
+        "VERSION": "2.2.0",
         "HOST": "in.treasuredata.com",
         "DATABASE": "",
         "PATHNAME": "/js/v3/event/"
     };
 }, function(module, exports, __webpack_require__) {
-    module.exports = __webpack_require__(72).VERSION;
+    module.exports = __webpack_require__(73).VERSION;
 }, function(module, exports, __webpack_require__) {
     /*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
@@ -2213,7 +2260,7 @@
         };
     });
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(76);
+    var window = __webpack_require__(64);
     var elementUtils = __webpack_require__(77);
     var assign = __webpack_require__(9).assign;
     var disposable = __webpack_require__(3).disposable;
@@ -2254,20 +2301,6 @@
         "configure": configure,
         "trackClicks": trackClicks
     };
-}, function(module, exports) {
-    (function(global) {
-        if (typeof window !== "undefined") {
-            module.exports = window;
-        } else if (typeof global !== "undefined") {
-            module.exports = global;
-        } else if (typeof self !== "undefined") {
-            module.exports = self;
-        } else {
-            module.exports = {};
-        }
-    }).call(exports, function() {
-        return this;
-    }());
 }, function(module, exports, __webpack_require__) {
     var forEach = __webpack_require__(9).forEach;
     var isString = __webpack_require__(9).isString;
@@ -2406,7 +2439,7 @@
     var jsonp = __webpack_require__(4);
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
-    var cookie = __webpack_require__(64);
+    var cookie = __webpack_require__(65);
     function cacheSuccess(result, cookieName) {
         cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
@@ -2415,6 +2448,9 @@
     function fetchGlobalID(success, error, forceFetch) {
         success = success || noop;
         error = error || noop;
+        if (!this.inSignedMode()) {
+            return error("not in signed in mode");
+        }
         var cookieName = this.client.globalIdCookie;
         var cachedGlobalId = cookie.getItem(this.client.globalIdCookie);
         if (cachedGlobalId && !forceFetch) {
@@ -2426,7 +2462,7 @@
         invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
-            "timeout": 1e4
+            "timeout": this.client.jsonpTimeout
         }, function(err, res) {
             return err ? error(err) : success(cacheSuccess(res, cookieName));
         });
@@ -2464,7 +2500,7 @@
         var url = "https://" + this.client.cdpHost + "/cdp/lookup/collect/segments?version=2&token=" + token + (keyString && "&" + keyString);
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
-            "timeout": 1e4
+            "timeout": this.client.jsonpTimeout
         }, function(err, res) {
             return err ? errorCallback(err) : successCallback(res);
         });
@@ -2479,12 +2515,12 @@
 	* Treasure Tracker
 	* ----------------------
 	*/
-    var window = __webpack_require__(76);
+    var window = __webpack_require__(64);
     var _ = __webpack_require__(9);
-    var cookie = __webpack_require__(64);
-    var setCookie = __webpack_require__(65);
+    var cookie = __webpack_require__(65);
+    var setCookie = __webpack_require__(66);
     var generateUUID = __webpack_require__(81);
-    var version = __webpack_require__(73);
+    var version = __webpack_require__(74);
     var document = window.document;
     function configureValues(track) {
         return _.assign({
@@ -2643,7 +2679,7 @@
         return result;
     };
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(76);
+    var window = __webpack_require__(64);
     module.exports = function generateUUID() {
         var d = new Date().getTime();
         if (window.performance && typeof window.performance.now === "function") {
@@ -2657,8 +2693,57 @@
         return uuid;
     };
 }, function(module, exports, __webpack_require__) {
+    var jsonp = __webpack_require__(4);
+    var noop = __webpack_require__(3).noop;
+    var invariant = __webpack_require__(3).invariant;
+    var cookie = __webpack_require__(65);
+    var cookieName = "_td_ssc_id";
+    function configure() {
+        return this;
+    }
+    function fetchServerCookie(success, error, forceFetch) {
+        success = success || noop;
+        error = error || noop;
+        if (!this.inSignedMode()) {
+            return error("not in signed in mode");
+        }
+        if (!this.client.useServerSideCookie) {
+            return error("server side cookie not enabled");
+        }
+        if (!this._serverCookieDomainHost) {
+            if (typeof this.client.sscDomain === "function") {
+                this._serverCookieDomain = this.client.sscDomain();
+            } else {
+                this._serverCookieDomain = this.client.sscDomain;
+            }
+            if (typeof this.client.sscServer === "function") {
+                this._serverCookieDomainHost = this.client.sscServer(this._serverCookieDomain);
+            } else {
+                this._serverCookieDomainHost = this.client.sscServer;
+            }
+        }
+        var url = "https://" + this._serverCookieDomainHost + "/get_cookie_id?cookie_domain=" + window.encodeURI(this._serverCookieDomain) + "&r=" + new Date().getTime();
+        var cachedSSCId = cookie.getItem(cookieName);
+        if (cachedSSCId && !forceFetch) {
+            return setTimeout(function() {
+                success(cachedSSCId);
+            }, 0);
+        }
+        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
+        jsonp(url, {
+            "prefix": "TreasureJSONPCallback",
+            "timeout": this.client.jsonpTimeout
+        }, function(err, res) {
+            return err ? error(err) : success(res.td_ssc_id);
+        });
+    }
+    module.exports = {
+        "configure": configure,
+        "fetchServerCookie": fetchServerCookie
+    };
+}, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);
-    var window = __webpack_require__(76);
+    var window = __webpack_require__(64);
     function applyToClient(client, method) {
         var _method = "_" + method;
         if (client[_method]) {
