@@ -1,7 +1,7 @@
 var test = require('tape')
 
 module.exports = function (browser, initOpts, finish) {
-  test('globalid test', function (t) {
+  test('server cookie test', function (t) {
     var count = 2
     t.plan(2)
 
@@ -15,9 +15,10 @@ module.exports = function (browser, initOpts, finish) {
     }
 
     function initTest () {
-      browser.get('http://localhost:9999/fixtures/globalid', function () {
+      browser.get('http://localhost:9999/fixtures/servercookie', function () {
         getStatus(0)
         getStatus(1)
+        getStatus(2)
       })
     }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>globalid</title>
+  <title>servercookie</title>
   <meta name="description" content="test that globalid tracking works"></meta>
   <script src="/dist/td.js"></script>
 </head>
@@ -29,26 +29,23 @@
       }
     }
 
+    var status = []
+
     var td = new Treasure({
       database: 'test_db_request',
       writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in.treasuredata.com'
+      host: 'in-staging.treasuredata.com',
+      useServerSideCookie: true,
     })
     td.setSignedMode()
-    td.fetchGlobalID(function (value) {
-      setBackground('green')
+    td.fetchServerCookie(function (value1) {
       setStatus(0, 'success')
-      td.setSignedMode()
       td.setAnonymousMode()
-      console.log('a')
-      td.fetchGlobalID(function() {
-        console.log('b')
+      td.fetchServerCookie(function(){
         setStatus(1, 'failure')
       }, function(error) {
-        console.log('c')
         setStatus(1, 'success')
       })
-
     }, function () {
       setBackground('red')
       setStatus(0, 'failure')

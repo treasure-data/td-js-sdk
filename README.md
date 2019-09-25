@@ -40,7 +40,7 @@ Install td-js-sdk on your page by copying the appropriate JavaScript snippet bel
 
 ```html
 <script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["blockEvents","unblockEvents","setSignedMode","setAnonymousMode","resetUUID","addRecord","fetchGlobalID","set","trackEvent","trackPageview","trackClicks","ready"],n=0;n<s.length;n++){var c=s[n];e[t].prototype[c]=r(c)}var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.1/td.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)}}("Treasure",this);
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["blockEvents","unblockEvents","setSignedMode","setAnonymousMode","resetUUID","addRecord","fetchGlobalID","set","setSignedMode", "fetchServerCookie","trackEvent","trackPageview","trackClicks","ready"],n=0;n<s.length;n++){var c=s[n];e[t].prototype[c]=r(c)}var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.2.0/td.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)}}("Treasure",this);
 </script>
 ```
 
@@ -268,7 +268,8 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
 * **config.globalIdCookie** : String (optional) - cookie td_globalid name. Default: `_td_global`
 * **config.startInSignedMode** : Boolean (optional) - Tell the SDK to default to Signed Mode if no choice is already made. Default: `false`
-- **config.jsonpTimeout** : Number (optional) - JSONP timeout (in milliseconds) Default: `10000`
+* **config.jsonpTimeout** : Number (optional) - JSONP timeout (in milliseconds) Default: `10000`
+* **config.storeConsentByLocalStorage** : Boolean (optional) - Tell the SDK to use localStorage to store user consent. Default: `false`
 
 **Track/Storage parameters:**
 
@@ -277,6 +278,12 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.storage.name** : String (optional) - cookie name. Default: `_td`
 * **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
 * **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
+
+**Server Side Cookie:**
+* **config.useServerSideCookie** : Boolean (optional) - enables/disable using ServerSide Cookie - Default False
+* **config.sscDomain** : String | (String) => String (optional) - Domain against which the Server Side Cokkie is set Default: `window.location.hostname`
+* **config.sscServer** : String (optional) - hostname to request server side cookie from Default `ssc.${sscDomain}`
+
 
 **Personalization parameters**
 
@@ -504,6 +511,32 @@ td.setSignedMode()
 td.inSignedMode() // true
 td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id will also be sent if set.
 ```
+
+### Treasure#fetchServerCookie(success, failure, forceFetch)
+This functionality complies with ITP 1.2 tracking. Contact customer support for enabling this feature.
+
+**Parameters:**
+
+* **success** : Function (optional) - Callback for when sending the event is successful
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+* **forceFetch** : Boolean (optional) - Forces a refetch of server side id and ignores cached version (default false)
+
+**Example:**
+
+```javascript
+var td = new Treasure({...})
+
+var successCallback = function (serverSideId) {
+  // celebrate();
+};
+
+var errorCallback = function (error) {
+  // cry();
+}
+
+td.fetchServerCookie(successCallback, errorCallback)
+```
+
 
 ### Treasure#resetUUID
 
