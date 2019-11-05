@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (2019-09-25)
+* Add `useServerSideCookie` property to configuration options
+* Add `sscDomain` property to configuration options
+* Add `sscServer` property to configuration options
+* Add `fetchServerCookie` method 
+
 ## 2.1.0 (2018-05-24)
 * Modifications to release scripts for test environments
 * Add `startInSignedMode` property to select the default behavior
