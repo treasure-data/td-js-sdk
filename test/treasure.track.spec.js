@@ -80,6 +80,17 @@ describe('Treasure Tracker', function () {
       expect(treasure.client.track.uuid).to.equal('123')
     })
 
+    it('should not _windowBeingUnloaded', function () {
+      expect(treasure._windowBeingUnloaded).to.equal(undefined)
+    })
+
+    it('should set _windowBeingUnloaded to true on pagehide event', function () {
+      var event = document.createEvent('Event')
+      event.initEvent('pagehide', false, false)
+      window.dispatchEvent(event)
+      expect(treasure._windowBeingUnloaded).to.equal(undefined)
+    })
+
     describe('track values', function () {
       var track = {values: {}}
 
