@@ -85,10 +85,14 @@ describe('Treasure Tracker', function () {
     })
 
     it('should set _windowBeingUnloaded to true on pagehide event', function () {
-      var event = document.createEvent('Event')
-      event.initEvent('pagehide', false, false)
-      window.dispatchEvent(event)
-      expect(treasure._windowBeingUnloaded).to.equal(undefined)
+      if ('onpagehide' in window) {
+        var event = document.createEvent('Event')
+        event.initEvent('pagehide', false, false)
+        window.dispatchEvent(event)
+        expect(treasure._windowBeingUnloaded).to.equal(true)
+      } else {
+        expect(true).ok()
+      }
     })
 
     describe('track values', function () {
