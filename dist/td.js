@@ -2754,7 +2754,7 @@
             delete client[_method];
         }
     }
-    var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "ready" ];
+    var TREASURE_KEYS = [ "init", "set", "blockEvents", "fetchServerCookie", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "ready" ];
     module.exports = function loadClients(Treasure, name) {
         if (_.isObject(window[name])) {
             var snippet = window[name];
