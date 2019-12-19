@@ -2,8 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/treasure-data/td-js-sdk.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) [![![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)](https://automate.browserstack.com/public-build/c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)
-
+[![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) [![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)](https://automate.browserstack.com/public-build/c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)
 
 ## Build
 
