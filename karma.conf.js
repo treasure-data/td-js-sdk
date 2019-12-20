@@ -16,7 +16,7 @@ module.exports = function (config) {
 
     // Increase default browser timeout for when
     // devices or emulators take a while to boot up
-    browserNoActivityTimeout: 120000,
+    browserNoActivityTimeout: 320000,
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -117,6 +117,20 @@ module.exports = function (config) {
         os: 'OS X',
         os_version: 'High Sierra'
       },
+      bs_safari_12_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '12.1',
+        os: 'OS X',
+        os_version: 'Mojave'
+      },
+      bs_safari_13_mac: {
+        base: 'BrowserStack',
+        browser: 'safari',
+        browser_version: '13.0',
+        os: 'OS X',
+        os_version: 'Catalina'
+      },
       bs_ie_8_win: {
         base: 'BrowserStack',
         browser: 'ie',
@@ -181,12 +195,6 @@ module.exports = function (config) {
         os: 'ios',
         os_version: '10.3'
       },
-      bs_iphone8: {
-        base: 'BrowserStack',
-        device: 'iPhone 8',
-        os: 'ios',
-        os_version: '11.0'
-      },
       android44: {
         base: 'BrowserStack',
         device: 'Samsung Galaxy S5',
@@ -223,7 +231,24 @@ module.exports = function (config) {
         device: 'Google Pixel',
         os: 'android',
         os_version: '8.0',
-        browser: 'android'
+        browser: 'android',
+        real_mobile: 'true'
+      },
+      android90: {
+        base: 'BrowserStack',
+        device: 'Google Pixel 2',
+        os: 'android',
+        os_version: '9.0',
+        browser: 'android',
+        real_mobile: 'true'
+      },
+      android100: {
+        base: 'BrowserStack',
+        device: 'Google Pixel 3',
+        os: 'android',
+        os_version: '10.0',
+        browser: 'android',
+        real_mobile: 'true'
       }
     },
 
@@ -237,6 +262,8 @@ module.exports = function (config) {
       'bs_safari_9_mac',
       'bs_safari_10_mac',
       'bs_safari_11_mac',
+      'bs_safari_12_mac',
+      'bs_safari_13_mac',
       'bs_ie_8_win',
       'bs_ie_9_win',
       'bs_ie_10_win',
@@ -246,11 +273,13 @@ module.exports = function (config) {
       'bs_iphone6',
       'bs_iphone6_9',
       // 'bs_iphone7',
-      'bs_iphone8',
       'android44',
       'android50',
       'android60',
-      'android71'
+      'android71',
+      'android80',
+      'android90',
+      'android100'
     ],
 
     // Continuous Integration mode
