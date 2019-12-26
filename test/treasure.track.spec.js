@@ -3,8 +3,17 @@ var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
 // var parseDomain = require('parse-domain')
 
+var openSpy = simple.spy()
+var sendSpy = simple.spy()
+var setRequestHeaderSpy = simple.spy()
+
+var FakeXMLHttpRequest = function FakeXMLHttpRequest () {}
+FakeXMLHttpRequest.prototype.open = openSpy
+FakeXMLHttpRequest.prototype.send = sendSpy
+FakeXMLHttpRequest.prototype.setRequestHeader = setRequestHeaderSpy
+
 describe('Treasure Tracker', function () {
-  var treasure, configuration, spy
+  var treasure, configuration, spy, addRecordsSpy
 
   function getKeys (obj) {
     var keys = []
@@ -29,6 +38,7 @@ describe('Treasure Tracker', function () {
   beforeEach(function () {
     treasure = new Treasure(configuration)
     spy = simple.mock(Treasure.prototype, 'addRecord')
+    addRecordsSpy = simple.mock(Treasure.prototype, 'addRecords')
   })
 
   afterEach(function () {
@@ -339,6 +349,32 @@ describe('Treasure Tracker', function () {
 
       var callKeys = getKeys(spy.firstCall.args[1])
       expect(callKeys).to.eql(getKeys(trackValues))
+    })
+
+    it('should track multiple events', function () {
+      var origXMLHttpRequest = window.XMLHttpRequest
+      var origXDomainRequest = window.XDomainRequest
+
+      window.XMLHttpRequest = FakeXMLHttpRequest
+      window.XDomainRequest = FakeXMLHttpRequest
+
+      treasure.trackEvents({
+        db1: {
+          tbl1: [
+            { record1: 'value1' }
+          ]
+        },
+        db2: {
+          tbl2: [
+            { record2: 'value2' }
+          ]
+        }
+      }, function success () {
+        window.XMLHttpRequest = origXMLHttpRequest
+        window.XDomainRequest = origXDomainRequest
+      })
+
+      expect(addRecordsSpy.callCount).to.equal(1)
     })
   })
 })

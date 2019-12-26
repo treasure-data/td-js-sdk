@@ -9,8 +9,19 @@ var record = require('../lib/record')
 var BLOCKEVENTSCOOKIE = record.BLOCKEVENTSCOOKIE
 var SIGNEDMODECOOKIE = record.SIGNEDMODECOOKIE
 
+var openSpy = simple.spy()
+var sendSpy = simple.spy()
+var setRequestHeaderSpy = simple.spy()
+
+var FakeXMLHttpRequest = function FakeXMLHttpRequest () {}
+FakeXMLHttpRequest.prototype.open = openSpy
+FakeXMLHttpRequest.prototype.send = sendSpy
+FakeXMLHttpRequest.prototype.setRequestHeader = setRequestHeaderSpy
+
 describe('Treasure Record', function () {
   var treasure, configuration
+  var origXMLHttpRequest = window.XMLHttpRequest
+  var origXDomainRequest = window.XDomainRequest
 
   function resetConfiguration (options) {
     configuration = _.assign({
@@ -20,8 +31,58 @@ describe('Treasure Record', function () {
       development: true
     }, options)
   }
+
   beforeEach(function () {
     resetConfiguration()
+  })
+
+  describe('#addRecords', function () {
+    describe('validation', function () {
+      beforeEach(function () {
+        treasure = new Treasure(configuration)
+      })
+
+      var tryAddRecords = function (records, success, error) {
+        expect(function () {
+          treasure.addRecords(records, success, error)
+        }).to.throwException()
+      }
+
+      it('should error if records are missing', function () {
+        tryAddRecords(null)
+      })
+
+      it('should error if passing empty object', function () {
+        tryAddRecords({})
+      })
+    })
+
+    describe('tables', function () {
+      beforeEach(function () {
+        treasure = new Treasure(configuration)
+        window.XMLHttpRequest = FakeXMLHttpRequest
+        window.XDomainRequest = FakeXMLHttpRequest
+      })
+
+      it('should send records', function () {
+        treasure.addRecords({
+          db1: {
+            table1: [
+              { record1: 'value1' }
+            ]
+          }
+        }, function success () {})
+
+        expect(sendSpy.callCount).to.equal(1)
+        expect(openSpy.callCount).to.equal(1)
+        expect(setRequestHeaderSpy.callCount).to.equal(3)
+      })
+
+      afterEach(function () {
+        window.XMLHttpRequest = origXMLHttpRequest
+        window.XDomainRequest = origXDomainRequest
+      })
+    })
   })
 
   describe('#addRecord', function () {

@@ -14,7 +14,7 @@
       }
     }
 
-    var methods = ['blockEvents', 'setSignedMode', 'fetchServerCookie', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
+    var methods = ['blockEvents', 'setSignedMode', 'fetchServerCookie', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'addRecords', 'fetchGlobalID', 'set', 'trackEvent', 'trackEvents', 'trackPageview', 'trackClicks', 'ready']
     for (var i = 0; i < methods.length; i++) {
       var method = methods[i]
       c[n].prototype[method] = action(method)
