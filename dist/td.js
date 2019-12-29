@@ -18,9 +18,13 @@
 })([ function(module, exports, __webpack_require__) {
     var Treasure = __webpack_require__(1);
     var window = __webpack_require__(64);
-    var GLOBAL = __webpack_require__(73).GLOBAL;
-    __webpack_require__(83)(Treasure, GLOBAL);
-    window[GLOBAL] = Treasure;
+    var GLOBAL_NAME = __webpack_require__(73).GLOBAL;
+    var TD_GLOBAL = window;
+    if (window.parent !== window && document.getElementById("td-iframe-async")) {
+        TD_GLOBAL = window.parent;
+    }
+    __webpack_require__(83)(Treasure, TD_GLOBAL, GLOBAL_NAME);
+    TD_GLOBAL[GLOBAL_NAME] = Treasure;
 }, function(module, exports, __webpack_require__) {
     var record = __webpack_require__(2);
     var _ = __webpack_require__(9);
@@ -2790,7 +2794,6 @@
     };
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);
-    var window = __webpack_require__(64);
     function applyToClient(client, method) {
         var _method = "_" + method;
         if (client[_method]) {
@@ -2802,9 +2805,9 @@
         }
     }
     var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "ready" ];
-    module.exports = function loadClients(Treasure, name) {
-        if (_.isObject(window[name])) {
-            var snippet = window[name];
+    module.exports = function loadClients(Treasure, global, name) {
+        if (_.isObject(global[name])) {
+            var snippet = global[name];
             var clients = snippet.clients;
             _.forIn(Treasure.prototype, function(value, key) {
                 snippet.prototype[key] = value;

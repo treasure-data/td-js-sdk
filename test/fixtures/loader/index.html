@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,85 +23,141 @@
           }
         }
 
-        var methods = ['addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
+        var methods = ['blockEvents', 'fetchServerCookie', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
         for (var i = 0; i < methods.length; i++) {
           var method = methods[i]
           c[n].prototype[method] = action(method)
         }
 
-        var s = document.createElement('script')
-        s.type = 'text/javascript'
-        s.async = !0
-        s.src = '/dist/td.min.js'
+        var where = document.currentScript || document.getElementsByTagName('script')[0]
+        var iframe = document.createElement('iframe')
+        var win, doc, dom, s, bootstrap
+        var iframeId = 'td-iframe-async'
 
-        var t = document.getElementsByTagName('script')[0]
-        t.parentNode.insertBefore(s, t)
+        // IE6, which does not support CSP, treats about:blank as insecure content, so we'd have to use javascript:void(0) there
+        // In browsers that do support CSP, javascript:void(0) is considered unsafe inline JavaScript, so we prefer about:blank
+        iframe.src = 'javascript:false'
+
+        // We set title and role appropriately to play nicely with screen readers and other assistive technologies
+        iframe.title = ''
+        iframe.role = 'presentation'
+
+        s = (iframe.frameElement || iframe).style
+        s.width = 0; s.height = 0; s.border = 0; s.display = 'none'
+
+        where.parentNode.insertBefore(iframe, where)
+        try {
+          win = iframe.contentWindow
+          doc = win.document.open()
+        } catch (e) {
+          // document.domain has been changed and we're on an old version of IE, so we got an access denied.
+          // Note: the only browsers that have this problem also do not have CSP support.
+
+          // Get document.domain of the parent window
+          dom = document.domain
+
+          // Set the src of the iframe to a JavaScript URL that will immediately set its document.domain to match the parent.
+          // This lets us access the iframe document long enough to inject our script.
+          // Our script may need to do more domain massaging later.
+          iframe.src = 'javascript:var d=document.open();d.domain="' + dom + '";void(0);'
+          win = iframe.contentWindow
+          doc = win.document.open()
+        }
+
+        bootstrap = function () {
+          // This code runs inside the iframe
+          var js = doc.createElement('script')
+          js.id = iframeId
+          js.src = '/dist/td.js'
+          doc.body.appendChild(js)
+        }
+
+        try {
+          win._l = bootstrap
+
+          if (win.addEventListener) {
+            win.addEventListener('load', win._l, false)
+          } else if (win.attachEvent) {
+            win.attachEvent('onload', win._l)
+          }
+        } catch (f) {
+          // unsafe version for IE8 compatability
+          // If document.domain has changed, we can't use win, but we can use doc
+          doc._l = function () {
+            if (dom) {
+              this.domain = dom
+            }
+            bootstrap()
+          }
+          doc.write('<body onload="document._l();">')
+        }
+        doc.close()
       }
     })('Treasure', this)
   </script>
 </head>
 <body>
-
-<script type="text/javascript">
-  (function () {
-    function setStatus (num, text) {
-      document.getElementById('status' + num).innerHTML = text
-      status[num] = text
-      if (status.length === 4) {
-        var isFailure = false
-        for (var i = 0; i < status.length; i++) {
-          if (status[i] === 'failure') {
-            isFailure = true
+  <script type="text/javascript">
+      (function () {
+        function setStatus(num, text) {
+          document.getElementById('status' + num).innerHTML = text
+          status[num] = text
+          if (status.length === 4) {
+            var isFailure = false
+            for (var i = 0; i < status.length; i++) {
+              if (status[i] === 'failure') {
+                isFailure = true
+              }
+            }
+            document.body.style.background = isFailure ? 'red' : 'green'
           }
         }
-        document.body.style.background = isFailure ? 'red' : 'green'
-      }
-    }
 
-    var status = []
-    var td = new Treasure({
-      database: 'test_db_request',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in-staging.treasuredata.com'
-    })
+        var status = []
+        var td = new Treasure({
+          database: 'test_db_request',
+          writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+          host: 'in-staging.treasuredata.com'
+        })
 
-    td.addRecord('loader_add_record', {}, function () {
-      setStatus(0, 'success')
-    }, function () {
-      setStatus(0, 'failure')
-    });
+        td.addRecord('loader_add_record', {}, function () {
+          setStatus(0, 'success')
+        }, function () {
+          setStatus(0, 'failure')
+        });
 
-    td.trackEvent('loader_track_event', {}, function () {
-      setStatus(1, 'success')
-    }, function () {
-      setStatus(1, 'failure')
-    });
+        td.trackEvent('loader_track_event', {}, function () {
+          setStatus(1, 'success')
+        }, function () {
+          setStatus(1, 'failure')
+        });
 
-    td.trackPageview('loader_track_pageview', function () {
-      setStatus(2, 'success')
-      var td2 = new Treasure({
-        database: 'test_db_request',
-        writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-        host: 'in-staging.treasuredata.com'
-      })
-      try {
-        var failure = function () { setStatus(3, 'failure') }
-        td2.trackPageview('loader_track_pageview', function () {
-          setStatus(3, 'success')
-        }, failure)
-      } catch (e) {
-        failure()
-      }
-    }, function () {
-      setStatus(2, 'failure')
-    })
-  })()
-</script>
+        td.trackPageview('loader_track_pageview', function () {
+          setStatus(2, 'success')
+          var td2 = new Treasure({
+            database: 'test_db_request',
+            writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+            host: 'in-staging.treasuredata.com'
+          })
+          try {
+            var failure = function () { setStatus(3, 'failure') }
+            td2.trackPageview('loader_track_pageview', function () {
+              setStatus(3, 'success')
+            }, failure)
+          } catch (e) {
+            failure()
+          }
+        }, function () {
+          setStatus(2, 'failure')
+        })
+      })()
+  </script>
 
-<h1 id='status0' style="text-align: center;">running</h1>
-<h1 id='status1' style="text-align: center;">running</h1>
-<h1 id='status2' style="text-align: center;">running</h1>
-<h1 id='status3' style="text-align: center;">running</h1>
+  <h1 id='status0' style="text-align: center;">running</h1>
+  <h1 id='status1' style="text-align: center;">running</h1>
+  <h1 id='status2' style="text-align: center;">running</h1>
+  <h1 id='status3' style="text-align: center;">running</h1>
 
 </body>
+
 </html>
