@@ -17,17 +17,21 @@
     return __webpack_require__(0);
 })([ function(module, exports, __webpack_require__) {
     var Treasure = __webpack_require__(1);
-    var window = __webpack_require__(64);
-    var GLOBAL = __webpack_require__(73).GLOBAL;
-    __webpack_require__(83)(Treasure, GLOBAL);
-    window[GLOBAL] = Treasure;
+    var window = __webpack_require__(63);
+    var GLOBAL = __webpack_require__(72).GLOBAL;
+    TD_NS = window;
+    if (window.parent !== window && document.getElementById("js-iframe-async")) {
+        TD_NS = window.parent;
+    }
+    __webpack_require__(82)(Treasure, TD_NS, GLOBAL);
+    TD_NS[GLOBAL] = Treasure;
 }, function(module, exports, __webpack_require__) {
     var record = __webpack_require__(2);
-    var _ = __webpack_require__(9);
-    var configurator = __webpack_require__(72);
-    var version = __webpack_require__(74);
-    var cookie = __webpack_require__(65);
-    var config = __webpack_require__(73);
+    var _ = __webpack_require__(8);
+    var configurator = __webpack_require__(71);
+    var version = __webpack_require__(73);
+    var cookie = __webpack_require__(64);
+    var config = __webpack_require__(72);
     function Treasure(options) {
         if (!(this instanceof Treasure)) {
             return new Treasure(options);
@@ -41,6 +45,12 @@
             if (Treasure.Plugins.hasOwnProperty(plugin)) {
                 Treasure.Plugins[plugin].configure.call(this, options);
             }
+        }
+        if (window.addEventListener) {
+            var that = this;
+            window.addEventListener("pagehide", function() {
+                that._windowBeingUnloaded = true;
+            });
         }
     };
     Treasure.version = Treasure.prototype.version = version;
@@ -56,7 +66,7 @@
     Treasure.prototype.configure = configurator.configure;
     Treasure.prototype.set = configurator.set;
     Treasure.prototype.get = configurator.get;
-    Treasure.prototype.ready = __webpack_require__(75);
+    Treasure.prototype.ready = __webpack_require__(74);
     Treasure.prototype.applyProperties = record.applyProperties;
     Treasure.prototype.addRecord = record.addRecord;
     Treasure.prototype._sendRecord = record._sendRecord;
@@ -69,11 +79,11 @@
     Treasure.prototype.getCookie = cookie.getItem;
     Treasure.prototype._configurator = configurator;
     Treasure.Plugins = {
-        "Clicks": __webpack_require__(76),
-        "GlobalID": __webpack_require__(78),
-        "Personalization": __webpack_require__(79),
-        "Track": __webpack_require__(80),
-        "ServerSideCookie": __webpack_require__(82)
+        "Clicks": __webpack_require__(75),
+        "GlobalID": __webpack_require__(77),
+        "Personalization": __webpack_require__(78),
+        "Track": __webpack_require__(79),
+        "ServerSideCookie": __webpack_require__(81)
     };
     _.forIn(Treasure.Plugins, function(plugin) {
         _.forIn(plugin, function(method, name) {
@@ -87,11 +97,11 @@
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var jsonp = __webpack_require__(4);
-    var _ = __webpack_require__(9);
-    var global = __webpack_require__(64);
-    var cookie = __webpack_require__(65);
-    var setCookie = __webpack_require__(66);
-    var objectToBase64 = __webpack_require__(67);
+    var _ = __webpack_require__(8);
+    var global = __webpack_require__(63);
+    var cookie = __webpack_require__(64);
+    var setCookie = __webpack_require__(65);
+    var objectToBase64 = __webpack_require__(66);
     function validateRecord(table, record) {
         invariant(_.isString(table), "Must provide a table");
         invariant(/^[a-z0-9_]{3,255}$/.test(table), "Table must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
@@ -143,13 +153,25 @@
         if (request.time) {
             params.push("time=" + encodeURIComponent(request.time));
         }
-        var jsonpUrl = request.url + "?" + params.join("&");
-        jsonp(jsonpUrl, {
-            "prefix": "TreasureJSONPCallback",
-            "timeout": this.client.jsonpTimeout
-        }, function(err, res) {
-            return err ? error(err) : success(res);
-        });
+        var url = request.url + "?" + params.join("&");
+        var isClickedLink = request.record.tag === "a" && !!request.record.href;
+        if (window.fetch && (this._windowBeingUnloaded || isClickedLink)) {
+            window.fetch(url, {
+                "method": "POST",
+                "keepalive": true
+            }).then(function(response) {
+                success(response);
+            })["catch"](function(err) {
+                error(err);
+            });
+        } else {
+            jsonp(url, {
+                "prefix": "TreasureJSONPCallback",
+                "timeout": this.client.jsonpTimeout
+            }, function(err, res) {
+                return err ? error(err) : success(res);
+            });
+        }
     };
     exports.applyProperties = function applyProperties(table, payload) {
         return _.assign({}, this.get("$global"), this.get(table), payload);
@@ -245,264 +267,99 @@
         return cancel;
     }
 }, function(module, exports, __webpack_require__) {
-    (function(process) {
-        exports = module.exports = __webpack_require__(7);
-        exports.log = log;
-        exports.formatArgs = formatArgs;
-        exports.save = save;
-        exports.load = load;
-        exports.useColors = useColors;
-        exports.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : localstorage();
-        exports.colors = [ "lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson" ];
-        function useColors() {
-            if (typeof window !== "undefined" && window.process && window.process.type === "renderer") {
-                return true;
-            }
-            return typeof document !== "undefined" && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || typeof window !== "undefined" && window.console && (window.console.firebug || window.console.exception && window.console.table) || typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
-        }
-        exports.formatters.j = function(v) {
-            try {
-                return JSON.stringify(v);
-            } catch (err) {
-                return "[UnexpectedJSONParseError]: " + err.message;
-            }
-        };
-        function formatArgs(args) {
-            var useColors = this.useColors;
-            args[0] = (useColors ? "%c" : "") + this.namespace + (useColors ? " %c" : " ") + args[0] + (useColors ? "%c " : " ") + "+" + exports.humanize(this.diff);
-            if (!useColors) return;
-            var c = "color: " + this.color;
-            args.splice(1, 0, c, "color: inherit");
-            var index = 0;
-            var lastC = 0;
-            args[0].replace(/%[a-zA-Z%]/g, function(match) {
-                if ("%%" === match) return;
-                index++;
-                if ("%c" === match) {
-                    lastC = index;
-                }
-            });
-            args.splice(lastC, 0, c);
-        }
-        function log() {
-            return "object" === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
-        }
-        function save(namespaces) {
-            try {
-                if (null == namespaces) {
-                    exports.storage.removeItem("debug");
-                } else {
-                    exports.storage.debug = namespaces;
-                }
-            } catch (e) {}
-        }
-        function load() {
-            var r;
-            try {
-                r = exports.storage.debug;
-            } catch (e) {}
-            if (!r && typeof process !== "undefined" && "env" in process) {
-                r = process.env.DEBUG;
-            }
-            return r;
-        }
-        exports.enable(load());
-        function localstorage() {
-            try {
-                return window.localStorage;
-            } catch (e) {}
-        }
-    }).call(exports, __webpack_require__(6));
-}, function(module, exports) {
-    var process = module.exports = {};
-    var cachedSetTimeout;
-    var cachedClearTimeout;
-    function defaultSetTimout() {
-        throw new Error("setTimeout has not been defined");
+    exports = module.exports = __webpack_require__(6);
+    exports.log = log;
+    exports.formatArgs = formatArgs;
+    exports.save = save;
+    exports.load = load;
+    exports.useColors = useColors;
+    exports.storage = "undefined" != typeof chrome && "undefined" != typeof chrome.storage ? chrome.storage.local : localstorage();
+    exports.colors = [ "lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson" ];
+    function useColors() {
+        return "WebkitAppearance" in document.documentElement.style || window.console && (console.firebug || console.exception && console.table) || navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31;
     }
-    function defaultClearTimeout() {
-        throw new Error("clearTimeout has not been defined");
+    exports.formatters.j = function(v) {
+        return JSON.stringify(v);
+    };
+    function formatArgs() {
+        var args = arguments;
+        var useColors = this.useColors;
+        args[0] = (useColors ? "%c" : "") + this.namespace + (useColors ? " %c" : " ") + args[0] + (useColors ? "%c " : " ") + "+" + exports.humanize(this.diff);
+        if (!useColors) return args;
+        var c = "color: " + this.color;
+        args = [ args[0], c, "color: inherit" ].concat(Array.prototype.slice.call(args, 1));
+        var index = 0;
+        var lastC = 0;
+        args[0].replace(/%[a-z%]/g, function(match) {
+            if ("%%" === match) return;
+            index++;
+            if ("%c" === match) {
+                lastC = index;
+            }
+        });
+        args.splice(lastC, 0, c);
+        return args;
     }
-    (function() {
+    function log() {
+        return "object" === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+    }
+    function save(namespaces) {
         try {
-            if (typeof setTimeout === "function") {
-                cachedSetTimeout = setTimeout;
+            if (null == namespaces) {
+                exports.storage.removeItem("debug");
             } else {
-                cachedSetTimeout = defaultSetTimout;
+                exports.storage.debug = namespaces;
             }
-        } catch (e) {
-            cachedSetTimeout = defaultSetTimout;
-        }
+        } catch (e) {}
+    }
+    function load() {
+        var r;
         try {
-            if (typeof clearTimeout === "function") {
-                cachedClearTimeout = clearTimeout;
-            } else {
-                cachedClearTimeout = defaultClearTimeout;
-            }
-        } catch (e) {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    })();
-    function runTimeout(fun) {
-        if (cachedSetTimeout === setTimeout) {
-            return setTimeout(fun, 0);
-        }
-        if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-            cachedSetTimeout = setTimeout;
-            return setTimeout(fun, 0);
-        }
+            r = exports.storage.debug;
+        } catch (e) {}
+        return r;
+    }
+    exports.enable(load());
+    function localstorage() {
         try {
-            return cachedSetTimeout(fun, 0);
-        } catch (e) {
-            try {
-                return cachedSetTimeout.call(null, fun, 0);
-            } catch (e) {
-                return cachedSetTimeout.call(this, fun, 0);
-            }
-        }
+            return window.localStorage;
+        } catch (e) {}
     }
-    function runClearTimeout(marker) {
-        if (cachedClearTimeout === clearTimeout) {
-            return clearTimeout(marker);
-        }
-        if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-            cachedClearTimeout = clearTimeout;
-            return clearTimeout(marker);
-        }
-        try {
-            return cachedClearTimeout(marker);
-        } catch (e) {
-            try {
-                return cachedClearTimeout.call(null, marker);
-            } catch (e) {
-                return cachedClearTimeout.call(this, marker);
-            }
-        }
-    }
-    var queue = [];
-    var draining = false;
-    var currentQueue;
-    var queueIndex = -1;
-    function cleanUpNextTick() {
-        if (!draining || !currentQueue) {
-            return;
-        }
-        draining = false;
-        if (currentQueue.length) {
-            queue = currentQueue.concat(queue);
-        } else {
-            queueIndex = -1;
-        }
-        if (queue.length) {
-            drainQueue();
-        }
-    }
-    function drainQueue() {
-        if (draining) {
-            return;
-        }
-        var timeout = runTimeout(cleanUpNextTick);
-        draining = true;
-        var len = queue.length;
-        while (len) {
-            currentQueue = queue;
-            queue = [];
-            while (++queueIndex < len) {
-                if (currentQueue) {
-                    currentQueue[queueIndex].run();
-                }
-            }
-            queueIndex = -1;
-            len = queue.length;
-        }
-        currentQueue = null;
-        draining = false;
-        runClearTimeout(timeout);
-    }
-    process.nextTick = function(fun) {
-        var args = new Array(arguments.length - 1);
-        if (arguments.length > 1) {
-            for (var i = 1; i < arguments.length; i++) {
-                args[i - 1] = arguments[i];
-            }
-        }
-        queue.push(new Item(fun, args));
-        if (queue.length === 1 && !draining) {
-            runTimeout(drainQueue);
-        }
-    };
-    function Item(fun, array) {
-        this.fun = fun;
-        this.array = array;
-    }
-    Item.prototype.run = function() {
-        this.fun.apply(null, this.array);
-    };
-    process.title = "browser";
-    process.browser = true;
-    process.env = {};
-    process.argv = [];
-    process.version = "";
-    process.versions = {};
-    function noop() {}
-    process.on = noop;
-    process.addListener = noop;
-    process.once = noop;
-    process.off = noop;
-    process.removeListener = noop;
-    process.removeAllListeners = noop;
-    process.emit = noop;
-    process.binding = function(name) {
-        throw new Error("process.binding is not supported");
-    };
-    process.cwd = function() {
-        return "/";
-    };
-    process.chdir = function(dir) {
-        throw new Error("process.chdir is not supported");
-    };
-    process.umask = function() {
-        return 0;
-    };
 }, function(module, exports, __webpack_require__) {
-    exports = module.exports = createDebug.debug = createDebug["default"] = createDebug;
+    exports = module.exports = debug;
     exports.coerce = coerce;
     exports.disable = disable;
     exports.enable = enable;
     exports.enabled = enabled;
-    exports.humanize = __webpack_require__(8);
+    exports.humanize = __webpack_require__(7);
     exports.names = [];
     exports.skips = [];
     exports.formatters = {};
+    var prevColor = 0;
     var prevTime;
-    function selectColor(namespace) {
-        var hash = 0, i;
-        for (i in namespace) {
-            hash = (hash << 5) - hash + namespace.charCodeAt(i);
-            hash |= 0;
-        }
-        return exports.colors[Math.abs(hash) % exports.colors.length];
+    function selectColor() {
+        return exports.colors[prevColor++ % exports.colors.length];
     }
-    function createDebug(namespace) {
-        function debug() {
-            if (!debug.enabled) return;
-            var self = debug;
+    function debug(namespace) {
+        function disabled() {}
+        disabled.enabled = false;
+        function enabled() {
+            var self = enabled;
             var curr = +new Date();
             var ms = curr - (prevTime || curr);
             self.diff = ms;
             self.prev = prevTime;
             self.curr = curr;
             prevTime = curr;
-            var args = new Array(arguments.length);
-            for (var i = 0; i < args.length; i++) {
-                args[i] = arguments[i];
-            }
+            if (null == self.useColors) self.useColors = exports.useColors();
+            if (null == self.color && self.useColors) self.color = selectColor();
+            var args = Array.prototype.slice.call(arguments);
             args[0] = exports.coerce(args[0]);
             if ("string" !== typeof args[0]) {
-                args.unshift("%O");
+                args = [ "%o" ].concat(args);
             }
             var index = 0;
-            args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
+            args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
                 if (match === "%%") return match;
                 index++;
                 var formatter = exports.formatters[format];
@@ -514,24 +371,20 @@
                 }
                 return match;
             });
-            exports.formatArgs.call(self, args);
-            var logFn = debug.log || exports.log || console.log.bind(console);
+            if ("function" === typeof exports.formatArgs) {
+                args = exports.formatArgs.apply(self, args);
+            }
+            var logFn = enabled.log || exports.log || console.log.bind(console);
             logFn.apply(self, args);
         }
-        debug.namespace = namespace;
-        debug.enabled = exports.enabled(namespace);
-        debug.useColors = exports.useColors();
-        debug.color = selectColor(namespace);
-        if ("function" === typeof exports.init) {
-            exports.init(debug);
-        }
-        return debug;
+        enabled.enabled = true;
+        var fn = exports.enabled(namespace) ? enabled : disabled;
+        fn.namespace = namespace;
+        return fn;
     }
     function enable(namespaces) {
         exports.save(namespaces);
-        exports.names = [];
-        exports.skips = [];
-        var split = (typeof namespaces === "string" ? namespaces : "").split(/[\s,]+/);
+        var split = (namespaces || "").split(/[\s,]+/);
         var len = split.length;
         for (var i = 0; i < len; i++) {
             if (!split[i]) continue;
@@ -572,23 +425,14 @@
     var y = d * 365.25;
     module.exports = function(val, options) {
         options = options || {};
-        var type = typeof val;
-        if (type === "string" && val.length > 0) {
-            return parse(val);
-        } else if (type === "number" && isNaN(val) === false) {
-            return options.long ? fmtLong(val) : fmtShort(val);
-        }
-        throw new Error("val is not a non-empty string or a valid number. val=" + JSON.stringify(val));
+        if ("string" == typeof val) return parse(val);
+        return options.long ? long(val) : short(val);
     };
     function parse(str) {
-        str = String(str);
-        if (str.length > 100) {
-            return;
-        }
+        str = "" + str;
+        if (str.length > 1e4) return;
         var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
-        if (!match) {
-            return;
-        }
+        if (!match) return;
         var n = parseFloat(match[1]);
         var type = (match[2] || "ms").toLowerCase();
         switch (type) {
@@ -631,53 +475,38 @@
           case "msec":
           case "ms":
             return n;
-
-          default:
-            return undefined;
         }
     }
-    function fmtShort(ms) {
-        if (ms >= d) {
-            return Math.round(ms / d) + "d";
-        }
-        if (ms >= h) {
-            return Math.round(ms / h) + "h";
-        }
-        if (ms >= m) {
-            return Math.round(ms / m) + "m";
-        }
-        if (ms >= s) {
-            return Math.round(ms / s) + "s";
-        }
+    function short(ms) {
+        if (ms >= d) return Math.round(ms / d) + "d";
+        if (ms >= h) return Math.round(ms / h) + "h";
+        if (ms >= m) return Math.round(ms / m) + "m";
+        if (ms >= s) return Math.round(ms / s) + "s";
         return ms + "ms";
     }
-    function fmtLong(ms) {
+    function long(ms) {
         return plural(ms, d, "day") || plural(ms, h, "hour") || plural(ms, m, "minute") || plural(ms, s, "second") || ms + " ms";
     }
     function plural(ms, n, name) {
-        if (ms < n) {
-            return;
-        }
-        if (ms < n * 1.5) {
-            return Math.floor(ms / n) + " " + name;
-        }
+        if (ms < n) return;
+        if (ms < n * 1.5) return Math.floor(ms / n) + " " + name;
         return Math.ceil(ms / n) + " " + name + "s";
     }
 }, function(module, exports, __webpack_require__) {
     module.exports = {
-        "forEach": __webpack_require__(10),
-        "isNumber": __webpack_require__(39),
-        "isObject": __webpack_require__(17),
-        "isString": __webpack_require__(18),
-        "isArray": __webpack_require__(32),
-        "keys": __webpack_require__(21),
-        "assign": __webpack_require__(40),
-        "forIn": __webpack_require__(47),
-        "omit": __webpack_require__(49),
-        "noop": __webpack_require__(63)
+        "forEach": __webpack_require__(9),
+        "isNumber": __webpack_require__(38),
+        "isObject": __webpack_require__(16),
+        "isString": __webpack_require__(17),
+        "isArray": __webpack_require__(31),
+        "keys": __webpack_require__(20),
+        "assign": __webpack_require__(39),
+        "forIn": __webpack_require__(46),
+        "omit": __webpack_require__(48),
+        "noop": __webpack_require__(62)
     };
 }, function(module, exports, __webpack_require__) {
-    var arrayEach = __webpack_require__(11), baseEach = __webpack_require__(12), createForEach = __webpack_require__(36);
+    var arrayEach = __webpack_require__(10), baseEach = __webpack_require__(11), createForEach = __webpack_require__(35);
     var forEach = createForEach(arrayEach, baseEach);
     module.exports = forEach;
 }, function(module, exports) {
@@ -692,21 +521,21 @@
     }
     module.exports = arrayEach;
 }, function(module, exports, __webpack_require__) {
-    var baseForOwn = __webpack_require__(13), createBaseEach = __webpack_require__(35);
+    var baseForOwn = __webpack_require__(12), createBaseEach = __webpack_require__(34);
     var baseEach = createBaseEach(baseForOwn);
     module.exports = baseEach;
 }, function(module, exports, __webpack_require__) {
-    var baseFor = __webpack_require__(14), keys = __webpack_require__(21);
+    var baseFor = __webpack_require__(13), keys = __webpack_require__(20);
     function baseForOwn(object, iteratee) {
         return baseFor(object, iteratee, keys);
     }
     module.exports = baseForOwn;
 }, function(module, exports, __webpack_require__) {
-    var createBaseFor = __webpack_require__(15);
+    var createBaseFor = __webpack_require__(14);
     var baseFor = createBaseFor();
     module.exports = baseFor;
 }, function(module, exports, __webpack_require__) {
-    var toObject = __webpack_require__(16);
+    var toObject = __webpack_require__(15);
     function createBaseFor(fromRight) {
         return function(object, iteratee, keysFunc) {
             var iterable = toObject(object), props = keysFunc(object), length = props.length, index = fromRight ? length : -1;
@@ -721,7 +550,7 @@
     }
     module.exports = createBaseFor;
 }, function(module, exports, __webpack_require__) {
-    var isObject = __webpack_require__(17), isString = __webpack_require__(18), support = __webpack_require__(20);
+    var isObject = __webpack_require__(16), isString = __webpack_require__(17), support = __webpack_require__(19);
     function toObject(value) {
         if (support.unindexedChars && isString(value)) {
             var index = -1, length = value.length, result = Object(value);
@@ -740,7 +569,7 @@
     }
     module.exports = isObject;
 }, function(module, exports, __webpack_require__) {
-    var isObjectLike = __webpack_require__(19);
+    var isObjectLike = __webpack_require__(18);
     var stringTag = "[object String]";
     var objectProto = Object.prototype;
     var objToString = objectProto.toString;
@@ -780,7 +609,7 @@
     })(1, 0);
     module.exports = support;
 }, function(module, exports, __webpack_require__) {
-    var getNative = __webpack_require__(22), isArrayLike = __webpack_require__(26), isObject = __webpack_require__(17), shimKeys = __webpack_require__(30), support = __webpack_require__(20);
+    var getNative = __webpack_require__(21), isArrayLike = __webpack_require__(25), isObject = __webpack_require__(16), shimKeys = __webpack_require__(29), support = __webpack_require__(19);
     var nativeKeys = getNative(Object, "keys");
     var keys = !nativeKeys ? shimKeys : function(object) {
         var Ctor = object == null ? undefined : object.constructor;
@@ -791,14 +620,14 @@
     };
     module.exports = keys;
 }, function(module, exports, __webpack_require__) {
-    var isNative = __webpack_require__(23);
+    var isNative = __webpack_require__(22);
     function getNative(object, key) {
         var value = object == null ? undefined : object[key];
         return isNative(value) ? value : undefined;
     }
     module.exports = getNative;
 }, function(module, exports, __webpack_require__) {
-    var isFunction = __webpack_require__(24), isHostObject = __webpack_require__(25), isObjectLike = __webpack_require__(19);
+    var isFunction = __webpack_require__(23), isHostObject = __webpack_require__(24), isObjectLike = __webpack_require__(18);
     var reIsHostCtor = /^\[object .+?Constructor\]$/;
     var objectProto = Object.prototype;
     var fnToString = Function.prototype.toString;
@@ -815,7 +644,7 @@
     }
     module.exports = isNative;
 }, function(module, exports, __webpack_require__) {
-    var isObject = __webpack_require__(17);
+    var isObject = __webpack_require__(16);
     var funcTag = "[object Function]";
     var objectProto = Object.prototype;
     var objToString = objectProto.toString;
@@ -840,17 +669,17 @@
     }();
     module.exports = isHostObject;
 }, function(module, exports, __webpack_require__) {
-    var getLength = __webpack_require__(27), isLength = __webpack_require__(29);
+    var getLength = __webpack_require__(26), isLength = __webpack_require__(28);
     function isArrayLike(value) {
         return value != null && isLength(getLength(value));
     }
     module.exports = isArrayLike;
 }, function(module, exports, __webpack_require__) {
-    var baseProperty = __webpack_require__(28);
+    var baseProperty = __webpack_require__(27);
     var getLength = baseProperty("length");
     module.exports = getLength;
 }, function(module, exports, __webpack_require__) {
-    var toObject = __webpack_require__(16);
+    var toObject = __webpack_require__(15);
     function baseProperty(key) {
         return function(object) {
             return object == null ? undefined : toObject(object)[key];
@@ -864,7 +693,7 @@
     }
     module.exports = isLength;
 }, function(module, exports, __webpack_require__) {
-    var isArguments = __webpack_require__(31), isArray = __webpack_require__(32), isIndex = __webpack_require__(33), isLength = __webpack_require__(29), isString = __webpack_require__(18), keysIn = __webpack_require__(34);
+    var isArguments = __webpack_require__(30), isArray = __webpack_require__(31), isIndex = __webpack_require__(32), isLength = __webpack_require__(28), isString = __webpack_require__(17), keysIn = __webpack_require__(33);
     var objectProto = Object.prototype;
     var hasOwnProperty = objectProto.hasOwnProperty;
     function shimKeys(object) {
@@ -881,7 +710,7 @@
     }
     module.exports = shimKeys;
 }, function(module, exports, __webpack_require__) {
-    var isArrayLike = __webpack_require__(26), isObjectLike = __webpack_require__(19);
+    var isArrayLike = __webpack_require__(25), isObjectLike = __webpack_require__(18);
     var objectProto = Object.prototype;
     var hasOwnProperty = objectProto.hasOwnProperty;
     var propertyIsEnumerable = objectProto.propertyIsEnumerable;
@@ -890,7 +719,7 @@
     }
     module.exports = isArguments;
 }, function(module, exports, __webpack_require__) {
-    var getNative = __webpack_require__(22), isLength = __webpack_require__(29), isObjectLike = __webpack_require__(19);
+    var getNative = __webpack_require__(21), isLength = __webpack_require__(28), isObjectLike = __webpack_require__(18);
     var arrayTag = "[object Array]";
     var objectProto = Object.prototype;
     var objToString = objectProto.toString;
@@ -909,7 +738,7 @@
     }
     module.exports = isIndex;
 }, function(module, exports, __webpack_require__) {
-    var arrayEach = __webpack_require__(11), isArguments = __webpack_require__(31), isArray = __webpack_require__(32), isFunction = __webpack_require__(24), isIndex = __webpack_require__(33), isLength = __webpack_require__(29), isObject = __webpack_require__(17), isString = __webpack_require__(18), support = __webpack_require__(20);
+    var arrayEach = __webpack_require__(10), isArguments = __webpack_require__(30), isArray = __webpack_require__(31), isFunction = __webpack_require__(23), isIndex = __webpack_require__(32), isLength = __webpack_require__(28), isObject = __webpack_require__(16), isString = __webpack_require__(17), support = __webpack_require__(19);
     var arrayTag = "[object Array]", boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", funcTag = "[object Function]", numberTag = "[object Number]", objectTag = "[object Object]", regexpTag = "[object RegExp]", stringTag = "[object String]";
     var shadowProps = [ "constructor", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "toLocaleString", "toString", "valueOf" ];
     var errorProto = Error.prototype, objectProto = Object.prototype, stringProto = String.prototype;
@@ -978,7 +807,7 @@
     }
     module.exports = keysIn;
 }, function(module, exports, __webpack_require__) {
-    var getLength = __webpack_require__(27), isLength = __webpack_require__(29), toObject = __webpack_require__(16);
+    var getLength = __webpack_require__(26), isLength = __webpack_require__(28), toObject = __webpack_require__(15);
     function createBaseEach(eachFunc, fromRight) {
         return function(collection, iteratee) {
             var length = collection ? getLength(collection) : 0;
@@ -996,7 +825,7 @@
     }
     module.exports = createBaseEach;
 }, function(module, exports, __webpack_require__) {
-    var bindCallback = __webpack_require__(37), isArray = __webpack_require__(32);
+    var bindCallback = __webpack_require__(36), isArray = __webpack_require__(31);
     function createForEach(arrayFunc, eachFunc) {
         return function(collection, iteratee, thisArg) {
             return typeof iteratee == "function" && thisArg === undefined && isArray(collection) ? arrayFunc(collection, iteratee) : eachFunc(collection, bindCallback(iteratee, thisArg, 3));
@@ -1004,7 +833,7 @@
     }
     module.exports = createForEach;
 }, function(module, exports, __webpack_require__) {
-    var identity = __webpack_require__(38);
+    var identity = __webpack_require__(37);
     function bindCallback(func, thisArg, argCount) {
         if (typeof func != "function") {
             return identity;
@@ -1044,7 +873,7 @@
     }
     module.exports = identity;
 }, function(module, exports, __webpack_require__) {
-    var isObjectLike = __webpack_require__(19);
+    var isObjectLike = __webpack_require__(18);
     var numberTag = "[object Number]";
     var objectProto = Object.prototype;
     var objToString = objectProto.toString;
@@ -1053,13 +882,13 @@
     }
     module.exports = isNumber;
 }, function(module, exports, __webpack_require__) {
-    var assignWith = __webpack_require__(41), baseAssign = __webpack_require__(42), createAssigner = __webpack_require__(44);
+    var assignWith = __webpack_require__(40), baseAssign = __webpack_require__(41), createAssigner = __webpack_require__(43);
     var assign = createAssigner(function(object, source, customizer) {
         return customizer ? assignWith(object, source, customizer) : baseAssign(object, source);
     });
     module.exports = assign;
 }, function(module, exports, __webpack_require__) {
-    var keys = __webpack_require__(21);
+    var keys = __webpack_require__(20);
     function assignWith(object, source, customizer) {
         var index = -1, props = keys(source), length = props.length;
         while (++index < length) {
@@ -1072,7 +901,7 @@
     }
     module.exports = assignWith;
 }, function(module, exports, __webpack_require__) {
-    var baseCopy = __webpack_require__(43), keys = __webpack_require__(21);
+    var baseCopy = __webpack_require__(42), keys = __webpack_require__(20);
     function baseAssign(object, source) {
         return source == null ? object : baseCopy(source, keys(source), object);
     }
@@ -1089,7 +918,7 @@
     }
     module.exports = baseCopy;
 }, function(module, exports, __webpack_require__) {
-    var bindCallback = __webpack_require__(37), isIterateeCall = __webpack_require__(45), restParam = __webpack_require__(46);
+    var bindCallback = __webpack_require__(36), isIterateeCall = __webpack_require__(44), restParam = __webpack_require__(45);
     function createAssigner(assigner) {
         return restParam(function(object, sources) {
             var index = -1, length = object == null ? 0 : sources.length, customizer = length > 2 ? sources[length - 2] : undefined, guard = length > 2 ? sources[2] : undefined, thisArg = length > 1 ? sources[length - 1] : undefined;
@@ -1115,7 +944,7 @@
     }
     module.exports = createAssigner;
 }, function(module, exports, __webpack_require__) {
-    var isArrayLike = __webpack_require__(26), isIndex = __webpack_require__(33), isObject = __webpack_require__(17);
+    var isArrayLike = __webpack_require__(25), isIndex = __webpack_require__(32), isObject = __webpack_require__(16);
     function isIterateeCall(value, index, object) {
         if (!isObject(object)) {
             return false;
@@ -1162,11 +991,11 @@
     }
     module.exports = restParam;
 }, function(module, exports, __webpack_require__) {
-    var baseFor = __webpack_require__(14), createForIn = __webpack_require__(48);
+    var baseFor = __webpack_require__(13), createForIn = __webpack_require__(47);
     var forIn = createForIn(baseFor);
     module.exports = forIn;
 }, function(module, exports, __webpack_require__) {
-    var bindCallback = __webpack_require__(37), keysIn = __webpack_require__(34);
+    var bindCallback = __webpack_require__(36), keysIn = __webpack_require__(33);
     function createForIn(objectFunc) {
         return function(object, iteratee, thisArg) {
             if (typeof iteratee != "function" || thisArg !== undefined) {
@@ -1177,7 +1006,7 @@
     }
     module.exports = createForIn;
 }, function(module, exports, __webpack_require__) {
-    var arrayMap = __webpack_require__(50), baseDifference = __webpack_require__(51), baseFlatten = __webpack_require__(58), bindCallback = __webpack_require__(37), keysIn = __webpack_require__(34), pickByArray = __webpack_require__(60), pickByCallback = __webpack_require__(61), restParam = __webpack_require__(46);
+    var arrayMap = __webpack_require__(49), baseDifference = __webpack_require__(50), baseFlatten = __webpack_require__(57), bindCallback = __webpack_require__(36), keysIn = __webpack_require__(33), pickByArray = __webpack_require__(59), pickByCallback = __webpack_require__(60), restParam = __webpack_require__(45);
     var omit = restParam(function(object, props) {
         if (object == null) {
             return {};
@@ -1202,7 +1031,7 @@
     }
     module.exports = arrayMap;
 }, function(module, exports, __webpack_require__) {
-    var baseIndexOf = __webpack_require__(52), cacheIndexOf = __webpack_require__(54), createCache = __webpack_require__(55);
+    var baseIndexOf = __webpack_require__(51), cacheIndexOf = __webpack_require__(53), createCache = __webpack_require__(54);
     var LARGE_ARRAY_SIZE = 200;
     function baseDifference(array, values) {
         var length = array ? array.length : 0, result = [];
@@ -1233,7 +1062,7 @@
     }
     module.exports = baseDifference;
 }, function(module, exports, __webpack_require__) {
-    var indexOfNaN = __webpack_require__(53);
+    var indexOfNaN = __webpack_require__(52);
     function baseIndexOf(array, value, fromIndex) {
         if (value !== value) {
             return indexOfNaN(array, fromIndex);
@@ -1260,7 +1089,7 @@
     }
     module.exports = indexOfNaN;
 }, function(module, exports, __webpack_require__) {
-    var isObject = __webpack_require__(17);
+    var isObject = __webpack_require__(16);
     function cacheIndexOf(cache, value) {
         var data = cache.data, result = typeof value == "string" || isObject(value) ? data.set.has(value) : data.hash[value];
         return result ? 0 : -1;
@@ -1268,7 +1097,7 @@
     module.exports = cacheIndexOf;
 }, function(module, exports, __webpack_require__) {
     (function(global) {
-        var SetCache = __webpack_require__(56), getNative = __webpack_require__(22);
+        var SetCache = __webpack_require__(55), getNative = __webpack_require__(21);
         var Set = getNative(global, "Set");
         var nativeCreate = getNative(Object, "create");
         function createCache(values) {
@@ -1280,7 +1109,7 @@
     }());
 }, function(module, exports, __webpack_require__) {
     (function(global) {
-        var cachePush = __webpack_require__(57), getNative = __webpack_require__(22);
+        var cachePush = __webpack_require__(56), getNative = __webpack_require__(21);
         var Set = getNative(global, "Set");
         var nativeCreate = getNative(Object, "create");
         function SetCache(values) {
@@ -1299,7 +1128,7 @@
         return this;
     }());
 }, function(module, exports, __webpack_require__) {
-    var isObject = __webpack_require__(17);
+    var isObject = __webpack_require__(16);
     function cachePush(value) {
         var data = this.data;
         if (typeof value == "string" || isObject(value)) {
@@ -1310,7 +1139,7 @@
     }
     module.exports = cachePush;
 }, function(module, exports, __webpack_require__) {
-    var arrayPush = __webpack_require__(59), isArguments = __webpack_require__(31), isArray = __webpack_require__(32), isArrayLike = __webpack_require__(26), isObjectLike = __webpack_require__(19);
+    var arrayPush = __webpack_require__(58), isArguments = __webpack_require__(30), isArray = __webpack_require__(31), isArrayLike = __webpack_require__(25), isObjectLike = __webpack_require__(18);
     function baseFlatten(array, isDeep, isStrict, result) {
         result || (result = []);
         var index = -1, length = array.length;
@@ -1339,7 +1168,7 @@
     }
     module.exports = arrayPush;
 }, function(module, exports, __webpack_require__) {
-    var toObject = __webpack_require__(16);
+    var toObject = __webpack_require__(15);
     function pickByArray(object, props) {
         object = toObject(object);
         var index = -1, length = props.length, result = {};
@@ -1353,7 +1182,7 @@
     }
     module.exports = pickByArray;
 }, function(module, exports, __webpack_require__) {
-    var baseForIn = __webpack_require__(62);
+    var baseForIn = __webpack_require__(61);
     function pickByCallback(object, predicate) {
         var result = {};
         baseForIn(object, function(value, key, object) {
@@ -1365,7 +1194,7 @@
     }
     module.exports = pickByCallback;
 }, function(module, exports, __webpack_require__) {
-    var baseFor = __webpack_require__(14), keysIn = __webpack_require__(34);
+    var baseFor = __webpack_require__(13), keysIn = __webpack_require__(33);
     function baseForIn(object, iteratee) {
         return baseFor(object, iteratee, keysIn);
     }
@@ -1467,8 +1296,8 @@
     };
     module.exports = Cookies;
 }, function(module, exports, __webpack_require__) {
-    var cookie = __webpack_require__(65);
-    var _ = __webpack_require__(9);
+    var cookie = __webpack_require__(64);
+    var _ = __webpack_require__(8);
     function findDomains(domain) {
         var domainChunks = domain.split(".");
         var domains = [];
@@ -1510,8 +1339,8 @@
         }
     };
 }, function(module, exports, __webpack_require__) {
-    var JSON3 = __webpack_require__(68);
-    var toBase64 = __webpack_require__(71);
+    var JSON3 = __webpack_require__(67);
+    var toBase64 = __webpack_require__(70);
     module.exports = function objectToBase64(object) {
         return toBase64(JSON3.stringify(object));
     };
@@ -1519,135 +1348,124 @@
     var __WEBPACK_AMD_DEFINE_RESULT__;
     (function(module, global) {
         (function() {
-            var isLoader = "function" === "function" && __webpack_require__(70);
+            var isLoader = "function" === "function" && __webpack_require__(69);
             var objectTypes = {
                 "function": true,
                 "object": true
             };
             var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
             var root = objectTypes[typeof window] && window || this, freeGlobal = freeExports && objectTypes[typeof module] && module && !module.nodeType && typeof global == "object" && global;
-            if (freeGlobal && (freeGlobal["global"] === freeGlobal || freeGlobal["window"] === freeGlobal || freeGlobal["self"] === freeGlobal)) {
+            if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal)) {
                 root = freeGlobal;
             }
             function runInContext(context, exports) {
-                context || (context = root["Object"]());
-                exports || (exports = root["Object"]());
-                var Number = context["Number"] || root["Number"], String = context["String"] || root["String"], Object = context["Object"] || root["Object"], Date = context["Date"] || root["Date"], SyntaxError = context["SyntaxError"] || root["SyntaxError"], TypeError = context["TypeError"] || root["TypeError"], Math = context["Math"] || root["Math"], nativeJSON = context["JSON"] || root["JSON"];
+                context || (context = root.Object());
+                exports || (exports = root.Object());
+                var Number = context.Number || root.Number, String = context.String || root.String, Object = context.Object || root.Object, Date = context.Date || root.Date, SyntaxError = context.SyntaxError || root.SyntaxError, TypeError = context.TypeError || root.TypeError, Math = context.Math || root.Math, nativeJSON = context.JSON || root.JSON;
                 if (typeof nativeJSON == "object" && nativeJSON) {
                     exports.stringify = nativeJSON.stringify;
                     exports.parse = nativeJSON.parse;
                 }
-                var objectProto = Object.prototype, getClass = objectProto.toString, isProperty, forEach, undef;
+                var objectProto = Object.prototype, getClass = objectProto.toString, isProperty = objectProto.hasOwnProperty, undefined;
+                function attempt(func, errorFunc) {
+                    try {
+                        func();
+                    } catch (exception) {
+                        if (errorFunc) {
+                            errorFunc();
+                        }
+                    }
+                }
                 var isExtended = new Date(-0xc782b5b800cec);
-                try {
+                attempt(function() {
                     isExtended = isExtended.getUTCFullYear() == -109252 && isExtended.getUTCMonth() === 0 && isExtended.getUTCDate() === 1 && isExtended.getUTCHours() == 10 && isExtended.getUTCMinutes() == 37 && isExtended.getUTCSeconds() == 6 && isExtended.getUTCMilliseconds() == 708;
-                } catch (exception) {}
+                });
                 function has(name) {
-                    if (has[name] !== undef) {
+                    if (has[name] != null) {
                         return has[name];
                     }
                     var isSupported;
                     if (name == "bug-string-char-index") {
                         isSupported = "a"[0] != "a";
                     } else if (name == "json") {
-                        isSupported = has("json-stringify") && has("json-parse");
+                        isSupported = has("json-stringify") && has("date-serialization") && has("json-parse");
+                    } else if (name == "date-serialization") {
+                        isSupported = has("json-stringify") && isExtended;
+                        if (isSupported) {
+                            var stringify = exports.stringify;
+                            attempt(function() {
+                                isSupported = stringify(new Date(-864e13)) == '"-271821-04-20T00:00:00.000Z"' && stringify(new Date(864e13)) == '"+275760-09-13T00:00:00.000Z"' && stringify(new Date(-621987552e5)) == '"-000001-01-01T00:00:00.000Z"' && stringify(new Date(-1)) == '"1969-12-31T23:59:59.999Z"';
+                            });
+                        }
                     } else {
                         var value, serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
                         if (name == "json-stringify") {
-                            var stringify = exports.stringify, stringifySupported = typeof stringify == "function" && isExtended;
+                            var stringify = exports.stringify, stringifySupported = typeof stringify == "function";
                             if (stringifySupported) {
                                 (value = function() {
                                     return 1;
                                 }).toJSON = value;
-                                try {
-                                    stringifySupported = stringify(0) === "0" && stringify(new Number()) === "0" && stringify(new String()) == '""' && stringify(getClass) === undef && stringify(undef) === undef && stringify() === undef && stringify(value) === "1" && stringify([ value ]) == "[1]" && stringify([ undef ]) == "[null]" && stringify(null) == "null" && stringify([ undef, getClass, null ]) == "[null,null,null]" && stringify({
+                                attempt(function() {
+                                    stringifySupported = stringify(0) === "0" && stringify(new Number()) === "0" && stringify(new String()) == '""' && stringify(getClass) === undefined && stringify(undefined) === undefined && stringify() === undefined && stringify(value) === "1" && stringify([ value ]) == "[1]" && stringify([ undefined ]) == "[null]" && stringify(null) == "null" && stringify([ undefined, getClass, null ]) == "[null,null,null]" && stringify({
                                         "a": [ value, true, false, null, "\0\b\n\f\r\t" ]
-                                    }) == serialized && stringify(null, value) === "1" && stringify([ 1, 2 ], null, 1) == "[\n 1,\n 2\n]" && stringify(new Date(-864e13)) == '"-271821-04-20T00:00:00.000Z"' && stringify(new Date(864e13)) == '"+275760-09-13T00:00:00.000Z"' && stringify(new Date(-621987552e5)) == '"-000001-01-01T00:00:00.000Z"' && stringify(new Date(-1)) == '"1969-12-31T23:59:59.999Z"';
-                                } catch (exception) {
+                                    }) == serialized && stringify(null, value) === "1" && stringify([ 1, 2 ], null, 1) == "[\n 1,\n 2\n]";
+                                }, function() {
                                     stringifySupported = false;
-                                }
+                                });
                             }
                             isSupported = stringifySupported;
                         }
                         if (name == "json-parse") {
-                            var parse = exports.parse;
+                            var parse = exports.parse, parseSupported;
                             if (typeof parse == "function") {
-                                try {
+                                attempt(function() {
                                     if (parse("0") === 0 && !parse(false)) {
                                         value = parse(serialized);
-                                        var parseSupported = value["a"].length == 5 && value["a"][0] === 1;
+                                        parseSupported = value["a"].length == 5 && value["a"][0] === 1;
                                         if (parseSupported) {
-                                            try {
+                                            attempt(function() {
                                                 parseSupported = !parse('"\t"');
-                                            } catch (exception) {}
+                                            });
                                             if (parseSupported) {
-                                                try {
+                                                attempt(function() {
                                                     parseSupported = parse("01") !== 1;
-                                                } catch (exception) {}
+                                                });
                                             }
                                             if (parseSupported) {
-                                                try {
+                                                attempt(function() {
                                                     parseSupported = parse("1.") !== 1;
-                                                } catch (exception) {}
+                                                });
                                             }
                                         }
                                     }
-                                } catch (exception) {
+                                }, function() {
                                     parseSupported = false;
-                                }
+                                });
                             }
                             isSupported = parseSupported;
                         }
                     }
                     return has[name] = !!isSupported;
                 }
+                has["bug-string-char-index"] = has["date-serialization"] = has["json"] = has["json-stringify"] = has["json-parse"] = null;
                 if (!has("json")) {
                     var functionClass = "[object Function]", dateClass = "[object Date]", numberClass = "[object Number]", stringClass = "[object String]", arrayClass = "[object Array]", booleanClass = "[object Boolean]";
                     var charIndexBuggy = has("bug-string-char-index");
-                    if (!isExtended) {
-                        var floor = Math.floor;
-                        var Months = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
-                        var getDay = function(year, month) {
-                            return Months[month] + 365 * (year - 1970) + floor((year - 1969 + (month = +(month > 1))) / 4) - floor((year - 1901 + month) / 100) + floor((year - 1601 + month) / 400);
-                        };
-                    }
-                    if (!(isProperty = objectProto.hasOwnProperty)) {
-                        isProperty = function(property) {
-                            var members = {}, constructor;
-                            if ((members.__proto__ = null, members.__proto__ = {
-                                "toString": 1
-                            }, members).toString != getClass) {
-                                isProperty = function(property) {
-                                    var original = this.__proto__, result = property in (this.__proto__ = null, this);
-                                    this.__proto__ = original;
-                                    return result;
-                                };
-                            } else {
-                                constructor = members.constructor;
-                                isProperty = function(property) {
-                                    var parent = (this.constructor || constructor).prototype;
-                                    return property in this && !(property in parent && this[property] === parent[property]);
-                                };
-                            }
-                            members = null;
-                            return isProperty.call(this, property);
-                        };
-                    }
-                    forEach = function(object, callback) {
-                        var size = 0, Properties, members, property;
+                    var forOwn = function(object, callback) {
+                        var size = 0, Properties, dontEnums, property;
                         (Properties = function() {
                             this.valueOf = 0;
                         }).prototype.valueOf = 0;
-                        members = new Properties();
-                        for (property in members) {
-                            if (isProperty.call(members, property)) {
+                        dontEnums = new Properties();
+                        for (property in dontEnums) {
+                            if (isProperty.call(dontEnums, property)) {
                                 size++;
                             }
                         }
-                        Properties = members = null;
+                        Properties = dontEnums = null;
                         if (!size) {
-                            members = [ "valueOf", "toString", "toLocaleString", "propertyIsEnumerable", "isPrototypeOf", "hasOwnProperty", "constructor" ];
-                            forEach = function(object, callback) {
+                            dontEnums = [ "valueOf", "toString", "toLocaleString", "propertyIsEnumerable", "isPrototypeOf", "hasOwnProperty", "constructor" ];
+                            forOwn = function(object, callback) {
                                 var isFunction = getClass.call(object) == functionClass, property, length;
                                 var hasProperty = !isFunction && typeof object.constructor != "function" && objectTypes[typeof object.hasOwnProperty] && object.hasOwnProperty || isProperty;
                                 for (property in object) {
@@ -1655,19 +1473,14 @@
                                         callback(property);
                                     }
                                 }
-                                for (length = members.length; property = members[--length]; hasProperty.call(object, property) && callback(property)) ;
-                            };
-                        } else if (size == 2) {
-                            forEach = function(object, callback) {
-                                var members = {}, isFunction = getClass.call(object) == functionClass, property;
-                                for (property in object) {
-                                    if (!(isFunction && property == "prototype") && !isProperty.call(members, property) && (members[property] = 1) && isProperty.call(object, property)) {
+                                for (length = dontEnums.length; property = dontEnums[--length]; ) {
+                                    if (hasProperty.call(object, property)) {
                                         callback(property);
                                     }
                                 }
                             };
                         } else {
-                            forEach = function(object, callback) {
+                            forOwn = function(object, callback) {
                                 var isFunction = getClass.call(object) == functionClass, property, isConstructor;
                                 for (property in object) {
                                     if (!(isFunction && property == "prototype") && isProperty.call(object, property) && !(isConstructor = property === "constructor")) {
@@ -1679,9 +1492,9 @@
                                 }
                             };
                         }
-                        return forEach(object, callback);
+                        return forOwn(object, callback);
                     };
-                    if (!has("json-stringify")) {
+                    if (!has("json-stringify") && !has("date-serialization")) {
                         var Escapes = {
                             "92": "\\\\",
                             "34": '\\"',
@@ -1695,134 +1508,173 @@
                         var toPaddedString = function(width, value) {
                             return (leadingZeroes + (value || 0)).slice(-width);
                         };
-                        var unicodePrefix = "\\u00";
-                        var quote = function(value) {
-                            var result = '"', index = 0, length = value.length, useCharIndex = !charIndexBuggy || length > 10;
-                            var symbols = useCharIndex && (charIndexBuggy ? value.split("") : value);
-                            for (;index < length; index++) {
-                                var charCode = value.charCodeAt(index);
-                                switch (charCode) {
-                                  case 8:
-                                  case 9:
-                                  case 10:
-                                  case 12:
-                                  case 13:
-                                  case 34:
-                                  case 92:
-                                    result += Escapes[charCode];
-                                    break;
-
-                                  default:
-                                    if (charCode < 32) {
-                                        result += unicodePrefix + toPaddedString(2, charCode.toString(16));
-                                        break;
-                                    }
-                                    result += useCharIndex ? symbols[index] : value.charAt(index);
-                                }
+                        var serializeDate = function(value) {
+                            var getData, year, month, date, time, hours, minutes, seconds, milliseconds;
+                            if (!isExtended) {
+                                var floor = Math.floor;
+                                var Months = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
+                                var getDay = function(year, month) {
+                                    return Months[month] + 365 * (year - 1970) + floor((year - 1969 + (month = +(month > 1))) / 4) - floor((year - 1901 + month) / 100) + floor((year - 1601 + month) / 400);
+                                };
+                                getData = function(value) {
+                                    date = floor(value / 864e5);
+                                    for (year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++) ;
+                                    for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++) ;
+                                    date = 1 + date - getDay(year, month);
+                                    time = (value % 864e5 + 864e5) % 864e5;
+                                    hours = floor(time / 36e5) % 24;
+                                    minutes = floor(time / 6e4) % 60;
+                                    seconds = floor(time / 1e3) % 60;
+                                    milliseconds = time % 1e3;
+                                };
+                            } else {
+                                getData = function(value) {
+                                    year = value.getUTCFullYear();
+                                    month = value.getUTCMonth();
+                                    date = value.getUTCDate();
+                                    hours = value.getUTCHours();
+                                    minutes = value.getUTCMinutes();
+                                    seconds = value.getUTCSeconds();
+                                    milliseconds = value.getUTCMilliseconds();
+                                };
                             }
-                            return result + '"';
-                        };
-                        var serialize = function(property, object, callback, properties, whitespace, indentation, stack) {
-                            var value, className, year, month, date, time, hours, minutes, seconds, milliseconds, results, element, index, length, prefix, result;
-                            try {
-                                value = object[property];
-                            } catch (exception) {}
-                            if (typeof value == "object" && value) {
-                                className = getClass.call(value);
-                                if (className == dateClass && !isProperty.call(value, "toJSON")) {
-                                    if (value > -1 / 0 && value < 1 / 0) {
-                                        if (getDay) {
-                                            date = floor(value / 864e5);
-                                            for (year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++) ;
-                                            for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++) ;
-                                            date = 1 + date - getDay(year, month);
-                                            time = (value % 864e5 + 864e5) % 864e5;
-                                            hours = floor(time / 36e5) % 24;
-                                            minutes = floor(time / 6e4) % 60;
-                                            seconds = floor(time / 1e3) % 60;
-                                            milliseconds = time % 1e3;
-                                        } else {
-                                            year = value.getUTCFullYear();
-                                            month = value.getUTCMonth();
-                                            date = value.getUTCDate();
-                                            hours = value.getUTCHours();
-                                            minutes = value.getUTCMinutes();
-                                            seconds = value.getUTCSeconds();
-                                            milliseconds = value.getUTCMilliseconds();
-                                        }
-                                        value = (year <= 0 || year >= 1e4 ? (year < 0 ? "-" : "+") + toPaddedString(6, year < 0 ? -year : year) : toPaddedString(4, year)) + "-" + toPaddedString(2, month + 1) + "-" + toPaddedString(2, date) + "T" + toPaddedString(2, hours) + ":" + toPaddedString(2, minutes) + ":" + toPaddedString(2, seconds) + "." + toPaddedString(3, milliseconds) + "Z";
-                                    } else {
-                                        value = null;
-                                    }
-                                } else if (typeof value.toJSON == "function" && (className != numberClass && className != stringClass && className != arrayClass || isProperty.call(value, "toJSON"))) {
-                                    value = value.toJSON(property);
-                                }
-                            }
-                            if (callback) {
-                                value = callback.call(object, property, value);
-                            }
-                            if (value === null) {
-                                return "null";
-                            }
-                            className = getClass.call(value);
-                            if (className == booleanClass) {
-                                return "" + value;
-                            } else if (className == numberClass) {
-                                return value > -1 / 0 && value < 1 / 0 ? "" + value : "null";
-                            } else if (className == stringClass) {
-                                return quote("" + value);
-                            }
-                            if (typeof value == "object") {
-                                for (length = stack.length; length--; ) {
-                                    if (stack[length] === value) {
-                                        throw TypeError();
-                                    }
-                                }
-                                stack.push(value);
-                                results = [];
-                                prefix = indentation;
-                                indentation += whitespace;
-                                if (className == arrayClass) {
-                                    for (index = 0, length = value.length; index < length; index++) {
-                                        element = serialize(index, value, callback, properties, whitespace, indentation, stack);
-                                        results.push(element === undef ? "null" : element);
-                                    }
-                                    result = results.length ? whitespace ? "[\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "]" : "[" + results.join(",") + "]" : "[]";
+                            serializeDate = function(value) {
+                                if (value > -1 / 0 && value < 1 / 0) {
+                                    getData(value);
+                                    value = (year <= 0 || year >= 1e4 ? (year < 0 ? "-" : "+") + toPaddedString(6, year < 0 ? -year : year) : toPaddedString(4, year)) + "-" + toPaddedString(2, month + 1) + "-" + toPaddedString(2, date) + "T" + toPaddedString(2, hours) + ":" + toPaddedString(2, minutes) + ":" + toPaddedString(2, seconds) + "." + toPaddedString(3, milliseconds) + "Z";
+                                    year = month = date = hours = minutes = seconds = milliseconds = null;
                                 } else {
-                                    forEach(properties || value, function(property) {
-                                        var element = serialize(property, value, callback, properties, whitespace, indentation, stack);
-                                        if (element !== undef) {
-                                            results.push(quote(property) + ":" + (whitespace ? " " : "") + element);
-                                        }
-                                    });
-                                    result = results.length ? whitespace ? "{\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "}" : "{" + results.join(",") + "}" : "{}";
+                                    value = null;
                                 }
-                                stack.pop();
+                                return value;
+                            };
+                            return serializeDate(value);
+                        };
+                        if (has("json-stringify") && !has("date-serialization")) {
+                            function dateToJSON(key) {
+                                return serializeDate(this);
+                            }
+                            var nativeStringify = exports.stringify;
+                            exports.stringify = function(source, filter, width) {
+                                var nativeToJSON = Date.prototype.toJSON;
+                                Date.prototype.toJSON = dateToJSON;
+                                var result = nativeStringify(source, filter, width);
+                                Date.prototype.toJSON = nativeToJSON;
                                 return result;
-                            }
-                        };
-                        exports.stringify = function(source, filter, width) {
-                            var whitespace, callback, properties, className;
-                            if (objectTypes[typeof filter] && filter) {
-                                if ((className = getClass.call(filter)) == functionClass) {
-                                    callback = filter;
-                                } else if (className == arrayClass) {
-                                    properties = {};
-                                    for (var index = 0, length = filter.length, value; index < length; value = filter[index++], 
-                                    (className = getClass.call(value), className == stringClass || className == numberClass) && (properties[value] = 1)) ;
+                            };
+                        } else {
+                            var unicodePrefix = "\\u00";
+                            var escapeChar = function(character) {
+                                var charCode = character.charCodeAt(0), escaped = Escapes[charCode];
+                                if (escaped) {
+                                    return escaped;
                                 }
-                            }
-                            if (width) {
-                                if ((className = getClass.call(width)) == numberClass) {
-                                    if ((width -= width % 1) > 0) {
-                                        for (whitespace = "", width > 10 && (width = 10); whitespace.length < width; whitespace += " ") ;
+                                return unicodePrefix + toPaddedString(2, charCode.toString(16));
+                            };
+                            var reEscape = /[\x00-\x1f\x22\x5c]/g;
+                            var quote = function(value) {
+                                reEscape.lastIndex = 0;
+                                return '"' + (reEscape.test(value) ? value.replace(reEscape, escapeChar) : value) + '"';
+                            };
+                            var serialize = function(property, object, callback, properties, whitespace, indentation, stack) {
+                                var value, type, className, results, element, index, length, prefix, result;
+                                attempt(function() {
+                                    value = object[property];
+                                });
+                                if (typeof value == "object" && value) {
+                                    if (value.getUTCFullYear && getClass.call(value) == dateClass && value.toJSON === Date.prototype.toJSON) {
+                                        value = serializeDate(value);
+                                    } else if (typeof value.toJSON == "function") {
+                                        value = value.toJSON(property);
                                     }
-                                } else if (className == stringClass) {
-                                    whitespace = width.length <= 10 ? width : width.slice(0, 10);
                                 }
-                            }
-                            return serialize("", (value = {}, value[""] = source, value), callback, properties, whitespace, "", []);
-                        };
+                                if (callback) {
+                                    value = callback.call(object, property, value);
+                                }
+                                if (value == undefined) {
+                                    return value === undefined ? value : "null";
+                                }
+                                type = typeof value;
+                                if (type == "object") {
+                                    className = getClass.call(value);
+                                }
+                                switch (className || type) {
+                                  case "boolean":
+                                  case booleanClass:
+                                    return "" + value;
+
+                                  case "number":
+                                  case numberClass:
+                                    return value > -1 / 0 && value < 1 / 0 ? "" + value : "null";
+
+                                  case "string":
+                                  case stringClass:
+                                    return quote("" + value);
+                                }
+                                if (typeof value == "object") {
+                                    for (length = stack.length; length--; ) {
+                                        if (stack[length] === value) {
+                                            throw TypeError();
+                                        }
+                                    }
+                                    stack.push(value);
+                                    results = [];
+                                    prefix = indentation;
+                                    indentation += whitespace;
+                                    if (className == arrayClass) {
+                                        for (index = 0, length = value.length; index < length; index++) {
+                                            element = serialize(index, value, callback, properties, whitespace, indentation, stack);
+                                            results.push(element === undefined ? "null" : element);
+                                        }
+                                        result = results.length ? whitespace ? "[\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "]" : "[" + results.join(",") + "]" : "[]";
+                                    } else {
+                                        forOwn(properties || value, function(property) {
+                                            var element = serialize(property, value, callback, properties, whitespace, indentation, stack);
+                                            if (element !== undefined) {
+                                                results.push(quote(property) + ":" + (whitespace ? " " : "") + element);
+                                            }
+                                        });
+                                        result = results.length ? whitespace ? "{\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "}" : "{" + results.join(",") + "}" : "{}";
+                                    }
+                                    stack.pop();
+                                    return result;
+                                }
+                            };
+                            exports.stringify = function(source, filter, width) {
+                                var whitespace, callback, properties, className;
+                                if (objectTypes[typeof filter] && filter) {
+                                    className = getClass.call(filter);
+                                    if (className == functionClass) {
+                                        callback = filter;
+                                    } else if (className == arrayClass) {
+                                        properties = {};
+                                        for (var index = 0, length = filter.length, value; index < length; ) {
+                                            value = filter[index++];
+                                            className = getClass.call(value);
+                                            if (className == "[object String]" || className == "[object Number]") {
+                                                properties[value] = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (width) {
+                                    className = getClass.call(width);
+                                    if (className == numberClass) {
+                                        if ((width -= width % 1) > 0) {
+                                            if (width > 10) {
+                                                width = 10;
+                                            }
+                                            for (whitespace = ""; whitespace.length < width; ) {
+                                                whitespace += " ";
+                                            }
+                                        }
+                                    } else if (className == stringClass) {
+                                        whitespace = width.length <= 10 ? width : width.slice(0, 10);
+                                    }
+                                }
+                                return serialize("", (value = {}, value[""] = source, value), callback, properties, whitespace, "", []);
+                            };
+                        }
                     }
                     if (!has("json-parse")) {
                         var fromCharCode = String.fromCharCode;
@@ -1929,7 +1781,12 @@
                                         for (;Index < length && (charCode = source.charCodeAt(Index), charCode >= 48 && charCode <= 57); Index++) ;
                                         if (source.charCodeAt(Index) == 46) {
                                             position = ++Index;
-                                            for (;position < length && (charCode = source.charCodeAt(position), charCode >= 48 && charCode <= 57); position++) ;
+                                            for (;position < length; position++) {
+                                                charCode = source.charCodeAt(position);
+                                                if (charCode < 48 || charCode > 57) {
+                                                    break;
+                                                }
+                                            }
                                             if (position == Index) {
                                                 abort();
                                             }
@@ -1941,8 +1798,12 @@
                                             if (charCode == 43 || charCode == 45) {
                                                 Index++;
                                             }
-                                            for (position = Index; position < length && (charCode = source.charCodeAt(position), 
-                                            charCode >= 48 && charCode <= 57); position++) ;
+                                            for (position = Index; position < length; position++) {
+                                                charCode = source.charCodeAt(position);
+                                                if (charCode < 48 || charCode > 57) {
+                                                    break;
+                                                }
+                                            }
                                             if (position == Index) {
                                                 abort();
                                             }
@@ -1953,13 +1814,14 @@
                                     if (isSigned) {
                                         abort();
                                     }
-                                    if (source.slice(Index, Index + 4) == "true") {
+                                    var temp = source.slice(Index, Index + 4);
+                                    if (temp == "true") {
                                         Index += 4;
                                         return true;
-                                    } else if (source.slice(Index, Index + 5) == "false") {
+                                    } else if (temp == "fals" && source.charCodeAt(Index + 4) == 101) {
                                         Index += 5;
                                         return false;
-                                    } else if (source.slice(Index, Index + 4) == "null") {
+                                    } else if (temp == "null") {
                                         Index += 4;
                                         return null;
                                     }
@@ -1979,7 +1841,7 @@
                                 }
                                 if (value == "[") {
                                     results = [];
-                                    for (;;hasMembers || (hasMembers = true)) {
+                                    for (;;) {
                                         value = lex();
                                         if (value == "]") {
                                             break;
@@ -1993,6 +1855,8 @@
                                             } else {
                                                 abort();
                                             }
+                                        } else {
+                                            hasMembers = true;
                                         }
                                         if (value == ",") {
                                             abort();
@@ -2002,7 +1866,7 @@
                                     return results;
                                 } else if (value == "{") {
                                     results = {};
-                                    for (;;hasMembers || (hasMembers = true)) {
+                                    for (;;) {
                                         value = lex();
                                         if (value == "}") {
                                             break;
@@ -2016,6 +1880,8 @@
                                             } else {
                                                 abort();
                                             }
+                                        } else {
+                                            hasMembers = true;
                                         }
                                         if (value == "," || typeof value != "string" || (charIndexBuggy ? value.charAt(0) : value[0]) != "@" || lex() != ":") {
                                             abort();
@@ -2030,7 +1896,7 @@
                         };
                         var update = function(source, property, callback) {
                             var element = walk(source, property, callback);
-                            if (element === undef) {
+                            if (element === undefined) {
                                 delete source[property];
                             } else {
                                 source[property] = element;
@@ -2041,10 +1907,10 @@
                             if (typeof value == "object" && value) {
                                 if (getClass.call(value) == arrayClass) {
                                     for (length = value.length; length--; ) {
-                                        update(value, length, callback);
+                                        update(getClass, forOwn, value, length, callback);
                                     }
                                 } else {
-                                    forEach(value, function(property) {
+                                    forOwn(value, function(property) {
                                         update(value, property, callback);
                                     });
                                 }
@@ -2065,19 +1931,19 @@
                         };
                     }
                 }
-                exports["runInContext"] = runInContext;
+                exports.runInContext = runInContext;
                 return exports;
             }
             if (freeExports && !isLoader) {
                 runInContext(root, freeExports);
             } else {
-                var nativeJSON = root.JSON, previousJSON = root["JSON3"], isRestored = false;
-                var JSON3 = runInContext(root, root["JSON3"] = {
+                var nativeJSON = root.JSON, previousJSON = root.JSON3, isRestored = false;
+                var JSON3 = runInContext(root, root.JSON3 = {
                     "noConflict": function() {
                         if (!isRestored) {
                             isRestored = true;
                             root.JSON = nativeJSON;
-                            root["JSON3"] = previousJSON;
+                            root.JSON3 = previousJSON;
                             nativeJSON = previousJSON = null;
                         }
                         return JSON3;
@@ -2094,7 +1960,7 @@
                 }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
             }
         }).call(this);
-    }).call(exports, __webpack_require__(69)(module), function() {
+    }).call(exports, __webpack_require__(68)(module), function() {
         return this;
     }());
 }, function(module, exports) {
@@ -2143,10 +2009,10 @@
     }
     module.exports = encode;
 }, function(module, exports, __webpack_require__) {
-    var _ = __webpack_require__(9);
+    var _ = __webpack_require__(8);
     var invariant = __webpack_require__(3).invariant;
-    var config = __webpack_require__(73);
-    var cookie = __webpack_require__(65);
+    var config = __webpack_require__(72);
+    var cookie = __webpack_require__(64);
     function validateOptions(options) {
         invariant(_.isObject(options), "Check out our JavaScript SDK Usage Guide: " + "http://docs.treasuredata.com/articles/javascript-sdk");
         invariant(_.isString(options.writeKey), "Must provide a writeKey");
@@ -2221,7 +2087,7 @@
         "PATHNAME": "/js/v3/event/"
     };
 }, function(module, exports, __webpack_require__) {
-    module.exports = __webpack_require__(73).VERSION;
+    module.exports = __webpack_require__(72).VERSION;
 }, function(module, exports, __webpack_require__) {
     /*!
 	  * domready (c) Dustin Diaz 2012 - License MIT
@@ -2260,9 +2126,9 @@
         };
     });
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(64);
-    var elementUtils = __webpack_require__(77);
-    var assign = __webpack_require__(9).assign;
+    var window = __webpack_require__(63);
+    var elementUtils = __webpack_require__(76);
+    var assign = __webpack_require__(8).assign;
     var disposable = __webpack_require__(3).disposable;
     function defaultExtendClickData(event, data) {
         return data;
@@ -2302,8 +2168,8 @@
         "trackClicks": trackClicks
     };
 }, function(module, exports, __webpack_require__) {
-    var forEach = __webpack_require__(9).forEach;
-    var isString = __webpack_require__(9).isString;
+    var forEach = __webpack_require__(8).forEach;
+    var isString = __webpack_require__(8).isString;
     var disposable = __webpack_require__(3).disposable;
     function getEventTarget(event) {
         var target = event.target || event.srcElement || window.document;
@@ -2439,7 +2305,7 @@
     var jsonp = __webpack_require__(4);
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
-    var cookie = __webpack_require__(65);
+    var cookie = __webpack_require__(64);
     function cacheSuccess(result, cookieName) {
         cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
@@ -2476,7 +2342,7 @@
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
     var invariant = __webpack_require__(3).invariant;
-    var _ = __webpack_require__(9);
+    var _ = __webpack_require__(8);
     function configure(config) {
         config = _.isObject(config) ? config : {};
         this.client.cdpHost = config.cdpHost || "cdp.in.treasuredata.com";
@@ -2515,12 +2381,12 @@
 	* Treasure Tracker
 	* ----------------------
 	*/
-    var window = __webpack_require__(64);
-    var _ = __webpack_require__(9);
-    var cookie = __webpack_require__(65);
-    var setCookie = __webpack_require__(66);
-    var generateUUID = __webpack_require__(81);
-    var version = __webpack_require__(74);
+    var window = __webpack_require__(63);
+    var _ = __webpack_require__(8);
+    var cookie = __webpack_require__(64);
+    var setCookie = __webpack_require__(65);
+    var generateUUID = __webpack_require__(80);
+    var version = __webpack_require__(73);
     var document = window.document;
     function configureValues(track) {
         return _.assign({
@@ -2679,7 +2545,7 @@
         return result;
     };
 }, function(module, exports, __webpack_require__) {
-    var window = __webpack_require__(64);
+    var window = __webpack_require__(63);
     module.exports = function generateUUID() {
         var d = new Date().getTime();
         if (window.performance && typeof window.performance.now === "function") {
@@ -2696,7 +2562,7 @@
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
     var invariant = __webpack_require__(3).invariant;
-    var cookie = __webpack_require__(65);
+    var cookie = __webpack_require__(64);
     var cookieName = "_td_ssc_id";
     function configure() {
         return this;
@@ -2742,8 +2608,7 @@
         "fetchServerCookie": fetchServerCookie
     };
 }, function(module, exports, __webpack_require__) {
-    var _ = __webpack_require__(9);
-    var window = __webpack_require__(64);
+    var _ = __webpack_require__(8);
     function applyToClient(client, method) {
         var _method = "_" + method;
         if (client[_method]) {
@@ -2754,10 +2619,10 @@
             delete client[_method];
         }
     }
-    var TREASURE_KEYS = [ "init", "set", "blockEvents", "fetchServerCookie", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "ready" ];
-    module.exports = function loadClients(Treasure, name) {
-        if (_.isObject(window[name])) {
-            var snippet = window[name];
+    var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "ready" ];
+    module.exports = function loadClients(Treasure, namespace, name) {
+        if (_.isObject(namespace[name])) {
+            var snippet = namespace[name];
             var clients = snippet.clients;
             _.forIn(Treasure.prototype, function(value, key) {
                 snippet.prototype[key] = value;

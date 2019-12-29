@@ -30,7 +30,8 @@
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
+    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "rollup": "rollup -c"
   },
   "standard": {
     "ignore": [
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.0",
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
     "glob": "^7.0.5",
@@ -68,6 +70,9 @@
     "parse-domain": "^2.0.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
+    "rollup": "^1.27.14",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-uglify": "^6.0.4",
     "selenium-standalone": "^5.4.0",
     "simple-mock": "^0.8.0",
     "standard": "^11.0.0",
@@ -78,6 +83,7 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
+    "@rollup/plugin-node-resolve": "^6.0.0",
     "domready": "^0.3.0",
     "global": "^4.3.0",
     "json3": "^3.3.2",

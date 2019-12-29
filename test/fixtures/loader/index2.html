@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>loader</title>
+  <meta name="description" content="test that snippet loader works">
+  </meta>
+  <script type="text/javascript">
+    (function (n, c, url) {
+      // Section 1
+      if (c[n] === void 0) {
+        c[n] = function () {
+          c[n].clients.push(this)
+          this._init = [Array.prototype.slice.call(arguments)]
+        }
+        c[n].clients = []
+
+        var action = function (method) {
+          return function () {
+            this['_' + method] = this['_' + method] || []
+            this['_' + method].push(Array.prototype.slice.call(arguments))
+            return this
+          }
+        }
+
+        var methods = ['blockEvents', 'setSignedMode', 'fetchServerCookie', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'fetchGlobalID', 'set', 'trackEvent', 'trackPageview', 'trackClicks', 'ready']
+        for (var i = 0; i < methods.length; i++) {
+          var method = methods[i]
+          c[n].prototype[method] = action(method)
+        }
+
+        var dom, doc, where, iframe = document.createElement('iframe');
+        iframe.src = "javascript:false";
+        iframe.title = ""; iframe.role = "presentation";  // a11y
+        (iframe.frameElement || iframe).style.cssText = "width: 0; height: 0; border: 0";
+        where = document.getElementsByTagName('script');
+        where = where[where.length - 1];
+        where.parentNode.insertBefore(iframe, where);
+        // Section 2
+        try {
+          doc = iframe.contentWindow.document;
+        } catch (e) {
+          dom = document.domain;
+          iframe.src = "javascript:var d=document.open();d.domain='" + dom + "';void(0);";
+          doc = iframe.contentWindow.document;
+        }
+        doc.open()._l = function () {
+          var js = this.createElement("script");
+          if (dom) this.domain = dom;
+          js.id = "js-iframe-async";
+          js.src = url;
+          this.body.appendChild(js);
+        };
+        doc.write('<body onload="document._l();">');
+        doc.close();
+      }
+    })('Treasure', window, '/dist/td.js');
+  </script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+    (function () {
+      function setStatus(num, text) {
+        document.getElementById('status' + num).innerHTML = text
+        status[num] = text
+        if (status.length === 4) {
+          var isFailure = false
+          for (var i = 0; i < status.length; i++) {
+            if (status[i] === 'failure') {
+              isFailure = true
+            }
+          }
+          document.body.style.background = isFailure ? 'red' : 'green'
+        }
+      }
+
+      var status = []
+      var td = new Treasure({
+        database: 'test_db_request',
+        writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+        host: 'in-staging.treasuredata.com'
+      })
+
+      td.addRecord('loader_add_record', {}, function () {
+        setStatus(0, 'success')
+      }, function () {
+        setStatus(0, 'failure')
+      });
+
+      td.trackEvent('loader_track_event', {}, function () {
+        setStatus(1, 'success')
+      }, function () {
+        setStatus(1, 'failure')
+      });
+
+      td.trackPageview('loader_track_pageview', function () {
+        setStatus(2, 'success')
+        var td2 = new Treasure({
+          database: 'test_db_request',
+          writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+          host: 'in-staging.treasuredata.com'
+        })
+        try {
+          var failure = function () { setStatus(3, 'failure') }
+          td2.trackPageview('loader_track_pageview', function () {
+            setStatus(3, 'success')
+          }, failure)
+        } catch (e) {
+          failure()
+        }
+      }, function () {
+        setStatus(2, 'failure')
+      })
+    })()
+  </script>
+
+  <h1 id='status0' style="text-align: center;">running</h1>
+  <h1 id='status1' style="text-align: center;">running</h1>
+  <h1 id='status2' style="text-align: center;">running</h1>
+  <h1 id='status3' style="text-align: center;">running</h1>
+
+</body>
+
+</html>
