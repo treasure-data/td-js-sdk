@@ -176,7 +176,7 @@ Certain values cannot be obtained from the browser. For these values, we send ma
 
 All server values except `td_ip` are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
 
-<nowiki>*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.  
+<nowiki>*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.
 
 
 ## Default values
@@ -337,7 +337,7 @@ var errorCallback = function () {
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
-### Treasure#fetchGlobalID(success, failure, forceFetch)
+### Treasure#fetchGlobalID(success, error, forceFetch)
 
 **Parameters:**
 
@@ -361,7 +361,7 @@ var errorCallback = function (error) {
 td.fetchGlobalID(successCallback, errorCallback)
 ```
 
-### Treasure#fetchUserSegments(token, success, failure)
+### Treasure#fetchUserSegments(token, success, error)
 
 **Parameters:**
 
@@ -398,7 +398,7 @@ td.fetchUserSegments(token, successCallback, errorCallback)
 ```
 *N.B.* This feature is not enabled on accounts by default, please contact support for more information.
 
-### Treasure#fetchUserSegments(options, success, failure)
+### Treasure#fetchUserSegments(options, success, error)
 
 **Parameters:**
 
@@ -512,7 +512,7 @@ td.inSignedMode() // true
 td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id will also be sent if set.
 ```
 
-### Treasure#fetchServerCookie(success, failure, forceFetch)
+### Treasure#fetchServerCookie(success, error, forceFetch)
 This functionality complies with ITP 1.2 tracking. Contact customer support for enabling this feature.
 
 **Parameters:**
@@ -561,7 +561,7 @@ td.trackClicks({ tableName: 'custom_table_name' })
 ```
 
 
-### Treasure#trackPageview(table, success, failure)
+### Treasure#trackPageview(table, success, error)
 
 Helper function that calls trackEvent with an empty record.
 
@@ -578,7 +578,7 @@ var td = new Treasure({...});
 td.trackPageview('pageviews');
 ```
 
-### Treasure#trackEvent(table, record, success, failure)
+### Treasure#trackEvent(table, record, success, error)
 
 Creates an empty object, applies all tracked information values, and applies record values. Then it calls `addRecord` with the newly created object.
 
