@@ -1,6 +1,8 @@
 var expect = require('expect.js')
+var simple = require('simple-mock')
 var objectToBase64 = require('../lib/utils/objectToBase64')
 var generateUUID = require('../lib/utils/generateUUID')
+var fetchWithTimeout = require('../lib/utils/misc').fetchWithTimeout
 
 describe('Treasure Utils', function () {
   describe('objectToBase64', function () {
@@ -21,6 +23,39 @@ describe('Treasure Utils', function () {
     it('generates a valid UUID', function () {
       var uuidRegex = /^[A-F0-9]{8}(?:-?[A-F0-9]{4}){3}-?[A-F0-9]{12}$/i
       expect(uuidRegex.test(generateUUID())).to.equal(true)
+    })
+  })
+
+  describe('misc', function () {
+    describe('fetchWithTimeout', function () {
+      it('must abort after a while', function (done) {
+        if (window.AbortController) {
+          var abortSpy = simple.mock(window.AbortController.prototype, 'abort')
+          fetchWithTimeout('https://apple.com', 1)
+            .then(function () {
+              done(new Error('but instead succeeded'))
+            })['catch'](function () {
+              if (abortSpy.callCount === 1) {
+                done()
+              } else {
+                done(new Error('expect to call AbortController.abort once but instead called ' + abortSpy.callCount + ' times'))
+              }
+            })
+        } else if (window.fetch) {
+          fetchWithTimeout('https://apple.com', 1)
+            .then(function () {
+              done(new Error('but instead succeeded'))
+            })['catch'](function (error) {
+              if (error.message === 'Request Timeout') {
+                done()
+              } else {
+                done(new Error('but failed with wrong error with message ' + error.message))
+              }
+            })
+        } else {
+          done()
+        }
+      })
     })
   })
 })
