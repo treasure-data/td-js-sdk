@@ -234,11 +234,15 @@
             return _timeout(milliseconds, window.fetch(url, options), "Request Timeout");
         }
     }
+    function isSecureHTTP(protocol) {
+        return /^https/.test(protocol);
+    }
     module.exports = {
         "disposable": disposable,
         "invariant": invariant,
         "noop": noop,
-        "fetchWithTimeout": fetchWithTimeout
+        "fetchWithTimeout": fetchWithTimeout,
+        "isSecureHTTP": isSecureHTTP
     };
 }, function(module, exports, __webpack_require__) {
     var debug = __webpack_require__(5)("jsonp");
@@ -2191,6 +2195,9 @@
     var invariant = __webpack_require__(3).invariant;
     var config = __webpack_require__(73);
     var cookie = __webpack_require__(65);
+    var window = __webpack_require__(64);
+    var currentHostname = window.location.hostname;
+    var currentProtocol = window.location.protocol;
     function validateOptions(options) {
         invariant(_.isObject(options), "Check out our JavaScript SDK Usage Guide: " + "http://docs.treasuredata.com/articles/javascript-sdk");
         invariant(_.isString(options.writeKey), "Must provide a writeKey");
@@ -2198,7 +2205,7 @@
         invariant(/^[a-z0-9_]{3,255}$/.test(options.database), "Database must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
     }
     var defaultSSCCookieDomain = function() {
-        var domainChunks = document.location.hostname.split(".");
+        var domainChunks = currentHostname.split(".");
         for (var i = domainChunks.length - 2; i >= 1; i--) {
             var domain = domainChunks.slice(i).join(".");
             var name = "_td_domain_" + domain;
@@ -2207,7 +2214,7 @@
                 return domain;
             }
         }
-        return document.location.hostname;
+        return currentHostname;
     };
     exports.DEFAULT_CONFIG = {
         "database": config.DATABASE,
@@ -2232,6 +2239,8 @@
         }, exports.DEFAULT_CONFIG, options, {
             "requestType": "jsonp"
         });
+        this.client._protocol = currentProtocol;
+        this.client._hostname = currentHostname;
         validateOptions(this.client);
         if (!this.client.endpoint) {
             this.client.endpoint = "https://" + this.client.host + this.client.pathname;
@@ -2743,6 +2752,7 @@
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
     var invariant = __webpack_require__(3).invariant;
+    var isSecureHTTP = __webpack_require__(3).isSecureHTTP;
     var cookie = __webpack_require__(65);
     var cookieName = "_td_ssc_id";
     function configure() {
@@ -2769,6 +2779,8 @@
                 this._serverCookieDomainHost = this.client.sscServer;
             }
         }
+        var isValidSSC = isSecureHTTP(this.client._protocol) && this.client._hostname.indexOf(this._serverCookieDomain) !== -1;
+        invariant(isValidSSC, 'Fetching server cookie requires the site to have "https" protocol and the domain names should be matched');
         var url = "https://" + this._serverCookieDomainHost + "/get_cookie_id?cookie_domain=" + window.encodeURI(this._serverCookieDomain) + "&r=" + new Date().getTime();
         var cachedSSCId = cookie.getItem(cookieName);
         if (cachedSSCId && !forceFetch) {
