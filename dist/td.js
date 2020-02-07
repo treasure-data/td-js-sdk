@@ -152,6 +152,17 @@
         }
         var url = request.url + "?" + params.join("&");
         var isClickedLink = request.record.tag === "a" && !!request.record.href;
+        if (this.client.debugMode) {
+            var prop;
+            var table = {};
+            console.log("%c TD-JS-SDK", "font-weight: bold; background-color: blue; color: white; padding: 5px", "Record to be sent");
+            for (prop in request.record) {
+                if (request.record.hasOwnProperty(prop)) {
+                    table[prop] = request.record[prop];
+                }
+            }
+            console.table(table);
+        }
         if (window.fetch && (this._windowBeingUnloaded || isClickedLink)) {
             fetchWithTimeout(url, this.client.jsonpTimeout, {
                 "method": "POST",
@@ -2224,7 +2235,8 @@
         "sscServer": function(cookieDomain) {
             return [ "ssc", cookieDomain ].join(".");
         },
-        "storeConsentByLocalStorage": false
+        "storeConsentByLocalStorage": false,
+        "debugMode": false
     };
     exports.configure = function configure(options) {
         this.client = _.assign({

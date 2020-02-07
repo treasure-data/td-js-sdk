@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>debug mode</title>
+  <meta name="description" content="test that debugMode is enabled"></meta>
+  <script src="/dist/td.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+  (function () {
+    function setBackground (color) {
+      document.body.style.background = color
+    }
+
+    function setStatus (text) {
+      document.getElementById('status').innerHTML = text
+    }
+
+    var timeout = setTimeout(function () {
+      setBackground('red')
+      setStatus('failure')
+    }, 5000)
+
+    var td = new Treasure({
+      database: 'test_db_request',
+      host: 'in-staging.treasuredata.com',
+      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
+      debugMode: true
+    })
+
+    td.trackClicks({
+      extendClickData: function (event, data) {
+        setBackground('green')
+        setStatus('success')
+        clearTimeout(timeout)
+        return data
+      }
+    })
+
+    td.trackEvent('track_event', {date_string: (new Date()).toString()}, function () {
+      setBackground('green')
+      setStatus('success')
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })
+
+    td.trackPageview('track_pageview', function () {
+      setBackground('green')
+      setStatus('success')
+    }, function () {
+      setBackground('red')
+      setStatus('failure')
+    })
+
+    setTimeout(function () {
+      document.getElementById('button').click()
+    }, 0)
+  })()
+</script>
+
+<h1 id='status' style='text-align: center;'>running</h1>
+<button id='button' class='foo bar baz'>button</button>
+</html>
