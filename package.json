@@ -28,9 +28,22 @@
     "version": "npm run build && git add README.md dist/td.js dist/td.min.js",
     "pretest": "npm run build",
     "test": "standard && node ./bin/test.js",
-    "test-full": "karma start --browserStack.startTunnel true",
+    "test-full": "npm-run-all --parallel test:*",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
+    "test-ci": "npm-run-all --parallel test:ci:android test:ci:safari",
+    "test:android": "karma start ./test/karma/android.js --browserStack.startTunnel true",
+    "test:ios": "karma start ./test/karma/ios.js --browserStack.startTunnel true",
+    "test:chrome": "karma start ./test/karma/chrome.js --browserStack.startTunnel true",
+    "test:firefox": "karma start ./test/karma/firefox.js --browserStack.startTunnel true",
+    "test:safari": "karma start ./test/karma/safari.js --browserStack.startTunnel true",
+    "test:ie": "karma start ./test/karma/ie_edge.js --browserStack.startTunnel true",
+
+    "test:ci:android": "karma start ./test/karma/android.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:ios": "karma start ./test/karma/ios.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:chrome": "karma start ./test/karma/chrome.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:firefox": "karma start ./test/karma/firefox.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:safari": "karma start ./test/karma/safari.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:ie": "karma start ./test/karma/ie_edge.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
   "standard": {
     "ignore": [
@@ -65,6 +78,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^2.0.4",
     "mocha": "^2.5.3",
+    "npm-run-all": "^4.1.5",
     "parse-domain": "^2.0.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
