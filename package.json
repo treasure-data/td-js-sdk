@@ -30,7 +30,7 @@
     "test": "standard && node ./bin/test.js",
     "test-full": "npm-run-all --parallel test:*",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci": "npm-run-all --parallel test:ci:android test:ci:safari",
+    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
     "test:android": "karma start ./test/karma/android.js --browserStack.startTunnel true",
     "test:ios": "karma start ./test/karma/ios.js --browserStack.startTunnel true",
     "test:chrome": "karma start ./test/karma/chrome.js --browserStack.startTunnel true",
