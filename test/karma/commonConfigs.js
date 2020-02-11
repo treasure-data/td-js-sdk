@@ -8,15 +8,13 @@ var launchers = require('./launchers')
 
 var baseConfigs = {
   // base path that will be used to resolve all patterns (eg. files, exclude)
-  basePath: '',
+  basePath: '../..',
 
   // Allocating a browser can take pretty long (eg. if we are out of capacity and need to wait
   // for another build to finish) and so the `captureTimeout` typically kills
   // an in-queue-pending request, which makes no sense.
   captureTimeout: 240000,
 
-  browserDisconnectTimeout: 10000, // default 2000
-  browserDisconnectTolerance: 1, // default 0
   // Increase default browser timeout for when
   // devices or emulators take a while to boot up
   browserNoActivityTimeout: 240000,
@@ -28,8 +26,8 @@ var baseConfigs = {
   // list of files / patterns to load in the browser
   files: [
     require.resolve('js-polyfills/es5.js'),
-    { pattern: '../../lib/**/*.js', included: false },
-    { pattern: '../*.spec.js', included: true, watched: false }
+    { pattern: 'lib/**/*.js', included: false },
+    { pattern: 'test/*.spec.js', included: true, watched: false }
   ],
 
   // list of files to exclude
@@ -38,7 +36,7 @@ var baseConfigs = {
   // preprocess matching files before serving them to the browser
   // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
   preprocessors: {
-    '../*.spec.js': ['webpack']
+    'test/*.spec.js': ['webpack']
   },
 
   webpackMiddleware: {

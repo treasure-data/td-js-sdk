@@ -3,14 +3,13 @@ var buildKarmaConfig = require('./commonConfigs')
 module.exports = function (config) {
   buildKarmaConfig(config)
 
-  var currentProject = config.browserStack.project
+  var currentBrowserStack = config.browserStack
+  currentBrowserStack.project = currentBrowserStack.project + '-android'
 
   config.set({
-    port: 9870,
+    port: 9876,
 
-    browserStack: {
-      project: currentProject + '-android'
-    },
+    browserStack: currentBrowserStack,
 
     browsers: [
       'android44',
