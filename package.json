@@ -30,7 +30,8 @@
     "test": "standard && node ./bin/test.js",
     "test-full": "npm-run-all --parallel test:*",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test-ci1": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test-ci": "karma start ./test/karma/android.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
     "test:android": "karma start ./test/karma/android.js --browserStack.startTunnel true",
     "test:ios": "karma start ./test/karma/ios.js --browserStack.startTunnel true",
     "test:chrome": "karma start ./test/karma/chrome.js --browserStack.startTunnel true",
@@ -38,12 +39,13 @@
     "test:safari": "karma start ./test/karma/safari.js --browserStack.startTunnel true",
     "test:ie": "karma start ./test/karma/ie_edge.js --browserStack.startTunnel true",
 
-    "test:ci:android": "karma start ./test/karma/android.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
-    "test:ci:ios": "karma start ./test/karma/ios.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
-    "test:ci:chrome": "karma start ./test/karma/chrome.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
-    "test:ci:firefox": "karma start ./test/karma/firefox.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
-    "test:ci:safari": "karma start ./test/karma/safari.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
-    "test:ci:ie": "karma start ./test/karma/ie_edge.js  --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
+    "test-local1": "karma start ./test/karma/android.js --browsers Chrome --concurrency 1",
+    "test:ci:android": "karma start ./test/karma/android.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:ios": "karma start ./test/karma/ios.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:chrome": "karma start ./test/karma/chrome.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:firefox": "karma start ./test/karma/firefox.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:safari": "karma start ./test/karma/safari.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "test:ci:ie": "karma start ./test/karma/ie_edge.js --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
   },
   "standard": {
     "ignore": [
