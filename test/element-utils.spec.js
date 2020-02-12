@@ -11,7 +11,7 @@ var findElement = elementUtils.findElement
 var createTestElement = helpers.createTestElement
 var leafChild = helpers.leafChild
 
-describe('Element Utils', function () {
+describe('Element Utils tests', function () {
   describe('addEventListener', function () {
     it('calls the event listener', function (done) {
       var button = createTestElement('button')
