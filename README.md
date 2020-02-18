@@ -40,7 +40,7 @@ Install td-js-sdk on your page by copying the appropriate JavaScript snippet bel
 
 ```html
 <script type="text/javascript">
-!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["blockEvents","setSignedMode","fetchServerCookie","unblockEvents","setSignedMode","setAnonymousMode","resetUUID","addRecord","addRecords","fetchGlobalID","set","trackEvent","trackEvents","trackPageview","trackClicks","ready"],n=0;n<s.length;n++){var o=s[n];e[t].prototype[o]=r(o)}var c=document.createElement("script");c.type="text/javascript",c.async=!0,c.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.2/td.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(c,a)}}("Treasure",this);
+!function(t,e){if(void 0===e[t]){e[t]=function(){e[t].clients.push(this),this._init=[Array.prototype.slice.call(arguments)]},e[t].clients=[];for(var r=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(Array.prototype.slice.call(arguments)),this}},s=["blockEvents","fetchServerCookie","unblockEvents","setSignedMode","setAnonymousMode","resetUUID","addRecord","fetchGlobalID","set","trackEvent","trackPageview","trackClicks","ready"],n=0;n<s.length;n++){var o=s[n];e[t].prototype[o]=r(o)}var c=document.createElement("script");c.type="text/javascript",c.async=!0,c.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.2/td.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(c,a)}}("Treasure",this);
 </script>
 ```
 
@@ -337,6 +337,81 @@ var errorCallback = function () {
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
+### Treasure#addRecords(records, success, error)
+
+Send multiple events to Treasure Data at once. If the tables does not exist they will be created for you.
+
+Records will have additional properties applied to them if `$global` or table-specific attributes are configured using `Treasure#set`.
+
+**Parameters:**
+
+* **records** : Object (required) - Object defines structure of records that will be sent to server
+* **success** : Function (optional) - Callback for when sending the event is successful
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+
+**Example:**
+
+```javascript
+var company = new Treasure({...});
+
+var records = {
+  database1: {
+    table1: [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+    ],
+    table2: [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+    ]
+  },
+  database2: {
+    table1: [
+      { 'key': 'value' }
+      ...
+    ],
+    table2: [
+      { 'key': 'value' }
+      ...
+    ]
+  }
+}
+
+var successCallback = function () {
+  // celebrate();
+};
+
+var errorCallback = function () {
+  // cry();
+}
+
+company.addRecords(records, successCallback, errorCallback)
+```
+
+The `records` above will be transformed into the following format (Keen format)
+```javacript
+{
+  'database1.table1': [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+  ],
+  'database1.table2': [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+  ],
+  'database2.table1': [{ 'key': 'value' }],
+  'database2.table2': [{ 'key': 'value' }]
+}
+```
+
 ### Treasure#fetchGlobalID(success, error, forceFetch)
 
 **Parameters:**
@@ -499,7 +574,7 @@ td.trackEvent('willbetracked') // will NOT send td_ip and td_client_id; td_globa
 
 ### Treasure#inSignedMode
 
-Informational method, indicating whether `trackEvents` method will automatically collect td_ip, td_client_id, and td_global_id if set.
+Informational method, indicating whether `trackEvent` or `trackEvents` method will automatically collect td_ip, td_client_id, and td_global_id if set.
 
 **Example:**
 
@@ -610,6 +685,59 @@ td.trackEvent('events', {td_ip: '0.0.0.0'});
 }
 */
 ```
+
+### Treasure#trackEvents(records, success, error)
+
+Each record will be applied all tracked information values. Then it calls `addRecords` to add events
+
+* **records** : Object (required) - Object defines structure of records that will be sent to server
+* **success** : Function (optional) - Callback for when sending the event is successful
+* **error** : Function (optional) - Callback for when sending the event is unsuccessful
+
+**Example:**
+
+```javascript
+var company = new Treasure({...});
+
+var records = {
+  database1: {
+    table1: [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+    ],
+    table2: [
+      {
+        'key1': 'value1',
+        'key2': 'value2'
+      }
+    ]
+  },
+  database2: {
+    table1: [
+      { 'key': 'value' }
+      ...
+    ],
+    table2: [
+      { 'key': 'value' }
+      ...
+    ]
+  }
+}
+
+var successCallback = function () {
+  // celebrate();
+};
+
+var errorCallback = function () {
+  // cry();
+}
+
+company.trackEvents(records, successCallback, errorCallback)
+```
+
+See `Treasure#addRecords` method for more information relates to data format
 
 ### Treasure#set()
 
