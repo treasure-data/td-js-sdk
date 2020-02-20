@@ -56,13 +56,12 @@ MINIFIED_FILENAME="$ROOT_DIR/dist/td.min.js"
 sed -e $GLOBAL_REPLACE -e $VERSION_REPLACE -e $HOST_REPLACE -e $DATABASE_REPLACE -e $PATHNAME_REPLACE lib/config.template.js > lib/config.js
 
 #NODE_ENV=production
-$ROOT_DIR/node_modules/.bin/webpack
+$ROOT_DIR/node_modules/.bin/rollup -c
 if [ $FILENAME != "td" ]
 then
   mv $ROOT_DIR/dist/td.js $ROOT_DIR/dist/$FILENAME.js
 fi
 
-MINIFY_BUILD=true $ROOT_DIR/node_modules/.bin/webpack --output-filename [name].min.js
 if [ $FILENAME != "td" ]
 then
   mv $ROOT_DIR/dist/td.min.js $ROOT_DIR/dist/$FILENAME.min.js

@@ -1,3 +1,8 @@
+var commonjs = require('@rollup/plugin-commonjs')
+var resolve = require('@rollup/plugin-node-resolve')
+var buildtins = require('rollup-plugin-node-builtins')
+var uglify = require('rollup-plugin-uglify').uglify
+
 var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
 var sha = require('child_process')
   .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
@@ -16,7 +21,7 @@ module.exports = function (config) {
 
     // Increase default browser timeout for when
     // devices or emulators take a while to boot up
-    browserNoActivityTimeout: 120000,
+    browserNoActivityTimeout: 240000,
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -35,13 +40,29 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/*.spec.js': ['webpack']
+      'test/*.spec.js': ['rollup']
     },
 
-    webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only'
+    rollupPreprocessor: {
+      output: {
+        format: 'iife', // Helps prevent naming collisions.
+        name: 'Treasure',
+        strict: false
+      },
+      plugins: [
+        buildtins(),
+        resolve({ browser: true }),
+        commonjs(),
+        uglify({
+          compress: false,
+          mangle: true,
+
+          output: {
+            beautify: true,
+            quote_keys: true
+          }
+        })
+      ]
     },
 
     // test results reporter to use
@@ -53,7 +74,7 @@ module.exports = function (config) {
     port: 9876,
 
     // enable / disable colors in the output (reporters and logs)
-    colors: false,
+    colors: true,
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
