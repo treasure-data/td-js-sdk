@@ -30,7 +30,6 @@ describe('Treasure Utils', function () {
   describe('misc', function () {
     describe('fetchWithTimeout', function () {
       it('must abort after a while', function (done) {
-
         // Disable testing this feature for iOS 11 due to flakyness
         if (_.includes(_.get(navigator, 'userAgent'), 'iPhone OS 11_0')) { done(); return }
 
