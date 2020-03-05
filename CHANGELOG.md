@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 (2020-03-05)
+* Use `keepalive` option for fetch to keep request alive while document is being unloaded
+* Do not set td_global_id cookie if its value from server is null
+
 ## 2.2.0 (2019-09-25)
 * Add `useServerSideCookie` property to configuration options
 * Add `sscDomain` property to configuration options
