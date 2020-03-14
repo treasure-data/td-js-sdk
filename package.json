@@ -70,7 +70,7 @@
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
     "simple-mock": "^0.8.0",
-    "standard": "^11.0.0",
+    "standard": "^14.3.2",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
     "uglifyjs-webpack-plugin": "^0.4.6",
