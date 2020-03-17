@@ -19,7 +19,7 @@
     var Treasure = __webpack_require__(1);
     var window = __webpack_require__(64);
     var GLOBAL = __webpack_require__(73).GLOBAL;
-    __webpack_require__(83)(Treasure, GLOBAL);
+    __webpack_require__(86)(Treasure, GLOBAL);
     window[GLOBAL] = Treasure;
 }, function(module, exports, __webpack_require__) {
     var record = __webpack_require__(2);
@@ -79,7 +79,8 @@
         "GlobalID": __webpack_require__(78),
         "Personalization": __webpack_require__(79),
         "Track": __webpack_require__(80),
-        "ServerSideCookie": __webpack_require__(82)
+        "ServerSideCookie": __webpack_require__(82),
+        "AutomatedTracking": __webpack_require__(83)
     };
     _.forIn(Treasure.Plugins, function(plugin) {
         _.forIn(plugin, function(method, name) {
@@ -714,6 +715,7 @@
         "isObject": __webpack_require__(17),
         "isString": __webpack_require__(18),
         "isArray": __webpack_require__(32),
+        "isFunction": __webpack_require__(24),
         "keys": __webpack_require__(21),
         "assign": __webpack_require__(40),
         "forIn": __webpack_require__(47),
@@ -2320,7 +2322,7 @@
         var options = assign({
             "element": window.document,
             "extendClickData": defaultExtendClickData,
-            "ignoreAttribute": "td-ignore",
+            "ignoreAttribute": elementUtils.ignoreAttribute,
             "tableName": "clicks"
         }, trackClicksOptions);
         var treeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute(options.ignoreAttribute);
@@ -2349,6 +2351,7 @@
     var forEach = __webpack_require__(9).forEach;
     var isString = __webpack_require__(9).isString;
     var disposable = __webpack_require__(3).disposable;
+    var IGNORE_ATTRIBUTE = "td-ignore";
     function getEventTarget(event) {
         var target = event.target || event.srcElement || window.document;
         return target.nodeType === 3 ? target.parentNode : target;
@@ -2477,7 +2480,8 @@
         "hasAttribute": hasAttribute,
         "htmlElementAsString": htmlElementAsString,
         "htmlTreeAsString": htmlTreeAsString,
-        "findElement": findElement
+        "findElement": findElement,
+        "ignoreAttribute": IGNORE_ATTRIBUTE
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
@@ -2790,6 +2794,103 @@
     };
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);
+    var invariant = __webpack_require__(3).invariant;
+    var document = __webpack_require__(84);
+    var elementUtils = __webpack_require__(77);
+    var DEFAULT_CONFIG = {
+        "trackPageViews": false,
+        "trackClicks": false,
+        "trackElementViews": false
+    };
+    var PAGEVIEWS = "at_pageviews";
+    var CLICKS = "at_clicks";
+    var ELEMENT_VIEWS = "at_element_views";
+    var isLinkOrButton = function isLinkOrButton(el) {
+        var type = el.tagName;
+        return type === "A" || type === "BUTTON";
+    };
+    var configure = function configureAutoTracking() {};
+    var initAutoTracking = function initAutoTracking(config) {
+        config = config || {};
+        this.automatedTrackingConfig = _.assign(DEFAULT_CONFIG, config);
+        var errorHandler = this.automatedTrackingConfig.errorHandler || _.noop;
+        if (this.automatedTrackingConfig.trackPageViews) {
+            this.trackEvent(PAGEVIEWS, {}, _.noop, errorHandler);
+        }
+        if (this.automatedTrackingConfig.trackClicks) {
+            var clickHandler = function autoClickHandler(evt) {
+                var target = elementUtils.findElement(elementUtils.getEventTarget(evt));
+                var treeHasIgnoreAttribute = elementUtils.createTreeHasIgnoreAttribute(elementUtils.ignoreAttribute);
+                if (target && isLinkOrButton(target) && !treeHasIgnoreAttribute(target)) {
+                    var elementData = elementUtils.getElementData(target);
+                    if (config.extendClickData && _.isFunction(config.extendClickData)) {
+                        elementData = config.extendClickData(evt, elementData);
+                    }
+                    invariant(elementData, "Automated click tracking, there is no data to record");
+                    this.trackEvent(CLICKS, elementData, _.noop, errorHandler);
+                }
+            };
+            if (!this.trackClicksRemover) {
+                this.trackClicksRemover = elementUtils.addEventListener(document, "click", clickHandler.bind(this));
+            }
+        }
+        if (this.automatedTrackingConfig.trackElementViews) {
+            if (typeof IntersectionObserver !== "undefined") {
+                var observerOptions = {
+                    "threshold": 1
+                };
+                var intersectionHandler = function intersectionHandler(entries, observer) {
+                    _.forEach(entries, function(entry) {
+                        if (entry.isIntersecting) {
+                            var elementData = elementUtils.getElementData(entry.target);
+                            invariant(elementData, "Automated element view tracking, there is no data to record");
+                            this.trackEvent(ELEMENT_VIEWS, elementData, _.noop, errorHandler);
+                        }
+                    }, this);
+                };
+                var observer = new IntersectionObserver(intersectionHandler.bind(this), observerOptions);
+                var trackedElements = document.querySelectorAll(".td-track-element-view");
+                _.forEach(trackedElements, function(el) {
+                    observer.observe(el);
+                });
+                this.intersectionObserver = observer;
+            }
+        }
+    };
+    var removeAutomatedClicksTracking = function() {
+        if (this.trackClicksRemover) {
+            this.trackClicksRemover();
+        }
+    };
+    var removeAutomatedElementViewsTracking = function() {
+        if (this.intersectionObserver) {
+            this.intersectionObserver.disconnect();
+        }
+    };
+    module.exports = {
+        "initAutoTracking": initAutoTracking,
+        "configure": configure,
+        "removeAutoClicksTracking": removeAutomatedClicksTracking,
+        "removeAutoElementViewsTracking": removeAutomatedElementViewsTracking
+    };
+}, function(module, exports, __webpack_require__) {
+    (function(global) {
+        var topLevel = typeof global !== "undefined" ? global : typeof window !== "undefined" ? window : {};
+        var minDoc = __webpack_require__(85);
+        if (typeof document !== "undefined") {
+            module.exports = document;
+        } else {
+            var doccy = topLevel["__GLOBAL_DOCUMENT_CACHE@4"];
+            if (!doccy) {
+                doccy = topLevel["__GLOBAL_DOCUMENT_CACHE@4"] = minDoc;
+            }
+            module.exports = doccy;
+        }
+    }).call(exports, function() {
+        return this;
+    }());
+}, function(module, exports) {}, function(module, exports, __webpack_require__) {
+    var _ = __webpack_require__(9);
     var window = __webpack_require__(64);
     function applyToClient(client, method) {
         var _method = "_" + method;
@@ -2801,7 +2902,7 @@
             delete client[_method];
         }
     }
-    var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "ready" ];
+    var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "initAutoTracking", "removeAutoElementViewsTracking", "removeAutoClicksTracking", "remove", "ready" ];
     module.exports = function loadClients(Treasure, name) {
         if (_.isObject(window[name])) {
             var snippet = window[name];
