@@ -337,13 +337,25 @@ var errorCallback = function () {
 company.addRecord('sales', sale, successCallback, errorCallback);
 ```
 
-### Treasure#fetchGlobalID(success, error, forceFetch)
+### Treasure#fetchGlobalID(success, error, forceFetch, options)
 
 **Parameters:**
 
 * **success** : Function (optional) - Callback for when sending the event is successful
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
 * **forceFetch** : Boolean (optional) - Forces a refetch of global id and ignores cached version (default false)
+* **options** : Object (optional) - Cookie options
+
+**Cookie options:**
+```javascript
+{
+  path: '/',
+  domain: 'abc.com',
+  secure: true|false,
+  maxAge: Number | String | Date,
+  sameSite: 'None | Lax | Strict'
+}
+```
 
 **Example:**
 
@@ -359,6 +371,15 @@ var errorCallback = function (error) {
 }
 
 td.fetchGlobalID(successCallback, errorCallback)
+
+// with cookie options
+td.fetchGlobalID(successCallback, errorCallback, false, {
+  path: '/',
+  secure: true,
+  maxAge: 5 * 60 // 5 minutes,
+  sameSite: 'None'
+})
+
 ```
 
 ### Treasure#fetchUserSegments(token, success, error)
