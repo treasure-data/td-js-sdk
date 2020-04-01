@@ -21,7 +21,8 @@ describe('Treasure Tracker', function () {
       database: 'database',
       writeKey: 'writeKey',
       development: true,
-      logging: false
+      logging: false,
+      startInSignedMode: true
     }
   }
 
@@ -226,7 +227,8 @@ describe('Treasure Tracker', function () {
           writeKey: 'writeKey',
           clientId: 'foobar',
           development: true,
-          logging: false
+          logging: false,
+          startInSignedMode: true
         }
         treasure = new Treasure(configuration)
         expect(treasure.client.track.uuid).to.equal('foobar')
@@ -235,7 +237,8 @@ describe('Treasure Tracker', function () {
           database: 'database',
           writeKey: 'writeKey',
           development: true,
-          logging: false
+          logging: false,
+          startInSignedMode: true
         }
         treasure = new Treasure(configuration)
         expect(treasure.client.track.uuid).to.equal('foobar')

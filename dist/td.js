@@ -1458,7 +1458,7 @@
             }
             return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
         },
-        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure, sameSite) {
+        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
             if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
                 return false;
             }
@@ -1485,18 +1485,7 @@
                     break;
                 }
             }
-            var secureAndSameSite = "";
-            if (sameSite && sameSite.toUpperCase() === "NONE") {
-                secureAndSameSite = "; Secure; SameSite=" + sameSite;
-            } else {
-                if (bSecure) {
-                    secureAndSameSite += "; Secure";
-                }
-                if (sameSite) {
-                    secureAndSameSite += "; SameSite=" + sameSite;
-                }
-            }
-            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", secureAndSameSite ].join("");
+            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
             return true;
         },
         "removeItem": function removeItem(sKey, sPath, sDomain) {
@@ -2495,22 +2484,20 @@
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
-    function cacheSuccess(result, cookieName, cookieOptions) {
-        cookieOptions = cookieOptions || {};
+    function cacheSuccess(result, cookieName) {
         if (!result["global_id"]) {
             return null;
         }
-        var path = cookieOptions.path || "";
-        var domain = cookieOptions.domain || "";
-        var secure = cookieOptions.secure || "";
-        var maxAge = cookieOptions.maxAge || 6e3;
-        var sameSite = cookieOptions.sameSite;
-        cookie.setItem(cookieName, result["global_id"], maxAge, path, domain, secure, sameSite);
+        cookie.setItem(cookieName, result["global_id"], 6e3);
         return result["global_id"];
     }
-    function configure() {}
-    function fetchGlobalID(success, error, forceFetch, options) {
-        options = options || {};
+    function configure() {
+        if (!this.inSignedMode()) {
+            cookie.removeItem(this.client.globalIdCookie);
+        }
+        return this;
+    }
+    function fetchGlobalID(success, error, forceFetch) {
         success = success || noop;
         error = error || noop;
         if (!this.inSignedMode()) {
@@ -2529,7 +2516,7 @@
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
         }, function(err, res) {
-            return err ? error(err) : success(cacheSuccess(res, cookieName, options));
+            return err ? error(err) : success(cacheSuccess(res, cookieName));
         });
     }
     module.exports = {
@@ -2711,9 +2698,11 @@
         var storage = suggestedStorage || this.client.storage;
         this.client.track.uuid = clientId.replace(/\0/g, "");
         if (storage) {
-            if (storage.expires) {
+            if (storage.expires && this.inSignedMode()) {
                 setCookie(storage, storage.name, undefined);
                 setCookie(storage, storage.name, this.client.track.uuid);
+            } else if (!this.inSignedMode()) {
+                setCookie(storage, storage.name);
             }
         }
         this.client.track.values = _.assign(configureValues(this.client.track), this.client.track.values);
@@ -2762,8 +2751,20 @@
     var noop = __webpack_require__(3).noop;
     var invariant = __webpack_require__(3).invariant;
     var cookie = __webpack_require__(65);
+    var setCookie = __webpack_require__(66);
     var cookieName = "_td_ssc_id";
     function configure() {
+        if (!this.inSignedMode()) {
+            var domain;
+            if (typeof this.client.sscDomain === "function") {
+                domain = this.client.sscDomain();
+            } else {
+                domain = this.client.sscDomain;
+            }
+            setCookie({
+                "domain": domain
+            }, cookieName);
+        }
         return this;
     }
     function fetchServerCookie(success, error, forceFetch) {

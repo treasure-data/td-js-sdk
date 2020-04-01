@@ -459,6 +459,9 @@ describe('Treasure Record', function () {
         })
       })
       describe('startInSignedMode', function () {
+        beforeEach(function () {
+          cookie.removeItem('_td')
+        })
         function makeNewTD (startInSignedMode, storeConsentByLocalStorage) {
           resetConfiguration({
             startInSignedMode: startInSignedMode,
@@ -466,6 +469,20 @@ describe('Treasure Record', function () {
           })
           treasure = new Treasure(configuration)
         }
+
+        it('_td cookie should be set when start in Signed Mode', function () {
+          makeNewTD(true, false)
+
+          expect(treasure.inSignedMode()).to.be(true)
+          expect(cookie.getItem('_td')).to.be.ok()
+        })
+
+        it('_td cookie should not be set when not starting in Signed Mode', function () {
+          makeNewTD(false, false)
+
+          expect(treasure.inSignedMode()).to.be(false)
+          expect(cookie.getItem('_td')).to.be('undefined')
+        })
 
         it('will favor cookies if set', function () {
           cookie.setItem(SIGNEDMODECOOKIE, 'true')
