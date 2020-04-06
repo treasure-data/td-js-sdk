@@ -552,13 +552,27 @@ td.resetUUID() // set td_client_id as random uuid
 ### Treasure#trackClicks
 
 Setup an event listener to automatically log clicks.
+The event will be hooked only follows
+- `role=button` or `role=link` 
+- `<a>`
+- `<button>` 
+- `<input>)`. exclude for `<input type='password'>`
 
 **Example:**
 
 ```javascript
 var td = new Treasure({...})
-td.trackClicks({ tableName: 'custom_table_name' })
+td.trackClicks({ 
+    element         : '...' 
+    extendClickData : '...'
+    ignoreAttribute : '...'
+    tableName       : '...'
+    })
 ```
+- element: HTMLElement -> Default is `window.document`.  Default setting will observe all of above elements. You can set a element if you want to focus on particular element.
+- extendClickData: Function -> Default is function to be set element attributes. You can set function adding special tracking data by extending `function(e: event, elementData: ElementObject)`.
+- ignoreAttribute: string -> Default is `"td-ignore"` You can set attribute name to ignore element. (e.g. `<span role='button' class='button-design' id='button-id' td-ignore />`)
+- tableName: string -> Default tableName is `"clicks"`. Click tracking event will be stored into `tableName` on TreasureData
 
 
 ### Treasure#trackPageview(table, success, error)
