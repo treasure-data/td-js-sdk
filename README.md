@@ -559,7 +559,6 @@ The event will be hooked only follows
 - `<input>)`. exclude for `<input type='password'>`
 
 **Example:**
-
 ```javascript
 var td = new Treasure({...})
 td.trackClicks({ 
