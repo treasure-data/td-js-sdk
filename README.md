@@ -356,6 +356,8 @@ company.addRecord('sales', sale, successCallback, errorCallback);
   sameSite: 'None | Lax | Strict'
 }
 ```
+**Note:**
+If you set the `sameSite` value to `None`, the `Secure` property of the cookie will be set to true (it overwrites the `secure` option). More details on [SameSite cookies](https://web.dev/samesite-cookies-explained/).
 
 **Example:**
 
