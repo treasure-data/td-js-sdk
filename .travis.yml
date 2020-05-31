@@ -11,6 +11,6 @@ env:
   - secure: VuUlF+SdWvjKA0jDLJWcHwaL+H/4shfLhy/1C3HulJVuAOtz7+UQvOsbo2s8tXQic25IynvnBxb366wbDHS4yPEi71oTH/KniV3rYa9jsDM/vIUsHi8X09Scwk8CyD84F7aEL3hKWnWlNFxgRN3YgjenRX9qeDGsG6fLin2i670=
 addons:
   browserstack:
-    username: dev@treasure-data.com
+    username: sondo3
     access_key:
-      secure: ZLJQWW+CCYayaI49i7bPqK/1HVFX4qSDKZMVBkkj8RiRdkQ86QBejP4+QW77JbVGbvctfJVLLdumsWhpZGMRbz4eVV6UMvJ4PsqGuXjoaWRGqo6Q6VgCQfZJlsnhAmjbq7b1VKLo837CWDRGCem8O0hX+/GwoN5aegQz3sfLDA0=
+      secure: CnEtpDg7P8cueyUffaxg54Djy91gZUjGogXkv0gx9tV/WtfIRjVBbB9Vkmr2woOEnvHboout0mtYTZIIqMmCUTQuO7nNjMDHefBLCGS+5rLwmftU9+sf2/QSrGTkzFDBAqcqYLV4hH8C8XPWJ+YUYdpDdlm9ckQPcB8xEw2h5Ac=
