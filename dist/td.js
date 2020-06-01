@@ -145,7 +145,6 @@
         if (this.areEventsBlocked()) {
             return;
         }
-        invariant(request.type === "jsonp", "Request type " + request.type + " not supported");
         var params = [ "api_key=" + encodeURIComponent(request.apikey), "modified=" + encodeURIComponent(new Date().getTime()), "data=" + encodeURIComponent(objectToBase64(request.record)) ];
         if (request.time) {
             params.push("time=" + encodeURIComponent(request.time));
@@ -2481,7 +2480,6 @@
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
-    var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
     function cacheSuccess(result, cookieName) {
@@ -2506,7 +2504,6 @@
             }, 0);
         }
         var url = "https://" + this.client.host + "/js/v3/global_id";
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
@@ -2570,6 +2567,7 @@
     var version = __webpack_require__(74);
     var document = window.document;
     function configureValues(track) {
+        var clientHints = this.clientHints || "";
         return _.assign({
             "td_version": function() {
                 return version;
@@ -2609,7 +2607,7 @@
                 return !document.location || !document.location.href ? "" : document.location.href.split("#")[0];
             },
             "td_user_agent": function() {
-                return window.navigator.userAgent;
+                return clientHints || window.navigator.userAgent;
             },
             "td_platform": function() {
                 return window.navigator.platform;
@@ -2698,7 +2696,7 @@
                 setCookie(storage, storage.name, this.client.track.uuid);
             }
         }
-        this.client.track.values = _.assign(configureValues(this.client.track), this.client.track.values);
+        this.client.track.values = _.assign(configureValues.call(this, this.client.track), this.client.track.values);
         return this;
     };
     exports.trackEvent = function trackEvent(table, record, success, failure) {
@@ -2742,7 +2740,6 @@
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
-    var invariant = __webpack_require__(3).invariant;
     var cookie = __webpack_require__(65);
     var cookieName = "_td_ssc_id";
     function configure() {
@@ -2776,7 +2773,6 @@
                 success(cachedSSCId);
             }, 0);
         }
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
@@ -2801,6 +2797,38 @@
             delete client[_method];
         }
     }
+    function gatherClientHints() {
+        var uaData = navigator.userAgentData;
+        var brands = uaData.brands || {};
+        var clientHints = [];
+        _.forEach(brands, function(v, key) {
+            clientHints.push([ v.brand, v.version ].join("/"));
+        });
+        var highEntropyPromise = uaData.getHighEntropyValues([ "platform", "platformVersion", "architecture", "model", "uaFullVersion" ]);
+        return highEntropyPromise.then(function(highEntropyValues) {
+            var platform = highEntropyValues.platform;
+            var platformVersion = highEntropyValues.platformVersion;
+            var architecture = highEntropyValues.architecture;
+            var model = highEntropyValues.model;
+            var uaFullVersion = highEntropyValues.uaFullVersion;
+            if (platform) {
+                clientHints.push([ "Platform", platform ].join("/"));
+            }
+            if (platformVersion) {
+                clientHints.push([ "PlatformVersion", platformVersion ].join("/"));
+            }
+            if (architecture) {
+                clientHints.push([ "Architecture", architecture ].join("/"));
+            }
+            if (model) {
+                clientHints.push([ "Model", model ].join("/"));
+            }
+            if (uaFullVersion) {
+                clientHints.push([ "UAFullVersion", uaFullVersion ].join("/"));
+            }
+            return clientHints.join(" ");
+        });
+    }
     var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "ready" ];
     module.exports = function loadClients(Treasure, name) {
         if (_.isObject(window[name])) {
@@ -2810,9 +2838,18 @@
                 snippet.prototype[key] = value;
             });
             _.forEach(clients, function(client) {
-                _.forEach(TREASURE_KEYS, function(value) {
-                    applyToClient(client, value);
-                });
+                if (navigator.userAgentData) {
+                    gatherClientHints().then(function(clientHints) {
+                        client.clientHints = clientHints;
+                        _.forEach(TREASURE_KEYS, function(value) {
+                            applyToClient(client, value);
+                        });
+                    });
+                } else {
+                    _.forEach(TREASURE_KEYS, function(value) {
+                        applyToClient(client, value);
+                    });
+                }
             });
         }
     };
