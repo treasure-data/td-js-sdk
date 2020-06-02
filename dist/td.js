@@ -2829,6 +2829,9 @@
             return clientHints.join(" ");
         });
     }
+    function isHTTPS() {
+        return /^https/i.test(window.location.protocol);
+    }
     var TREASURE_KEYS = [ "init", "set", "blockEvents", "unblockEvents", "setSignedMode", "setAnonymousMode", "resetUUID", "addRecord", "fetchGlobalID", "trackPageview", "trackEvent", "trackClicks", "fetchUserSegments", "fetchServerCookie", "ready" ];
     module.exports = function loadClients(Treasure, name) {
         if (_.isObject(window[name])) {
@@ -2838,7 +2841,7 @@
                 snippet.prototype[key] = value;
             });
             _.forEach(clients, function(client) {
-                if (navigator.userAgentData) {
+                if (navigator.userAgentData && isHTTPS()) {
                     gatherClientHints().then(function(clientHints) {
                         client.clientHints = clientHints;
                         _.forEach(TREASURE_KEYS, function(value) {
