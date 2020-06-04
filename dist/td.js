@@ -145,7 +145,6 @@
         if (this.areEventsBlocked()) {
             return;
         }
-        invariant(request.type === "jsonp", "Request type " + request.type + " not supported");
         var params = [ "api_key=" + encodeURIComponent(request.apikey), "modified=" + encodeURIComponent(new Date().getTime()), "data=" + encodeURIComponent(objectToBase64(request.record)) ];
         if (request.time) {
             params.push("time=" + encodeURIComponent(request.time));
@@ -1458,7 +1457,7 @@
             }
             return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
         },
-        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure, sameSite) {
             if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
                 return false;
             }
@@ -1485,7 +1484,18 @@
                     break;
                 }
             }
-            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
+            var secureAndSameSite = "";
+            if (sameSite && sameSite.toUpperCase() === "NONE") {
+                secureAndSameSite = "; Secure; SameSite=" + sameSite;
+            } else {
+                if (bSecure) {
+                    secureAndSameSite += "; Secure";
+                }
+                if (sameSite) {
+                    secureAndSameSite += "; SameSite=" + sameSite;
+                }
+            }
+            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", secureAndSameSite ].join("");
             return true;
         },
         "removeItem": function removeItem(sKey, sPath, sDomain) {
@@ -2481,14 +2491,19 @@
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
-    var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
-    function cacheSuccess(result, cookieName) {
+    function cacheSuccess(result, cookieName, cookieOptions) {
+        cookieOptions = cookieOptions || {};
         if (!result["global_id"]) {
             return null;
         }
-        cookie.setItem(cookieName, result["global_id"], 6e3);
+        var path = cookieOptions.path;
+        var domain = cookieOptions.domain;
+        var secure = cookieOptions.secure;
+        var maxAge = cookieOptions.maxAge || 6e3;
+        var sameSite = cookieOptions.sameSite;
+        cookie.setItem(cookieName, result["global_id"], maxAge, path, domain, secure, sameSite);
         return result["global_id"];
     }
     function configure() {
@@ -2497,7 +2512,8 @@
         }
         return this;
     }
-    function fetchGlobalID(success, error, forceFetch) {
+    function fetchGlobalID(success, error, forceFetch, options) {
+        options = options || {};
         success = success || noop;
         error = error || noop;
         if (!this.inSignedMode()) {
@@ -2511,12 +2527,11 @@
             }, 0);
         }
         var url = "https://" + this.client.host + "/js/v3/global_id";
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
         }, function(err, res) {
-            return err ? error(err) : success(cacheSuccess(res, cookieName));
+            return err ? error(err) : success(cacheSuccess(res, cookieName, options));
         });
     }
     module.exports = {
@@ -2749,7 +2764,6 @@
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
-    var invariant = __webpack_require__(3).invariant;
     var cookie = __webpack_require__(65);
     var setCookie = __webpack_require__(66);
     var cookieName = "_td_ssc_id";
@@ -2795,7 +2809,6 @@
                 success(cachedSSCId);
             }, 0);
         }
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
