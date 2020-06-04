@@ -145,7 +145,6 @@
         if (this.areEventsBlocked()) {
             return;
         }
-        invariant(request.type === "jsonp", "Request type " + request.type + " not supported");
         var params = [ "api_key=" + encodeURIComponent(request.apikey), "modified=" + encodeURIComponent(new Date().getTime()), "data=" + encodeURIComponent(objectToBase64(request.record)) ];
         if (request.time) {
             params.push("time=" + encodeURIComponent(request.time));
@@ -2492,7 +2491,6 @@
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
-    var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
     function cacheSuccess(result, cookieName, cookieOptions) {
@@ -2500,15 +2498,20 @@
         if (!result["global_id"]) {
             return null;
         }
-        var path = cookieOptions.path || "";
-        var domain = cookieOptions.domain || "";
-        var secure = cookieOptions.secure || "";
+        var path = cookieOptions.path;
+        var domain = cookieOptions.domain;
+        var secure = cookieOptions.secure;
         var maxAge = cookieOptions.maxAge || 6e3;
         var sameSite = cookieOptions.sameSite;
         cookie.setItem(cookieName, result["global_id"], maxAge, path, domain, secure, sameSite);
         return result["global_id"];
     }
-    function configure() {}
+    function configure() {
+        if (!this.inSignedMode()) {
+            cookie.removeItem(this.client.globalIdCookie);
+        }
+        return this;
+    }
     function fetchGlobalID(success, error, forceFetch, options) {
         options = options || {};
         success = success || noop;
@@ -2524,7 +2527,6 @@
             }, 0);
         }
         var url = "https://" + this.client.host + "/js/v3/global_id";
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
@@ -2711,9 +2713,11 @@
         var storage = suggestedStorage || this.client.storage;
         this.client.track.uuid = clientId.replace(/\0/g, "");
         if (storage) {
-            if (storage.expires) {
+            if (storage.expires && this.inSignedMode()) {
                 setCookie(storage, storage.name, undefined);
                 setCookie(storage, storage.name, this.client.track.uuid);
+            } else if (!this.inSignedMode()) {
+                setCookie(storage, storage.name);
             }
         }
         this.client.track.values = _.assign(configureValues(this.client.track), this.client.track.values);
@@ -2760,10 +2764,21 @@
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
     var noop = __webpack_require__(3).noop;
-    var invariant = __webpack_require__(3).invariant;
     var cookie = __webpack_require__(65);
+    var setCookie = __webpack_require__(66);
     var cookieName = "_td_ssc_id";
     function configure() {
+        if (!this.inSignedMode()) {
+            var domain;
+            if (typeof this.client.sscDomain === "function") {
+                domain = this.client.sscDomain();
+            } else {
+                domain = this.client.sscDomain;
+            }
+            setCookie({
+                "domain": domain
+            }, cookieName);
+        }
         return this;
     }
     function fetchServerCookie(success, error, forceFetch) {
@@ -2794,7 +2809,6 @@
                 success(cachedSSCId);
             }, 0);
         }
-        invariant(this.client.requestType === "jsonp", "Request type " + this.client.requestType + " not supported");
         jsonp(url, {
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
