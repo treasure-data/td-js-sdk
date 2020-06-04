@@ -1458,7 +1458,7 @@
             }
             return decode(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + handleSkey(sKey) + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
         },
-        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        "setItem": function setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure, sameSite) {
             if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
                 return false;
             }
@@ -1485,7 +1485,18 @@
                     break;
                 }
             }
-            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", bSecure ? "; secure" : "" ].join("");
+            var secureAndSameSite = "";
+            if (sameSite && sameSite.toUpperCase() === "NONE") {
+                secureAndSameSite = "; Secure; SameSite=" + sameSite;
+            } else {
+                if (bSecure) {
+                    secureAndSameSite += "; Secure";
+                }
+                if (sameSite) {
+                    secureAndSameSite += "; SameSite=" + sameSite;
+                }
+            }
+            document.cookie = [ encode(sKey), "=", encode(sValue), sExpires, sDomain ? "; domain=" + sDomain : "", sPath ? "; path=" + sPath : "", secureAndSameSite ].join("");
             return true;
         },
         "removeItem": function removeItem(sKey, sPath, sDomain) {
@@ -2484,15 +2495,22 @@
     var invariant = __webpack_require__(3).invariant;
     var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
-    function cacheSuccess(result, cookieName) {
+    function cacheSuccess(result, cookieName, cookieOptions) {
+        cookieOptions = cookieOptions || {};
         if (!result["global_id"]) {
             return null;
         }
-        cookie.setItem(cookieName, result["global_id"], 6e3);
+        var path = cookieOptions.path || "";
+        var domain = cookieOptions.domain || "";
+        var secure = cookieOptions.secure || "";
+        var maxAge = cookieOptions.maxAge || 6e3;
+        var sameSite = cookieOptions.sameSite;
+        cookie.setItem(cookieName, result["global_id"], maxAge, path, domain, secure, sameSite);
         return result["global_id"];
     }
     function configure() {}
-    function fetchGlobalID(success, error, forceFetch) {
+    function fetchGlobalID(success, error, forceFetch, options) {
+        options = options || {};
         success = success || noop;
         error = error || noop;
         if (!this.inSignedMode()) {
@@ -2511,7 +2529,7 @@
             "prefix": "TreasureJSONPCallback",
             "timeout": this.client.jsonpTimeout
         }, function(err, res) {
-            return err ? error(err) : success(cacheSuccess(res, cookieName));
+            return err ? error(err) : success(cacheSuccess(res, cookieName, options));
         });
     }
     module.exports = {
