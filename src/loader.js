@@ -16,13 +16,10 @@
 
     var methods = [
       'addRecord',
-      'areEventsBlocked',
       'blockEvents',
       'fetchServerCookie',
       'fetchGlobalID',
       'fetchUserSegments',
-      'get',
-      'inSignedMode',
       'resetUUID',
       'ready',
       'setSignedMode',
