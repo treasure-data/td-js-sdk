@@ -568,10 +568,10 @@ td.trackClicks({
     tableName       : '...'
     })
 ```
-- element: HTMLElement -> Default is `window.document`.  Default setting will observe all of above elements. You can set a element if you want to focus on particular element.
-- extendClickData: Function -> Default is function to be set element attributes. You can set function adding special tracking data by extending `function(e: event, elementData: ElementObject)`.
+- element: HTMLElement -> Default is `window.document`. Default setting will observe all elements above. You can set an element if you want to focus on a particular element.
+- extendClickData: Function -> Default is function to set element attributes. You can set function adding special tracking data by extending `function(e: event, elementData: ElementObject)`.
 - ignoreAttribute: string -> Default is `"td-ignore"` You can set attribute name to ignore element. (e.g. `<span role='button' class='button-design' id='button-id' td-ignore />`)
-- tableName: string -> Default tableName is `"clicks"`. Click tracking event will be stored into `tableName` on TreasureData
+- tableName: string -> Default tableName is `"clicks"`. Click tracking event will be stored into `tableName` in TreasureData
 
 
 ### Treasure#trackPageview(table, success, error)
