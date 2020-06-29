@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0 (2020-06-29)
+* Allow to set `path`, `domain`, `secure`, `maxAge`, `sameSite` as cookie options to `fetchGlobalID` api
+* Do not create cookies when not in signed mode
+* Add `fetchUserSegments` method to script loader
+* Update `fetchUserSegments` documentation
+
 ## 2.3.0 (2020-03-05)
 * Use `keepalive` option for fetch to keep request alive while document is being unloaded
 * Do not set td_global_id cookie if its value from server is null
@@ -8,7 +14,7 @@
 * Add `useServerSideCookie` property to configuration options
 * Add `sscDomain` property to configuration options
 * Add `sscServer` property to configuration options
-* Add `fetchServerCookie` method 
+* Add `fetchServerCookie` method
 
 ## 2.1.0 (2018-05-24)
 * Modifications to release scripts for test environments
