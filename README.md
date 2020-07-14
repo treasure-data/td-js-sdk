@@ -384,12 +384,14 @@ td.fetchGlobalID(successCallback, errorCallback, false, {
 
 ```
 
-### Treasure#fetchUserSegments(token, success, error)
+### Treasure#fetchUserSegments(options, success, error)
 
 **Parameters:**
 
-* **token** : String (required) - Audience Token for the userId
-* **success** : Function (optional) - Callback for receiving the user key, attributes and segments
+* **options** : Object (required) - User Segment object
+  * **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
+  * **options.keys** : Object (required) - Key Value to be sent for this segment
+* **success** : Function (optional) - Callback for receiving the user key and segments
 * **error** : Function (optional) - Callback for when sending the event is unsuccessful
 
 **Example:**
@@ -414,37 +416,6 @@ var successCallback = function (values) {
 var errorCallback = function (error) {
   // cry();
 };
-
-var token = 'lorem-ipsum-dolor-sit-amet'
-
-td.fetchUserSegments(token, successCallback, errorCallback)
-```
-*N.B.* This feature is not enabled on accounts by default, please contact support for more information.
-
-### Treasure#fetchUserSegments(options, success, error)
-
-**Parameters:**
-
-* **options** : Object (required) - User Segment object
-  * **options.audienceToken** : String or Array (required) - Audience Token(s) for the userId
-  * **options.keys** : Object (optional) - Key Value to be sent for this segment
-* **success** : Function (optional) - Callback for receiving the user key and segments
-* **error** : Function (optional) - Callback for when sending the event is unsuccessful
-
-**Example:**
-
-```javascript
-var td = new Treasure({...})
-
-var successCallback = function (key, segments) {
-  // celebrate();
-};
-
-var errorCallback = function (error) {
-  // cry();
-};
-
-var token = 'lorem-ipsum-dolor-sit-amet'
 
 td.fetchUserSegments({
   audienceToken: ['token1', 'token2'],
@@ -576,16 +547,16 @@ td.resetUUID() // set td_client_id as random uuid
 
 Setup an event listener to automatically log clicks.
 The event will be hooked only follows
-- `role=button` or `role=link` 
+- `role=button` or `role=link`
 - `<a>`
-- `<button>` 
+- `<button>`
 - `<input>)`. exclude for `<input type='password'>`
 
 **Example:**
 ```javascript
 var td = new Treasure({...})
-td.trackClicks({ 
-    element         : '...' 
+td.trackClicks({
+    element         : '...'
     extendClickData : '...'
     ignoreAttribute : '...'
     tableName       : '...'
