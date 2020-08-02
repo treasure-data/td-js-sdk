@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -7,33 +7,23 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: './dist'
+    path: path.resolve(__dirname, 'dist')
   },
-  target: 'web',
+  mode: process.env.MINIFY_BUILD ? 'production' : 'development',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
-    }),
-    process.env.MINIFY_BUILD
-      ? new UglifyJSPlugin({
-        compress: {
-          screw_ie8: false
-        },
-        mangle: {
-          screw_ie8: false
-        },
-        output: {
-          screw_ie8: false,
-          quote_keys: true
-        }
-      })
-      : new UglifyJSPlugin({
-        compress: false,
-        mangle: false,
-        beautify: true,
-        output: {
-          quote_keys: true
-        }
-      })
-  ]
+      'process.env.NODE_ENV': JSON.stringify(
+        process.env.NODE_ENV || 'production'
+      )
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules\/(?!(lit-element|lit-html)\/).*/,
+        loader: 'babel-loader'
+      }
+    ]
+  }
 }
