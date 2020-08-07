@@ -1538,11 +1538,13 @@
             "local": storage.domain === "localhost",
             "custom": storage.customDomain
         };
+        var sameSite = "None";
         var expires = new Date();
         expires.setSeconds(expires.getSeconds() + clone.expires);
-        if (is.ip || is.local || is.custom) {
-            clone.domain = is.local ? null : clone.domain;
-            cookie.setItem(name, value, expires, clone.path, clone.domain);
+        if (is.local) {
+            cookie.setItem(name, value, expires, clone.path, null);
+        } else if (is.ip || is.custom) {
+            cookie.setItem(name, value, expires, clone.path, clone.domain, true, sameSite);
         } else {
             var domains = findDomains(storage.domain);
             var ll = domains.length;
@@ -1554,7 +1556,7 @@
             } else {
                 for (;i < ll; i++) {
                     clone.domain = domains[i];
-                    cookie.setItem(name, value, expires, clone.path, clone.domain);
+                    cookie.setItem(name, value, expires, clone.path, clone.domain, true, sameSite);
                     if (cookie.getItem(name) === value) {
                         storage.domain = clone.domain;
                         break;
