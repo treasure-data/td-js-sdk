@@ -4,6 +4,22 @@
 
 [![Build Status](https://travis-ci.org/treasure-data/td-js-sdk.svg?branch=master)](https://travis-ci.org/treasure-data/td-js-sdk) [![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)](https://automate.browserstack.com/public-build/c1V2OVZ6aS9veXEwREVTZXZxSGtOVGd4MDhvQitmMGxIZDdRdzE0N2JxQT0tLWRMdVIvTmtEdWJiTVNta284R3dDRUE9PQ==--c57db3c576c5ee78218f19d1a00b381cbc08b974)
 
+# Table of Contents
+[Getting started](#getting-started)
+
+[Tracking](#tracking)
+
+[Data privacy](#data-privacy)
+
+[SameSite Cookies](#samesite-cookies)
+
+[API](#api)
+
+[Others](#support)
+
+---
+
+
 ## Build
 
 The build script (`bin/build.sh`) can be used to configure several aspects of the SDK:
@@ -246,6 +262,28 @@ var successConsentCallback = function (consented) {
 ```
 
 This way, when emerging from Signed or Anonymous mode, you can be sure you'll actually be collecting data in Treasure Data. If the customer has refused all tracking, their events are blocked, and this status will be persisted across page refreshes.
+
+## SameSite cookies
+
+> :warning: **WARNING**: If you see the warnings about `SameSite` cookies in Chrome or Firefox, please upgrade the TreasureData JS SDK to version `2.4.1`
+
+In recent releases of Chrome and Firefox, they begin enforcing a new secure-by-default cookie classification system, treating cookies that have no declared SameSite value as `SameSite=Lax` cookies. Only cookies set as `SameSite=None; Secure` will be available in third-party contexts, provided they are being accessed from secure connections.
+
+This affects the **td_client_id** and **td_global_id** cookies in previous versions of TreasureData JS SDK (< 2.4.1) as they are not set as secured cookies.
+
+Starting from version `2.4.1`, TreasureData JS SDK uses `SameSite=None; Secure` cookies as default to adapt the new cookie enforcement.
+
+If you upgrade TreasureData JS SDK to version `2.4.1`, you have to call `resetUUID` in order for the new update to take affect.
+
+For more information:
+
+Firefox:
+
+[Changes to SameSite Cookie Behavior](https://hacks.mozilla.org/2020/08/changes-to-samesite-cookie-behavior/)
+
+Chrome:
+
+[SameSite Cookie Changes in February 2020: What You Need to Know](https://blog.chromium.org/2020/02/samesite-cookie-changes-in-february.html)
 
 ## API
 
