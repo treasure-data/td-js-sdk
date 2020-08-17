@@ -1,7 +1,6 @@
 var simple = require('simple-mock')
 var expect = require('expect.js')
 var Treasure = require('../lib/treasure')
-// var parseDomain = require('parse-domain')
 
 describe('Treasure Tracker', function () {
   var treasure, configuration, spy
@@ -52,13 +51,6 @@ describe('Treasure Tracker', function () {
       expect(typeof storage === 'object').ok()
       expect(storage.name === '_td').ok()
       expect(storage.expires === 63072000).ok()
-
-      // var result = parseDomain(document.location.hostname, {})
-      // if (result) {
-      //   expect(storage.domain).to.equal(result.domain + '.' + result.tld)
-      // } else {
-      //   expect(storage.domain).to.equal(document.location.hostname)
-      // }
     })
 
     it('should set default track values', function () {

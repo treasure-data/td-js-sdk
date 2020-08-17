@@ -1540,9 +1540,10 @@
         };
         var expires = new Date();
         expires.setSeconds(expires.getSeconds() + clone.expires);
-        if (is.ip || is.local || is.custom) {
-            clone.domain = is.local ? null : clone.domain;
-            cookie.setItem(name, value, expires, clone.path, clone.domain);
+        if (is.local) {
+            cookie.setItem(name, value, expires, clone.path);
+        } else if (is.ip || is.custom) {
+            cookie.setItem(name, value, expires, clone.path, clone.domain, true, "None");
         } else {
             var domains = findDomains(storage.domain);
             var ll = domains.length;
@@ -1554,7 +1555,7 @@
             } else {
                 for (;i < ll; i++) {
                     clone.domain = domains[i];
-                    cookie.setItem(name, value, expires, clone.path, clone.domain);
+                    cookie.setItem(name, value, expires, clone.path, clone.domain, true, "None");
                     if (cookie.getItem(name) === value) {
                         storage.domain = clone.domain;
                         break;
@@ -2525,6 +2526,9 @@
             return setTimeout(function() {
                 success(cachedGlobalId);
             }, 0);
+        }
+        if (!options.sameSite) {
+            options.sameSite = "None";
         }
         var url = "https://" + this.client.host + "/js/v3/global_id";
         jsonp(url, {
