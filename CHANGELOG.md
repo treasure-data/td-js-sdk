@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.1 (2020-08-18)
+* Set `SameSite=None;Secure` attributes as default for cookies
+
 ## 2.4.0 (2020-06-29)
 * Allow to set `path`, `domain`, `secure`, `maxAge`, `sameSite` as cookie options to `fetchGlobalID` api
 * Do not create cookies when not in signed mode
