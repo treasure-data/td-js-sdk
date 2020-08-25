@@ -481,7 +481,7 @@ describe('Treasure Record', function () {
           makeNewTD(false, false)
 
           expect(treasure.inSignedMode()).to.be(false)
-          expect(cookie.getItem('_td')).to.be('undefined')
+          expect(cookie.getItem('_td')).to.be(null)
         })
 
         it('will favor cookies if set', function () {
