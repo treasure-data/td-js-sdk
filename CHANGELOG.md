@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.2 (2020-08-27)
+* Client ID cookie is disabled in anonymous mode
+* `setSignedMode` should create client id if needed
+
 ## 2.4.1 (2020-08-18)
 * Set `SameSite=None;Secure` attributes as default for cookies
 
