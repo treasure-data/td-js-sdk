@@ -117,19 +117,22 @@
     exports.areEventsBlocked = function areEventsBlocked() {
         return cookie.getItem(BLOCKEVENTSCOOKIE) === "true";
     };
-    exports.setSignedMode = function setSignedMode(signedMode) {
+    exports.setSignedMode = function setSignedMode() {
         if (this.client.storeConsentByLocalStorage) {
             global.localStorage.setItem(SIGNEDMODECOOKIE, "true");
         } else {
             setCookie(this.client.storage, SIGNEDMODECOOKIE, "true");
+            this.resetUUID(this.client.storage, this.client.track.uuid);
         }
         return this;
     };
-    exports.setAnonymousMode = function setAnonymousMode(signedMode) {
+    exports.setAnonymousMode = function setAnonymousMode() {
         if (this.client.storeConsentByLocalStorage) {
             global.localStorage.setItem(SIGNEDMODECOOKIE, "false");
         } else {
             setCookie(this.client.storage, SIGNEDMODECOOKIE, "false");
+            this.resetUUID(this.client.storage, this.client.track.uuid);
+            cookie.removeItem(this.client.globalIdCookie);
         }
         return this;
     };
@@ -1541,9 +1544,17 @@
         var expires = new Date();
         expires.setSeconds(expires.getSeconds() + clone.expires);
         if (is.local) {
-            cookie.setItem(name, value, expires, clone.path);
+            if (!value) {
+                cookie.removeItem(name, clone.path, clone.domain);
+            } else {
+                cookie.setItem(name, value, expires, clone.path);
+            }
         } else if (is.ip || is.custom) {
-            cookie.setItem(name, value, expires, clone.path, clone.domain, true, "None");
+            if (!value) {
+                cookie.removeItem(name, clone.path, clone.domain);
+            } else {
+                cookie.setItem(name, value, expires, clone.path, clone.domain, true, "None");
+            }
         } else {
             var domains = findDomains(storage.domain);
             var ll = domains.length;
@@ -1553,6 +1564,7 @@
                     cookie.removeItem(name, storage.path, domains[i]);
                 }
             } else {
+                if (cookie.getItem(name) === value) return;
                 for (;i < ll; i++) {
                     clone.domain = domains[i];
                     cookie.setItem(name, value, expires, clone.path, clone.domain, true, "None");
