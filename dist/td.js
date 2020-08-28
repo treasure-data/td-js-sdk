@@ -122,8 +122,8 @@
             global.localStorage.setItem(SIGNEDMODECOOKIE, "true");
         } else {
             setCookie(this.client.storage, SIGNEDMODECOOKIE, "true");
-            this.resetUUID(this.client.storage, this.client.track.uuid);
         }
+        this.resetUUID(this.client.storage, this.client.track.uuid);
         return this;
     };
     exports.setAnonymousMode = function setAnonymousMode() {
@@ -131,9 +131,9 @@
             global.localStorage.setItem(SIGNEDMODECOOKIE, "false");
         } else {
             setCookie(this.client.storage, SIGNEDMODECOOKIE, "false");
-            this.resetUUID(this.client.storage, this.client.track.uuid);
-            cookie.removeItem(this.client.globalIdCookie);
         }
+        this.resetUUID(this.client.storage, this.client.track.uuid);
+        cookie.removeItem(this.client.globalIdCookie);
         return this;
     };
     exports.inSignedMode = function inSignedMode() {
@@ -2282,7 +2282,7 @@
 }, function(module, exports) {
     module.exports = {
         "GLOBAL": "Treasure",
-        "VERSION": "2.4.1",
+        "VERSION": "2.4.2",
         "HOST": "in.treasuredata.com",
         "DATABASE": "",
         "PATHNAME": "/js/v3/event/"
