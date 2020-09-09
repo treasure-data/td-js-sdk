@@ -570,13 +570,34 @@ td.fetchServerCookie(successCallback, errorCallback)
 
 ### Treasure#resetUUID
 
-Reset the client's UUID, set to Treasure Data as `td_client_id`.
+**Parameters:**
+
+* **suggestedStorage** : Object (optional) - Custom storage configuration
+* **suggestedClientId** : String (optional) - Custom client id
+
+Reset the client's UUID, set to Treasure Data as `td_client_id`. You can specify custom storage and custom client id.
+
+See **Track/Storage parameters** section for more information on storage's configuration
 
 **Example:**
 
 ```javascript
 var td = new Treasure({...})
 td.resetUUID() // set td_client_id as random uuid
+```
+
+```javascript
+var td = new Treasure({...})
+td.resetUUID(
+  {
+    name: '_td', // cookie name
+    expires: 63072000,
+    domain: 'domain',
+    customDomain: true/false
+    path: '/'
+  },
+  'xxx-xxx-xxxx' // client id
+)
 ```
 
 ### Treasure#trackClicks
