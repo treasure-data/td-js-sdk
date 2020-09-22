@@ -13,6 +13,8 @@
 
 [SameSite Cookies](#samesite-cookies)
 
+[Consent Management](CONSENTMANAGER.md)
+
 [API](#api)
 
 [Others](#support)

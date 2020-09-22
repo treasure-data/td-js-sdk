@@ -167,19 +167,19 @@ describe('Consent Manager', function () {
 
       treasure.addConsents({
         'purpose': {
-          status: 'rejected',
+          status: 'refused',
           context_id: contextId
         }
       })
 
       treasure.updateConsent(contextId)
 
-      expect(treasure.consentManager.preferences[contextId].consents['purpose'].status).to.equal('rejected')
+      expect(treasure.consentManager.preferences[contextId].consents['purpose'].status).to.equal('refused')
       expect(treasure.consentManager.preferences[contextId].consents['purpose']['context_id']).to.equal(contextId)
 
       // no context id
       treasure.updateConsent()
-      expect(treasure.consentManager.preferences[contextId].consents['purpose'].status).to.equal('rejected')
+      expect(treasure.consentManager.preferences[contextId].consents['purpose'].status).to.equal('refused')
       expect(treasure.consentManager.preferences[contextId].consents['purpose']['context_id']).to.equals(contextId)
     })
 
@@ -194,7 +194,7 @@ describe('Consent Manager', function () {
 
       treasure.addConsents({
         'purpose': {
-          status: 'rejected',
+          status: 'refused',
           context_id: contextId
         }
       })
@@ -262,7 +262,7 @@ describe('Consent Manager', function () {
           context_id: contextId1
         },
         'purpose 2': {
-          status: 'rejected',
+          status: 'refused',
           context_id: contextId1
         }
       })
@@ -302,7 +302,7 @@ describe('Consent Manager', function () {
           collection_type: 'collection_type',
           collection_point_id: 'collection_point_id',
           context_id: contextId1,
-          status: 'rejected',
+          status: 'refused',
           datatype: '',
           description: '',
           expiry_date: '',
@@ -342,7 +342,7 @@ describe('Consent Manager', function () {
           context_id: contextId1
         },
         'purpose 2': {
-          status: 'rejected',
+          status: 'refused',
           context_id: contextId1
         }
       })
