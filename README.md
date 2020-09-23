@@ -22,6 +22,7 @@
 
 ## Build
 
+### Testing
 The build script (`bin/build.sh`) can be used to configure several aspects of the SDK:
 
 ### GLOBAL
