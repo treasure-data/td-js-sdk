@@ -21,7 +21,10 @@ describe('Treasure Tracker', function () {
       writeKey: 'writeKey',
       development: true,
       logging: false,
-      startInSignedMode: true
+      startInSignedMode: true,
+      storage: {
+        domain: 'localhost'
+      }
     }
   }
 
@@ -197,7 +200,8 @@ describe('Treasure Tracker', function () {
 
       it('should set a cookie with the desired expires', function (done) {
         configuration.storage = {
-          expires: 1
+          expires: 1,
+          domain: 'localhost'
         }
         treasure = new Treasure(configuration)
 
@@ -220,7 +224,10 @@ describe('Treasure Tracker', function () {
           clientId: 'foobar',
           development: true,
           logging: false,
-          startInSignedMode: true
+          startInSignedMode: true,
+          storage: {
+            domain: 'localhost'
+          }
         }
         treasure = new Treasure(configuration)
         expect(treasure.client.track.uuid).to.equal('foobar')

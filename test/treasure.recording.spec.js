@@ -17,7 +17,10 @@ describe('Treasure Record', function () {
       database: 'database',
       writeKey: 'writeKey',
       logging: false,
-      development: true
+      development: true,
+      storage: {
+        domain: 'localhost'
+      }
     }, options)
   }
   beforeEach(function () {
