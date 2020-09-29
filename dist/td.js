@@ -100,7 +100,6 @@
     var fetchWithTimeout = misc.fetchWithTimeout;
     var invariant = misc.invariant;
     var noop = misc.noop;
-    var cookieName = misc.sscCookieName;
     function validateRecord(table, record) {
         invariant(_.isString(table), "Must provide a table");
         invariant(/^[a-z0-9_]{3,255}$/.test(table), "Table must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
@@ -136,16 +135,8 @@
         }
         if (!keepIdentifier) {
             setCookie(this.client.storage, this.client.storage.name);
-            cookie.removeItem(this.client.globalIdCookie);
-            var domain;
-            if (Object.prototype.toString.call(this.client.sscDomain) === "[object Function]") {
-                domain = this.client.sscDomain();
-            } else {
-                domain = this.client.sscDomain;
-            }
-            setCookie({
-                "domain": domain
-            }, cookieName);
+            this.removeCachedGlobalID();
+            this.removeServerCookie();
         }
         return this;
     };
@@ -210,7 +201,6 @@
     };
     exports._validateRecord = validateRecord;
 }, function(module, exports) {
-    var SSC_COOKIE_NAME = "_td_ssc_id";
     function disposable(action) {
         var disposed = false;
         return function dispose() {
@@ -254,8 +244,7 @@
         "disposable": disposable,
         "invariant": invariant,
         "noop": noop,
-        "fetchWithTimeout": fetchWithTimeout,
-        "sscCookieName": SSC_COOKIE_NAME
+        "fetchWithTimeout": fetchWithTimeout
     };
 }, function(module, exports, __webpack_require__) {
     var debug = __webpack_require__(5)("jsonp");
@@ -2562,10 +2551,14 @@
             return err ? error(err) : success(cacheSuccess(res, cookieName, options));
         });
     }
+    function removeCachedGlobalID() {
+        cookie.removeItem(this.client.globalIdCookie);
+    }
     module.exports = {
         "cacheSuccess": cacheSuccess,
         "configure": configure,
-        "fetchGlobalID": fetchGlobalID
+        "fetchGlobalID": fetchGlobalID,
+        "removeCachedGlobalID": removeCachedGlobalID
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
@@ -2789,10 +2782,10 @@
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
-    var misc = __webpack_require__(3);
+    var noop = __webpack_require__(3).noop;
     var cookie = __webpack_require__(65);
-    var noop = misc.noop;
-    var cookieName = misc.sscCookieName;
+    var setCookie = __webpack_require__(66);
+    var cookieName = "_td_ssc_id";
     function configure() {
         return this;
     }
@@ -2831,9 +2824,21 @@
             return err ? error(err) : success(res.td_ssc_id);
         });
     }
+    function removeServerCookie() {
+        var domain;
+        if (Object.prototype.toString.call(this.client.sscDomain) === "[object Function]") {
+            domain = this.client.sscDomain();
+        } else {
+            domain = this.client.sscDomain;
+        }
+        setCookie({
+            "domain": domain
+        }, cookieName);
+    }
     module.exports = {
         "configure": configure,
-        "fetchServerCookie": fetchServerCookie
+        "fetchServerCookie": fetchServerCookie,
+        "removeServerCookie": removeServerCookie
     };
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);
