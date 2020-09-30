@@ -15,7 +15,10 @@ describe('Treasure Client', function () {
       database: 'database',
       writeKey: 'writeKey',
       development: true,
-      logging: false
+      logging: false,
+      storage: {
+        domain: 'localhost'
+      }
     }
   }
 

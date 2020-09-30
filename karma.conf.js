@@ -117,13 +117,6 @@ module.exports = function (config) {
         os: 'OS X',
         os_version: 'High Sierra'
       },
-      bs_ie_8_win: {
-        base: 'BrowserStack',
-        browser: 'ie',
-        browser_version: '8.0',
-        os: 'Windows',
-        os_version: '7'
-      },
       bs_ie_9_win: {
         base: 'BrowserStack',
         browser: 'ie',
@@ -151,48 +144,29 @@ module.exports = function (config) {
         os: 'Windows',
         os_version: '10'
       },
-      bs_iphone4: {
-        base: 'BrowserStack',
-        device: 'iPhone 4',
-        os: 'ios',
-        os_version: '6.0'
-      },
-      bs_iphone5: {
-        base: 'BrowserStack',
-        device: 'iPhone 5S',
-        os: 'ios',
-        os_version: '7.0'
-      },
       bs_iphone6: {
         base: 'BrowserStack',
         device: 'iPhone 6',
         os: 'ios',
-        os_version: '8.3'
+        os_version: '11'
       },
       bs_iphone6_9: {
         base: 'BrowserStack',
         device: 'iPhone 6S',
         os: 'ios',
-        os_version: '9.1'
+        os_version: '11'
       },
       bs_iphone7: {
         base: 'BrowserStack',
         device: 'iPhone 7',
         os: 'ios',
-        os_version: '10.3'
+        os_version: '12'
       },
       bs_iphone8: {
         base: 'BrowserStack',
         device: 'iPhone 8',
         os: 'ios',
-        os_version: '11.0'
-      },
-      android44: {
-        base: 'BrowserStack',
-        device: 'Samsung Galaxy S5',
-        os: 'android',
-        os_version: '4.4',
-        browser: 'android'
+        os_version: '11'
       },
       android50: {
         base: 'BrowserStack',
@@ -228,26 +202,20 @@ module.exports = function (config) {
     },
 
     browsers: [
-      // At the suggestion of Browserstack, we're commenting these
-      // out until our support tickets are resolved.
-      // 'bs_firefox_latest_mac',
+      'bs_firefox_latest_mac',
       'bs_chrome_latest_mac',
       'bs_safari_7_mac',
       'bs_safari_8_mac',
       'bs_safari_9_mac',
       'bs_safari_10_mac',
       'bs_safari_11_mac',
-      'bs_ie_8_win',
       'bs_ie_9_win',
       'bs_ie_10_win',
       'bs_ie_11_win',
       'bs_edge_latest_win',
-      'bs_iphone5',
       'bs_iphone6',
       'bs_iphone6_9',
-      // 'bs_iphone7',
       'bs_iphone8',
-      'android44',
       'android50',
       'android60',
       'android71'
