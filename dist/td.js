@@ -90,15 +90,16 @@
     });
     module.exports = Treasure;
 }, function(module, exports, __webpack_require__) {
-    var invariant = __webpack_require__(3).invariant;
-    var noop = __webpack_require__(3).noop;
-    var fetchWithTimeout = __webpack_require__(3).fetchWithTimeout;
+    var misc = __webpack_require__(3);
     var jsonp = __webpack_require__(4);
     var _ = __webpack_require__(9);
     var global = __webpack_require__(64);
     var cookie = __webpack_require__(65);
     var setCookie = __webpack_require__(66);
     var objectToBase64 = __webpack_require__(67);
+    var fetchWithTimeout = misc.fetchWithTimeout;
+    var invariant = misc.invariant;
+    var noop = misc.noop;
     function validateRecord(table, record) {
         invariant(_.isString(table), "Must provide a table");
         invariant(/^[a-z0-9_]{3,255}$/.test(table), "Table must be between 3 and 255 characters and must " + "consist only of lower case letters, numbers, and _");
@@ -126,14 +127,17 @@
         this.resetUUID(this.client.storage, this.client.track.uuid);
         return this;
     };
-    exports.setAnonymousMode = function setAnonymousMode() {
+    exports.setAnonymousMode = function setAnonymousMode(keepIdentifier) {
         if (this.client.storeConsentByLocalStorage) {
             global.localStorage.setItem(SIGNEDMODECOOKIE, "false");
         } else {
             setCookie(this.client.storage, SIGNEDMODECOOKIE, "false");
         }
-        this.resetUUID(this.client.storage, this.client.track.uuid);
-        cookie.removeItem(this.client.globalIdCookie);
+        if (!keepIdentifier) {
+            setCookie(this.client.storage, this.client.storage.name);
+            this.removeCachedGlobalID();
+            this.removeServerCookie();
+        }
         return this;
     };
     exports.inSignedMode = function inSignedMode() {
@@ -2520,9 +2524,6 @@
         return result["global_id"];
     }
     function configure() {
-        if (!this.inSignedMode()) {
-            cookie.removeItem(this.client.globalIdCookie);
-        }
         return this;
     }
     function fetchGlobalID(success, error, forceFetch, options) {
@@ -2550,10 +2551,14 @@
             return err ? error(err) : success(cacheSuccess(res, cookieName, options));
         });
     }
+    function removeCachedGlobalID() {
+        cookie.removeItem(this.client.globalIdCookie);
+    }
     module.exports = {
         "cacheSuccess": cacheSuccess,
         "configure": configure,
-        "fetchGlobalID": fetchGlobalID
+        "fetchGlobalID": fetchGlobalID,
+        "removeCachedGlobalID": removeCachedGlobalID
     };
 }, function(module, exports, __webpack_require__) {
     var jsonp = __webpack_require__(4);
@@ -2732,8 +2737,6 @@
             if (storage.expires && this.inSignedMode()) {
                 setCookie(storage, storage.name, undefined);
                 setCookie(storage, storage.name, this.client.track.uuid);
-            } else if (!this.inSignedMode()) {
-                setCookie(storage, storage.name);
             }
         }
         this.client.track.values = _.assign(configureValues(this.client.track), this.client.track.values);
@@ -2784,17 +2787,6 @@
     var setCookie = __webpack_require__(66);
     var cookieName = "_td_ssc_id";
     function configure() {
-        if (!this.inSignedMode()) {
-            var domain;
-            if (typeof this.client.sscDomain === "function") {
-                domain = this.client.sscDomain();
-            } else {
-                domain = this.client.sscDomain;
-            }
-            setCookie({
-                "domain": domain
-            }, cookieName);
-        }
         return this;
     }
     function fetchServerCookie(success, error, forceFetch) {
@@ -2832,9 +2824,21 @@
             return err ? error(err) : success(res.td_ssc_id);
         });
     }
+    function removeServerCookie() {
+        var domain;
+        if (Object.prototype.toString.call(this.client.sscDomain) === "[object Function]") {
+            domain = this.client.sscDomain();
+        } else {
+            domain = this.client.sscDomain;
+        }
+        setCookie({
+            "domain": domain
+        }, cookieName);
+    }
     module.exports = {
         "configure": configure,
-        "fetchServerCookie": fetchServerCookie
+        "fetchServerCookie": fetchServerCookie,
+        "removeServerCookie": removeServerCookie
     };
 }, function(module, exports, __webpack_require__) {
     var _ = __webpack_require__(9);

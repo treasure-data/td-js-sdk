@@ -519,6 +519,11 @@ td.trackEvent('willbetracked') // will send td_ip and td_client_id; td_global_id
 
 Prohibit sending of Personally Identifying Information over the wire: td_ip, td_client_id, and td_global_id
 
+**Parameters**:
+* **keepIdentifier**: Boolean (optional) - Keep the cookies
+
+By default `setAnonymousMode` will remove all cookies that are set by Treasure Data JavaScript SDK, you can set `keepIdentifier` parameter to `true` to not remove the cookies.
+
 **Example:**
 
 ```javascript
