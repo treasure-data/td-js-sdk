@@ -4,6 +4,10 @@ var sha = require('child_process')
   .toString().trim()
 var startTime = new Date().toISOString()
 
+var webpackConfig = require('./webpack.config')
+webpackConfig.entry = undefined
+webpackConfig.mode = 'development'
+
 module.exports = function (config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -24,7 +28,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      require.resolve('js-polyfills/es5.js'),
+      require.resolve('@babel/polyfill/dist/polyfill.js'),
       { pattern: 'lib/**/*.js', included: false },
       { pattern: 'test/*.spec.js', included: true, watched: false }
     ],
@@ -37,6 +41,8 @@ module.exports = function (config) {
     preprocessors: {
       'test/*.spec.js': ['webpack']
     },
+
+    webpack: webpackConfig,
 
     webpackMiddleware: {
       // webpack-dev-middleware configuration
@@ -117,20 +123,6 @@ module.exports = function (config) {
         os: 'OS X',
         os_version: 'High Sierra'
       },
-      bs_ie_9_win: {
-        base: 'BrowserStack',
-        browser: 'ie',
-        browser_version: '9.0',
-        os: 'Windows',
-        os_version: '7'
-      },
-      bs_ie_10_win: {
-        base: 'BrowserStack',
-        browser: 'ie',
-        browser_version: '10.0',
-        os: 'Windows',
-        os_version: '8'
-      },
       bs_ie_11_win: {
         base: 'BrowserStack',
         browser: 'ie',
@@ -155,14 +147,16 @@ module.exports = function (config) {
         base: 'BrowserStack',
         device: 'iPhone 6S',
         os: 'ios',
-        os_version: '11',
+        os_version: '12',
         real_mobile: true
       },
       bs_iphone7: {
         base: 'BrowserStack',
-        device: 'iPhone 7',
         os: 'ios',
-        os_version: '12'
+        os_version: '12',
+        browser: 'iphone',
+        device: 'iPhone 7',
+        real_mobile: true
       },
       bs_iphone8: {
         base: 'BrowserStack',
@@ -175,48 +169,44 @@ module.exports = function (config) {
         device: 'Samsung Galaxy S6',
         os: 'android',
         os_version: '5.0',
-        real_mobile: 'true',
-        'browserstack.local': 'true'
+        real_mobile: 'true'
       },
       android60: {
         base: 'BrowserStack',
         device: 'Google Nexus 6',
         os: 'android',
         os_version: '6.0',
-        real_mobile: 'true',
-        'browserstack.local': 'true'
+        real_mobile: 'true'
       },
       android71: {
         base: 'BrowserStack',
         device: 'Google Pixel',
         os: 'android',
         os_version: '7.1',
-        real_mobile: 'true',
-        'browserstack.local': 'true'
+        real_mobile: 'true'
       },
       android80: {
         base: 'BrowserStack',
         device: 'Google Pixel',
         os: 'android',
         os_version: '8.0',
-        browser: 'android'
+        browser: 'android',
+        real_mobile: true
       }
     },
 
     browsers: [
       'bs_firefox_latest_mac',
       'bs_chrome_latest_mac',
-      'bs_safari_7_mac',
       'bs_safari_8_mac',
       'bs_safari_9_mac',
       'bs_safari_10_mac',
       'bs_safari_11_mac',
-      'bs_ie_9_win',
-      'bs_ie_10_win',
       'bs_ie_11_win',
       'bs_edge_latest_win',
       'bs_iphone6',
       'bs_iphone6_9',
+      'bs_iphone7',
       'bs_iphone8',
       'android50',
       'android60',
