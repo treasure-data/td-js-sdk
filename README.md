@@ -267,13 +267,13 @@ This way, when emerging from Signed or Anonymous mode, you can be sure you'll ac
 
 ## SameSite cookies
 
-> :warning: **WARNING**: If you see the warnings about `SameSite` cookies in Chrome or Firefox, please upgrade the TreasureData JS SDK to version `2.4.1`
+> :warning: **WARNING**: If you see the warnings about `SameSite` cookies in Chrome or Firefox, please upgrade the TreasureData JS SDK to version `2.4.2`
 
 In recent releases of Chrome and Firefox, they begin enforcing a new secure-by-default cookie classification system, treating cookies that have no declared SameSite value as `SameSite=Lax` cookies. Only cookies set as `SameSite=None; Secure` will be available in third-party contexts, provided they are being accessed from secure connections.
 
-This affects the **td_client_id** and **td_global_id** cookies in previous versions of TreasureData JS SDK (< 2.4.1) as they are not set as secured cookies.
+This affects the **td_client_id** and **td_global_id** cookies in previous versions of TreasureData JS SDK (< 2.4.2) as they are not set as secured cookies.
 
-Starting from version `2.4.1`, TreasureData JS SDK uses `SameSite=None; Secure` cookies as default to adapt the new cookie enforcement.
+Starting from version `2.4.2`, TreasureData JS SDK uses `SameSite=None; Secure` cookies as default to adapt the new cookie enforcement.
 
 For more information:
 
