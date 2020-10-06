@@ -368,6 +368,10 @@ sdk.getConsentExpiryDate('context_id', 'analytics')
 
 Returns expired consents
 
+## Add-on Consent UIs
+In addition to the consent extension, we also provide add-on UIs (a banner and a webform) as an example of how we can use a custom UI with TD JavaScript SDK Consent Extension.
+For more information: [Treasure Data Consent UIs](https://github.com/treasure-data/td-js-consent)
+
 ## Support
 
 Need a hand with something? Shoot us an email at support@treasuredata.com
