@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0 (2020-10-07)
+* Support consent management, see [Consent Management](./CONSENTMANAGER.md)
+* `setAnonymousMode` has option to keep client identifier
+
 ## 2.4.2 (2020-08-27)
 * Client ID cookie is disabled in anonymous mode
 * `setSignedMode` should create client id if needed
