@@ -3,6 +3,7 @@ var simple = require('simple-mock')
 var objectToBase64 = require('../lib/utils/objectToBase64')
 var generateUUID = require('../lib/utils/generateUUID')
 var fetchWithTimeout = require('../lib/utils/misc').fetchWithTimeout
+var isValidDomain = require('../lib/utils/misc').isValidDomain
 var _ = require('lodash-compat')
 
 describe('Treasure Utils', function () {
@@ -59,6 +60,36 @@ describe('Treasure Utils', function () {
         } else {
           done()
         }
+      })
+    })
+
+    describe('isValidDomain', function () {
+      it('domain should be invalid', function () {
+        var flag = isValidDomain('com')
+        expect(flag).to.equal(false)
+
+        flag = isValidDomain('.com')
+        expect(flag).to.equal(false)
+      })
+
+      it('domain should be valid', function () {
+        var flag = isValidDomain('abc.com')
+        expect(flag).to.equal(true)
+
+        flag = isValidDomain('thisisaverylongdomainthatisvalid.com')
+        expect(flag).to.equal(true)
+
+        flag = isValidDomain('thisisalongsubdomain.abc.com')
+        expect(flag).to.equal(true)
+
+        flag = isValidDomain('thisisalongsubdomain.abc.com.vn')
+        expect(flag).to.equal(true)
+
+        flag = isValidDomain('thisisalongsubdomain.abc.co.uk')
+        expect(flag).to.equal(true)
+
+        flag = isValidDomain('treasuredata.somethingelse')
+        expect(flag).to.equal(true)
       })
     })
   })
