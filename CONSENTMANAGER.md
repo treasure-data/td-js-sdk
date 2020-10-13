@@ -6,7 +6,6 @@ Treasure Data JavaScript Consent Extension (TD JS Consent Extension) is a set of
 
 Treasure Data JavaScript Consent Extension has two concepts: Context and Consent that allows you to define the consent information for your website.
 
-Context defines general information such as your brand, your domain, what type of consent collection… These information let you know that in which context user has agreed or disagreed with the consents
 Context defines general information such as your brand, your domain, what type of consent collection. These information let you know that in which context user has agreed or disagreed with the consents. Each context consists the following fields:
 
 1. **brand**: your company’s brand name
@@ -219,15 +218,15 @@ Adding consents. For the consents that don’t have context ID, they will be add
 
     - **values**: Object - consent information
 
-    - **description**: String - Consent’s description
+      - **description**: String - Consent’s description
 
-    - **datatype**: String - data type
+      - **datatype**: String - data type
 
-    - **status**: String - Consent’s status (given | refused | notgiven). Default: notgiven
+      - **status**: String - Consent’s status (given | refused | notgiven). Default: notgiven
 
-    - **expiry_date**: (String|Number|Date) - expiry date
+      - **expiry_date**: (String|Number|Date) - expiry date
 
-    - **context_id**: String - Context Id
+      - **context_id**: String - Context Id
 
 ```javascript
 sdk.addConsents({
