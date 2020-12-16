@@ -95,6 +95,7 @@
     "custom-event": "^1.0.1",
     "dayjs": "^1.8.34",
     "domready": "^0.3.0",
+    "es6-promise": "^4.2.8",
     "global": "^4.3.0",
     "json3": "^3.3.2",
     "jsonp": "0.2.1",
