@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.1 (2020-12-17)
+* Support Promise in IE11
+
 ## 2.5.0 (2020-10-07)
 * Support consent management, see [Consent Management](./CONSENTMANAGER.md)
 * `setAnonymousMode` has option to keep client identifier
