@@ -3,7 +3,6 @@ var simple = require('simple-mock')
 var objectToBase64 = require('../lib/utils/objectToBase64')
 var generateUUID = require('../lib/utils/generateUUID')
 var fetchWithTimeout = require('../lib/utils/misc').fetchWithTimeout
-var _ = require('lodash-compat')
 
 describe('Treasure Utils', function () {
   describe('objectToBase64', function () {
@@ -31,11 +30,11 @@ describe('Treasure Utils', function () {
     describe('fetchWithTimeout', function () {
       it('must abort after a while', function (done) {
         // Disable testing this feature for iOS 11 due to flakyness
-        if (_.includes(_.get(navigator, 'userAgent'), 'iPhone OS 11_0')) { done(); return }
+        if (/\(KHTML, like Gecko\) Version\/(11|12\.0)/i.test(navigator.userAgent)) { done(); return }
 
         if (window.AbortController) {
           var abortSpy = simple.mock(window.AbortController.prototype, 'abort')
-          fetchWithTimeout('https://apple.com', 1)
+          fetchWithTimeout('https://blackhole.webpagetest.org', 1)
             .then(function () {
               done(new Error('but instead succeeded'))
             })['catch'](function () {
@@ -46,7 +45,7 @@ describe('Treasure Utils', function () {
               }
             })
         } else if (window.fetch) {
-          fetchWithTimeout('https://apple.com', 1)
+          fetchWithTimeout('https://blackhole.webpagetest.org', 1)
             .then(function () {
               done(new Error('but instead succeeded'))
             })['catch'](function (error) {

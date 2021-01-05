@@ -10,6 +10,11 @@ webpackConfig.mode = 'development'
 
 module.exports = function (config) {
   config.set({
+    client: {
+      mocha: {
+        timeout: 60000
+      }
+    },
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 

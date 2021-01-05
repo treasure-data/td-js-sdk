@@ -22,7 +22,7 @@
   "scripts": {
     "build": "./bin/build.sh",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
-    "e2e": "node ./bin/e2e.js",
+    "e2e": "node ./bin/e2e.js base",
     "e2e-prepare": "selenium-standalone install",
     "e2e-server": "node ./bin/server.js",
     "version": "npm run build && git add README.md dist/td.js dist/td.min.js",
@@ -30,7 +30,9 @@
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
     "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
-    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER"
+    "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
+    "start-server": "http-server test -p 9999",
+    "e2e-bs": "node ./bin/e2e.js bs"
   },
   "standard": {
     "ignore": [
@@ -40,7 +42,10 @@
       "afterEach",
       "beforeEach",
       "describe",
-      "it"
+      "it",
+      "expect",
+      "browser",
+      "$"
     ]
   },
   "prettier": {
@@ -60,12 +65,23 @@
     "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.12.10",
+    "@wdio/browserstack-service": "^6.10.10",
+    "@wdio/cli": "^6.10.11",
+    "@wdio/dot-reporter": "^6.10.6",
+    "@wdio/local-runner": "^6.10.11",
+    "@wdio/mocha-framework": "^6.10.11",
+    "@wdio/spec-reporter": "^6.10.6",
+    "@wdio/sync": "^6.10.11",
     "babel-loader": "^8.1.0",
+    "browserstack-local": "^1.4.8",
     "chai": "^4.2.0",
+    "chromedriver": "^87.0.4",
     "es6-shim": "^0.35.5",
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
-    "glob": "^7.0.5",
+    "glob": "^7.1.6",
+    "http-server": "^0.12.3",
     "husky": "^3.1.0",
     "karma": "^4.4.1",
     "karma-browserstack-launcher": "^1.6.0",
@@ -82,12 +98,14 @@
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "selenium-standalone": "^5.4.0",
+    "selenium-webdriver": "^4.0.0-alpha.8",
     "simple-mock": "^0.8.0",
     "standard": "^11.0.0",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "wd": "^1.5.0",
+    "wdio-chromedriver-service": "^6.0.4",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.3.12"
   },
@@ -95,6 +113,7 @@
     "custom-event": "^1.0.1",
     "dayjs": "^1.8.34",
     "domready": "^0.3.0",
+    "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
     "global": "^4.3.0",
     "json3": "^3.3.2",

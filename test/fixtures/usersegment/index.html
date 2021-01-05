@@ -11,31 +11,17 @@
 
 <script type="text/javascript">
   (function () {
-    function getBackground () {
-      return document.body.style.background
+    function setStatus (text) {
+      document.querySelector('.status').innerHTML = text
     }
 
-    function setStatus (num, text) {
-      document.getElementById('status' + num).innerHTML = text
-      status[num] = text
-      if (status.length === 2) {
-        var isFailure = false
-        for (var i = 0; i < status.length; i++) {
-          if (status[i] === 'failure') {
-            isFailure = true
-          }
-        }
-        document.body.style.background = isFailure ? 'red' : 'green'
-      }
-    }
-    var status = []
     var td = new Treasure({
-      database: 'test_db_request',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in-staging.treasuredata.com'
+      database: 'xxxxxxxxxx',
+      writeKey: 'xxxxxxxxxx',
+      host: 'xxxxxxxxxx'
     })
     td.fetchUserSegments({
-      audienceToken: ['05e97f6c-e56c-41a2-bf69-a2ead74dd89d'],
+      audienceToken: ['55198252-3752-4a1f-b011-62a821cae61d'],
       keys: {
         email: 'someone@somewhere.com'
       }
@@ -46,38 +32,16 @@
           response[0].attributes !== undefined &&
           Object.prototype.toString.call(response[0].values) === '[object Array]'
       ) {
-        setStatus(0, 'success')
+        setStatus('success')
       } else {
-        setStatus(0, 'failure')
+        setStatus('failure')
       }
     }, function () {
-      setStatus(0, 'failure')
-    })
-
-    var td = new Treasure({
-      database: 'test_db_request',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in-staging.treasuredata.com'
-    })
-    td.fetchUserSegments('55198252-3752-4a1f-b011-62a821cae61d', function (response) {
-      if (response &&
-          response.length &&
-          response[0].key !== undefined &&
-          response[0].attributes !== undefined &&
-          Object.prototype.toString.call(response[0].values) === '[object Array]'
-      ) {
-        setStatus(1, 'success')
-      } else {
-        setStatus(1, 'failure')
-      }
-    }, function () {
-      setStatus(1, 'failure')
+      setStatus('failure')
     })
   })()
 </script>
 
-<h1 id='status0' style="text-align: center;">running</h1>
-<h1 id='status1' style="text-align: center;">running</h1>
-
+<p class="status">running</p>
 </body>
 </html>

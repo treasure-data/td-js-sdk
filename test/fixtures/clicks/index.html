@@ -11,41 +11,31 @@
 
 <script type="text/javascript">
   (function () {
-    function setBackground (color) {
-      document.body.style.background = color
-    }
-
     function setStatus (text) {
-      document.getElementById('status').innerHTML = text
+      document.querySelector('.status').innerHTML = text
     }
 
     var timeout = setTimeout(function () {
-      setBackground('red')
       setStatus('failure')
-    }, 5000)
+    }, 15000)
 
     var td = new Treasure({
-      database: 'test_db_request',
-      host: 'in-staging.treasuredata.com',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018'
+      database: 'xxxxxxxxxx',
+      writeKey: 'xxxxxxxxxx',
+      host: 'xxxxxxxxxx'
     })
 
     td.trackClicks({
       extendClickData: function (event, data) {
-        setBackground('green')
         setStatus('success')
         clearTimeout(timeout)
         return data
       }
     })
-
-    setTimeout(function () {
-      document.getElementById('button').click()
-    }, 0)
   })()
 </script>
 
-<h1 id='status' style='text-align: center;'>running</h1>
-<button id='button' class='foo bar baz'>button</button>
+<p class="status">running</p>
+<button class='btn'>button</button>
 </body>
 </html>

@@ -5,3 +5,4 @@ dist/loader.*
 dist/*.gz
 test/consentmanager
 .idea
+.env

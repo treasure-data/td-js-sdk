@@ -59,9 +59,9 @@
 
     var status = []
     var td = new Treasure({
-      database: 'test_db_request',
-      writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-      host: 'in-staging.treasuredata.com'
+      database: 'xxxxxxxxxx',
+      writeKey: 'xxxxxxxxxx',
+      host: 'xxxxxxxxxx'
     })
 
     td.addRecord('loader_add_record', {}, function () {
@@ -79,9 +79,9 @@
     td.trackPageview('loader_track_pageview', function () {
       setStatus(2, 'success')
       var td2 = new Treasure({
-        database: 'test_db_request',
-        writeKey: '91/96da3cfb876cc50724d0dddef670d95eea2a0018',
-        host: 'in-staging.treasuredata.com'
+        database: 'xxxxxxxxxx',
+        writeKey: 'xxxxxxxxxx',
+        host: 'xxxxxxxxxx'
       })
       try {
         var failure = function () { setStatus(3, 'failure') }
