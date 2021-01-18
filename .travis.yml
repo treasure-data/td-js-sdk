@@ -15,6 +15,7 @@ env:
   - secure: "IW7AQpA+KgHxfa+S0ieZ4yYydA8eSj2koLNFCDOf9lrFK4bB9CacN6KGEr8LwOiMBIZx5ZeroANkxoOrBrXZiujZeqcEyBbx7pT0fv0pirJ1XJwm6cimSL5XySmYnT9G8H6MdmcbuotEgIj0Wr8R7ImM9WCCV6Pc8fzC5Tu6QLY="
   - secure: "JmMkFpNRvo2IMBnvbSz1aR9B0y60ufI+k6NROCmkYMLT5RPRnURdWu/CUgbRUMVkTIHtNZwZoAgj/oNF0eSCIAu5gdUXxDwmk32JfL/Lz+GC05XCXurXEFWFjy81RhfdI6Yeab+puffuOUUkrScSbz1z0MsbNCNMogJLoMMZFQI="
   - secure: "Fc5+20nlYBUoCP3ebKOjRdvY1QDL5dfpqSFneMQR8jL3ATZy6NtAoOgopaJAsijLxNNLVl+aBwOGnZic7b6+Te3cCuMbdnsHrl1ODygdoTAiDl75edqaQlI/y9GPs6WzH93km5mwZ1ESeGBySz9q8t8Q7ZgsA5qlSLKDJ0ldcpA="
+  - secure: "GZJUyDGNSu05ezd3CJzGWm7AF3O+oLaHI12gGcANhS7/9d5UfJUDtSqSMQaes8KdQaFkph0g2Fs6fTPMnl2pNyPcZVTnujApYJgQrfgC+z241Mmh6zxVVrG/7zm5M92I+aUFtaOSV28AXgqr5LFMiS+nALMCqkxN7Mo5YOhRUiA="
 addons:
   browserstack:
     username: "treasuredataengi1"

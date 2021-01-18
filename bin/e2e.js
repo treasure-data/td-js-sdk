@@ -12,13 +12,14 @@ var LOCALHOST = '127.0.0.1'
 var BROWSERSTACK_HOST = 'bs-local.com'
 var TEST_BASE_PAGE = 'test/pageobjects/page.js'
 
-function replaceTdInfo (database, host, apiKey) {
+function replaceTdInfo (database, host, apiKey, segmentToken) {
   var files = glob.sync('test/fixtures/**/*.html')
   files.forEach(fileName => {
     var data = fs.readFileSync(fileName, 'utf-8')
     var replacedData = data
       .replace(/database:.*'/g, `database: '${database}'`)
       .replace(/host:.*'/g, `host: '${host}'`)
+      .replace(/audienceToken:.*\[.*\]/g, `audienceToken: ['${segmentToken}']`)
       .replace(/writeKey:.*'/g, `writeKey: '${apiKey}'`)
 
     fs.writeFileSync(fileName, replacedData, 'utf-8')
@@ -27,7 +28,7 @@ function replaceTdInfo (database, host, apiKey) {
 
 function markTdInfo () {
   console.log('Marking information...')
-  replaceTdInfo('xxxxxxxxxx', 'xxxxxxxxxx', 'xxxxxxxxxx')
+  replaceTdInfo('xxxxxxxxxx', 'xxxxxxxxxx', 'xxxxxxxxxx', 'xxxxxxxxxx')
 }
 
 function changeHost (host) {
@@ -79,10 +80,11 @@ function runTests () {
   let {
     database,
     tdHost,
-    apiKey
+    apiKey,
+    segmentToken
   } = process.env
 
-  replaceTdInfo(database, tdHost, apiKey)
+  replaceTdInfo(database, tdHost, apiKey, segmentToken)
 
   console.log('Testing...')
   wdio.run()
