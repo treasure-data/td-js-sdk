@@ -40,7 +40,8 @@
       "afterEach",
       "beforeEach",
       "describe",
-      "it"
+      "it",
+      "localStorage"
     ]
   },
   "prettier": {
