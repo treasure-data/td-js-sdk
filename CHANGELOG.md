@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.2 (2021-03-08)
+* In 'Block All Cookies' mode, the localStorage is not accessible hence we should check for it's availability before using the localStorage APIs
+
 ## 2.5.1 (2020-12-17)
 * Support Promise in IE11
 
