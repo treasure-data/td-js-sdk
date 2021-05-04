@@ -56,6 +56,9 @@
       "mocha"
     ]
   },
+  "resolutions": {
+    "uglifyjs-webpack-plugin/**/serialize-javascript": ">=3.1.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/plugin-transform-runtime": "^7.11.0",
@@ -68,21 +71,21 @@
     "express": "^4.14.0",
     "glob": "^7.0.5",
     "husky": "^3.1.0",
-    "karma": "^4.4.1",
+    "karma": "^6.3.2",
     "karma-browserstack-launcher": "^1.6.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.0.1",
     "karma-min-reporter": "^0.1.0",
-    "karma-mocha": "^1.3.0",
+    "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^4.0.2",
-    "mocha": "^2.5.3",
+    "mocha": "^8.3.2",
     "mutationobserver-polyfill": "^1.3.0",
     "parse-domain": "^2.0.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
-    "selenium-standalone": "^5.4.0",
+    "selenium-standalone": "^6.23.0",
     "simple-mock": "^0.8.0",
     "standard": "^11.0.0",
     "tape": "^4.6.0",
