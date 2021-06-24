@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.3 (2021-06-24)
+* Incorrect field name in consent management table. It should be `expiry_date` instead of `expriry_date`
+
 ## 2.5.2 (2021-03-08)
 * In 'Block All Cookies' mode, the localStorage is not accessible hence we should check for it's availability before using the localStorage APIs
 
