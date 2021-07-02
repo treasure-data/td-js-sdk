@@ -1,33 +1,30 @@
 {
-    "plugins": ["plugins/markdown",
-                "plugins/summarize"
-                // "./node_modules/@ckeditor/jsdoc-plugins/lib/export-fixer/export-fixer.js"
-                ],
-    "recurseDepth": 10,
-    "source": {
-        "include":[
-                    // The order here determines the order displayed in the docs.
-                    "treasure.js",
-                    "plugins/track.js",
-                    "record.js",
-                    "loadClients.js",
-                    "index.js",
-                    "configurator.js",
-                    "plugins/clicks.js",
-                    "plugins/globalid.js",
-                    "plugins/personalization.js",
-                    "plugins/servercookie.js",
-                    "plugins/consent-manager.js"
-                ],
-        "excludePattern": "(test|out|docs|.github|node_modules|dist)"
-    },
-    "sourceType": "module.exports",
-    "tags": {
-        "allowUnknownTags": true,
-        "dictionaries": ["jsdoc","closure"]
-    },
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false
-    }
+  "plugins": ["plugins/markdown", "plugins/summarize"],
+  "recurseDepth": 10,
+  "source": {
+    "include": [
+      "lib/treasure.js",
+      "lib/plugins/track.js",
+      "lib/record.js",
+      "lib/loadClients.js",
+      "lib/index.js",
+      "lib/configurator.js",
+      "lib/plugins/clicks.js",
+      "lib/plugins/globalid.js",
+      "lib/plugins/personalization.js",
+      "lib/plugins/servercookie.js",
+      "lib/plugins/consent-manager.js"
+    ],
+    "excludePattern": "(test|out|docs|.github|node_modules|dist)"
+  },
+  "sourceType": "module.exports",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
 }
+
