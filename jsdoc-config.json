@@ -19,10 +19,7 @@
                     "plugins/servercookie.js",
                     "plugins/consent-manager.js"
                 ],
-        // "exclude":["\\test\\"],
-        // "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(test|out|docs|.github|node_modules|dist)"
-        // "excludePattern": "(^|\\/|\\\\)_"
     },
     "sourceType": "module.exports",
     "tags": {
