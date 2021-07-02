@@ -1,0 +1,30 @@
+{
+  "plugins": ["plugins/markdown", "plugins/summarize"],
+  "recurseDepth": 10,
+  "source": {
+    "include": [
+      "lib/treasure.js",
+      "lib/plugins/track.js",
+      "lib/record.js",
+      "lib/loadClients.js",
+      "lib/index.js",
+      "lib/configurator.js",
+      "lib/plugins/clicks.js",
+      "lib/plugins/globalid.js",
+      "lib/plugins/personalization.js",
+      "lib/plugins/servercookie.js",
+      "lib/plugins/consent-manager.js"
+    ],
+    "excludePattern": "(test|out|docs|.github|node_modules|dist)"
+  },
+  "sourceType": "module.exports",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}
+
