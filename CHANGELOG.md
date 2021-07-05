@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0 (2021-05-26)
+* Using the Fetch API as a replacement for the JSONP
+
 ## 2.5.2 (2021-03-08)
 * In 'Block All Cookies' mode, the localStorage is not accessible hence we should check for it's availability before using the localStorage APIs
 
