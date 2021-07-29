@@ -210,7 +210,7 @@ describe('Treasure Record', function () {
       beforeEach(function () {
         resetConfiguration({
           development: false,
-          requestType: 'jsonp',
+          requestType: 'fetch',
           writeKey: 'apikey'
         })
         treasure = new Treasure(configuration)
@@ -231,7 +231,7 @@ describe('Treasure Record', function () {
       })
 
       it('should set type', function () {
-        var requestType = 'jsonp'
+        var requestType = 'fetch'
         treasure.addRecord('table', {})
 
         expect(treasure._sendRecord.callCount).to.equal(1)
