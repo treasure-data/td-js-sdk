@@ -185,7 +185,7 @@ describe('Treasure Client', function () {
     })
 
     describe('validates request type', function () {
-      it('should set request type to "jsonp"', function () {
+      it('should set request type to "fetch"', function () {
         expect(typeof treasure.client.requestType).to.be('string')
         expect(treasure.client.requestType).to.equal('fetch')
       })
