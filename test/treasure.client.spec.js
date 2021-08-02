@@ -185,16 +185,16 @@ describe('Treasure Client', function () {
     })
 
     describe('validates request type', function () {
-      it('should set request type to "jsonp"', function () {
+      it('should set request type to "fetch"', function () {
         expect(typeof treasure.client.requestType).to.be('string')
-        expect(treasure.client.requestType).to.equal('jsonp')
+        expect(treasure.client.requestType).to.equal('fetch')
       })
 
-      it('should always set request type to "jsonp"', function () {
+      it('should always set request type to "fetch"', function () {
         configuration.requestType = 'xhr'
         treasure = new Treasure(configuration)
         expect(typeof treasure.client.requestType).to.be('string')
-        expect(treasure.client.requestType).to.equal('jsonp')
+        expect(treasure.client.requestType).to.equal('fetch')
       })
     })
 
