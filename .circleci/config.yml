@@ -25,7 +25,7 @@ save_repo: &save_repo
 
 
 commands:
-  install:
+  install_packages:
     description: "Installing packages..."
     steps:
       - node/install-packages:
@@ -52,7 +52,6 @@ jobs:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
-      - install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
@@ -69,6 +68,7 @@ jobs:
       - node/install:
           install-yarn: true
       - run: node --version
+      - install_packages
       - checkout
       - build
       - test
