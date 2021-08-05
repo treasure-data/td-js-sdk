@@ -7,18 +7,6 @@ executor: &executor
   executor:
     name: node/default
 
-restore_repo: &restore_repo
-  restore_cache:
-    keys:
-      - repo-{{ .Branch }}-{{ .Revision }}
-
-save_repo: &save_repo
-  save_cache:
-    key: repo-{{ .Branch }}-{{ .Revision }}
-    paths:
-      - /tmp/js-sdk
-
-
 commands:
   install_packages:
     description: "Installing packages..."
@@ -56,8 +44,8 @@ jobs:
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
-          - node_modules
-          - ~/.cache/yarn
+            - node_modules
+            - ~/.cache/yarn
 
       - build
       - test
