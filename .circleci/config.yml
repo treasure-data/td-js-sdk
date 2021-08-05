@@ -8,10 +8,6 @@ executor: &executor
     name: node/default
     tag: "14.15.4"
 
-defaults: &defaults
-  working_directory: /tmp/js-sdk
-  resource_class: large
-
 restore_repo: &restore_repo
   restore_cache:
     keys:
@@ -45,20 +41,6 @@ workflows:
       - build-and-test
 
 jobs:
-  checkout:
-    <<: *executor
-    steps:
-      - *restore_repo
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-            - ~/.cache/yarn
-      - *save_repo
-
   build-and-test:
     docker:
       - image: 'cimg/base:stable'
@@ -68,8 +50,16 @@ jobs:
       - node/install:
           install-yarn: true
       - run: node --version
-      - install_packages
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - install_packages
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+          - node_modules
+          - ~/.cache/yarn
+
       - build
       - test
 
