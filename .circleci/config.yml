@@ -42,20 +42,9 @@ commands:
 workflows:
   test:
     jobs:
-      - install_nodejs
-      - checkout
       - build-and-test
 
 jobs:
-  install_nodejs:
-    description: "Installing NodeJS"
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - node/install:
-          install-yarn: true
-      - run: node --version
-
   checkout:
     <<: *executor
     steps:
@@ -72,8 +61,15 @@ jobs:
       - *save_repo
 
   build-and-test:
+    docker:
+      - image: 'cimg/base:stable'
+
     <<: *executor
     steps:
+      - node/install:
+          install-yarn: true
+      - run: node --version
+      - checkout
       - build
       - test
 
