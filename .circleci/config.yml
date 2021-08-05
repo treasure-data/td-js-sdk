@@ -6,7 +6,6 @@ orbs:
 executor: &executor
   executor:
     name: node/default
-    tag: "14.15.4"
 
 restore_repo: &restore_repo
   restore_cache:
@@ -49,7 +48,7 @@ jobs:
     steps:
       - node/install:
           install-yarn: true
-      - run: node --version
+          node-version: "14.15.4"
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
