@@ -1,0 +1,78 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.6.0
+
+executor: &executor
+  executor:
+    name: node/default
+    tag: "14.15.4"
+
+defaults: &defaults
+  working_directory: /tmp/js-sdk
+  resource_class: large
+
+restore_repo: &restore_repo
+  restore_cache:
+    keys:
+      - repo-{{ .Branch }}-{{ .Revision }}
+
+save_repo: &save_repo
+  save_cache:
+    key: repo-{{ .Branch }}-{{ .Revision }}
+    paths:
+      - /tmp/js-sdk
+
+
+commands:
+  install:
+    description: "Installing packages..."
+    steps:
+      - node/install-packages:
+        override-ci-command: npm install
+  build:
+    description: "Building project..."
+    steps:
+      - run: npm run build
+  test:
+    description: "Testing with BrowserStack..."
+    steps:
+      - run: npm run test-full
+
+workflows:
+  test:
+    jobs:
+      - install_nodejs
+      - checkout
+      - build-and-test
+
+jobs:
+  install_nodejs:
+    description: "Installing NodeJS"
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - node/install
+      - run: node --version
+
+  checkout:
+    <<: *executor
+    steps:
+      - *restore_repo
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - *save_repo
+
+  build-and-test:
+    <<: *executor
+    steps:
+      - build
+      - test
+
