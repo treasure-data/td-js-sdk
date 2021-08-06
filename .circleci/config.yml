@@ -22,11 +22,6 @@ commands:
     steps:
       - run: yarn test-full
 
-workflows:
-  test:
-    jobs:
-      - build-and-test
-
 jobs:
   build-and-test:
     docker:
@@ -49,4 +44,9 @@ jobs:
 
       - build
       - test
+
+workflows:
+  test:
+    jobs:
+      - build-and-test
 
