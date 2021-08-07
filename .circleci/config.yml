@@ -1,0 +1,52 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.6.0
+
+executor: &executor
+  executor:
+    name: node/default
+
+commands:
+  install_packages:
+    description: "Installing packages..."
+    steps:
+      - node/install-packages:
+          pkg-manager: yarn 
+  build:
+    description: "Building project..."
+    steps:
+      - run: yarn build
+  test:
+    description: "Testing with BrowserStack..."
+    steps:
+      - run: yarn test-full
+
+jobs:
+  build-and-test:
+    docker:
+      - image: 'cimg/base:stable'
+
+    <<: *executor
+    steps:
+      - node/install:
+          install-yarn: true
+          node-version: "14.15.4"
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - install_packages
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+
+      - build
+      - test
+
+workflows:
+  test:
+    jobs:
+      - build-and-test
+
