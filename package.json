@@ -58,7 +58,12 @@
     ]
   },
   "resolutions": {
-    "uglifyjs-webpack-plugin/**/serialize-javascript": ">=3.1.0"
+    "uglifyjs-webpack-plugin/**/serialize-javascript": ">=3.1.0",
+    "parse-domain/jest/jest-cli/@jest\/core/@jest\/reporters/node-notifier": ">=8.0.1",
+    "standard/eslint/table/ajv": ">=6.12.3",
+    "standard/eslint/ajv": ">=6.12.3",
+    "mocha/nanoid": ">=3.1.31",
+    "webpack/watchpack/watchpack-chokidar2/chokidar/glob-parent": ">=5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
