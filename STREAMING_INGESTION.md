@@ -2,7 +2,7 @@
 
 ## Configurations
 
-We still use the same configurations, but the `host` and the `path` configurations need to be changed so that they will point to our Ingestion API.
+We still use the same configurations, but the `host` and the `pathname` configurations need to be changed so that they will point to our Ingestion API.
 
 The `host` configuration will have the following values, depending on which environment you want to ingest data.
 
@@ -18,7 +18,7 @@ The `host` configuration will have the following values, depending on which envi
 - AWS EU
   - **eu01.records.in.treasuredata.com**
 
-The `path` configuration should be always `/`
+The `pathname` configuration should be always `/`
 
 Example:
 
@@ -27,6 +27,6 @@ Example:
     database: 'foo',
     writeKey: 'your_write_only_key',
     host: 'us01.records.in.treasuredata.com',
-    path: '/'
+    pathname: '/'
   });
 ```
