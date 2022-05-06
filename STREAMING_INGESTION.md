@@ -18,15 +18,12 @@ The `host` configuration will have the following values, depending on which envi
 - AWS EU
   - **eu01.records.in.treasuredata.com**
 
-The `pathname` configuration should be always `/`
-
 Example:
 
 ```javascript
   var foo = new Treasure({
     database: 'foo',
     writeKey: 'your_write_only_key',
-    host: 'us01.records.in.treasuredata.com',
-    pathname: '/'
+    host: 'us01.records.in.treasuredata.com'
   });
 ```

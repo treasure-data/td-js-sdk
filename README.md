@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/treasure-data/td-js-sdk/tree/master.svg?style=svg)](https://circleci.com/gh/treasure-data/td-js-sdk/tree/master)
 
-> :warning: NOTE: From version 3.1.0, we use our Streaming Ingestion API to log data, the `host` and the `path` configurations
+> :warning: NOTE: From version 3.1.0, we use our Streaming Ingestion API to log data, the `host` configuration
 need to be changed to point to our streaming ingestion host, see [Streaming Ingestion](STREAMING_INGESTION.md) for more information
 
 # Table of Contents
