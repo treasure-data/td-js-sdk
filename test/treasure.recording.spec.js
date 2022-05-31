@@ -393,13 +393,11 @@ describe('Treasure Record', function () {
         treasure.setSignedMode()
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).to.have.property('td_client_id')
       })
       it('should be in Anonymous Mode by default', function () {
         treasure.trackEvent('foo', {})
         expect(treasure._sendRecord.callCount).to.be(1)
-        expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
         expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
       })
       describe('cookie anonymous mode', function () {
@@ -407,7 +405,6 @@ describe('Treasure Record', function () {
           treasure.setAnonymousMode()
           treasure.trackEvent('foo', {})
           expect(treasure._sendRecord.callCount).to.be(1)
-          expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
           expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
         })
         it('should block the generated PII records from being sent in set values as well', function () {
@@ -443,7 +440,6 @@ describe('Treasure Record', function () {
           treasure.setAnonymousMode()
           treasure.trackEvent('foo', {})
           expect(treasure._sendRecord.callCount).to.be(1)
-          expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_ip')
           expect(treasure._sendRecord.calls[0].args[0].record).not.to.have.property('td_client_id')
         })
         it('should block the generated PII records from being sent in set values as well', function () {
