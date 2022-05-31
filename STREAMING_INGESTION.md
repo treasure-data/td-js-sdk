@@ -2,20 +2,20 @@
 
 ## Configurations
 
-We still use the same configurations, but the `host` configuration needs to be changed so that it will point to our Ingestion API.
+We still use the same configurations, but the `host` configuration needs to be changed so that it will point to our new endpoint.
 
 The `host` configuration will have the following values, depending on which environment you want to ingest data.
 
-- AWS Asia Pacific (Seoul)
+- AP02 Region
   - **ap02.records.in.treasuredata.com**
 
-- AWS Asia Pacific (Tokyo):
+- Tokyo Region
   - **ap01.records.in.treasuredata.com**
 
-- AWS East
+- US Region
   - **us01.records.in.treasuredata.com**
 
-- AWS EU
+- EU01 Region
   - **eu01.records.in.treasuredata.com**
 
 Example:
