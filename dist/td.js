@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = {\n  GLOBAL: 'Treasure',\n  VERSION: '3.1.0',\n  HOST: 'in.treasuredata.com',\n  DATABASE: '',\n  PATHNAME: '/js/v3/event/'\n};\n\n//# sourceURL=webpack:///./lib/config.js?");
+eval("module.exports = {\n  GLOBAL: 'Treasure',\n  VERSION: '3.1.0',\n  HOST: 'in.treasuredata.com',\n  DATABASE: '',\n  PATHNAME: '/'\n};\n\n//# sourceURL=webpack:///./lib/config.js?");
 
 /***/ }),
 
