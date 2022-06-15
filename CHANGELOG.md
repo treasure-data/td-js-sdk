@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0 (2022-05-31)
+* Using new JavaScript endpoint
+
 ## 3.0.0 (2021-05-26)
 * Using the Fetch API as a replacement for the JSONP
 
