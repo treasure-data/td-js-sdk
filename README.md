@@ -303,7 +303,7 @@ If the database does not exist and you have permissions, it will be created for 
 
 * **config.database** : String (required) - database name, must consist only of lower case letters, numbers, and `_`, must be longer than or equal to 3 chars, and the total length of database and table must be shorter than 129 chars.
 * **config.writeKey** : String (required) - write-only key, get it from your [user profile](console.treasuredata.com/users/current)
-* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/events`
+* **config.pathname** : String (optional) - path to append after host. Default: `/js/v3/event`
 * **config.host** : String (optional) - host to which events get sent. Default: `in.treasuredata.com`
 * **config.development** : Boolean (optional) - triggers development mode which causes requests to be logged and not get sent. Default: `false`
 * **config.logging** : Boolean (optional) - enable or disable logging. Default: `true`
