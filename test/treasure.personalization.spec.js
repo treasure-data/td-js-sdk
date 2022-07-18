@@ -60,4 +60,45 @@ describe('Treasure Personalization', function () {
       }).to.throwException()
     })
   })
+
+  describe('lookup profile', function () {
+    it('should call function successfully', function () {
+      var td = new Treasure({
+        database: 'database',
+        writeKey: 'writeKey'
+      })
+
+      expect(function () {
+        td.lookupProfile({
+          cdpHost: 'abc.com',
+          token: 'aaaaa',
+          index: 'aaaaa'
+        })
+      }).not.to.throwException()
+    })
+    it('should not accept non string configurations', function () {
+      var td = new Treasure({
+        database: 'database',
+        writeKey: 'writeKey'
+      })
+
+      expect(function () {
+        td.lookupProfile()
+      }).to.throwException()
+
+      expect(function () {
+        td.lookupProfile({
+          token: 1
+        })
+      }).to.throwException()
+
+      expect(function () {
+        td.lookupProfile({
+          cdpHost: 'abc.com',
+          token: 'aaaaaa',
+          index: 1
+        })
+      }).to.throwException()
+    })
+  })
 })
