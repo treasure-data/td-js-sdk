@@ -468,6 +468,44 @@ td.fetchUserSegments({
 ```
 *N.B.* This feature is not enabled on accounts by default, please contact support for more information.
 
+### Treasure#lookupProfile(options, success, error)
+
+Find a profile by using a specific audience token and index key.
+
+**Parameters:**
+
+
+* **options**: Object (required) - Configuration object
+  * **options.cdpHost** - String - The host to use for the Personalization API, defaults to "profile-api.treasuredata.com"
+  * **options.token** - String (required) - Audience token to use
+  * **options.index** - String (required) - Index key, for example "td_client_id"
+  * **success** - Function (optional) - Callback for receiving the user key and segments
+  * **error** - Function (optional) - Callback for when sending the event is unsuccessful
+
+**Example:**
+
+```javascript
+  var td = new Treasure({...})
+  var successCallback = function (values) {
+     // values format
+     // {
+     //    "segments":[],
+     //    "attributes":{},
+     //    "event_data":{}
+     // }
+  }
+
+  var errorCallback = function (error) {
+     console.error('Failed to find profile')
+  }
+
+  td.lookupProfile({
+   cdpHost: 'profile-api.treasuredata.com',
+   token: 'xxxxxxxxxx',
+   index: 'td_client_id'
+  }, successCallback, errorCallback)
+```
+
 ### Treasure#blockEvents
 
 Block all events from being sent to Treasure Data.
