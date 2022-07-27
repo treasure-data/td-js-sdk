@@ -22,7 +22,7 @@ The `host` configuration will have the following values, depending on which envi
   - **eu01.records.in.treasuredata.com**
 
 When you opt-out of this feature by either setting the `useNewJavaScriptEndpoint` to `false` or not setting it, please make sure that
-you update the host to the old configuration, as mentioned in [this section](README.md#treasureconfig)
+you update the host to the old configuration, as mentioned in [this section](README.md#api)
 
 Example:
 
