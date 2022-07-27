@@ -37,5 +37,5 @@ Example:
 
 ## Limitations & Changed behavior
 
-Using Real-time segmentation requires routing enablement from the Backend. Please reach out to **Treasure Data Support** and give us the `account`, `database`, and `table` to enable routing fo, and we can do that from the backend.
+Using Real-time segmentation requires routing enablement from the Backend. Please reach out to **Treasure Data Support** and give us the `account`, `database`, and `table` to enable routing for, and we can do that from the backend.
 We will remove this limitation in the future release.
