@@ -80,137 +80,138 @@ module.exports = function (config) {
         base: 'BrowserStack',
         browser: 'firefox',
         os: 'OS X',
-        os_version: 'High Sierra'
+        os_version: 'Catalina'
       },
+      bs_firefox_latest_win: {
+        base: 'BrowserStack',
+        browser: 'firefox',
+        os: 'Windows',
+        os_version: '10'
+      },
+
       bs_chrome_latest_mac: {
         base: 'BrowserStack',
         browser: 'chrome',
         os: 'OS X',
-        os_version: 'High Sierra'
+        os_version: 'Catalina'
       },
-      bs_safari_7_mac: {
+      bs_chrome_latest_win: {
         base: 'BrowserStack',
-        browser: 'safari',
-        browser_version: '7.1',
-        os: 'OS X',
-        os_version: 'Mavericks'
-      },
-      bs_safari_8_mac: {
-        base: 'BrowserStack',
-        browser: 'safari',
-        browser_version: '8.0',
-        os: 'OS X',
-        os_version: 'Yosemite'
-      },
-      bs_safari_9_mac: {
-        base: 'BrowserStack',
-        browser: 'safari',
-        browser_version: '9.1',
-        os: 'OS X',
-        os_version: 'El Capitan'
-      },
-      bs_safari_10_mac: {
-        base: 'BrowserStack',
-        browser: 'safari',
-        browser_version: '10.0',
-        os: 'OS X',
-        os_version: 'Sierra'
-      },
-      bs_safari_11_mac: {
-        base: 'BrowserStack',
-        browser: 'safari',
-        browser_version: '11.1',
-        os: 'OS X',
-        os_version: 'High Sierra'
-      },
-      bs_ie_11_win: {
-        base: 'BrowserStack',
-        browser: 'ie',
-        browser_version: '11.0',
+        browser: 'chrome',
         os: 'Windows',
         os_version: '10'
       },
+
+      bs_safari_latest_mac: {
+        base: 'BrowserStack',
+        browser: 'Safari',
+        os: 'OS X',
+        os_version: 'Catalina'
+      },
+
       bs_edge_latest_win: {
         base: 'BrowserStack',
         browser: 'edge',
         os: 'Windows',
         os_version: '10'
       },
-      bs_iphone6: {
+
+      bs_iphone_X: {
         base: 'BrowserStack',
-        device: 'iPhone 6',
-        os: 'ios',
+        device: 'iPhone X',
+        browser: 'safari',
+        os: 'iOS',
         os_version: '11',
         real_mobile: true
       },
-      bs_iphone6_9: {
+
+      bs_iphone_11: {
         base: 'BrowserStack',
-        device: 'iPhone 6S',
-        os: 'ios',
+        device: 'iPhone 11',
+        browser: 'safari',
+        os: 'iOS',
+        os_version: '15',
+        real_mobile: true
+      },
+      bs_iphone_XS: {
+        base: 'BrowserStack',
+        device: 'iPhone XS',
+        browser: 'safari',
+        os: 'iOS',
         os_version: '12',
         real_mobile: true
       },
-      bs_iphone7: {
-        base: 'BrowserStack',
-        os: 'ios',
-        os_version: '12',
-        browser: 'iphone',
-        device: 'iPhone 7',
-        real_mobile: true
-      },
-      bs_iphone8: {
-        base: 'BrowserStack',
-        device: 'iPhone 8',
-        os: 'ios',
-        os_version: '11'
-      },
-      android50: {
-        base: 'BrowserStack',
-        device: 'Samsung Galaxy S6',
-        os: 'android',
-        os_version: '5.0',
-        real_mobile: 'true'
-      },
-      android60: {
-        base: 'BrowserStack',
-        device: 'Google Nexus 6',
-        os: 'android',
-        os_version: '6.0',
-        real_mobile: 'true'
-      },
-      android71: {
+
+      bs_android_pixel: {
         base: 'BrowserStack',
         device: 'Google Pixel',
-        os: 'android',
-        os_version: '7.1',
-        real_mobile: 'true'
-      },
-      android80: {
-        base: 'BrowserStack',
-        device: 'Google Pixel',
+        browser: 'chrome',
         os: 'android',
         os_version: '8.0',
-        browser: 'android',
+        real_mobile: true
+      },
+
+      bs_android_pixel_3: {
+        base: 'BrowserStack',
+        device: 'Google Pixel 3',
+        browser: 'chrome',
+        os: 'android',
+        os_version: '9.0',
+        real_mobile: true
+      },
+
+      bs_android_pixel_4: {
+        base: 'BrowserStack',
+        device: 'Google Pixel 4',
+        browser: 'chrome',
+        os: 'android',
+        os_version: '10.0',
+        real_mobile: true
+      },
+
+      bs_android_pixel_5: {
+        base: 'BrowserStack',
+        device: 'Google Pixel 5',
+        browser: 'chrome',
+        os: 'android',
+        os_version: '11.0',
+        real_mobile: true
+      },
+
+      bs_android_samsung_galaxy_A51: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy A51',
+        browser: 'chrome',
+        os: 'android',
+        os_version: '10.0',
+        real_mobile: true
+      },
+
+      bs_android_samsung_galaxy_note10: {
+        base: 'BrowserStack',
+        device: 'Samsung Galaxy Note 10',
+        browser: 'chrome',
+        os: 'android',
+        os_version: '9.0',
         real_mobile: true
       }
+
     },
 
     browsers: [
       'bs_firefox_latest_mac',
       'bs_chrome_latest_mac',
-      'bs_safari_8_mac',
-      'bs_safari_9_mac',
-      'bs_safari_10_mac',
-      'bs_safari_11_mac',
-      'bs_ie_11_win',
+      'bs_safari_latest_mac',
       'bs_edge_latest_win',
-      'bs_iphone6',
-      'bs_iphone6_9',
-      'bs_iphone7',
-      'bs_iphone8',
-      'android50',
-      'android60',
-      'android71'
+      'bs_iphone_X',
+      'bs_iphone_11',
+      'bs_iphone_XS',
+      'bs_android_pixel',
+      'bs_android_pixel_3',
+      'bs_android_pixel_4',
+      'bs_android_pixel_5',
+      'bs_android_samsung_galaxy_A51',
+      'bs_android_samsung_galaxy_note10'
     ],
 
     // Continuous Integration mode

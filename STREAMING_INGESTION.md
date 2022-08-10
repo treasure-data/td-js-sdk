@@ -22,7 +22,7 @@ The `host` configuration will have the following values, depending on which envi
   - **eu01.records.in.treasuredata.com**
 
 When you opt-out of this feature by either setting the `useNewJavaScriptEndpoint` to `false` or not setting it, please make sure that
-you update the host to the old configuration, as mentioned in [this section](README.md#treasureconfig)
+you update the host to the old configuration, as mentioned in [this section](README.md#api)
 
 Example:
 
@@ -34,3 +34,8 @@ Example:
     host: 'us01.records.in.treasuredata.com'
   });
 ```
+
+## Limitations & Changed behavior
+
+Using Real-time segmentation requires routing enablement from the Backend. Please reach out to **Treasure Data Support** and give us the `account`, `database`, and `table` to enable routing for, and we can do that from the backend.
+We will remove this limitation in the future release.
