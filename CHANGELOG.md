@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.2 (2022-10-05)
+* Default values for backward compatibility
+
 ## 3.1.1 (2022-06-28)
 * Opt-in for new JavaScript endpoint
 
