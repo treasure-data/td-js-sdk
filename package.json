@@ -30,7 +30,7 @@
     "pretest": "npm run build",
     "test": "standard && node ./bin/test.js",
     "test-full": "karma start --browserStack.startTunnel true",
-    "test-local": "karma start --browsers Chrome,Firefox,Safari --concurrency 3",
+    "test-local": "karma start --browsers Chrome --concurrency 1",
     "test-ci": "karma start --browserStack.tunnelIdentifier $BROWSERSTACK_LOCAL_IDENTIFIER",
     "docs": "jsdoc2md --configure ./jsdoc-config.json --files ./lib --no-cache --separators --example-lang js --partial ./scope.hbs --partial ./summary.hbs --partial ./global-index.hbs > ./js-sdk-api.md"
   },

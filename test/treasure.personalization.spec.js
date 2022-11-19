@@ -75,6 +75,14 @@ describe('Treasure Personalization', function () {
           index: 'aaaaa'
         })
       }).not.to.throwException()
+
+      expect(function () {
+        td.lookupProfile({
+          cdpHost: 'abc.com',
+          token: ['aaaaa'],
+          index: ['aaaaa']
+        })
+      }).not.to.throwException()
     })
     it('should not accept non string configurations', function () {
       var td = new Treasure({
@@ -97,6 +105,19 @@ describe('Treasure Personalization', function () {
           cdpHost: 'abc.com',
           token: 'aaaaaa',
           index: 1
+        })
+      }).to.throwException()
+    })
+    it('tokens and indexes should have the same length', function () {
+      var td = new Treasure({
+        database: 'database',
+        writeKey: 'writeKey'
+      })
+
+      expect(function () {
+        td.lookupProfile({
+          token: ['abc', 'bca'],
+          index: ['a']
         })
       }).to.throwException()
     })
