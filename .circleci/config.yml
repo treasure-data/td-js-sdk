@@ -11,16 +11,15 @@ commands:
   install_packages:
     description: "Installing packages..."
     steps:
-      - node/install-packages:
-          pkg-manager: yarn 
+      - node/install-packages
   build:
     description: "Building project..."
     steps:
-      - run: yarn build
+      - run: npm run build
   test:
     description: "Testing with BrowserStack..."
     steps:
-      - run: yarn test-full
+      - run: npm run test-full
 
 jobs:
   build-and-test:
@@ -30,14 +29,13 @@ jobs:
     <<: *executor
     steps:
       - node/install:
-          install-yarn: true
           node-version: "14.15.4"
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - install_packages
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
             - ~/.cache/yarn
