@@ -20,6 +20,7 @@
     }
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "./bin/build.sh",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
@@ -58,7 +59,8 @@
     ]
   },
   "resolutions": {
-    "uglifyjs-webpack-plugin/**/serialize-javascript": ">=3.1.0"
+    "glob-parent": "5.1.2",
+    "minimatch": "3.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -91,8 +93,7 @@
     "simple-mock": "^0.8.0",
     "standard": "^11.0.0",
     "tape": "^4.6.0",
-    "uglifyjs": "^2.4.10",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "uglify-js": "^3.17.4",
     "wd": "^1.5.0",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.3.12"
