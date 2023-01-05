@@ -142,15 +142,6 @@ module.exports = function (config) {
         real_mobile: true
       },
 
-      bs_android_pixel: {
-        base: 'BrowserStack',
-        device: 'Google Pixel',
-        browser: 'chrome',
-        os: 'android',
-        os_version: '8.0',
-        real_mobile: true
-      },
-
       bs_android_pixel_3: {
         base: 'BrowserStack',
         device: 'Google Pixel 3',
@@ -206,7 +197,6 @@ module.exports = function (config) {
       'bs_iphone_X',
       'bs_iphone_11',
       'bs_iphone_XS',
-      'bs_android_pixel',
       'bs_android_pixel_3',
       'bs_android_pixel_4',
       'bs_android_pixel_5',
