@@ -470,17 +470,19 @@ td.fetchUserSegments({
 
 ### Treasure#lookupProfile(options, success, error)
 
-Find a profile by using a specific audience token and index key.
+Find a profile by using a specific audience tokens and index keys.
 
 **Parameters:**
 
 
 * **options**: Object (required) - Configuration object
   * **options.cdpHost** - String - The host to use for the Personalization API, defaults to "profile-api.treasuredata.com"
-  * **options.token** - String (required) - Audience token to use
-  * **options.index** - String (required) - Index key, for example "td_client_id"
+  * **options.token** - String|Array (required) - Audience tokens to use
+  * **options.index** - String|Array (required) - Index key, for example "td_client_id"
   * **success** - Function (optional) - Callback for receiving the user key and segments
   * **error** - Function (optional) - Callback for when sending the event is unsuccessful
+
+If the `token` is an array, it is required that the `index` is an array too. And both arrays should have the same length
 
 **Example:**
 
