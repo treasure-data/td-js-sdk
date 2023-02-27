@@ -1,6 +1,6 @@
 # td-js-sdk
 
-[![CircleCI](https://circleci.com/gh/treasure-data/td-js-sdk/tree/master.svg?style=svg)](https://circleci.com/gh/treasure-data/td-js-sdk/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/treasure-data/td-js-sdk/tree/master.svg?style=svg&circle-token=6fcc04c8184f1b266519f0d0f8901b043af421db)](https://dl.circleci.com/status-badge/redirect/gh/treasure-data/td-js-sdk/tree/master)
 
 > :warning: NOTE: In version 3.1, we support our new JavaScript endpoint to log data, however there are configurations need to be
 changed in order to opt-in this feature, see [Streaming Ingestion](STREAMING_INGESTION.md) for more information
