@@ -20,6 +20,7 @@
       'fetchServerCookie',
       'fetchGlobalID',
       'fetchUserSegments',
+      'lookupProfile',
       'resetUUID',
       'ready',
       'setSignedMode',
