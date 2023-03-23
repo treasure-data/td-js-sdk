@@ -349,6 +349,19 @@ Sends an event to Treasure Data. If the table does not exist it will be created 
 
 Records will have additional properties applied to them if `$global` or table-specific attributes are configured using `Treasure#set`.
 
+:warning: NOTE: This function will not send `td_ip`, `td_client_id`, `td_global_id` automatically, so if you want to send those information along with this
+function you have to do it manually, as following:
+
+```
+td.ready(function () {
+   td.set('$global', 'td_ip', 'ip value');
+   td.set('$global', 'td_client_id', td.getTrackValues().td_client_id);
+   td.set('$global', 'td_global_id', 'global id value');
+   
+   td.addRecord(...)
+});
+```
+
 **Parameters:**
 
 * **table** : String (required) - table name, must consist only of lower case letters, numbers, and `_`, must be longer than or equal to 3 chars, the total length of database and table must be shorter than 129 chars.
