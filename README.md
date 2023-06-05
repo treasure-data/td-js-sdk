@@ -2,8 +2,7 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/treasure-data/td-js-sdk/tree/master.svg?style=svg&circle-token=6fcc04c8184f1b266519f0d0f8901b043af421db)](https://dl.circleci.com/status-badge/redirect/gh/treasure-data/td-js-sdk/tree/master)
 
-> :warning: NOTE: In version 3.1, we support our new JavaScript endpoint to log data, however there are configurations need to be
-changed in order to opt-in this feature, see [Streaming Ingestion](STREAMING_INGESTION.md) for more information
+> :warning: NOTE: From the version 4.0, we will use our new JavaScript endpoint to log data. This new behavior requires configuration changes, see [Streaming Ingestion](STREAMING_INGESTION.md) for more information.
 
 # Table of Contents
 [Getting started](#getting-started)
@@ -86,6 +85,8 @@ var Treasure = require('td-js-sdk')
 Log in to [Treasure Data](https://console.treasuredata.com/) and go to your [profile](https://console.treasuredata.com/users/current). The API key should show up right next to your full-access key.
 
 ### Initializing
+
+> :warning: NOTE: From the version 4.0, we will use our new JavaScript endpoint to log data. This new behavior requires configuration changes, see [Streaming Ingestion](STREAMING_INGESTION.md) for more information.
 
 Our library works by creating an instance per database, and sending data into tables.
 
