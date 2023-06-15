@@ -187,11 +187,10 @@ Every time a track functions is called, the following information is sent:
 * **td_host** - document host
 * **td_path** - document pathname
 * **td_referrer** - document referrer
-* **td_ip** - request IP (server)*
-* **td_browser** - client browser (server)
-* **td_browser_version** - client browser version (server)
-* **td_os** - client operating system (server)
-* **td_os_version** - client operating system version (server)
+
+The following information will be populated by server-side
+
+* **td_ip** - request IP (server)*. This information is only populated when `td_global_id` is enabled using `td.set('$global', 'td_global_id', 'td_global_id')` and is in signed mode.
 
 Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces the values upon receipt. For examples: `{"td_ip": "td_ip"}` is sent by the browser, and the server will update it to something like `{"td_ip": "1.2.3.4"}`
 
