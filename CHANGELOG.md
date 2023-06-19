@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0 (2023-06-19)
+* Using new javascript endpoint for injestion
+
 ## 3.1.2 (2022-10-05)
 * Default values for backward compatibility
 
