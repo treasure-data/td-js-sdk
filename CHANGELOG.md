@@ -1,9 +1,11 @@
 # Changelog
 
+## 3.1.4 (2023-06-26)
+* add `keepalive=true` option to POST requests
+
 ## 3.1.3 (2023-06-15)
 * `postWithTimeout` should be requested with body
 * only enable `td_global_id` when in signed mode
-
 
 ## 3.1.2 (2022-10-05)
 * Default values for backward compatibility
