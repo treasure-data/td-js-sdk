@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1 (2023-06-27)
+* Add `keepalive` option to POST requests
+
 ## 4.0.0 (2023-06-19)
 * Using new javascript endpoint for injestion
 
