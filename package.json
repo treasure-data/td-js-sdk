@@ -14,13 +14,7 @@
     "type": "git",
     "url": "https://github.com/treasure-data/td-js-sdk"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "standard"
-    }
-  },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "build": "./bin/build.sh",
     "clean": "rm -rf ./dist && mkdir -p ./dist",
     "e2e": "node ./bin/e2e.js",
@@ -58,10 +52,6 @@
       "mocha"
     ]
   },
-  "resolutions": {
-    "glob-parent": "5.1.2",
-    "minimatch": "3.0.5"
-  },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/plugin-transform-runtime": "^7.11.0",
@@ -73,7 +63,6 @@
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
     "glob": "^7.0.5",
-    "husky": "^3.1.0",
     "jsdoc-to-markdown": "^7.0.1",
     "karma": "^6.3.2",
     "karma-browserstack-launcher": "^1.6.0",
