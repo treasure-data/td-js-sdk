@@ -116,15 +116,6 @@ module.exports = function (config) {
         os_version: '10'
       },
 
-      bs_iphone_X: {
-        base: 'BrowserStack',
-        device: 'iPhone X',
-        browser: 'safari',
-        os: 'iOS',
-        os_version: '11',
-        real_mobile: true
-      },
-
       bs_iphone_11: {
         base: 'BrowserStack',
         device: 'iPhone 11',
@@ -194,7 +185,6 @@ module.exports = function (config) {
       'bs_chrome_latest_mac',
       'bs_safari_latest_mac',
       'bs_edge_latest_win',
-      'bs_iphone_X',
       'bs_iphone_11',
       'bs_iphone_XS',
       'bs_android_pixel_3',
