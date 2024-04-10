@@ -319,6 +319,10 @@ If the database does not exist and you have permissions, it will be created for 
 * **config.storage.name** : String (optional) - cookie name. Default: `_td`
 * **config.storage.expires** : Number (optional) - cookie expiration in seconds. When 0 it will expire with the session. Default: `63072000` (2 years)
 * **config.storage.domain** : String (optional) - cookie domain. Default: result of `document.location.hostname`
+> :warning: NOTE: If **config.storage.domain** would be not set, td-js-sdk may create cookies against multiple domains.
+> For example, suppose you have td-js-sdk located at foo.bar.com.
+> If **config.storage.domain** is not set, td-js-sdk will create two cookies for foo.bar.com and bar.com.
+> In other words, if you don't want cookies created for higher level domains, you need to set domain parameter to the specific domain.
 
 **Server Side Cookie:**
 * **config.useServerSideCookie** : Boolean (optional) - enables/disable using ServerSide Cookie. Default: `false`
