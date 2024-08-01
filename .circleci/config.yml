@@ -26,6 +26,9 @@ jobs:
     docker:
       - image: cimg/node:16.18.0-browsers
 
+    environment:
+      - CHROME_BIN: /usr/lib/chromium/chrome
+
     <<: *executor
     steps:
       - checkout
