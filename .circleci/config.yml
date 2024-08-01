@@ -24,12 +24,10 @@ commands:
 jobs:
   build-and-test:
     docker:
-      - image: 'cimg/base:stable'
+      - image: cimg/node:16.18.0-browsers
 
     <<: *executor
     steps:
-      - node/install:
-          node-version: "16.18.0"
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
