@@ -17,9 +17,9 @@ commands:
     steps:
       - run: npm run build
   test:
-    description: "Testing with BrowserStack..."
+    description: "Testing..."
     steps:
-      - run: npm run test-full
+      - run: npm run test-local
 
 jobs:
   build-and-test:
