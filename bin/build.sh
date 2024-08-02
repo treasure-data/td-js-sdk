@@ -71,11 +71,13 @@ then
 fi
 
 cat $ROOT_DIR/src/loader.js |
-  sed -e $GLOBAL_REPLACE -e $URL_REPLACE
+  sed -e $GLOBAL_REPLACE -e $URL_REPLACE > src/refined_loader.js
 
 npm run esbuild-loader
 
-ESCAPED_LOADER="$(echo $ROOT_DIR/dist/loader.min.js | sed -e 's^/^\\/^g')"
+rm $ROOT_DIR/src/refined_loader.js
+
+ESCAPED_LOADER=$(echo $ROOT_DIR/dist/loader.min.js | sed -e 's^/^\\/^g')
 
 sed -i '.backup' "/\!function.*/ {
   r $ROOT_DIR/dist/loader.min.js
