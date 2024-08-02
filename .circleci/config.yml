@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
+  browser-tools: circleci/browser-tools@1.4.8
 
 executor: &executor
   executor:
@@ -17,19 +18,21 @@ commands:
     steps:
       - run: npm run build
   test:
-    description: "Testing with BrowserStack..."
+    description: "Testing..."
     steps:
-      - run: npm run test-full
+      - run: npm run test-local
+  install_chrome_n_firefox:
+    description: "Installing chrome..."
+    steps:
+      - browser-tools/install-browser-tools
 
 jobs:
   build-and-test:
     docker:
-      - image: 'cimg/base:stable'
+      - image: cimg/node:16.18.0-browsers
 
     <<: *executor
     steps:
-      - node/install:
-          node-version: "16.18.0"
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -41,6 +44,7 @@ jobs:
             - ~/.cache/yarn
 
       - build
+      - install_chrome_n_firefox
       - test
 
 workflows:
