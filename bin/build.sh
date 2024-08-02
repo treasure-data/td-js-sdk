@@ -70,14 +70,11 @@ then
   mv $ROOT_DIR/dist/td.min.js $ROOT_DIR/dist/$FILENAME.min.js
 fi
 
-cat $ROOT_DIR/src/loader.js |
-  sed -e $GLOBAL_REPLACE -e $URL_REPLACE > src/refined_loader.js
+sed -e $GLOBAL_REPLACE -e $URL_REPLACE src/loader.js > src/refined_loader.js
 
 npm run esbuild-loader
 
 rm $ROOT_DIR/src/refined_loader.js
-
-ESCAPED_LOADER=$(echo $ROOT_DIR/dist/loader.min.js | sed -e 's^/^\\/^g')
 
 sed -i '.backup' "/\!function.*/ {
   r $ROOT_DIR/dist/loader.min.js
