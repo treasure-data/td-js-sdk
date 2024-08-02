@@ -203,16 +203,13 @@ describe('Treasure Tracker', function () {
         expect(treasure.getCookie('_td')).to.be.ok()
 
         setTimeout(function() {
-          setTimeout(function () {
-            try {
-              expect(treasure.getCookie('_td')).to.not.be.ok()
-              done()
-            } catch (e) {
-              done(e)
-            }
-          }, 1500)
-          done()
-        }, 1500)
+          try {
+            expect(treasure.getCookie('_td')).to.not.be.ok()
+            done()
+          } catch (e) {
+            done(e)
+          }
+        }, 2500)
       })
 
       it('should remember your previous clientId', function () {

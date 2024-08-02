@@ -29,7 +29,7 @@ commands:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/node:16.18.0-browsers
+      - image: cimg/node:18.9.0-browsers
 
     <<: *executor
     steps:
