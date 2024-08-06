@@ -56,21 +56,22 @@ MINIFIED_FILENAME="$ROOT_DIR/dist/td.min.js"
 sed -e $GLOBAL_REPLACE -e $VERSION_REPLACE -e $HOST_REPLACE -e $DATABASE_REPLACE -e $PATHNAME_REPLACE lib/config.template.js > lib/config.js
 
 #NODE_ENV=production
-$ROOT_DIR/node_modules/.bin/webpack
+npm run build-dev
 if [ $FILENAME != "td" ]
 then
   mv $ROOT_DIR/dist/td.js $ROOT_DIR/dist/$FILENAME.js
 fi
 
-MINIFY_BUILD=true $ROOT_DIR/node_modules/.bin/webpack --output-filename [name].min.js
+npm run build-prod
 if [ $FILENAME != "td" ]
 then
   mv $ROOT_DIR/dist/td.min.js $ROOT_DIR/dist/$FILENAME.min.js
 fi
 
-cat $ROOT_DIR/src/loader.js |
-  sed -e $GLOBAL_REPLACE -e $URL_REPLACE |
-  $ROOT_DIR/node_modules/.bin/uglifyjs -m -c > $ROOT_DIR/dist/loader.min.js
+cat $ROOT_DIR/src/loader.js | sed -e $GLOBAL_REPLACE -e $URL_REPLACE > src/refined_loader.js
+npm run build-loader
+
+rm src/refined_loader.js
 
 ESCAPED_LOADER="$(echo $ROOT_DIR/dist/loader.min.js | sed -e 's^/^\\/^g')"
 
