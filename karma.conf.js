@@ -1,12 +1,5 @@
-var branch = process.env.TRAVIS_PULL_REQUEST_BRANCH || process.env.TRAVIS_BRANCH
-var sha = require('child_process')
-  .execSync('git rev-parse --short=9 HEAD', { cwd: __dirname })
-  .toString().trim()
-var startTime = new Date().toISOString()
-
-var webpackConfig = require('./webpack.config')
-webpackConfig.entry = undefined
-webpackConfig.mode = 'development'
+var commonjs = require('@rollup/plugin-commonjs')
+var nodeResolver = require('@rollup/plugin-node-resolve')
 
 module.exports = function (config) {
   config.set({
@@ -28,7 +21,6 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      require.resolve('@babel/polyfill/dist/polyfill.js'),
       { pattern: 'lib/**/*.js', included: false },
       { pattern: 'test/*.spec.js', included: true, watched: false }
     ],
@@ -39,15 +31,16 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/*.spec.js': ['webpack']
+      'test/*.spec.js': ['rollup']
     },
 
-    webpack: webpackConfig,
-
-    webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only'
+    rollupPreprocessor: {
+      plugins: [nodeResolver(), commonjs()],
+      output: {
+        format: 'iife',
+        name: 'td_js_sdk_test',
+        strict: false
+      }
     },
 
     client: {
