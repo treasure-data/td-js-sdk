@@ -209,6 +209,95 @@ describe('Treasure Client', function () {
         cookies.setItem(cookieKey, cookieVal, 6000)
         expect(treasure.getCookie(cookieKey)).to.be(cookieVal)
       })
+
+      it('should get Google Analytics cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_ga'
+        var cookieValue = 'google analytics'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getGoogleAnalyticsCookie()).to.be(cookieValue)
+      })
+
+      it('should get Google Conversion Linker cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_gcl_aw'
+        var cookieValue = 'google cl'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getGoogleConversionLinkerCookie()).to.be(cookieValue)
+      })
+
+      it('should get Facebook 1st-party cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_fbp'
+        var cookieValue = 'facebook 1st cookie'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getFacebook1stCookie()).to.be(cookieValue)
+      })
+
+      it('should get Facebook Click ID cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_fbc'
+        var cookieValue = 'facebook click id'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getFacebookClickIDCookie()).to.be(cookieValue)
+      })
+
+      it('should get Yahoo CAPI cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_yjsu_yjad'
+        var cookieValue = 'yahoo capi'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getYahooCAPICookie()).to.be(cookieValue)
+      })
+
+      it('should get Yahoo _ycl_yjad cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_ycl_yjad'
+        var cookieValue = 'yahoo click id 1'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getYahooClickID_ycl_yjad_Cookie()).to.be(cookieValue)
+      })
+
+      it('should get Yahoo _yjr_yjad cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_yjr_yjad'
+        var cookieValue = 'yahoo click id 2'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getYahooClickID_yjr_yjad_Cookie()).to.be(cookieValue)
+      })
+
+      it('should get Twitter Click ID cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '_twclid'
+        var cookieValue = 'twitter click id'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getXClickIDCookie()).to.be(cookieValue)
+      })
+      it('should get Line cookie', function() {
+        treasure = new Treasure(configuration)
+        var cookieKey = '__lt__cid'
+        var cookieValue = 'line cookie'
+
+        cookies.setItem(cookieKey, cookieValue, 5)
+
+        expect(treasure.getLineCookie()).to.be(cookieValue)
+      })
     })
   })
 })
