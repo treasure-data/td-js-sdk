@@ -1,4 +1,4 @@
-(function (n, c) {
+;(function (n, c) {
   if (c[n] === void 0) {
     c[n] = function () {
       c[n].clients.push(this)
@@ -15,6 +15,7 @@
     }
 
     var methods = [
+      'collectTags',
       'addRecord',
       'blockEvents',
       'fetchServerCookie',
@@ -38,11 +39,8 @@
     var s = document.createElement('script')
     s.type = 'text/javascript'
     s.async = !0
-    s.src = (
-      document.location.protocol === 'https:'
-        ? 'https:'
-        : 'http:'
-    ) + '@URL'
+    s.src =
+      (document.location.protocol === 'https:' ? 'https:' : 'http:') + '@URL'
 
     var t = document.getElementsByTagName('script')[0]
     t.parentNode.insertBefore(s, t)

@@ -10,7 +10,7 @@ describe('Treasure Client', function () {
   var treasure
   var configuration
 
-  function resetConfiguration () {
+  function resetConfiguration() {
     configuration = {
       database: 'database',
       writeKey: 'writeKey',
@@ -82,7 +82,7 @@ describe('Treasure Client', function () {
 
     it('should error if no configuration object', function () {
       expect(function () {
-        (treasure = new Treasure())
+        treasure = new Treasure()
       }).to.throwException()
     })
 
@@ -106,7 +106,10 @@ describe('Treasure Client', function () {
     })
 
     it('should allow you to manually set values on client', function () {
-      configuration.host = configuration.pathname = configuration.endpoint = 'foo'
+      configuration.host =
+        configuration.pathname =
+        configuration.endpoint =
+          'foo'
       treasure = new Treasure(configuration)
       expect(treasure.client.host).to.equal('foo')
       expect(treasure.client.pathname).to.equal('foo')
@@ -117,7 +120,7 @@ describe('Treasure Client', function () {
       var tryWithDatabaseValue = function (value) {
         configuration.database = value
         expect(function () {
-          (treasure = new Treasure(configuration))
+          treasure = new Treasure(configuration)
         }).to.throwException()
       }
 
@@ -147,7 +150,9 @@ describe('Treasure Client', function () {
         tryWithDatabaseValue('12')
 
         // Over 255 characters
-        tryWithDatabaseValue('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
+        tryWithDatabaseValue(
+          '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
+        )
 
         // Uppercase chracters
         tryWithDatabaseValue('FOO_BAR')
@@ -166,7 +171,7 @@ describe('Treasure Client', function () {
       it('should error if writeKey is not set', function () {
         delete configuration.writeKey
         expect(function () {
-          (treasure = new Treasure(configuration))
+          treasure = new Treasure(configuration)
         }).to.throwException()
       })
 
