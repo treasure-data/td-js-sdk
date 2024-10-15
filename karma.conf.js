@@ -1,5 +1,6 @@
 var commonjs = require('@rollup/plugin-commonjs')
 var nodeResolver = require('@rollup/plugin-node-resolve')
+var babel = require('@rollup/plugin-babel')
 
 module.exports = function (config) {
   config.set({
@@ -35,7 +36,11 @@ module.exports = function (config) {
     },
 
     rollupPreprocessor: {
-      plugins: [nodeResolver(), commonjs()],
+      plugins: [
+        nodeResolver(),
+        commonjs(),
+        babel({ babelHelpers: 'bundled' })
+      ],
       output: {
         format: 'iife',
         name: 'td_js_sdk_test',
