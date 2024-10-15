@@ -53,7 +53,20 @@
       "mocha"
     ]
   },
+  "browserslist": [
+    "chrome >0 and last 2.5 years",
+    "edge >0 and last 2.5 years",
+    "safari >0 and last 2.5 years",
+    "firefox >0 and last 2.5 years",
+    "and_chr >0 and last 2.5 years",
+    "and_ff >0 and last 2.5 years",
+    "ios >0 and last 2.5 years"
+  ],
   "devDependencies": {
+    "@babel/cli": "^7.25.7",
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
+    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
@@ -77,6 +90,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "rollup": "^4.20.0",
+    "rollup-plugin-sizes": "^1.0.6",
     "selenium-standalone": "^6.23.0",
     "simple-mock": "^0.8.0",
     "standard": "^17.1.0",
