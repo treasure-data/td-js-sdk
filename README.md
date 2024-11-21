@@ -17,6 +17,8 @@
 
 [Streaming Ingestion](STREAMING_INGESTION.md)
 
+[Collecting third-party tags](COLLECTING_TAGS.md)
+
 [API](#api)
 
 [Others](#support)
