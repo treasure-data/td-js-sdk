@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.0 (2024-11-26)
+* Fetching ads cookies for Conversion APIs
+
 ## 4.0.2 (2024-07-25)
 * Update documentation
 * Remove preinstall hook
