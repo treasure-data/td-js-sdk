@@ -195,8 +195,6 @@ The following information will be populated by server-side
 
 * **td_ip** - request IP (server)*. This information is only populated when `td_global_id` is enabled using `td.set('$global', 'td_global_id', 'td_global_id')` and is in signed mode.
 
-Certain values cannot be obtained from the browser. For these values, we send matching keys and values, and the server replaces the values upon receipt. For examples: `{"td_ip": "td_ip"}` is sent by the browser, and the server will update it to something like `{"td_ip": "1.2.3.4"}`
-
 All server values except `td_ip` are found by parsing the user-agent string. This is done server-side to ensure that it can be kept up to date.
 
 <nowiki>*</nowiki> This is a personally identifiable column, and will be affected by whether or not the user is in Signed or Anonymous Mode.
