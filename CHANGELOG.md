@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0 (2025-03-26)
+* Don't create _td_domain_* cookie
+
+
 ## 4.1.0 (2024-11-26)
 * Fetching ads cookies for Conversion APIs
 
