@@ -61,3 +61,80 @@ describe('Treasure Personalization', function () {
     })
   })
 })
+
+describe('User personalization', function() {
+  var td
+
+  beforeEach(function() {
+    td = new Treasure({ database: 'database', writeKey: 'writeKey' })
+  })
+
+  afterEach(function() {
+    td = null
+  })
+
+  it('fetchPersonalization function should be available', function() {
+    expect(typeof td.fetchPersonalization === 'function').ok()
+  })
+
+  it('should not accept missing configuration', function() {
+    expect(function() {
+      td.fetchPersonalization()
+    }).to.throwException()
+  })
+
+  it('should not accept empty configuration', function() {
+    expect(function() {
+      td.fetchPersonalization({})
+    }).to.throwException()
+  })
+
+  it('endpoint should not be empty', function() {
+    expect(function() {
+      td.fetchPersonalization({
+        database: 'db',
+        table: 'tb',
+        token: 'token'
+      })
+    }).to.throwException()
+  })
+
+  it('database should not be empty', function() {
+    expect(function() {
+      td.fetchPersonalization({
+        endpoint: 'abc.com',
+        table: 'tb',
+        token: 'token'
+      })
+    }).to.throwException()
+  })
+  it('table should not be empty', function() {
+    expect(function() {
+      td.fetchPersonalization({
+        endpoint: 'abc.com',
+        database: 'db',
+        token: 'token'
+      })
+    }).to.throwException()
+  })
+  it('token should not be empty', function() {
+    expect(function() {
+      td.fetchPersonalization({
+        endpoint: 'abc.com',
+        table: 'tb',
+        database: 'db'
+      })
+    }).to.throwException()
+  })
+
+  it('fetchPersonalization should be executed', function() {
+    expect(function() {
+      td.fetchPersonalization({
+        endpoint: 'abc.com',
+        table: 'tb',
+        database: 'db',
+        token: 'wp13n-token'
+      })
+    }).not.to.throwException()
+  })
+})
