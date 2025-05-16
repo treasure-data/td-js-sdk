@@ -21,6 +21,7 @@
       'fetchServerCookie',
       'fetchGlobalID',
       'fetchUserSegments',
+      'fetchPersonalization',
       'resetUUID',
       'ready',
       'setSignedMode',
