@@ -19,6 +19,8 @@
 
 [Collecting third-party tags](COLLECTING_TAGS.md)
 
+[Personalization 2.0](PERSONALIZATION_2.md)
+
 [API](#api)
 
 [Others](#support)
