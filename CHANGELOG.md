@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.1.0 (2025-03-26)
+## 4.3.0 (2025-05-22)
+* Add a new `fetchPersonalization` API
+
+## 4.2.0 (2025-03-26)
 * Don't create _td_domain_* cookie
 
 

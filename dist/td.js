@@ -2795,7 +2795,7 @@
 
 	var config$1 = {
 	  GLOBAL: 'Treasure',
-	  VERSION: '4.2.0',
+	  VERSION: '4.3.0',
 	  HOST: 'in.treasuredata.com',
 	  DATABASE: '',
 	  PATHNAME: '/'
@@ -3419,9 +3419,72 @@
 	    }
 	  }).then(successCallback).catch(errorCallback);
 	}
+
+	/**
+	* Fetch personalization information
+	*
+	* @param {object} config - configuration object
+	* @param config.endpoint - Personalization endpoint
+	* @param config.database - Database name
+	* @param config.table - Table name
+	* @param config.token - Personalization token
+	*
+	* @param {object} data - (Optional) payload to send with the request
+	* @param {function} successCallback - Callback for successful request
+	* @param {function} errorCallback - Callback for failed quest
+	*
+	* @example
+	* var td = new Treasure({...})
+	* var successCallback = function (values) {
+	*   //values format => {
+	*     "offers": {
+	*       "offer": {
+	*         "attributes": {
+	*           "first_name": "test",
+	*           "nickname": "tet"
+	*         },
+	*         "batch_segments": 55352
+	*       }
+	*      }
+	*    }
+	*
+	*   // celebrate();
+	* }
+	* var errorCallback = function (error) {
+	*   // cry();
+	* }
+	*
+	* td.fetchPersonalization({
+	*   endpoint: 'endpoint',
+	*   database: 'database',
+	*   table: 'table',
+	*   token: 'personalization token'
+	* }, null, successCallback, errorCallback)
+	*
+	*/
+
+	function fetchPersonalization(config, data, successCallback, errorCallback) {
+	  invariant(_$5.isObject(config), 'config must be an object, received "' + config + '"');
+	  invariant(config.endpoint, 'endpoint is invalid');
+	  invariant(config.database, 'database is invalid');
+	  invariant(config.table, 'table is invalid');
+	  invariant(config.token, 'token is invalid');
+	  successCallback = successCallback || noop$1;
+	  errorCallback = errorCallback || noop$1;
+	  var url = ['https://', config.endpoint, '/public/', config.database, '/', config.table].join('');
+	  var payload = data || {};
+	  api$1.post(url, payload, {
+	    headers: {
+	      'Content-Type': 'application/vnd.treasuredata.v1+json',
+	      'Authorization': 'TD1 ' + this.client.writeKey,
+	      'WP13n-Token': config.token
+	    }
+	  }).then(successCallback).catch(errorCallback);
+	}
 	var personalization = {
 	  configure: configure$1,
-	  fetchUserSegments: fetchUserSegments
+	  fetchUserSegments: fetchUserSegments,
+	  fetchPersonalization: fetchPersonalization
 	};
 
 	var track = {};
@@ -6130,7 +6193,7 @@
 	}
 
 	// Constants
-	var TREASURE_KEYS = ['init', 'set', 'collectTags', 'blockEvents', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'fetchGlobalID', 'trackPageview', 'trackEvent', 'trackClicks', 'fetchUserSegments', 'fetchServerCookie', 'ready'];
+	var TREASURE_KEYS = ['init', 'set', 'collectTags', 'blockEvents', 'unblockEvents', 'setSignedMode', 'setAnonymousMode', 'resetUUID', 'addRecord', 'fetchGlobalID', 'trackPageview', 'trackEvent', 'trackClicks', 'fetchUserSegments', 'fetchPersonalization', 'fetchServerCookie', 'ready'];
 
 	/*
 	 * Load clients
