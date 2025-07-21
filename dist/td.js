@@ -2305,7 +2305,7 @@
 	var jsCookies = Cookies;
 
 	var cookie$5 = jsCookies;
-	var _$7 = lodash;
+	var _$8 = lodash;
 	function findDomains(domain) {
 	  var domainChunks = domain.split('.');
 	  var domains = [];
@@ -2317,7 +2317,7 @@
 
 	// Set cookie on highest allowed domain
 	var setCookie$3 = function setCookie(storage, name, value) {
-	  var clone = _$7.assign({}, storage);
+	  var clone = _$8.assign({}, storage);
 	  var is = {
 	    ip: storage.domain.match(/\d*\.\d*\.\d*\.\d*$/),
 	    local: storage.domain === 'localhost',
@@ -2517,12 +2517,12 @@
 
 	// Modules
 	var misc$2 = misc$3;
-	var _$6 = lodash;
+	var _$7 = lodash;
 	var global$2 = windowExports;
 	var cookie$4 = jsCookies;
 	var setCookie$2 = setCookie$3;
 	var api$3 = xhr;
-	var noop$3 = _$6.noop;
+	var noop$3 = _$7.noop;
 	var invariant$1 = misc$2.invariant;
 	// Helpers
 
@@ -2530,9 +2530,9 @@
 	 * Validate record
 	 */
 	function validateRecord(table, record) {
-	  invariant$1(_$6.isString(table), 'Must provide a table');
+	  invariant$1(_$7.isString(table), 'Must provide a table');
 	  invariant$1(/^[a-z0-9_]{3,255}$/.test(table), 'Table must be between 3 and 255 characters and must ' + 'consist only of lower case letters, numbers, and _');
-	  invariant$1(_$6.isObject(record), 'Must provide a record');
+	  invariant$1(_$7.isObject(record), 'Must provide a record');
 	}
 	var BLOCKEVENTSCOOKIE = '__td_blockEvents';
 	var SIGNEDMODECOOKIE = '__td_signed';
@@ -2737,7 +2737,7 @@
 	 *
 	 */
 	record$1.applyProperties = function applyProperties(table, payload) {
-	  return _$6.assign({}, this.get('$global'), this.get(table), payload);
+	  return _$7.assign({}, this.get('$global'), this.get(table), payload);
 	};
 
 	/**
@@ -2752,7 +2752,7 @@
 	record$1.addRecord = function addRecord(table, record, success, error) {
 	  validateRecord(table, record);
 	  var propertiesRecord = this.applyProperties(table, record);
-	  var finalRecord = this.inSignedMode() ? propertiesRecord : _$6.omit(propertiesRecord, ['td_ip', 'td_client_id', 'td_global_id']);
+	  var finalRecord = this.inSignedMode() ? propertiesRecord : _$7.omit(propertiesRecord, ['td_ip', 'td_client_id', 'td_global_id']);
 	  var request = {
 	    apikey: this.client.writeKey,
 	    record: finalRecord,
@@ -2795,8 +2795,8 @@
 
 	var config$1 = {
 	  GLOBAL: 'Treasure',
-	  VERSION: '4.3.0',
-	  HOST: 'in.treasuredata.com',
+	  VERSION: '4.4.0',
+	  HOST: 'us01.records.in.treasuredata.com',
 	  DATABASE: '',
 	  PATHNAME: '/'
 	};
@@ -3341,9 +3341,9 @@
 	};
 
 	var invariant = misc$3.invariant;
-	var _$5 = lodash;
+	var _$6 = lodash;
 	var api$1 = xhr;
-	var noop$1 = _$5.noop;
+	var noop$1 = _$6.noop;
 
 	/*
 	 * @param {object} config - configuration object
@@ -3359,7 +3359,7 @@
 	 *    AWS Asia Pacific (Tokyo)  cdp-ap03.in.treasturedata.com ap03.in.treasuredata.com
 	 */
 	function configure$1(config) {
-	  config = _$5.isObject(config) ? config : {};
+	  config = _$6.isObject(config) ? config : {};
 	  this.client.cdpHost = config.cdpHost || 'cdp.in.treasuredata.com';
 	  return this;
 	}
@@ -3398,17 +3398,17 @@
 	 * }, successCallback, errorCallback)
 	 */
 	function fetchUserSegments(tokenOrConfig, successCallback, errorCallback) {
-	  var isConfigObject = _$5.isObject(tokenOrConfig) && !_$5.isArray(tokenOrConfig);
+	  var isConfigObject = _$6.isObject(tokenOrConfig) && !_$6.isArray(tokenOrConfig);
 	  var audienceToken = isConfigObject ? tokenOrConfig.audienceToken : tokenOrConfig;
 	  var keys = isConfigObject && tokenOrConfig.keys || {};
 	  successCallback = successCallback || noop$1;
 	  errorCallback = errorCallback || noop$1;
-	  invariant(typeof audienceToken === 'string' || _$5.isArray(audienceToken), 'audienceToken must be a string or array; received "' + audienceToken.toString() + '"');
-	  invariant(_$5.isObject(keys), 'keys must be an object; received "' + keys + '"');
-	  var token = _$5.isArray(audienceToken) ? audienceToken.join(',') : audienceToken;
-	  var keysName = _$5.keys(keys);
+	  invariant(typeof audienceToken === 'string' || _$6.isArray(audienceToken), 'audienceToken must be a string or array; received "' + audienceToken.toString() + '"');
+	  invariant(_$6.isObject(keys), 'keys must be an object; received "' + keys + '"');
+	  var token = _$6.isArray(audienceToken) ? audienceToken.join(',') : audienceToken;
+	  var keysName = _$6.keys(keys);
 	  var keysArray = [];
-	  _$5.forEach(keysName, function (key) {
+	  _$6.forEach(keysName, function (key) {
 	    keysArray.push(['key.', key, '=', keys[key]].join(''));
 	  });
 	  var keyString = keysArray.join('&');
@@ -3464,7 +3464,7 @@
 	*/
 
 	function fetchPersonalization(config, data, successCallback, errorCallback) {
-	  invariant(_$5.isObject(config), 'config must be an object, received "' + config + '"');
+	  invariant(_$6.isObject(config), 'config must be an object, received "' + config + '"');
 	  invariant(config.endpoint, 'endpoint is invalid');
 	  invariant(config.database, 'database is invalid');
 	  invariant(config.table, 'table is invalid');
@@ -3514,7 +3514,7 @@
 
 	// Modules
 	var window$3 = windowExports;
-	var _$4 = lodash;
+	var _$5 = lodash;
 	var cookie$2 = jsCookies;
 	var setCookie$1 = setCookie$3;
 	var generateUUID$1 = generateUUID$2;
@@ -3523,7 +3523,7 @@
 
 	// Helpers
 	function configureValues(track) {
-	  return _$4.assign({
+	  return _$5.assign({
 	    td_version: function () {
 	      return version$1;
 	    },
@@ -3583,7 +3583,7 @@
 	  }, track.values);
 	}
 	function configureTrack(track) {
-	  return _$4.assign({
+	  return _$5.assign({
 	    pageviews: 'pageviews',
 	    events: 'events',
 	    values: {}
@@ -3593,8 +3593,8 @@
 	  if (storage === 'none') {
 	    return false;
 	  }
-	  storage = _$4.isObject(storage) ? storage : {};
-	  return _$4.assign({
+	  storage = _$5.isObject(storage) ? storage : {};
+	  return _$5.assign({
 	    name: '_td',
 	    expires: 63072000,
 	    domain: document$1.location.hostname,
@@ -3630,7 +3630,7 @@
 	 *
 	 */
 	track.configure = function configure(config) {
-	  config = _$4.isObject(config) ? config : {};
+	  config = _$5.isObject(config) ? config : {};
 
 	  // Object configuration for track and storage
 	  this.client.track = config.track = configureTrack(config.track);
@@ -3638,9 +3638,9 @@
 
 	  // If clientId is not set, check cookies
 	  // If it's not set after checking cookies, generate a uuid and assign it
-	  if (_$4.isNumber(config.clientId)) {
+	  if (_$5.isNumber(config.clientId)) {
 	    config.clientId = config.clientId.toString();
-	  } else if (!config.clientId || !_$4.isString(config.clientId)) {
+	  } else if (!config.clientId || !_$5.isString(config.clientId)) {
 	    if (config.storage && config.storage.name) {
 	      config.clientId = cookie$2.getItem(config.storage.name);
 	    }
@@ -3693,7 +3693,7 @@
 	  }
 
 	  // Values must be initialized later because they depend on knowing the uuid
-	  this.client.track.values = _$4.assign(configureValues(this.client.track), this.client.track.values);
+	  this.client.track.values = _$5.assign(configureValues(this.client.track), this.client.track.values);
 	  return this;
 	};
 
@@ -3729,7 +3729,7 @@
 	  if (!table) {
 	    table = this.client.track.events;
 	  }
-	  record = _$4.assign(this.getTrackValues(), record);
+	  record = _$5.assign(this.getTrackValues(), record);
 	  this.addRecord(table, record, success, failure);
 	  return this;
 	};
@@ -3769,7 +3769,7 @@
 	 */
 	track.getTrackValues = function getTrackValues() {
 	  var result = {};
-	  _$4.forIn(this.client.track.values, function (value, key) {
+	  _$5.forIn(this.client.track.values, function (value, key) {
 	    if (value) {
 	      result[key] = typeof value === 'function' ? value() : value;
 	    }
@@ -5194,7 +5194,7 @@
 	})(es6Promise);
 	var es6PromiseExports = es6Promise.exports;
 
-	var _$3 = lodash;
+	var _$4 = lodash;
 	var dayjs = dayjs_minExports;
 	var global$1 = windowExports;
 	var generateUUID = generateUUID$2;
@@ -5234,9 +5234,9 @@
 	      storageKey = STORAGE_KEY,
 	      consentTable = DEFAULT_CONSENT_TABLE,
 	      contextTable = DEFAULT_CONTEXT_TABLE,
-	      successConsentCallback = _$3.noop,
-	      failureConsentCallback = _$3.noop,
-	      expiredConsentsCallback = _$3.noop,
+	      successConsentCallback = _$4.noop,
+	      failureConsentCallback = _$4.noop,
+	      expiredConsentsCallback = _$4.noop,
 	      dateFormat = DEFAULT_DATE_FORMAT,
 	      issuer = DEFAULT_ISSUER,
 	      container
@@ -5268,9 +5268,9 @@
 	    this.consentManager.expiredConsentsCallback(this.getExpiredConsents());
 	  },
 	  _getContainer(selector) {
-	    if (_$3.isString(selector)) {
+	    if (_$4.isString(selector)) {
 	      return document.querySelector(selector);
-	    } else if (_$3.isObject(selector)) {
+	    } else if (_$4.isObject(selector)) {
 	      return selector;
 	    }
 	    return document.body;
@@ -5301,26 +5301,26 @@
 	        }
 	      }
 	    }
-	    return _$3.isEmpty(updatedConsents) ? notUdpatedConsents : updatedConsents;
+	    return _$4.isEmpty(updatedConsents) ? notUdpatedConsents : updatedConsents;
 	  },
 	  _stringifyPreferences() {
-	    const clonedPreferences = _$3.cloneDeep(this.consentManager.preferences);
+	    const clonedPreferences = _$4.cloneDeep(this.consentManager.preferences);
 	    for (const contextId in clonedPreferences) {
 	      const currentContext = clonedPreferences[contextId];
 	      const consents = currentContext.consents;
 	      for (const purpose in consents) {
 	        const expiryDate = consents[purpose].expiry_date;
-	        if (!_$3.isEmpty(expiryDate)) {
+	        if (!_$4.isEmpty(expiryDate)) {
 	          consents[purpose].expiry_date = dayjs(expiryDate).format(this.consentManager.dateFormat);
 	        }
 	        consents[purpose].identifier = this.client.track.uuid;
-	        consents[purpose] = _$3.omit(consents[purpose], ['_updated']);
+	        consents[purpose] = _$4.omit(consents[purpose], ['_updated']);
 	      }
 	    }
 	    return JSON.stringify(clonedPreferences);
 	  },
 	  _isValidStatus(status) {
-	    if (!status || !_$3.isString(status)) return false;
+	    if (!status || !_$4.isString(status)) return false;
 	    status = status.toLowerCase();
 	    return status === CONSENT_STATES.GIVEN || status === CONSENT_STATES.REFUSED || status === CONSENT_STATES.NOTGIVEN || status === CONSENT_STATES.EXPIRED;
 	  },
@@ -5330,7 +5330,7 @@
 	  },
 	  _updateExpiredConsents() {
 	    var shouldSaveConsents = false;
-	    if (!_$3.isEmpty(this.consentManager.preferences)) {
+	    if (!_$4.isEmpty(this.consentManager.preferences)) {
 	      for (const contextId in this.consentManager.preferences) {
 	        const consents = this.consentManager.preferences[contextId].consents || {};
 	        for (const purpose in consents) {
@@ -5343,7 +5343,7 @@
 	        }
 	      }
 	    }
-	    shouldSaveConsents && this.saveConsents(_$3.noop, _$3.noop);
+	    shouldSaveConsents && this.saveConsents(_$4.noop, _$4.noop);
 	  },
 	  getPreferences() {
 	    if (!isLocalStorageAccessible()) return null;
@@ -5353,7 +5353,7 @@
 	        const consents = persistedPreferences[contextId].consents;
 	        for (const purpose in consents) {
 	          const expiryDate = consents[purpose].expiry_date;
-	          if (!_$3.isEmpty(expiryDate)) {
+	          if (!_$4.isEmpty(expiryDate)) {
 	            consents[purpose].expiry_date = dayjs(expiryDate, this.consentManager.dateFormat).valueOf();
 	          }
 	          consents[purpose].identifier = this.client.track.uuid;
@@ -5363,7 +5363,7 @@
 	    return persistedPreferences;
 	  },
 	  _savePreferences() {
-	    if (!isLocalStorageAccessible() || _$3.isEmpty(this.consentManager.preferences)) return;
+	    if (!isLocalStorageAccessible() || _$4.isEmpty(this.consentManager.preferences)) return;
 	    global$1.localStorage.setItem(this.consentManager.storageKey, this._stringifyPreferences());
 	  },
 	  _getPromise(consent) {
@@ -5400,12 +5400,12 @@
 	   *
 	   * sdk.saveContexts(success, error)
 	   */
-	  saveContexts(success = _$3.noop, error = _$3.noop) {
+	  saveContexts(success = _$4.noop, error = _$4.noop) {
 	    // store the consents to cookie first
 	    this._savePreferences();
 	    const contextList = Object.keys(this.consentManager.preferences).reduce((list, contextId) => {
 	      const context = this.consentManager.preferences[contextId];
-	      const serializedContext = _$3.omit(context, ['consents']);
+	      const serializedContext = _$4.omit(context, ['consents']);
 	      list.push(serializedContext);
 	      return list;
 	    }, []);
@@ -5439,8 +5439,8 @@
 	  *
 	  */
 	  saveConsents(success, error) {
-	    success = success || this.consentManager.successConsentCallback || _$3.noop;
-	    error = error || this.consentManager.failureConsentCallback || _$3.noop;
+	    success = success || this.consentManager.successConsentCallback || _$4.noop;
+	    error = error || this.consentManager.failureConsentCallback || _$4.noop;
 
 	    // store the consents to cookie first
 	    this._savePreferences();
@@ -5461,7 +5461,7 @@
 	      }
 	    }
 	    var promises;
-	    if (!_$3.isEmpty(updatedConsents)) {
+	    if (!_$4.isEmpty(updatedConsents)) {
 	      promises = updatedConsents.map(consent => this._getPromise(consent));
 	    } else {
 	      promises = notUpdatedConsents.map(consent => this._getPromise(consent));
@@ -5474,7 +5474,7 @@
 	        message: e.message
 	      });
 	    }).finally(() => {
-	      if (!_$3.isEmpty(updatedConsents)) {
+	      if (!_$4.isEmpty(updatedConsents)) {
 	        this._resetUpdatedStatus();
 	      }
 	    });
@@ -5502,11 +5502,11 @@
 	  *
 	  */
 	  addContext(context = {}) {
-	    if (_$3.isEmpty(context)) return;
+	    if (_$4.isEmpty(context)) return;
 	    var contextId;
-	    if (_$3.isString(context.context_id)) {
+	    if (_$4.isString(context.context_id)) {
 	      contextId = context.context_id;
-	    } else if (_$3.isFunction(context.context_id)) {
+	    } else if (_$4.isFunction(context.context_id)) {
 	      contextId = context.context_id();
 	    } else {
 	      contextId = generateUUID();
@@ -5514,9 +5514,9 @@
 	    var savedContext;
 	    const currentContext = this.consentManager.preferences[contextId];
 	    if (currentContext) {
-	      savedContext = _$3.assign({}, currentContext, context);
+	      savedContext = _$4.assign({}, currentContext, context);
 	    } else {
-	      savedContext = _$3.assign({}, context, {
+	      savedContext = _$4.assign({}, context, {
 	        context_id: contextId,
 	        consents: {}
 	      });
@@ -5564,7 +5564,7 @@
 	  * )
 	  */
 	  addConsents(consents = {}) {
-	    if (_$3.isEmpty(consents)) return;
+	    if (_$4.isEmpty(consents)) return;
 	    for (const key in consents) {
 	      const status = this._isValidStatus(consents[key].status) ? consents[key].status : CONSENT_STATES.NOTGIVEN;
 	      var contextId = consents[key].context_id;
@@ -5578,16 +5578,16 @@
 	      }
 	      var currentContext = this.consentManager.preferences[contextId];
 	      var current = currentContext && currentContext.consents[key];
-	      if (!_$3.isEmpty(expiryDate) && (_$3.isString(expiryDate) || _$3.isNumber(expiryDate) || _$3.isObject(expiryDate))) {
+	      if (!_$4.isEmpty(expiryDate) && (_$4.isString(expiryDate) || _$4.isNumber(expiryDate) || _$4.isObject(expiryDate))) {
 	        const parsedDate = dayjs(expiryDate, this.consentManager.dateFormat);
 	        expiryDate = parsedDate.isValid() ? parsedDate.valueOf() : '';
 	      } else {
 	        expiryDate = '';
 	      }
-	      if (!_$3.isEmpty(current)) {
-	        augmentedConsent = _$3.assign({}, current, consents[key]);
+	      if (!_$4.isEmpty(current)) {
+	        augmentedConsent = _$4.assign({}, current, consents[key]);
 	      } else {
-	        augmentedConsent = _$3.assign({}, consents[key], {
+	        augmentedConsent = _$4.assign({}, consents[key], {
 	          key: camelCase(key),
 	          status,
 	          identifier: this.client.track.uuid,
@@ -5614,7 +5614,7 @@
 	  * })
 	  */
 	  updateConsent(contextId, consent = {}) {
-	    if (_$3.isEmpty(this.consentManager.preferences[contextId]) || _$3.isEmpty(consent)) return;
+	    if (_$4.isEmpty(this.consentManager.preferences[contextId]) || _$4.isEmpty(consent)) return;
 	    const [consentPurpose] = Object.keys(consent);
 	    const currentConsents = this.consentManager.preferences[contextId].consents;
 	    for (const purpose in currentConsents) {
@@ -5624,14 +5624,14 @@
 	        if (!this._isValidStatus(status)) {
 	          status = currentConsents[consentPurpose].status;
 	        }
-	        if (!_$3.isEmpty(expiryDate) && (_$3.isString(expiryDate) || _$3.isNumber(expiryDate) || _$3.isObject(expiryDate))) {
+	        if (!_$4.isEmpty(expiryDate) && (_$4.isString(expiryDate) || _$4.isNumber(expiryDate) || _$4.isObject(expiryDate))) {
 	          const parsedDate = dayjs(expiryDate, this.consentManager.dateFormat);
 	          expiryDate = parsedDate.isValid() ? parsedDate.valueOf() : currentConsents[consentPurpose].expiry_date;
 	        } else {
 	          expiryDate = currentConsents[consentPurpose].expiry_date;
 	        }
-	        const filteredConsent = _$3.omit(currentConsents[consentPurpose], ['expiry_date', 'status']);
-	        currentConsents[consentPurpose] = _$3.assign(filteredConsent, _$3.omit(consent[consentPurpose], ['expiry_date', 'status']), {
+	        const filteredConsent = _$4.omit(currentConsents[consentPurpose], ['expiry_date', 'status']);
+	        currentConsents[consentPurpose] = _$4.assign(filteredConsent, _$4.omit(consent[consentPurpose], ['expiry_date', 'status']), {
 	          identifier: this.client.track.uuid,
 	          status,
 	          expiry_date: expiryDate
@@ -5657,10 +5657,10 @@
 	  */
 	  updateContext(contextId, values = {}) {
 	    const context = this.consentManager.preferences[contextId];
-	    if (_$3.isEmpty(context) || _$3.isEmpty(values)) return;
-	    var contextInfo = _$3.omit(context, ['consents']);
-	    contextInfo = _$3.assign({}, contextInfo, values);
-	    this.consentManager.preferences[contextId] = _$3.assign({}, context, contextInfo);
+	    if (_$4.isEmpty(context) || _$4.isEmpty(values)) return;
+	    var contextInfo = _$4.omit(context, ['consents']);
+	    contextInfo = _$4.assign({}, contextInfo, values);
+	    this.consentManager.preferences[contextId] = _$4.assign({}, context, contextInfo);
 	  },
 	  /**
 	  * @function getConsentExpiryDate(contextId,consentPurpose)
@@ -5684,13 +5684,13 @@
 	  * @description Return list of consents
 	  */
 	  getConsents() {
-	    const preferences = !_$3.isEmpty(this.consentManager.preferences) ? this.consentManager.preferences : this.getPreferences();
+	    const preferences = !_$4.isEmpty(this.consentManager.preferences) ? this.consentManager.preferences : this.getPreferences();
 	    return Object.keys(preferences || {}).reduce((consents, id) => {
 	      const context = preferences[id];
 	      const persistedConsents = context.consents;
-	      const contextInfo = _$3.omit(context, ['consents']);
+	      const contextInfo = _$4.omit(context, ['consents']);
 	      for (const key in persistedConsents) {
-	        const normalizedConsent = _$3.assign({}, contextInfo, {
+	        const normalizedConsent = _$4.assign({}, contextInfo, {
 	          status: persistedConsents[key].status,
 	          datatype: persistedConsents[key].datatype || '',
 	          description: persistedConsents[key].description || '',
@@ -5709,10 +5709,10 @@
 	  *
 	  */
 	  getContexts() {
-	    const preferences = !_$3.isEmpty(this.consentManager.preferences) ? this.consentManager.preferences : this.getPreferences();
+	    const preferences = !_$4.isEmpty(this.consentManager.preferences) ? this.consentManager.preferences : this.getPreferences();
 	    return Object.keys(preferences || {}).reduce((contexts, id) => {
 	      const context = preferences[id];
-	      const normalizedContext = _$3.omit(context, ['consents']);
+	      const normalizedContext = _$4.omit(context, ['consents']);
 	      contexts.push(normalizedContext);
 	      return contexts;
 	    }, []);
@@ -5731,7 +5731,7 @@
 
 	var conversion_api_support = {};
 
-	var _$2 = lodash;
+	var _$3 = lodash;
 	function getCookie(key) {
 	  var allCookies = collectCookies();
 	  return allCookies[key] || null;
@@ -6027,24 +6027,53 @@
 	 *
 	 */
 	conversion_api_support.collectTags = function (configs = {}, options = {}) {
-	  var isEmptyConfigValues = _$2.isEmpty(configs.vendors) && _$2.isEmpty(configs.cookies) && _$2.isEmpty(configs.params);
+	  var isEmptyConfigValues = _$3.isEmpty(configs.vendors) && _$3.isEmpty(configs.cookies) && _$3.isEmpty(configs.params);
 	  var tags = {};
-	  if (_$2.isEmpty(configs) || isEmptyConfigValues) {
+	  if (_$3.isEmpty(configs) || isEmptyConfigValues) {
 	    tags = collectAllTags(options);
 	  } else {
-	    if (!_$2.isEmpty(configs.vendors)) {
+	    if (!_$3.isEmpty(configs.vendors)) {
 	      tags = Object.assign(tags, collectTagsByVendors(configs.vendors, options));
 	    }
-	    if (!_$2.isEmpty(configs.cookies)) {
+	    if (!_$3.isEmpty(configs.cookies)) {
 	      tags = Object.assign(tags, collectTagsByCookieNames(configs.cookies));
 	    }
-	    if (!_$2.isEmpty(configs.params)) {
+	    if (!_$3.isEmpty(configs.params)) {
 	      tags = Object.assign(tags, collectTagsByParamNames(configs.params));
 	    }
 	  }
 	  Object.keys(tags).forEach(function (tagKey) {
 	    this.set('$global', tagKey, tags[tagKey]);
 	  }.bind(this));
+	};
+
+	var utm = {};
+
+	var _$2 = lodash;
+	function collectUTMParameters() {
+	  var searchString = window.location.search;
+	  var searchParams = new URLSearchParams(searchString);
+	  var utmParams = ['utm_id', 'utm_medium', 'utm_source_platform', 'utm_source', 'utm_campaign', 'utm_marketing_tactic'];
+	  var hasParams = utmParams.some(function (param) {
+	    return searchParams.has(param);
+	  });
+	  if (!hasParams) return {};
+	  return utmParams.reduce(function (acc, value) {
+	    var paramObj = {};
+	    var paramValue = searchParams.get(value);
+	    if (paramValue) {
+	      paramObj[value] = searchParams.get(value);
+	    }
+	    return Object.assign(acc, paramObj);
+	  }, {});
+	}
+	utm.configure = function () {
+	  var collectedUTMParams = collectUTMParameters();
+	  if (_$2.isObject(collectedUTMParams) && !_$2.isEmpty(collectedUTMParams)) {
+	    Object.keys(collectedUTMParams).forEach(function (paramName) {
+	      this.set('$global', paramName, collectedUTMParams[paramName]);
+	    }.bind(this));
+	  }
 	};
 
 	var record = record$1;
@@ -6159,7 +6188,8 @@
 	  Track: track,
 	  ServerSideCookie: servercookie,
 	  ConsentManager: consentManager,
-	  ConversionAPI: conversion_api_support
+	  ConversionAPI: conversion_api_support,
+	  UTMTracking: utm
 	};
 
 	// Load all plugins
