@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.0 (2025-07-21)
+* Support UTM parameters tracking 
+
 ## 4.3.0 (2025-05-22)
 * Add a new `fetchPersonalization` API
 

@@ -4,7 +4,7 @@ set -euo pipefail
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 VERSION=$(cat $ROOT_DIR/package.json | jq -r '.version')
-HOST='in.treasuredata.com'
+HOST='us01.records.in.treasuredata.com'
 DATABASE=""
 PATHNAME="/"
 GLOBAL="Treasure"
