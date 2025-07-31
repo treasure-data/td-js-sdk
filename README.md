@@ -21,6 +21,8 @@
 
 [Personalization 2.0](PERSONALIZATION_2.md)
 
+[UTM Parameters Tracking](UTM.md)
+
 [API](#api)
 
 [Others](#support)
