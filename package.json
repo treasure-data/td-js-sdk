@@ -100,7 +100,7 @@
     "dayjs": "^1.8.34",
     "domready": "^0.3.0",
     "es6-promise": "^4.2.8",
-    "global": "^4.3.0",
+    "global": "^4.4.0",
     "lodash-compat": "^3.10.1"
   }
 }
