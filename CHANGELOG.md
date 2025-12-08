@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.1 (2025-12-08)
+* Fix vulnerabilities
+
 ## 4.4.0 (2025-07-21)
 * Support UTM parameters tracking 
 
