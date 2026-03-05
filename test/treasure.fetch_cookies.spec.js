@@ -33,6 +33,18 @@ function setInstagramCookies() {
   cookies.setItem('ds_user_id', 'anuid', 5)
 }
 
+function setYahooJapanMeasurementCookies() {
+  cookies.setItem('_ly_c', 'ly_c_value', 5)
+  cookies.setItem('_ly_r', 'ly_r_value', 5)
+  cookies.setItem('_ly_su', 'ly_su_value', 5)
+}
+
+function setYahooJapanLegacyCookies() {
+  cookies.setItem('_ycl_yjad', 'ycl_value', 5)
+  cookies.setItem('_yjr_yjad', 'yjr_value', 5)
+  cookies.setItem('_yjsu_yjad', 'yjsu_value', 5)
+}
+
 function setTestCookies() {
   cookies.setItem(cookieA, 'a', 5)
   cookies.setItem(cookieB, 'b', 5)
@@ -178,6 +190,101 @@ describe('Fetch cookies and params', function () {
       expect(globalTable['shbts']).to.equal('shbts')
       expect(globalTable['shbid']).to.equal('shbid')
       expect(globalTable['ds_user_id']).to.equal('anuid')
+    })
+  })
+
+  describe('#collectTags Yahoo Japan measurement tags', function () {
+    beforeEach(function () {
+      treasure = new Treasure(configs)
+    })
+
+    it('should collect _ly_c, _ly_r, _ly_su cookies with underscore removed', function () {
+      setYahooJapanMeasurementCookies()
+
+      treasure.collectTags({
+        vendors: ['yahoojp_ads']
+      })
+
+      var globalTable = treasure.get('$global')
+
+      expect(globalTable['ly_c']).to.equal('ly_c_value')
+      expect(globalTable['ly_r']).to.equal('ly_r_value')
+      expect(globalTable['ly_su']).to.equal('ly_su_value')
+    })
+
+    it('should collect _ly_c from URL parameter when cookie is missing', function () {
+      // Mock window.location.search
+      var originalLocation = window.location
+      delete window.location
+      window.location = { search: '?_ly_c=param_value' }
+
+      treasure.collectTags({
+        vendors: ['yahoojp_ads']
+      })
+
+      var globalTable = treasure.get('$global')
+
+      expect(globalTable['ly_c']).to.equal('param_value')
+
+      // Restore
+      window.location = originalLocation
+    })
+
+    it('should prioritize cookie over parameter for _ly_c', function () {
+      // Set cookie
+      cookies.setItem('_ly_c', 'cookie_value', 5)
+
+      // Mock URL parameter
+      var originalLocation = window.location
+      delete window.location
+      window.location = { search: '?_ly_c=param_value' }
+
+      treasure.collectTags({
+        vendors: ['yahoojp_ads']
+      })
+
+      var globalTable = treasure.get('$global')
+
+      // Cookie should override parameter
+      expect(globalTable['ly_c']).to.equal('cookie_value')
+
+      // Restore
+      window.location = originalLocation
+    })
+
+    it('should maintain backward compatibility with existing Yahoo tags', function () {
+      setYahooJapanLegacyCookies()
+
+      treasure.collectTags({
+        vendors: ['yahoojp_ads']
+      })
+
+      var globalTable = treasure.get('$global')
+
+      expect(globalTable['_ycl_yjad']).to.equal('ycl_value')
+      expect(globalTable['_yjr_yjad']).to.equal('yjr_value')
+      expect(globalTable['_yjsu_yjad']).to.equal('yjsu_value')
+    })
+
+    it('should collect both new and legacy Yahoo tags together', function () {
+      setYahooJapanMeasurementCookies()
+      setYahooJapanLegacyCookies()
+
+      treasure.collectTags({
+        vendors: ['yahoojp_ads']
+      })
+
+      var globalTable = treasure.get('$global')
+
+      // New measurement tags (without underscore)
+      expect(globalTable['ly_c']).to.equal('ly_c_value')
+      expect(globalTable['ly_r']).to.equal('ly_r_value')
+      expect(globalTable['ly_su']).to.equal('ly_su_value')
+
+      // Legacy tags (with underscore)
+      expect(globalTable['_ycl_yjad']).to.equal('ycl_value')
+      expect(globalTable['_yjr_yjad']).to.equal('yjr_value')
+      expect(globalTable['_yjsu_yjad']).to.equal('yjsu_value')
     })
   })
 })
