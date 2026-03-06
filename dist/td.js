@@ -3279,7 +3279,7 @@
 	  hasRequiredConfig = 1;
 	  config = {
 	    GLOBAL: 'Treasure',
-	    VERSION: '4.4.1',
+	    VERSION: '4.4.2',
 	    HOST: 'us01.records.in.treasuredata.com',
 	    DATABASE: '',
 	    PATHNAME: '/'
@@ -6420,6 +6420,26 @@
 	      _yjsu_yjad: getCookie('_yjsu_yjad')
 	    };
 	  };
+	  var getYahoo_ly_c_Param = function () {
+	    return {
+	      ly_c: getParam('_ly_c')
+	    };
+	  };
+	  var getYahoo_ly_c_Cookie = function () {
+	    return {
+	      ly_c: getCookie('_ly_c')
+	    };
+	  };
+	  var getYahoo_ly_r_Cookie = function () {
+	    return {
+	      ly_r: getCookie('_ly_r')
+	    };
+	  };
+	  var getYahoo_ly_su_Cookie = function () {
+	    return {
+	      ly_su: getCookie('_ly_su')
+	    };
+	  };
 
 	  // Line
 	  var getLine_lt_cid_Cookie = function () {
@@ -6506,6 +6526,10 @@
 	    getYahoo_ycl_yjad_Cookie,
 	    getYahoo_yjr_yjad_Cookie,
 	    getYahoo_yjsu_yjad_Cookie,
+	    getYahoo_ly_c_Param,
+	    getYahoo_ly_c_Cookie,
+	    getYahoo_ly_r_Cookie,
+	    getYahoo_ly_su_Cookie,
 	    getLine_lt_cid_Cookie,
 	    getLine_lt_sid_Cookie,
 	    getLine_ldtag_cl_Param,
@@ -6524,7 +6548,7 @@
 	    google_mp: ['getGoogle_gcl_Cookies'],
 	    meta: ['getFacebook_fbp_Cookie', 'getFacebook_fbc_Cookie', 'getFacebook_fbclid_Param'],
 	    instagram: ['getInstagram_shbts_Cookie', 'getInstagram_shbid_Cookie', 'getInstagram_ds_user_id_Cookie', 'getInstagram_ig_did_Cookie'],
-	    yahoojp_ads: ['getYahoo_yclid_Param', 'getYahoo_yj_r_Param', 'getYahoo_ycl_yjad_Cookie', 'getYahoo_yjr_yjad_Cookie', 'getYahoo_yjsu_yjad_Cookie'],
+	    yahoojp_ads: ['getYahoo_ly_c_Param', 'getYahoo_ly_c_Cookie', 'getYahoo_ly_r_Cookie', 'getYahoo_ly_su_Cookie', 'getYahoo_yclid_Param', 'getYahoo_yj_r_Param', 'getYahoo_ycl_yjad_Cookie', 'getYahoo_yjr_yjad_Cookie', 'getYahoo_yjsu_yjad_Cookie'],
 	    line: ['getLine_lt_cid_Cookie', 'getLine_lt_sid_Cookie', 'getLine_ldtag_cl_Param'],
 	    x: ['getX_twclid_Param', 'getX_twclid_Cookie'],
 	    pinterest: ['getPinterest_epik_Param', 'getPinterest_epik_Cookie'],

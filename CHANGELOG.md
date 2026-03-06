@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.2 (2026-03-09)
+* Add Yahoo Japan measurement tag support (_ly_c, _ly_r, _ly_su)
+
 ## 4.4.1 (2025-12-08)
 * Fix vulnerabilities
 
