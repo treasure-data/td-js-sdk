@@ -90,7 +90,7 @@
     "requirejs": "^2.2.0",
     "rollup": "^4.20.0",
     "rollup-plugin-sizes": "^1.0.6",
-    "selenium-standalone": "^6.23.0",
+    "selenium-standalone": "^10.0.2",
     "simple-mock": "^0.8.0",
     "standard": "^17.1.0",
     "tape": "^4.6.0"
