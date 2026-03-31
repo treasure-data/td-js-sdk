@@ -3279,7 +3279,7 @@
 	  hasRequiredConfig = 1;
 	  config = {
 	    GLOBAL: 'Treasure',
-	    VERSION: '4.4.2',
+	    VERSION: '4.4.3',
 	    HOST: 'us01.records.in.treasuredata.com',
 	    DATABASE: '',
 	    PATHNAME: '/'
@@ -4000,8 +4000,18 @@
 	    invariant(config.token, 'token is invalid');
 	    successCallback = successCallback || noop;
 	    errorCallback = errorCallback || noop;
+
+	    // Check if events are blocked - if so, don't make the request
+	    if (this.areEventsBlocked()) {
+	      return;
+	    }
 	    var url = ['https://', config.endpoint, '/public/', config.database, '/', config.table].join('');
 	    var payload = data || {};
+
+	    // In anonymous mode, strip PII from payload if present
+	    if (!this.inSignedMode()) {
+	      payload = _.omit(payload, ['td_ip', 'td_client_id', 'td_global_id']);
+	    }
 	    api.post(url, payload, {
 	      headers: {
 	        'Content-Type': 'application/vnd.treasuredata.v1+json',

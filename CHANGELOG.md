@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.4.3 (2026-03-31)
+* fetchPersonalization should honour the `blockEvents` and the `signed mode`
+
+
 ## 4.4.2 (2026-03-09)
 * Add Yahoo Japan measurement tag support (_ly_c, _ly_r, _ly_su)
 
