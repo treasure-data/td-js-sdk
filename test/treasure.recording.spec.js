@@ -109,6 +109,9 @@ describe('Treasure Record', function () {
 
     describe('globals', function () {
       beforeEach(function () {
+        // Clean up cookies to ensure test isolation
+        cookie.removeItem(BLOCKEVENTSCOOKIE)
+        cookie.removeItem(SIGNEDMODECOOKIE)
         resetConfiguration({ development: false })
         treasure = new Treasure(configuration)
         simple.mock(treasure, '_sendRecord')
@@ -116,6 +119,9 @@ describe('Treasure Record', function () {
 
       afterEach(function () {
         simple.restore()
+        // Clean up cookies after tests
+        cookie.removeItem(BLOCKEVENTSCOOKIE)
+        cookie.removeItem(SIGNEDMODECOOKIE)
       })
 
       it('should send the object with $global attributes', function () {
@@ -208,6 +214,9 @@ describe('Treasure Record', function () {
 
     describe('properties', function () {
       beforeEach(function () {
+        // Clean up cookies to ensure test isolation
+        cookie.removeItem(BLOCKEVENTSCOOKIE)
+        cookie.removeItem(SIGNEDMODECOOKIE)
         resetConfiguration({
           development: false,
           requestType: 'fetch',
@@ -219,6 +228,9 @@ describe('Treasure Record', function () {
 
       afterEach(function () {
         simple.restore()
+        // Clean up cookies after tests
+        cookie.removeItem(BLOCKEVENTSCOOKIE)
+        cookie.removeItem(SIGNEDMODECOOKIE)
       })
 
       it('should set url', function () {
@@ -329,6 +341,9 @@ describe('Treasure Record', function () {
 
   describe('GDPR', function () {
     beforeEach(function () {
+      // Clean up cookies to ensure test isolation
+      cookie.removeItem(BLOCKEVENTSCOOKIE)
+      cookie.removeItem(SIGNEDMODECOOKIE)
       resetConfiguration({ development: false })
       treasure = new Treasure(configuration)
       simple.mock(treasure, '_sendRecord')
@@ -336,6 +351,9 @@ describe('Treasure Record', function () {
 
     afterEach(function () {
       simple.restore()
+      // Clean up cookies after tests
+      cookie.removeItem(BLOCKEVENTSCOOKIE)
+      cookie.removeItem(SIGNEDMODECOOKIE)
     })
 
     it('blockEvents() should stop all events from being sent', function () {
