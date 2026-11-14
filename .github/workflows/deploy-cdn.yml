@@ -1,0 +1,49 @@
+name: Deploy SDK to CDN
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no upload / no invalidation)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cdn-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload dist/ to td-cdn
+        run: |
+          set -euo pipefail
+          VERSION=$(jq -r '.version' < package.json)
+          FLAGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then FLAGS="--dryrun"; fi
+          aws s3 sync ./dist/ "s3://td-cdn/sdk/${VERSION}/" \
+            $FLAGS \
+            --acl public-read \
+            --cache-control 'public, max-age=315360000' \
+            --exclude "*loader.min.js"
+
+      - name: Invalidate CloudFront
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          set -euo pipefail
+          TO_VERSION=$(jq -r '.version' < package.json | sed 's/\.[-a-zA-Z0-9]*$//g')
+          aws cloudfront create-invalidation \
+            --distribution-id E2L8AHDWNOCKE \
+            --paths "/sdk/${TO_VERSION}/td.js" "/sdk/${TO_VERSION}/td.min.js"
